@@ -10,6 +10,7 @@ Type :bash:`python monsters.py --help` for instructions on how to run the conver
 `xlrd <https://github.com/python-excel/xlrd>`_ is required. As always, virtualenv.py is recommended before installing any Python module.
 
 Here we are more concerned with what you can do after successfully running the conversion.
+To run SQLite on the database, type :bash:`sqlite3 dnd_monsters.sqlite`.
 
 
 
@@ -81,11 +82,15 @@ A 6th-level cleric can enslave a `Brain in a Jar <http://archive.wizards.com/def
 
 
 
+Hmm. Are there monsters that can pull similar tricks?
+Since the database currently lacks the full text of abilities, we cannot search for "as an evil cleric rebukes undead" or such, but we can poke around with names.
 
 .. code-block:: bash
 
   sqlite> select dnd_monster.name,dnd_special_ability.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_special_ability on dnd_monster.id=monster_id inner join dnd_special_ability on dnd_special_ability.id=special_ability_id where (dnd_special_ability.name like "%rebuke%" or dnd_special_ability.name like "%control%" or dnd_special_ability.name like "%command%");
   Earth Whisper|control earth creatures
+
+An earth whisper, as it turns out, commands earth creatures as an evil cleric commands undead. What's available?
 
 .. code-block:: bash
 
