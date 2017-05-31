@@ -193,6 +193,11 @@ def spell_name_to_id(curs, spellName):
 
 
 
+
+darkvisionRE = re.compile(r"DV\d{2,3}")
+damageReductionRE = re.compile(r"DR \d{1,2}/[\w\s\-]+")
+spellResistanceRE = re.compile(r"SR \d{1,2}")
+
 casterLevelValueREstring = '(?:(?:\d{1,2})|(?:HD)|(?:lvl))\s*(?:\([\w\s]+\d?\))?'
 casterLevelTagREstring = '(?:C|M|T)L=?\s?'
 casterLevelREstring = casterLevelTagREstring + '(' + casterLevelValueREstring + ')'
@@ -307,13 +312,17 @@ sqlite> select id,x from tbl;
     if re.match("\w+$", col) is None:
       raise TypeError(col)
   if existingID is not None:
+    # Here's the problem: we do legitimately have cases where two different abilities share the same name.
+    # For example, the aboleth has a slime special attack while the brine naga has a slime special quality.
+    if tableName == "dnd_special_ability": return existingID # hack
     kwargs['id'] = existingID
     curs.execute('''SELECT {} FROM {} WHERE id=:id;'''.format(','.join(columnNames), tableName), kwargs)
     for i,val in enumerate(curs.fetchone() ):
-      if val != values[i] and val.lower() != values[i].lower():
-        raise RuntimeError("{} != {}".format(val, values[i]) )
+      if val != values[i] and type(val) is not str or val.lower() != values[i].lower():
+        raise RuntimeError("{} != {} in row {}".format(val, values[i], kwargs) )
     return existingID
-  if existingID is None:
+  else:
+    assert existingID is None
     commandString = '''INSERT INTO {} ({}) VALUES ({});'''.format(tableName, ','.join(columnNames), ','.join([':'+col for col in columnNames]) )
     #print('commandString =', commandString)
     curs.execute(commandString, kwargs)
@@ -596,6 +605,8 @@ class Monster(object):
     #print('commaSeparatedSpecialAttacks =', commaSeparatedSpecialAttacks)
     self.specialAttacks = [ab.strip() for ab in commaSeparatedSpecialAttacks.split(',')]
     #print('self.specialAttacks =', self.specialAttacks)
+    commaSeparatedSpecialQualities = xls_row[16].value
+    self.specialQualities = [ab.strip() for ab in commaSeparatedSpecialAttacks.split(',')]
 
     self.SpellLikeAbilities = list()
     SLAstring = xls_row[15].value
@@ -774,6 +785,13 @@ class Monster(object):
       curs.execute('''INSERT INTO monster_subtype (monster_id, subtype_id) VALUES (?, ?);''', (monster_id, subtype_id) )
     for attack in self.specialAttacks:
       ability_id = insert_if_needed(curs, 'dnd_special_ability', attack, special_attack=1)
+      curs.execute('''INSERT INTO monster_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
+    for quality in self.specialQualities:
+      if quality == "LLV": quality = "Low-Light Vision"
+      elif darkvisionRE.match(quality): quality = "Darkvision"
+      elif damageReductionRE.match(quality): quality = "Damage Reduction"
+      elif spellResistanceRE.match(quality): quality = "Spell Resistance"
+      ability_id = insert_if_needed(curs, 'dnd_special_ability', attack, special_attack=0)
       curs.execute('''INSERT INTO monster_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
     for (spellName, CL, usesPerDay, parenthetical) in self.SpellLikeAbilities:
       # probably want date of monster rulebook and take latest
@@ -974,6 +992,8 @@ if __name__ == "__main__":
   profile.enable()
   create_database(args.XLSpath, DBpath=args.DBpath)
   profile.disable()
-  profile.dump_stats('profile.txt')
+  with open('cProfile.txt', 'w') as statsFile:
+      stats = pstats.Stats(profile, stream=statsFile)
+      stats.strip_dirs().sort_stats('tottime').print_stats()
   
 
