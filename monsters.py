@@ -833,6 +833,7 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   if os.path.exists(monsterOnlyDB):
     os.remove(monsterOnlyDB)
   shutil.copyfile(DBpath, monsterOnlyDB)
+  print('creating file', monsterOnlyDB)
   alphabetical,ODE = read_xls(XLSfilepath)
   #ipdb.set_trace()
   #print('maxlen among names =', max([str(row[0]) for row in alphabetical.get_rows()], key=len) )
