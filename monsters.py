@@ -25,6 +25,7 @@ import csv
 import xlrd # https://github.com/python-excel/xlrd
 # https://www.blog.pythonlibrary.org/2014/04/30/reading-excel-spreadsheets-with-python-and-xlrd/
 #import ipdb
+import cProfile,pstats
 
 rulebook_abbreviations = {'MM1':'Monster Manual',
  'DotU':'Drow of the Underdark',
@@ -169,6 +170,12 @@ spellNameErrors = {'resistance to energy':'Resist Energy', # Angel, Solar
   'crown of brilliant':'Crown of Brilliance',
   'deep  slumber':'Deep Slumber',
                   }
+typeNameErrors = {'Exraplanar':'Extraplanar', 'Extraplanr':'Extraplanar','Extaplanar':'Extraplanar'}
+def fix_subtype(subtype):
+  subtype = subtype.strip()
+  if subtype in typeNameErrors:
+    subtype = typeNameErrors[subtype]
+  return subtype
 
 def spell_name_to_id(curs, spellName):
   curs.execute('''SELECT published,dnd_spell.id from dnd_spell INNER JOIN dnd_rulebook on dnd_spell.rulebook_id=dnd_rulebook.id WHERE dnd_spell.name like ? ORDER BY published;''', (spellName,) )
@@ -563,6 +570,9 @@ class Monster(object):
     self.name = xls_row[0].value
     self.size = xls_row[1].value
     self.type_name = xls_row[2].value
+    if xls_row[3].value == '': self.subtypes = [] # ''.split(',') is not an empty list, but rather a list containing ''
+    else: self.subtypes = [fix_subtype(subtype) for subtype in xls_row[3].value.replace(' or ', ', ').replace('[alignment subtype]', 'Good, Evil, Lawful, Chaotic').split(',')]
+    for subtype in self.subtypes: assert subtype != ''
     self.HitDice = fraction_to_negative(xls_row[4].value)
     swimflyburrowcrawl = xls_row[7].value
     #touchAC = int(xls_row[9])
@@ -743,18 +753,25 @@ class Monster(object):
                  (self.rulebook_abbrev,) )
     #print('rulebook_id from dnd_rulebook =', curs.fetchone() )
     self.size = self.size.rstrip('+.')
-    curs.execute('''SELECT id from dnd_racesize WHERE name like ?''', (self.size + '%',) )
-    size_id = curs.fetchone()[0]
+    #curs.execute('''SELECT id from dnd_racesize WHERE name like ?''', (self.size + '%',) )
+    #size_id = curs.fetchone()[0]
+    size_id = id_from_name(curs, 'dnd_racesize', self.size + '%')
     assert size_id is not None
-    curs.execute('''SELECT id from dnd_monstertype WHERE name=?''', (self.type_name,) )
-    type_id = curs.fetchone()[0]
+    #curs.execute('''SELECT id from dnd_monstertype WHERE name=?''', (self.type_name,) )
+    #type_id = curs.fetchone()[0]
+    type_id = id_from_name(curs, 'dnd_monstertype', self.type_name)
     assert type_id is not None
     curs.execute('''INSERT INTO dnd_monster
                  (name, size_id, type_id, hit_dice, wisdom, charisma, challenge_rating, law_chaos_id)
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
                  (self.name, size_id, type_id, self.HitDice, self.wisdom, self.charisma, self.challenge_rating, self.lawChaosID) )
-    #curs.execute('''SELECT id from dnd_monsters where ''')
     monster_id = curs.lastrowid
+    for subtype in self.subtypes:
+      if subtype[:9] == 'Augmented': subtype = 'Augmented'
+      if subtype == self.name: continue
+      subtype_id = id_from_name(curs, 'dnd_monstersubtype', subtype)
+      if subtype_id is None: raise IndexError(self.name + subtype)
+      curs.execute('''INSERT INTO monster_subtype (monster_id, subtype_id) VALUES (?, ?);''', (monster_id, subtype_id) )
     for attack in self.specialAttacks:
       ability_id = insert_if_needed(curs, 'dnd_special_ability', attack, special_attack=1)
       curs.execute('''INSERT INTO monster_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
@@ -824,7 +841,7 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   curs.execute('''CREATE TABLE monster_fly_speed (
   monster_id INTEGER NOT NULL,
   in_feet tinyint(3) NOT NULL,
-CONSTRAINT monster_unique UNIQUE (monster_id)
+  FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   );''')
 
   curs.execute('''CREATE TEMPORARY TABLE types_backup (id int, name varchar(32), slug varchar(32) );''')
@@ -838,6 +855,21 @@ CONSTRAINT monster_unique UNIQUE (monster_id)
   curs.execute('''INSERT INTO dnd_monstertype SELECT id, name, slug FROM types_backup;''')
   curs.execute('''DROP TABLE types_backup;''')
   curs.execute('''INSERT INTO dnd_monstertype (name,slug) VALUES (?,?);''', ('Animal','animal') )
+  curs.execute('''CREATE TEMPORARY TABLE subtypes_backup (id int, name varchar(32), slug varchar(32) );''')
+  curs.execute('''INSERT INTO subtypes_backup SELECT id, name, slug FROM dnd_monstersubtype;''')
+  curs.execute('''DROP TABLE dnd_monstersubtype;''')
+  curs.execute('''CREATE TABLE dnd_monstersubtype (
+  id INTEGER PRIMARY KEY NOT NULL,
+  name varchar(32) NOT NULL,
+  slug varchar(32) NOT NULL
+  );''')
+  curs.execute('''INSERT INTO dnd_monstersubtype SELECT id, name, slug FROM subtypes_backup;''')
+  curs.execute('''DROP TABLE subtypes_backup;''')
+  curs.executemany('''INSERT INTO dnd_monstersubtype (name,slug) VALUES (?,?);''', [(name, name.lower() ) for name in (
+    'Aquatic','Augmented','Living Construct','Cyborg',
+    'Catfolk','Tayfolk','Mongrelfolk','Dwarf','Elf','Goblinoid','Gnoll','Gnome','Kenku','Human','Orc','Skulk','Maenad','Xeph','Darfellan','Hadozee',
+    'Reptilian','Dragonblood','Psionic','Incarnum','Force','Void','Shapechanger',
+    'Spirit','Dream','Tasloi','Swarm','Mob','Symbiont','Wretch')])
 
   curs.execute('''CREATE TABLE dnd_law_chaos (
   id tinyint(1) PRIMARY KEY NOT NULL,
@@ -887,6 +919,12 @@ FOREIGN KEY(law_chaos_id) REFERENCES dnd_law_chaos(id)
   # rulebook_id should eventually be NOT NULL,
   # but will need to add the monster books to dnd_rulebook,
   # which requires dnd_edition_id and stuff
+  curs.execute('''CREATE TABLE monster_subtype (
+  subtype_id INTEGER NOT NULL,
+  monster_id INTEGER NOT NULL,
+  FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
+  FOREIGN KEY(subtype_id) REFERENCES dnd_monster(id)
+  );''')
   curs.execute('''CREATE TABLE monster_special_ability (
   monster_id INTEGER NOT NULL,
   special_ability_id INTEGER NOT NULL,
@@ -931,5 +969,10 @@ if __name__ == "__main__":
     raise OSError("The XLS table to translate was not found at {}; try python monsters.py --help for usage.".format(args.XLSpath) )
   if not os.path.exists(args.DBpath):
     raise OSError("The underlying database was not found at {}; try python monsters.py --help for usage.".format(args.DBpath) )
+  profile = cProfile.Profile()
+  profile.enable()
   create_database(args.XLSpath, DBpath=args.DBpath)
+  profile.disable()
+  profile.dump_stats('profile.txt')
+  
 
