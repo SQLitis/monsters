@@ -188,8 +188,103 @@ Earth whispers can advance in hit dice, or can be granted bonus hit dice by a ba
   3|Stinking Cloud|Mephit, Sulfur|3
 
 
+For one adventure, I wanted to have a set of seven otherworldly "living wells".
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_monster.name,challenge_rating from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_subtype on dnd_monster.id=monster_subtype.monster_id inner join dnd_monstersubtype on monster_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstertype.name="Outsider" or dnd_monstertype.name="Elemental") and (dnd_monstersubtype.name="Water" or dnd_monstersubtype.name="Aquatic") order by challenge_rating;
+  Gen, Water|-2
+  Paraelemental, Ooze, Small|1
+  Imp, Vapor|1
+  Elemental, Ectoplasm, Small|1
+  Elemental Grue, Vardigg|2
+  Elemental Steward, Arctine|2
+  Mephit, Ooze|3
+  Mephit, Water|3
+  Tojanida, Juvenile|3
+  Paraelemental, Ooze, Medium|3
+  Elemental, Ectoplasm, Medium|3
+  Demon, Skulvyn|4
+  Demon, Elemental, Water|4
+  Tojanida, Adult|5
+  Paraelemental, Ooze, Large|5
+  Orlythys|5
+  Elemental Weird, Water, Lesser|5
+  Elemental, Ectoplasm, Large|5
+  Spawn of Juiblex, Lesser|6
+  Elemental Spawn, Acid|6
+  Elemental Spawn, Mist|6
+  Elemental Spawn, Mud|6
+  Paraelemental, Ooze, Huge|7
+  Elemental, Ectoplasm, Huge|7
+  Yugoloth, Echinoloth|8
+  Tojanida, Elder|9
+  Immoth|9
+  Aspect of Dagon|9
+  Genie, Marid|9
+  Paraelemental, Ooze, Greater|9
+  Caller from the Deeps|9
+  Elemental, Ectoplasm, Greater|9
+  Spawn of Juiblex, Greater|10
+  Paraelemental, Ooze, Elder|11
+  Elemental, Ectoplasm, Elder|11
+  Elemental Weird, Water|12
+  Aspect of Sekolah|13
+  Scyllan|13
+  Spawn of Juiblex, Elder|14
+  Omnimental|15
+  Avatar of Elemental Evil, Waterveiled Assassin|15
+  Elemental Weird, Ice|15
+  Tempest|16
+  Demon, Uzollru|16
+  Elemental, Water, Monolith|17
+  Demon, Wastrilith|17
+  Paraelemental, Ooze, Monolith|17
+  Demon, Myrmyxicus|21
+  Dagon (Prince of the Depths)|22
+  Olhydra (Princess of Evil Water Creatures, Princess of Watery Evil, Mistress of the Black Tide)|22
+  Ben-hadar (Prince of Good Water Creatures, Squallbringer, The Valorous Tempest)|22
+  Essence of Shothragot|22
+  Demogorgon (Prince of Demons)|23
+
+Here we can see that a water gen is listed as CR -2...huh?
+To keep the size down, fractions of the form 1/x are stored as negative integers.
+-2 means 1/2.
 
 
+Suppose we start thinking about what demons might use Extract Gift to keep tabs on a number of mortals.
+The classic imp-like quasit actually does not have telepathy.
+(However, Extract Gift itself gives telepathy, but let's say for flavor consistency we want the demon to be telepathic before the Extract Gift ritual.)
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_monster.name,challenge_rating,intelligence,dnd_special_ability.name from dnd_monster left join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_subtype on dnd_monster.id=monster_subtype.monster_id inner join dnd_monstersubtype on monster_subtype.subtype_id=dnd_monstersubtype.id inner join monster_special_ability on dnd_monster.id=monster_special_ability.monster_id inner join dnd_special_ability on monster_special_ability.special_ability_id=dnd_special_ability.id where (dnd_monster.name like "Demon, %") and (dnd_monstersubtype.name="Tanar'ri"or dnd_special_ability.name like "%telepathy%") order by (challenge_rating);
+  Demon, Mane|1|3|Acidic cloud
+  Demon, Dretch|2|5|summon tanar'ri
+  Demon, Gadacro|3|8|Eyethief
+  Demon, Rutterkin|3|9|summon tanar'ri
+  Demon, Incubus|3|14|SLAs
+  Demon, Incubus|3|14|Wisdom damage
+  Demon, Bogannarr|4|8|summon tanar'ri
+  Demon, Jovoc|5|7|summon tanar'ri
+  Demon, Bar-lgura|5|13|Abduction
+  Demon, Nabassu, Juvenile|5|14|Sneak attack +2d6
+  Demon, Skurchur|5|15|touch of vacant beauty
+  Demon, Babau|6|14|Sneak attack +2d6
+  Demon, Uridezu|6|8|rat empathy
+  Demon, Artaaglith|6|13|spells (clr5)
+
+Note the left join for subtypes, because it's technically possible that a demon might not have a subtype (though very unlikely and it would mean a splatbook was doing something weird or a data-entry error).
+
+
+
+On a lighter note, I always thought that a "living will" sounded like a magical incorporeal construct. Say, are there any incorporeal constructs?
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_monster.name,challenge_rating from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_subtype on dnd_monster.id=monster_subtype.monster_id inner join dnd_monstersubtype on monster_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstertype.name="Construct") and (dnd_monstersubtype.name="Incorporeal") order by challenge_rating;
+  Umbral Spy|3
+  Golem, Prismatic|18
 
 
 

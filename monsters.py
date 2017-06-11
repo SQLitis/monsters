@@ -586,6 +586,9 @@ class Monster(object):
     # http://stackoverflow.com/questions/2415398/can-i-set-a-formula-for-a-particular-column-in-sql
 
     self.strength = integer_or_non(xls_row[20].value)
+    self.dexterity = integer_or_non(xls_row[21].value)
+    self.constitution = integer_or_non(xls_row[22].value)
+    self.intelligence = integer_or_non(xls_row[23].value)
     self.wisdom = int(xls_row[24].value)
     self.charisma = int(xls_row[25].value)
     default_alignment_string = xls_row[28].value # can be something like "NG or NE"
@@ -770,9 +773,9 @@ class Monster(object):
     type_id = id_from_name(curs, 'dnd_monstertype', self.type_name)
     assert type_id is not None
     curs.execute('''INSERT INTO dnd_monster
-                 (name, size_id, type_id, hit_dice, wisdom, charisma, challenge_rating, law_chaos_id)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-                 (self.name, size_id, type_id, self.HitDice, self.wisdom, self.charisma, self.challenge_rating, self.lawChaosID) )
+                 (name, size_id, type_id, hit_dice, strength, dexterity, constitution, intelligence, wisdom, charisma, challenge_rating, law_chaos_id)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                 (self.name, size_id, type_id, self.HitDice, self.strength, self.dexterity, self.constitution, self.intelligence, self.wisdom, self.charisma, self.challenge_rating, self.lawChaosID) )
     monster_id = curs.lastrowid
     for subtype in self.subtypes:
       if subtype[:9] == 'Augmented': subtype = 'Augmented'
@@ -827,6 +830,8 @@ class Monster(object):
 # In SQLite, a column with type INTEGER PRIMARY KEY is an alias for the ROWID https://www.sqlite.org/autoinc.html
 # On an INSERT, if the ROWID or INTEGER PRIMARY KEY column is not explicitly given a value, then it will be filled automatically with an unused integer
 # interestingly, int(11) PRIMARY KEY does not work for auto-increment, so for example you cannot insert into dnd_spellschool
+# http://www.sqlabs.com/blog/2010/12/sqlite-and-unique-rowid-something-you-really-need-to-know/
+# From the official documentation: "Rowids can change at any time and without notice. If you need to depend on your rowid, make an INTEGER PRIMARY KEY, then it is guaranteed not to change. The VACUUM command may change the ROWIDs of entries in any tables that do not have an explicit INTEGER PRIMARY KEY."
 
 def read_xls(XLSfilepath="Monster Compendium.xls"):
   book = xlrd.open_workbook(XLSfilepath)
@@ -886,6 +891,22 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
     'Catfolk','Tayfolk','Mongrelfolk','Dwarf','Elf','Goblinoid','Gnoll','Gnome','Kenku','Human','Orc','Skulk','Maenad','Xeph','Darfellan','Hadozee',
     'Reptilian','Dragonblood','Psionic','Incarnum','Force','Void','Shapechanger',
     'Spirit','Dream','Tasloi','Swarm','Mob','Symbiont','Wretch')])
+  
+  curs.execute('''DROP TABLE dnd_racesize;''')
+  curs.execute('''CREATE TABLE dnd_racesize (
+  id INTEGER PRIMARY KEY NOT NULL,
+  name char(11) NOT NULL
+  );''') # 11 in case what to say Medium-size
+  curs.execute('''INSERT INTO dnd_racesize(name) VALUES ("Fine"), ("Diminutive"), ("Tiny"), ("Small"), ("Medium"), ("Large"), ("Huge"), ("Gargantuan"), ("Colossal");''')
+  """ need to not have parentheses at top level:
+  sqlite> insert into blanh values (3, 4, 5);
+  Error: table blanh has 1 columns but 3 values were supplied
+  sqlite> insert into blanh values ( (3), (4), (5) );
+  Error: table blanh has 1 columns but 3 values were supplied
+  sqlite> insert into blanh values (3), (4), (5);
+  sqlite> insert into blanh values 3, 4, 5;
+  Error: near "3": syntax error
+  """
 
   curs.execute('''CREATE TABLE dnd_law_chaos (
   id tinyint(1) PRIMARY KEY NOT NULL,
