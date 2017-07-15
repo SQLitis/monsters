@@ -280,18 +280,28 @@ SRD 3.5 PsionicPowersQ-W
 
 
 
-def id_from_name(curs, tableName, name):
+def id_from_name(curs, tableName, name, allowExtraOnLeft=False):
   """
   This function uses SQL's like instead of exact equality, to enable tricks like passing "Colossal%" to match Colossal+.
   """
   if re.match("\w+$", tableName) is None:
     raise TypeError(tableName + " does not look like a valid SQL table name.")
+  if allowExtraOnLeft:
+    name = '%' + name
+    #curs.execute('''SELECT id from {} WHERE name like "%{}";'''.format(tableName, name) ) # unsafe, but how to do it properly?
   curs.execute('''SELECT id from {} WHERE name like ?;'''.format(tableName), (name,) )
-  result = curs.fetchone()
-  if result is None:
+  results = curs.fetchall()
+  # rowcount does not work for SELECT statements because we cannot determine the number of rows a query produced until all rows were fetched.
+  # Even after all rows have been fetched, rowcount is still -1.
+  if results == []:
     return None
+  #if result is None:
+    #return None
     #raise IndexError("{} does not appear in the SQL table {}.".format(name, tableName) )
-  else: return result[0]
+  else:
+    if len(results) != 1:
+      raise RuntimeError("{} results in {} for {}: {}".format(len(results), tableName, name, results) )
+    return results[0][0]
 def insert_if_needed(curs, tableName, name, **kwargs):
   """
 it is NOT safe to re-insert an entry into a table:
@@ -570,8 +580,8 @@ def insert_psionic_powers(curs):
   insertPower('Regenerate Worldskin', 2, "As a standard action, Ragnorra can initiate regeneration in any worldskin feature (see page 102). This ability has unlimited range. The growth regains 50 hit points per round.")
   insertPower('Skincasting', 2, "As a standard action, Ragnorra can activate the ability of any worldskin feature (see page 102) within 1,000 feet.")
   insertPower('Mass Aversion', telepathyID, "An anathema creates a compulsion effect targeting all enemies within 30 feet. The targets must succeed on a Will save (DC 27) or gain an aversion to snakes for 10 minutes. Affected subjects must stay at least 20 feet from any snake, yuan-ti, or ti-khana creature (described earlier in this book), whether alive or dead; if already within 20 feet, they move away. A subject can overcome the compulsion by succeeding on another Will save (DC 27), but still suffers from deep anxiety. This causes a -4 reduction to Dexterity until the effect wears off or the subject is no longer within 20 feet of a snake, yuan-ti, or ti-khana creature. This ability is otherwise similar to antipathy as cast by a 16th-level sorcerer.")
-
 class Monster(object):
+  #allEnvs = set()
   def __init__(self, xls_row):
     self.name = xls_row[0].value
     self.size = xls_row[1].value
@@ -591,6 +601,22 @@ class Monster(object):
     self.intelligence = integer_or_non(xls_row[23].value)
     self.wisdom = int(xls_row[24].value)
     self.charisma = int(xls_row[25].value)
+    self.environment = xls_row[26].value
+    #Monster.allEnvs.add(environment)
+    #if environment == "Any":
+    #  climate,geography = "Any","Any"
+    #elif environment == "Underground":
+    #  climate,geography = "Any","Underground"
+    #elif environment == "Any land and underground":
+    #  climate,geography = "Any","Any"
+    #elif environment in ("Baator","Acheron","Celestia","Elemental Plane of Air", "Demiplane of Ectoplasm"):
+    #  climate,geography = "Any",environment
+    #else:
+    #  if ' ' not in environment: raise ValueError(environment)
+    #  try:
+    #    climate,geography = environment.split()
+    #  except ValueError:
+    #    raise ValueError(environment)
     default_alignment_string = xls_row[28].value # can be something like "NG or NE"
     if len(default_alignment_string) < 2: raise RuntimeError(default_alignment_string)
     if default_alignment_string == 'Any': default_alignment_string = 'NN'
@@ -777,22 +803,64 @@ class Monster(object):
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
                  (self.name, size_id, type_id, self.HitDice, self.strength, self.dexterity, self.constitution, self.intelligence, self.wisdom, self.charisma, self.challenge_rating, self.lawChaosID) )
     monster_id = curs.lastrowid
+
     for subtype in self.subtypes:
       if subtype[:9] == 'Augmented': subtype = 'Augmented'
       if subtype == self.name: continue
       subtype_id = id_from_name(curs, 'dnd_monstersubtype', subtype)
       if subtype_id is None: raise IndexError(self.name + subtype)
-      curs.execute('''INSERT INTO monster_subtype (monster_id, subtype_id) VALUES (?, ?);''', (monster_id, subtype_id) )
+      curs.execute('''INSERT INTO monster_has_subtype (monster_id, subtype_id) VALUES (?, ?);''', (monster_id, subtype_id) )
+
+    #curs.execute('''SELECT id from dnd_plane WHERE name like "%{}";'''.format(self.environment) )
+    #result = curs.fetchone()
+    planeAndLocationRE = re.compile(r"([\w\s]+)\(([\w\s\']+)\)")
+    matchObj = planeAndLocationRE.match(self.environment)
+    if matchObj is not None:
+      parentPlane = matchObj.group(1).strip()
+      locationWithin = matchObj.group(2)
+      #print(self.environment, parentPlane, locationWithin)
+      if locationWithin == "Ice Wastes": locationWithin = "Iron Wastes"
+      elif locationWithin in ('Brine Flats', 'Screaming Jungle'):
+        # these are locations within the Gaping Maw, but for the moment we just want to store the layer
+        locationWithin = 'Gaping Maw'
+      elif locationWithin == 'Empyrea':
+        # Empyrea, the City of Tempered Souls, on Celestia’s fifth layer Mertion
+        locationWithin = 'Mertion'
+      elif locationWithin == "Stygia":
+        if parentPlane == 'The Abyss':
+          parentPlane = 'Baator'
+      numberedLayerRE = re.compile(r"((?:\d\d\d)|(?:Six))(?:rd)|(?:th) Layer")
+      matchObj = numberedLayerRE.match(locationWithin)
+      if matchObj is not None:
+        if matchObj.group(1) == 'Six':
+          layerNumber = 6
+        else:
+          layerNumber = int(matchObj.group(1) )
+        curs.execute('''INSERT INTO monster_on_plane SELECT ?,id from dnd_plane WHERE dnd_plane.layer_number=?''', (monster_id, layerNumber) )
+      for name in (parentPlane, locationWithin):
+        if name == "Azzagrat":
+          # not sure how to handle cases that return multiple results for the same name, since Azzagrat will return three results
+          curs.execute('''INSERT INTO monster_on_plane SELECT ?,id from dnd_plane WHERE dnd_plane.name=?''', (monster_id, locationWithin) )
+        else:
+          plane_id = id_from_name(curs, 'dnd_plane', name, True)
+          if plane_id is not None:
+            #print(name, 'is a plane')
+            curs.execute('''INSERT INTO monster_on_plane (monster_id, plane_id) VALUES (?,?);''', (monster_id, plane_id) )
+    else:
+        plane_id = id_from_name(curs, 'dnd_plane', self.environment, True)
+        if plane_id is not None:
+          curs.execute('''INSERT INTO monster_on_plane (monster_id, plane_id) VALUES (?,?);''', (monster_id, plane_id) )
+
     for attack in self.specialAttacks:
       ability_id = insert_if_needed(curs, 'dnd_special_ability', attack, special_attack=1)
-      curs.execute('''INSERT INTO monster_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
+      curs.execute('''INSERT INTO monster_has_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
     for quality in self.specialQualities:
       if quality == "LLV": quality = "Low-Light Vision"
       elif darkvisionRE.match(quality): quality = "Darkvision"
       elif damageReductionRE.match(quality): quality = "Damage Reduction"
       elif spellResistanceRE.match(quality): quality = "Spell Resistance"
       ability_id = insert_if_needed(curs, 'dnd_special_ability', attack, special_attack=0)
-      curs.execute('''INSERT INTO monster_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
+      curs.execute('''INSERT INTO monster_has_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
     for (spellName, CL, usesPerDay, parenthetical) in self.SpellLikeAbilities:
       # probably want date of monster rulebook and take latest
       try:
@@ -813,7 +881,7 @@ class Monster(object):
       else:
         casterLevel = int(CL[:2])
         caster_level_scales_with_HD = False
-      curs.execute('''INSERT INTO monster_spell_like_ability (monster_id, spell_id, caster_level, caster_level_scales_with_HD, uses_per_day, parenthetical)
+      curs.execute('''INSERT INTO monster_has_spell_like_ability (monster_id, spell_id, caster_level, caster_level_scales_with_HD, uses_per_day, parenthetical)
                    VALUES (?, ?, ?, ?, ?, ?)''',
                    (monster_id, spell_id, casterLevel, caster_level_scales_with_HD, usesPerDay, parenthetical) )
 # Colossal+ Although there is no size category larger than Colossal, the oldest epic dragons deal more damage with their attacks than other Colossal dragons, as shown on the Epic Dragon Face and Reach and Epic Dragon Attacks tables below.
@@ -863,7 +931,7 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   monster_id INTEGER NOT NULL,
   in_feet tinyint(3) NOT NULL,
   FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
-  );''')
+  );''') # is this common enough that it would make more sense to have a number that is often NULL?
 
   curs.execute('''CREATE TEMPORARY TABLE types_backup (id int, name varchar(32), slug varchar(32) );''')
   curs.execute('''INSERT INTO types_backup SELECT id, name, slug FROM dnd_monstertype;''')
@@ -915,6 +983,210 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   #for pair in [(1, "Lawful"), (-1, "Chaotic"), (0, "Neutral")]:
   curs.execute('''INSERT INTO dnd_law_chaos (id,description) VALUES (?,?), (?,?), (?,?);''',
                (1, "Lawful", -1, "Chaotic", 0, "Neutral") )
+  curs.execute('''CREATE TABLE dnd_plane (
+  id INTEGER PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL,
+  layer_number int(11) DEFAULT NULL,
+  parent_plane INTEGER DEFAULT NULL,
+  FOREIGN KEY(parent_plane) REFERENCES dnd_plane(id)
+  );''')
+  curs.executemany('''INSERT INTO dnd_plane (name) VALUES (?);''', [(name,) for name in (
+  'Astral Plane',
+  'Ethereal Plane',
+ 'Plane of Shadow',
+ 'Elemental Plane of Air',
+ 'Elemental Plane of Earth',
+ 'Elemental Plane of Fire',
+ 'Elemental Plane of Water',
+ 'Negative Energy Plane',
+ 'Positive Energy Plane',
+ # Lower Planes:
+ 'Pandemonium',
+ 'The Abyss',
+ 'Carceri',
+ 'Hades',
+ 'Gehenna',
+  'Baator',
+  'Acheron',
+ 'Mechanus',
+ # Upper Planes:
+  'Arcadia',
+ 'Celestia',
+ 'Bytopia',
+ 'Elysium',
+ 'Beastlands',
+  'Arborea',
+ 'Ysgard',
+ 'Limbo',
+ 'Outlands',
+ 'Yggdrasil',
+ 'Demiplane Prison of Tharizdun',
+ 'Demiplane of Ectoplasm',
+ 'Demiplane of Filth',
+ 'Demiplane of Nightmares',
+ 'Plane of Mirrors',
+ 'Plane of Radiance',
+ 'Utzou (Void)',
+ 'Far Realm',
+  )])
+  # sqlite> select dnd_plane.name,parent.name from dnd_plane left outer join dnd_plane as parent on dnd_plane.parent_plane=parent.id;
+  curs.executemany('''INSERT INTO dnd_plane (name,layer_number,parent_plane) SELECT ?,?,id FROM dnd_plane where name=?;''', [pair for pair in (
+  ('Dothion', None, 'Bytopia'),
+  ('Thuldanin', 2, 'Acheron'),
+  ('Tintibulus', 3, 'Acheron'),
+  ('Arvandor', 1, 'Arborea'),
+  ('Avernus', 1, 'Baator'),
+  ('Dis', 2, 'Baator'),
+  ('Minauros', 3, 'Baator'),
+  ('Phlegethos', 4, 'Baator'),
+  ('Stygia', 5, 'Baator'),
+  ('Malbolge', 6, 'Baator'),
+  ('Maladomini', 7, 'Baator'),
+  ('Cania', 8, 'Baator'),
+  ('Nessus', 9, 'Baator'),
+  ('Cathrys', 2, 'Carceri'),
+  ('Colothys', 4, 'Carceri'),
+  ('Lunia', 1, 'Celestia'),
+  ('Mercuria', 2, 'Celestia'),
+  ('Venya', 3, 'Celestia'),
+  ('Solania', 4, 'Celestia'),
+  ('Mertion', 5, 'Celestia'),
+  ('Jovar', 6, 'Celestia'),
+  ('Chronias', 7, 'Celestia'),
+  ('Amoria', 1, 'Elysium'),
+  ('Eronia', 2, 'Elysium'),
+  ('Khalas', 1, 'Gehenna'),
+  ('Torremor', 503, 'The Abyss'),
+  ('Melantholep', 518, 'The Abyss'),
+  ('Androlynne', 471, 'The Abyss'),
+  ('Azzagrat', 45, 'The Abyss'), # Everything on the gloomy 45th layer of the Abyss is somehow doused or subdued
+  ('Azzagrat', 46, 'The Abyss'), # Sunlight rises up from the ground of the 46th layer
+  ('Azzagrat', 47, 'The Abyss'), # A wan cerulean sun feebly illuminates the dark sky of the 47th layer, where cold is hot and hot is cold.
+  ('Belistor', 277, 'The Abyss'),
+  ('The Gaping Maw', 88, 'The Abyss'),
+  ('The Demonweb Pits', 66, 'The Abyss'),
+  ('The Endless Maze', 600, 'The Abyss'),
+  ('The Demonweb', 66, 'The Abyss'),
+  ("Hollow's Heart", 176, 'The Abyss'),
+  ('Hungry Tarns', 380, 'The Abyss'),
+  ('Iron Wastes', 23, 'The Abyss'),
+  ('Plain of Infinite Portals', 1, 'The Abyss'),
+  ('Shaddonon', 49, 'The Abyss'),
+  ('The Shadowsea', 89, 'The Abyss'),
+  ('Shedaklah', 222, 'The Abyss'),
+  ('Shendilavri', 570, 'The Abyss'),
+  ('Thanatos', 113, 'The Abyss'),
+  ('The Writhing Realm of Ugudenk', 177, 'The Abyss'),
+  ("Yeenoghu's Realm", 422, 'The Abyss'),
+  ("Zionyn", 663, 'The Abyss'),
+  )])
+
+  (
+ 'The Abyss (Brine Flats)', # Gaping Maw #88
+ 'The Abyss (Flesh Mountains)', # The Flesh Mountains, Dalmosh's Abyssal home, stretch across several layers of the Abyss.
+ 'The Abyss (Ice Wastes)', # probably Iron Wastes
+ 'The Abyss (Screaming Jungle)', # Gaping Maw #88
+ 'The Abyss (Stygia)', # should be Baator
+ 'Celestia (Empyrea)', # Empyrea, the City of Tempered Souls, on Celestia’s fifth layer Mertion
+ 'Mechanus (Regulus)', # modron city
+ r"",
+ 'The Abyss, Carceri, Outlands, or Pandemonium',
+ 'Elemental Planes of Air, Fire',
+ 'Elemental Planes of Air, Water',
+ 'Elemental Planes of Earth, Fire',
+ 'Elemental Planes of Earth, Water',
+ 'Any',
+ 'Any ',
+ 'Any Elemental Plane',
+ 'Any Outer Plane',
+ 'Any aquatic',
+ 'Any cold',
+ 'Any desert',
+ 'Any forest',
+ 'Any hills',
+ 'Any land',
+ 'Any land and underground',
+ 'Any marsh',
+ 'Any mountain',
+ 'Any plains',
+ 'Any tainted',
+ 'Any temperate',
+ 'Any warm',
+ 'Any warm land',
+ # land probably means anything but aquatic or underground
+ "Astral Plane, N'gati", # the N'gati, an ancient slumbering construct adrift in the Astral Plane
+ 'Atropus',
+ 'Carceri, Gehenna, or Hades',
+ 'Cold aquatic',
+ 'Cold deserts',
+ 'Cold forests',
+ 'Cold hills',
+ 'Cold marsh',
+ 'Cold marshes',
+ 'Cold mountains',
+ 'Cold plains',
+ 'Crystalline Prison', # on the Material Plane
+ 'Dreamscapes, Ethereal Plane', # Towers of High Sorcery
+ 'Forest or aquatic',
+ 'Forest or plains',
+ 'Forests and marshes',
+ 'Frog Swamp',
+ 'Inner Planes',
+ 'Inner Planes, aquatic',
+ 'Inner Planes, mountains',
+ 'Inner Planes, underground',
+ 'Lower Planes',
+ 'Marsh or underground',
+ 'Mountains and deserts',
+ 'Nautiloid vessel',
+ 'Outlands (Athenaeum Nefarious)',
+ 'Outlands (Sigil)',
+ 'Temperate aquatic',
+ 'Temperate deserts',
+ 'Temperate forests',
+ 'Temperate hills',
+ 'Temperate marshes',
+ 'Temperate mountains',
+ 'Temperate plains',
+ 'Underground',
+ 'Unknown Plane', # Keeper Fiend Folio
+ 'Upper Planes',
+ 'Urban',
+ 'Urban or underground',
+ 'Warm aquatic',
+ 'Warm desert',
+ 'Warm deserts',
+ 'Warm forests',
+ 'Warm hills',
+ 'Warm marshes',
+ 'Warm mountains',
+ 'Warm plains',
+ 'Ziggurat', # Zargon on Material
+  )
+  curs.execute('''CREATE TABLE monster_on_plane (
+  monster_id INTEGER NOT NULL,
+  plane_id INTEGER NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
+FOREIGN KEY(plane_id) REFERENCES dnd_plane(id)
+  );''')
+  # sqlite> select dnd_monster.name,dnd_monstertype.name,dnd_plane.name from monster_plane inner join dnd_monster on monster_id=dnd_monster.id inner join dnd_plane on plane_id=dnd_plane.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id where dnd_monstertype.name="Animal" order by dnd_monstertype.name,dnd_plane.id;
+  # picks up a lot that weren't noted by sqlite> select dnd_monster.name from dnd_monster inner join monster_subtype on dnd_monster.id=monster_id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id where dnd_monstertype.name="Animal" and dnd_monstersubtype.name="Extraplanar";? no, those were all errors
+  curs.execute('''CREATE TABLE dnd_terrain (
+  id INTEGER PRIMARY KEY,
+  name char(10)
+  );''')
+  curs.executemany('''INSERT INTO dnd_terrain(name) VALUES (?)''', [(name,) for name in ('desert', 'forest', 'hill', 'mountain', 'plain', 'marsh')] )
+  # A swamp is a place where the plants that make up the area covered in water are primarily woody plants or trees. Woody plants would be mangroves or cypress trees. A marsh, on the other hand, is defined as having no woody plants. The non-woody plants would be saltmarsh grasses, reeds, or sedges.
+  curs.execute('''CREATE TABLE monster_on_terrain (
+  monster_id INTEGER NOT NULL,
+  terrain_id INTEGER NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
+FOREIGN KEY(terrain_id) REFERENCES dnd_terrain(id)
+  );''')
+
+  # could create dnd_bloodline table with feat_id...but monster table doesn't have feats
+  # dnd_monsterhasfeat has been garbled by destroying and recreating dnd_monster: sqlite> select dnd_monster.name,dnd_feat.name from dnd_monsterhasfeat inner join dnd_monster on monster_id=dnd_monster.id inner join dnd_feat on feat_id=dnd_feat.id;
+
   curs.execute('''CREATE TABLE dnd_special_ability (
   id INTEGER PRIMARY KEY NOT NULL,
   special_attack bool NOT NULL DEFAULT 0,
@@ -956,19 +1228,19 @@ FOREIGN KEY(law_chaos_id) REFERENCES dnd_law_chaos(id)
   # rulebook_id should eventually be NOT NULL,
   # but will need to add the monster books to dnd_rulebook,
   # which requires dnd_edition_id and stuff
-  curs.execute('''CREATE TABLE monster_subtype (
+  curs.execute('''CREATE TABLE monster_has_subtype (
   subtype_id INTEGER NOT NULL,
   monster_id INTEGER NOT NULL,
   FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
   FOREIGN KEY(subtype_id) REFERENCES dnd_monster(id)
   );''')
-  curs.execute('''CREATE TABLE monster_special_ability (
+  curs.execute('''CREATE TABLE monster_has_special_ability (
   monster_id INTEGER NOT NULL,
   special_ability_id INTEGER NOT NULL,
 FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
 FOREIGN KEY(special_ability_id) REFERENCES dnd_special_ability(id)
   );''')
-  curs.execute('''CREATE TABLE monster_spell_like_ability (
+  curs.execute('''CREATE TABLE monster_has_spell_like_ability (
   monster_id INTEGER NOT NULL,
   spell_id INTEGER NOT NULL,
   caster_level tinyint(2) NOT NULL,
@@ -1013,5 +1285,6 @@ if __name__ == "__main__":
   with open('cProfile.txt', 'w') as statsFile:
       stats = pstats.Stats(profile, stream=statsFile)
       stats.strip_dirs().sort_stats('tottime').print_stats()
+  #print(Monster.allEnvs)
   
 
