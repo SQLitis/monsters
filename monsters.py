@@ -62,7 +62,10 @@ rulebook_abbreviations = {'MM1':'Monster Manual',
  'DrC':'Dragon Compendium', 'MoI':'Magic of Incarnum',
  'HoD':'Harvest of Darkness', 'EnvIm':'Environmental Impact',
  'DDen':"Dangerous Denizens - The Monsters of Tellene",
- 'FN': 'Five Nations', 'KoD': 'Key of Destiny', 'BoVD': 'Book of Vile Darkness', 'ToB': 'Tome of Battle', 'EPH': 'Expanded Psionics Handbook', 'Web': 'Web content', 'MoE': 'Magic of Eberron', 'ItDL': "Into the Dragon's Lair", 'FoN': 'Force of Nature', 'AoM': 'Age of Mortals', 'ToM': 'Tome of Magic', 'ShSo': 'Shining South', 'GW': 'Ghostwalk', 'Frost': 'Frostburn', 'Sarlo': 'Secrets of Sarlona', 'SaD': 'Stand and Deliver', 'HoB': 'Heroes of Battle',
+ 'FN': 'Five Nations', 'KoD': 'Key of Destiny', 'BoVD': 'Book of Vile Darkness', 'ToB': 'Tome of Battle',
+ 'EPH': 'Expanded Psionics Handbook', # many available http://www.d20srd.org/indexes/psionicMonsters.htm but SRD does not appear in their lists
+ 'Web': 'Web content',
+ 'MoE': 'Magic of Eberron', 'ItDL': "Into the Dragon's Lair", 'FoN': 'Force of Nature', 'AoM': 'Age of Mortals', 'ToM': 'Tome of Magic', 'ShSo': 'Shining South', 'GW': 'Ghostwalk', 'Frost': 'Frostburn', 'Sarlo': 'Secrets of Sarlona', 'SaD': 'Stand and Deliver', 'HoB': 'Heroes of Battle',
  'C.Ps': 'Complete Psionic', 'OA': 'Oriental Adventures', 'LM': 'Libris Mortis', 'Under': 'Underdark', 'C.Ar': 'Complete Arcane',
  'ToBV': 'The Treasure of the Black Veils', 'DS': 'Desert Sands', 'LDR': 'Lest Darkness Rise',
  'DCS': 'Dragonlance Campaign Setting',
@@ -795,7 +798,10 @@ class Monster(object):
         #print('onlyOneRow=', onlyOneRow)
   def insert_into(self, curs):
     #print('rulebook_abbrev =', self.rulebook_abbrev)
-    for rulebook_abbrev in (s.strip() for s in self.rulebook_abbrev.split(',') ):
+    rulebook_abbrevs = [s.strip() for s in self.rulebook_abbrev.split(',')]
+    if len(rulebook_abbrevs) > 1:
+      print(self.name, 'has multiple rulebooks:', rulebook_abbrevs)
+    for rulebook_abbrev in rulebook_abbrevs:
       if rulebook_abbrev in ('BoK','BoKR'): rulebook_abbrev = 'BoKr'
       elif re.match(r'\d\d\d', rulebook_abbrev): rulebook_abbrev = r'\d\d\d'
       elif re.match(r'A\d\d', rulebook_abbrev): rulebook_abbrev = r'A\d\d'
