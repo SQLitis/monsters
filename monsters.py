@@ -50,17 +50,26 @@ rulebook_abbreviations = {'MM1':'Monster Manual',
  'ELH':'Epic Level Handbook',
  'PoC':'Price of Courage', 'WD':'City of Splendors: Waterdeep', 'MT':"Midnight's Terror", 'RTF':'Return to the Temple of the Frog',
  'RotW':'Races of the Wild', 'ECS':'Eberron Campaign Setting', 'ExUn':'Expedition to Undermountain', 'SotAC':'Secrets of the Alubelok Coast', 'Sheep':"Sheep's Clothing",
- 'A&E':'Arms & Equipment Guide', 'SvgSp':'Savage Species (Web Enhancement)', "Xen'd":"Secrets of Xen'drik", 'LEoF':'Lost Empires of Faerun', 'Kruk':'The Lost Tomb of Kruk-Ma-Kali', 'SD':'Stone Dead',
+ 'A&EG':'Arms & Equipment Guide',
+ 'SvgSp':'Savage Species (Web Enhancement)', "Xen'd":"Secrets of Xen'drik", 'LEoF':'Lost Empires of Faerun', 'Kruk':'The Lost Tomb of Kruk-Ma-Kali', 'SD':'Stone Dead',
  'BoED':'Book of Exalted Deeds', 'FC1':'Fiendish Codex 1', 'Storm':'Stormwrack', 'FoW':'The Forge of War',
  'SoCo':"Something's Cooking",
  'Draco':'Draconomicon',
  'MH':'Miniatures Handbook',
- 'BoKR':'Bestiary of Krynn', 'MgoF':'Magic of Faerun', 'RoF':'Races of Faerun', 'DoK':'Dragons of Krynn', 'MoF':'Monsters of Faerun',
+ 'BoKr':'Bestiary of Krynn', 'MgoF':'Magic of Faerun', 'RoF':'Races of Faerun', 'DoK':'Dragons of Krynn', 'MoF':'Monsters of Faerun',
  'GotP':'Garden of the Plantmaster',
- 'StSt':'The Standing Stone', 'BoBS':'Bastion of Broken Souls',
+ 'StSt':'The Standing Stone', 'BoBS':'Bastion of Broken Souls', 'Forge': 'The Forge of Fury',
  'DrC':'Dragon Compendium', 'MoI':'Magic of Incarnum',
  'HoD':'Harvest of Darkness', 'EnvIm':'Environmental Impact',
  'DDen':"Dangerous Denizens - The Monsters of Tellene",
+ 'FN': 'Five Nations', 'KoD': 'Key of Destiny', 'BoVD': 'Book of Vile Darkness', 'ToB': 'Tome of Battle', 'EPH': 'Expanded Psionics Handbook', 'Web': 'Web content', 'MoE': 'Magic of Eberron', 'ItDL': "Into the Dragon's Lair", 'FoN': 'Force of Nature', 'AoM': 'Age of Mortals', 'ToM': 'Tome of Magic', 'ShSo': 'Shining South', 'GW': 'Ghostwalk', 'Frost': 'Frostburn', 'Sarlo': 'Secrets of Sarlona', 'SaD': 'Stand and Deliver', 'HoB': 'Heroes of Battle',
+ 'C.Ps': 'Complete Psionic', 'OA': 'Oriental Adventures', 'LM': 'Libris Mortis', 'Under': 'Underdark', 'C.Ar': 'Complete Arcane',
+ 'ToBV': 'The Treasure of the Black Veils', 'DS': 'Desert Sands', 'LDR': 'Lest Darkness Rise',
+ 'DCS': 'Dragonlance Campaign Setting',
+ 'HOS': 'Holy Order of the Stars', 'MotP': 'Manual of the Planes',
+ r'A\d\d': 'Dragon Magazine Annual 00/01',
+ r'\d\d\d': 'Dragon Magazine',
+ 'LoMys': 'Lands of Mystery', 'FC2': 'Fiendish Codex 2', 'DrM': 'Dragon Magic', 'CoR': 'Champions of Ruin', 'LoM': 'Lords of Madness', 'WndW': 'The Secret of the Windswept Wall', 'Sand': 'Sandstorm', 'C.War': 'Complete Warrior', 'City': 'Cityscape', 'SlvSk': 'The Silver Skeleton', 'RTEE': 'Return to the Temple of Elemental Evil', 'HoH': 'Heroes of Horror', 'TVoS': 'The Vessel of Stars', 'Serp': 'Serpent Kingdoms', 'SM': 'Silver Marches', 'BaS': 'Blood and Shadows - The Dark Elves of Tellene', 'UE': 'Unapproachable East', 'BoKR': 'Bestiary of Krynn Revised', 'Sharn': 'Sharn - City of Towers', 'Deities': 'Deities and Demigods', 'FRCS': 'Forgotten Realms Campaign Setting', 'F&P': 'Faiths and Pantheons'
  }
  #EPH	Expanded Psionics Handbook	Sand	Sandstorm	Sarlo	Secrets of Sarlona	ItDL	Into the Dragon's Lair	SaD	Stand and Deliver	DS	Desert Sands
  #BoVD	Book of Vile Darkness	FC2	Fiendish Codex 2	ToB	Tome of Battle	FN	Five Nations	Serp	Serpent Kingdoms	Forge	The Forge of Fury	FoN	Force of Nature
@@ -337,9 +346,9 @@ sqlite> select id,x from tbl;
 
 
 def insert_psionic_powers(curs):
-  srd_id = 116
-  curs.execute('''INSERT INTO dnd_rulebook (id, dnd_edition_id, name, abbr, description, year, official_url, slug, published) VALUES (116, 1, "Revised (v.3.5) System Reference Document", "SRD", "The System Reference Document is a comprehensive toolbox consisting of rules, races, classes, feats, skills, various systems, spells, magic items, and monsters compatible with the d20 System version of Dungeons & Dragons and various other roleplaying games from Wizards of the Coast. You may consider this material Open Game Content under the Open Game License, and may use, modify, and distribute it.", 2004, "http://www.wizards.com/default.asp?x=d20/article/srd35", "system-reference-document", ?);''',
+  curs.execute('''INSERT INTO dnd_rulebook (dnd_edition_id, name, abbr, description, year, official_url, slug, published) VALUES (1, "Revised (v.3.5) System Reference Document", "SRD", "The System Reference Document is a comprehensive toolbox consisting of rules, races, classes, feats, skills, various systems, spells, magic items, and monsters compatible with the d20 System version of Dungeons & Dragons and various other roleplaying games from Wizards of the Coast. You may consider this material Open Game Content under the Open Game License, and may use, modify, and distribute it.", 2004, "http://www.wizards.com/default.asp?x=d20/article/srd35", "system-reference-document", ?);''',
     (datetime.date(2004, 5, 21),) )
+  srd_id = id_from_name(curs, 'dnd_rulebook', "Revised (v.3.5) System Reference Document")
   curs.execute('''CREATE TEMPORARY TABLE school_backup (id int, name varchar(32), slug varchar(32) );''')
   curs.execute('''INSERT INTO school_backup SELECT id, name, slug FROM dnd_spellschool;''')
   curs.execute('''DROP TABLE dnd_spellschool;''')
@@ -786,9 +795,18 @@ class Monster(object):
         #print('onlyOneRow=', onlyOneRow)
   def insert_into(self, curs):
     #print('rulebook_abbrev =', self.rulebook_abbrev)
-    curs.execute('''SELECT id from dnd_rulebook where abbr=?;''',
-                 (self.rulebook_abbrev,) )
-    #print('rulebook_id from dnd_rulebook =', curs.fetchone() )
+    for rulebook_abbrev in (s.strip() for s in self.rulebook_abbrev.split(',') ):
+      if rulebook_abbrev in ('BoK','BoKR'): rulebook_abbrev = 'BoKr'
+      elif re.match(r'\d\d\d', rulebook_abbrev): rulebook_abbrev = r'\d\d\d'
+      elif re.match(r'A\d\d', rulebook_abbrev): rulebook_abbrev = r'A\d\d'
+      curs.execute('''SELECT id from dnd_rulebook where abbr=?;''',
+                   (rulebook_abbrev,) )
+      result = curs.fetchone()
+      if result is None:
+        print('no rulebook found:', self.name, rulebook_abbrev)
+      rulebook_id = result[0]
+      # if the same monster is listed in multiple books with the same stats...what?
+      #print(rulebook_abbrev, 'rulebook_id from dnd_rulebook =', rulebook_id)
     self.size = self.size.rstrip('+.')
     #curs.execute('''SELECT id from dnd_racesize WHERE name like ?''', (self.size + '%',) )
     #size_id = curs.fetchone()[0]
@@ -799,9 +817,9 @@ class Monster(object):
     type_id = id_from_name(curs, 'dnd_monstertype', self.type_name)
     assert type_id is not None
     curs.execute('''INSERT INTO dnd_monster
-                 (name, size_id, type_id, hit_dice, strength, dexterity, constitution, intelligence, wisdom, charisma, challenge_rating, law_chaos_id)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                 (self.name, size_id, type_id, self.HitDice, self.strength, self.dexterity, self.constitution, self.intelligence, self.wisdom, self.charisma, self.challenge_rating, self.lawChaosID) )
+                 (name, rulebook_id, size_id, type_id, hit_dice, strength, dexterity, constitution, intelligence, wisdom, charisma, challenge_rating, law_chaos_id)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                 (self.name, rulebook_id, size_id, type_id, self.HitDice, self.strength, self.dexterity, self.constitution, self.intelligence, self.wisdom, self.charisma, self.challenge_rating, self.lawChaosID) )
     monster_id = curs.lastrowid
 
     for subtype in self.subtypes:
@@ -933,6 +951,28 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   );''') # is this common enough that it would make more sense to have a number that is often NULL?
 
+  rulebook_max_name_len = max(max(len(n) for n in rulebook_abbreviations.values() ), 128)
+  rulebook_max_abbr_len = max(max(len(n) for n in rulebook_abbreviations.keys() ), 7)
+  curs.execute('''CREATE TEMPORARY TABLE rulebooks_backup (id int, dnd_edition_id int, name varchar({}), abbr varchar({}), description longtext, year varchar(4), official_url varchar(255), slug varchar(128), image varchar(128), published date);'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
+  curs.execute('''INSERT INTO rulebooks_backup SELECT id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM dnd_rulebook;''')
+  curs.execute('''DROP TABLE dnd_rulebook;''')
+  curs.execute('''CREATE TABLE dnd_rulebook (
+  id INTEGER PRIMARY KEY NOT NULL ,
+  dnd_edition_id INTEGER DEFAULT NULL,
+  name varchar({}) NOT NULL,
+  abbr varchar({}) NOT NULL,
+  description longtext DEFAULT NULL,
+  official_url varchar(255) DEFAULT NULL,
+  slug varchar(128) DEFAULT NULL,
+  image varchar(100) DEFAULT NULL,
+  published date DEFAULT NULL,
+  year int(20) DEFAULT NULL,
+  FOREIGN KEY(dnd_edition_id) REFERENCES dnd_dndedition(id)
+  );'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
+  curs.execute('''INSERT INTO dnd_rulebook (id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published) SELECT id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM rulebooks_backup;''')
+  curs.execute('''DROP TABLE rulebooks_backup;''')
+  curs.executemany('''INSERT INTO dnd_rulebook (abbr,name) VALUES (?,?);''', rulebook_abbreviations.items() )
+
   curs.execute('''CREATE TEMPORARY TABLE types_backup (id int, name varchar(32), slug varchar(32) );''')
   curs.execute('''INSERT INTO types_backup SELECT id, name, slug FROM dnd_monstertype;''')
   curs.execute('''DROP TABLE dnd_monstertype;''')
@@ -944,6 +984,7 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   curs.execute('''INSERT INTO dnd_monstertype SELECT id, name, slug FROM types_backup;''')
   curs.execute('''DROP TABLE types_backup;''')
   curs.execute('''INSERT INTO dnd_monstertype (name,slug) VALUES (?,?);''', ('Animal','animal') )
+
   curs.execute('''CREATE TEMPORARY TABLE subtypes_backup (id int, name varchar(32), slug varchar(32) );''')
   curs.execute('''INSERT INTO subtypes_backup SELECT id, name, slug FROM dnd_monstersubtype;''')
   curs.execute('''DROP TABLE dnd_monstersubtype;''')
