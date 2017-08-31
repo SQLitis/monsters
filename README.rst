@@ -258,7 +258,7 @@ The classic imp-like quasit actually does not have telepathy.
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monster.name,challenge_rating,intelligence,dnd_special_ability.name from dnd_monster left join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_subtype on dnd_monster.id=monster_subtype.monster_id inner join dnd_monstersubtype on monster_subtype.subtype_id=dnd_monstersubtype.id inner join monster_special_ability on dnd_monster.id=monster_special_ability.monster_id inner join dnd_special_ability on monster_special_ability.special_ability_id=dnd_special_ability.id where (dnd_monster.name like "Demon, %") and (dnd_monstersubtype.name="Tanar'ri"or dnd_special_ability.name like "%telepathy%") order by (challenge_rating);
+  sqlite> select distinct dnd_monster.name,challenge_rating,intelligence,dnd_special_ability.name from dnd_monster inner join monster_special_ability on dnd_monster.id=monster_special_ability.monster_id inner join dnd_special_ability on monster_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id left join monster_subtype on dnd_monster.id=monster_subtype.monster_id left join dnd_monstersubtype on monster_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monster.name like "Demon, %") and (dnd_monstersubtype.name="Tanar'ri" or dnd_special_ability.name like "%telepathy%") order by (challenge_rating);
   Demon, Mane|1|3|Acidic cloud
   Demon, Dretch|2|5|summon tanar'ri
   Demon, Gadacro|3|8|Eyethief
@@ -275,6 +275,23 @@ The classic imp-like quasit actually does not have telepathy.
   Demon, Artaaglith|6|13|spells (clr5)
 
 Note the left join for subtypes, because it's technically possible that a demon might not have a subtype (though very unlikely and it would mean a splatbook was doing something weird or a data-entry error).
+
+What monsters have innate bardic music?
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_monster.name,dnd_monstertype.name,hit_dice,dnd_special_ability.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id where dnd_special_ability.name like "%music%";
+  Lillend|Outsider|7|Bardic music (brd6)
+  Orc, War Howler|Humanoid|4|Bardic music (brd2)
+  Ruin Chanter|Fey|20|Bardic music (brd12)
+  Morwel (Queen of Stars) (humanoid form)|Outsider|39|Bardic music (brd20)
+  Morwel (Queen of Stars) (globe form)|Outsider|39|Bardic music (brd20)
+  Faerinaal (The Queen's Consort) (humanoid form)|Outsider|32|Bardic music
+  Faerinaal (The Queen's Consort) (globe form)|Outsider|32|Bardic music
+  Eladrin, Tulani (humanoid form)|Outsider|18|Bardic music (brd18)
+  Drow, Szarkai Provocateur|Humanoid|12|Bardic music (brd7)
+  Spectral Lyrist|Undead|6|Bardic music
+
 
 
 

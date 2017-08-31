@@ -644,7 +644,7 @@ class Monster(object):
     self.specialAttacks = [ab.strip() for ab in commaSeparatedSpecialAttacks.split(',')]
     #print('self.specialAttacks =', self.specialAttacks)
     commaSeparatedSpecialQualities = xls_row[16].value
-    self.specialQualities = [ab.strip() for ab in commaSeparatedSpecialAttacks.split(',')]
+    self.specialQualities = [ab.strip() for ab in commaSeparatedSpecialQualities.split(',')]
 
     self.SpellLikeAbilities = list()
     SLAstring = xls_row[15].value
@@ -876,6 +876,7 @@ class Monster(object):
           curs.execute('''INSERT INTO monster_on_plane (monster_id, plane_id) VALUES (?,?);''', (monster_id, plane_id) )
 
     for attack in self.specialAttacks:
+      if attack == '-': continue
       ability_id = insert_if_needed(curs, 'dnd_special_ability', attack, special_attack=1)
       curs.execute('''INSERT INTO monster_has_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
     for quality in self.specialQualities:
@@ -883,7 +884,8 @@ class Monster(object):
       elif darkvisionRE.match(quality): quality = "Darkvision"
       elif damageReductionRE.match(quality): quality = "Damage Reduction"
       elif spellResistanceRE.match(quality): quality = "Spell Resistance"
-      ability_id = insert_if_needed(curs, 'dnd_special_ability', attack, special_attack=0)
+      #if 'sensitiv' in quality: print(self.name, quality)
+      ability_id = insert_if_needed(curs, 'dnd_special_ability', quality, special_attack=0)
       curs.execute('''INSERT INTO monster_has_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
     for (spellName, CL, usesPerDay, parenthetical) in self.SpellLikeAbilities:
       # probably want date of monster rulebook and take latest
@@ -944,6 +946,7 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   monsterOnlyDB = 'dnd_monsters.sqlite'
   if os.path.exists(monsterOnlyDB):
     os.remove(monsterOnlyDB)
+  assert not os.path.exists(monsterOnlyDB)
   shutil.copyfile(DBpath, monsterOnlyDB)
   print('creating file', monsterOnlyDB)
   alphabetical,ODE = read_xls(XLSfilepath)
