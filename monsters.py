@@ -880,7 +880,8 @@ class Monster(object):
       ability_id = insert_if_needed(curs, 'dnd_special_ability', attack, special_attack=1)
       curs.execute('''INSERT INTO monster_has_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
     for quality in self.specialQualities:
-      if quality == "LLV": quality = "Low-Light Vision"
+      if quality == '-': continue
+      elif quality == "LLV": quality = "Low-Light Vision"
       elif darkvisionRE.match(quality): quality = "Darkvision"
       elif damageReductionRE.match(quality): quality = "Damage Reduction"
       elif spellResistanceRE.match(quality): quality = "Spell Resistance"
@@ -894,6 +895,8 @@ class Monster(object):
       except KeyError as E:
         if 'mephit' in self.name.lower(): continue
         else: raise
+      # http://www.d20srd.org/srd/specialAbilities.htm#spellLikeAbilities
+      # If no caster level is specified, the caster level is equal to the creature's Hit Dice.
       if CL[:2] == 'HD' or CL[:3]=='lvl':
         caster_level_scales_with_HD = True
         if 'min' in CL:

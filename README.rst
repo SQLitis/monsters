@@ -19,9 +19,9 @@ To run SQLite on the database, type :bash:`sqlite3 dnd_monsters.sqlite`.
 -------------
 Version notes
 -------------
-The biggest problem right now is the lack of rulebook data.
-Obviously you can run to the `Monster Finder <http://monsterfinder.dndrunde.de/>`_ once you've selected a monster (an excellent tool, though very limited in the sorts of searches it can run). But it would be better to have that information directly available from the database, especially since the Monster Finder only includes 1322 out of 4447 monsters.
+Each monster should now have a rulebook entry, but some monsters are in more than one rulebook, so maybe I should redesign this as an intersection table.
 
+Right now I've just slapped in the names of the rulebooks only, no edition information or anything.
 Some of the rulebook data will be obtained by cannibalizing `Hey I Can Chan's list <https://rpg.stackexchange.com/questions/1138/how-do-you-tell-if-a-dd-book-is-3-0-or-3-5>`_ or more accurately `Jackinthegreen's revision <http://www.minmaxboards.com/index.php?topic=15375.0>`_, but not all of them are included.
 
 .. code-block:: bash
@@ -34,52 +34,6 @@ Some of the rulebook data will be obtained by cannibalizing `Hey I Can Chan's li
   "slug" varchar(128) NOT NULL,
   "published" date NOT NULL,
 
-.. code-block:: python
-
- rulebook_abbreviations = {'MM1':'Monster Manual',
- 'DotU':'Drow of the Underdark',
- 'Planar':'Planar Handbook',
- 'ToHS':'Towers of High Sorcery',
- 'CotSQ':'City of the Spider Queen',
- 'Aldriv':"Aldriv's Revenge",
- 'Exp':'Expedition to the Demonweb Pits',
- 'Dunge':'Dungeonscape',
- 'Psi':'Psionics Handbook (Web Enhancement)',
- 'SoS':'Spectre of Sorrows',
- 'CoV':'Champions of Valor',
- 'Loona':'Loona, Port of Intrigue',
- 'ToH':'Tomb of Horror',
- 'MM2':'Monster Manual 2',
- 'MM3':'Monster Manual 3',
- 'MM4':'Monster Manual 4',
- 'MM5':'Monster Manual 5',
- 'FF':'Fiend Folio',
- 'ElderE':'Elder Evils',
- 'RoS':'Races of Stone',
- 'ELH':'Epic Level Handbook',
- 'PoC':'Price of Courage', 'WD':'City of Splendors: Waterdeep', 'MT':"Midnight's Terror", 'RTF':'Return to the Temple of the Frog',
- 'RotW':'Races of the Wild', 'ECS':'Eberron Campaign Setting', 'ExUn':'Expedition to Undermountain', 'SotAC':'Secrets of the Alubelok Coast', 'Sheep':"Sheep's Clothing",
- 'A&E':'Arms & Equipment Guide', 'SvgSp':'Savage Species (Web Enhancement)', "Xen'd":"Secrets of Xen'drik", 'LEoF':'Lost Empires of Faerun', 'Kruk':'The Lost Tomb of Kruk-Ma-Kali', 'SD':'Stone Dead',
- 'BoED':'Book of Exalted Deeds', 'FC1':'Fiendish Codex 1', 'Storm':'Stormwrack', 'FoW':'The Forge of War',
- 'SoCo':"Something's Cooking",
- 'Draco':'Draconomicon',
- 'MH':'Miniatures Handbook',
- 'BoKR':'Bestiary of Krynn', 'MgoF':'Magic of Faerun', 'RoF':'Races of Faerun', 'DoK':'Dragons of Krynn', 'MoF':'Monsters of Faerun',
- 'GotP':'Garden of the Plantmaster',
- 'StSt':'The Standing Stone', 'BoBS':'Bastion of Broken Souls',
- 'DrC':'Dragon Compendium', 'MoI':'Magic of Incarnum',
- 'HoD':'Harvest of Darkness', 'EnvIm':'Environmental Impact',
- 'DDen':"Dangerous Denizens - The Monsters of Tellene",
- }
- #EPH	Expanded Psionics Handbook	Sand	Sandstorm	Sarlo	Secrets of Sarlona	ItDL	Into the Dragon's Lair	SaD	Stand and Deliver	DS	Desert Sands
- #BoVD	Book of Vile Darkness	FC2	Fiendish Codex 2	ToB	Tome of Battle	FN	Five Nations	Serp	Serpent Kingdoms	Forge	The Forge of Fury	FoN	Force of Nature
- #City	Cityscape	Frost	Frostburn	ToM	Tome of Magic	MoE	Magic of Eberron	ShSo	Shining South	WndW	The Secret of the Windswept Wall	GW	Ghostwalk
- #C.Ar	Complete Arcane	HoB	Heroes of Battle	DCS	Dragonlance Campaign Setting	Sharn	Sharn - City of Towers	UE	Unapproachable East	RTEE	Return to the Temple of Elemental Evil	OA	Oriental Adventures
- #C.Psi	Complete Psionic	HoH	Heroes of Horror	AoM	Age of Mortals	CoR	Champions of Ruin	Under	Underdark	TVoS	The Vessel of Stars	###	Dragon Magazine
- #C.War	Complete Warrior	LM	Libris Mortis	KoD	Key of Destiny	F&P	Faiths and Pantheons, SlvSk	The Silver Skeleton	A##	Dragon Magazine Annual 00/01
- #Deities	Deities and Demigods	LoM	Lords of Madness	BoKR	Bestiary of Krynn Revised	FRCS	Forgotten Realms Campaign Setting	BaS	Blood and Shadows - The Dark Elves of Tellene	LDR	Lest Darkness Rise	Web	Web content
- #DrM	Dragon Magic	MotP	Manual of the Planes	HOS	Holy Order of the Stars	SM	Silver Marches	LoMys	Lands of Mystery	ToBV	The Treasure of the Black Veils	108 total sources
- # if the abbreviation is just a number then it's a Dragon magazine number
 
 
 
@@ -192,7 +146,7 @@ For one adventure, I wanted to have a set of seven otherworldly "living wells".
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monster.name,challenge_rating from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_subtype on dnd_monster.id=monster_subtype.monster_id inner join dnd_monstersubtype on monster_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstertype.name="Outsider" or dnd_monstertype.name="Elemental") and (dnd_monstersubtype.name="Water" or dnd_monstersubtype.name="Aquatic") order by challenge_rating;
+  sqlite> select distinct dnd_monster.name,challenge_rating from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id inner join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstertype.name="Outsider" or dnd_monstertype.name="Elemental") and (dnd_monstersubtype.name="Water" or dnd_monstersubtype.name="Aquatic") order by challenge_rating;
   Gen, Water|-2
   Paraelemental, Ooze, Small|1
   Imp, Vapor|1
