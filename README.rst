@@ -14,6 +14,7 @@ Type :bash:`python monsters.py --help` for instructions on how to run the conver
 
 Here we are more concerned with what you can do after successfully running the conversion.
 To run SQLite on the database, type :bash:`sqlite3 dnd_monsters.sqlite`.
+Note that the old version of SQLite may not work, that is, :bash:`sqlite dnd_monsters.sqlite` will yield an error message "Unable to open database "dnd_monsters.sqlite": file is encrypted or is not a database".
 
 
 -------------
@@ -124,7 +125,7 @@ An earth whisper, as it turns out, commands earth creatures as an evil cleric co
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monster.name,hit_dice from dnd_monster inner join monster_subtype on dnd_monster.id=monster_subtype.monster_id inner join dnd_monstersubtype on monster_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstersubtype.name="Earth") and hit_dice<=2 order by hit_dice;
+  sqlite> select distinct dnd_monster.name,hit_dice from dnd_monster inner join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id inner join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstersubtype.name="Earth") and hit_dice<=2 order by hit_dice;
   Gen, Earth|1
   Elemental, Earth, Small|2
   Paraelemental, Magma, Small|2
@@ -140,6 +141,24 @@ Earth whispers can advance in hit dice, or can be granted bonus hit dice by a ba
   2|Soften Earth and Stone|Mephit, Earth|3
   2|Glitterdust|Mephit, Salt|3
   3|Stinking Cloud|Mephit, Sulfur|3
+
+
+
+Say, looking for Earth subtypes made me wonder: Elemental's good saves depend on the element: Fortitude (earth, water) or Reflex (air, fire). What about elementals that aren't earth, water, air, or fire? Are there any?
+
+.. code-block:: bash
+
+  sqlite> select dnd_monster.name,dnd_rulebook.name from dnd_monster inner join (select distinct dnd_monster.id as monsterID from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id where dnd_monstertype.name="Elemental" except select distinct dnd_monster.id from dnd_monster inner join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id inner join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstersubtype.name="Earth" or dnd_monstersubtype.name="Fire" or dnd_monstersubtype.name="Air" or dnd_monstersubtype.name="Water") ) on dnd_monster.id=monsterID inner join dnd_rulebook on dnd_monster.rulebook_id=dnd_rulebook.id;
+  Chraal|Monster Manual III
+  Elemental, Taint, Small|Heroes of Horror
+  Elemental, Shadow, Small|Tome of Magic
+  Cryonax (Prince of Evil Cold Creatures, Bringer of Endless Winter, The Bleak Monarch)|Dragon Magazine
+
+As it turns out, the (Cold) Chraals are native to the Elemental Plane of Water, and not the Elemental Plane of Air, so they follow the rule for water elementals.
+The (Evil) taint elementals also follow the earth/water rule, possibly because their forms are constantly in flux, flowing like a viscous liquid.
+The (Incorporeal) shadow elementals follow the air rule.
+The (Cold, Evil) Cryonax surprisingly follows the air rule.
+
 
 
 For one adventure, I wanted to have a set of seven otherworldly "living wells".

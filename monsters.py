@@ -226,6 +226,43 @@ if matchObj.group(0) != 'CL10 (with Graystaff only)':
 #if matchObj.group(1) != '10': # 10 (with Graystaff only) dunno if that's okay
 #  raise RuntimeError(matchObj.group(1) )
 
+# put (?:) on all substrings just in case
+dieRollREstring = r'(?:\dd\d{1,2})'
+#dieRollRE = re.compile(dieRollREstring)
+dieRollOrConstantREstring = r'(?:\d|' + dieRollREstring + ')'
+damageBonusREstring = r'(?:[+-]\d{1,2})'
+criticalRangeREstring = r'(?:/1[5-9]\-20)'
+criticalMultiplierREstring = r'(?:/x[2-4])'
+criticalHitCommentREstring = r'(?:\, vorpal)'
+damageTypeREstring = r'(?: [A-Za-z ]+)' # 1d4 Wis drain, 1 fire
+numericalDamageREstring = (r'(?:' + dieRollOrConstantREstring + damageBonusREstring + '?' + criticalRangeREstring + '?' + criticalMultiplierREstring + '?' +
+                           criticalHitCommentREstring + '?' +
+                           ')')
+#numericalDamageRE = re.compile(numericalDamageREstring)
+singleDamageREstring = r'(?:' + numericalDamageREstring + damageTypeREstring + '?' + r'|[a-z ]+)' # could be eg entangle
+#singleDamageRE = re.compile(singleDamageREstring)
+damageREstring = r'(?:' + singleDamageREstring + r'(?: (?:(?:plus)|(?:or)) ' + singleDamageREstring + r')*)' # Inevitable, Marut Slam +22 (2d6+12 plus 3d6 sonic or 3d6 electricity)
+#re.compile(damageREstring)
+parenthesizedDamageREstring = r'(?: +\(' + damageREstring + r'\))'
+#parenthesizedDamageRE = re.compile(parenthesizedDamageREstring)
+# Gargantuan +3 adamantine warhammer +37 (4d6+27/x3) or +3 javelin +22 (2d6+19) or slam +34 (1d8+16)
+numberOfAttacksREstring = r'(?:\d{1,3} )' # Hydra, 10-Headed 10 bites +14 (1d10+5) # Hecatoncheires 100 greatswords +73
+# when spaces are needed to be sure a bit is separate, I arbitrarily assign the spaces to the end of each REstring
+weaponSizeREstring = r'(?:(?:Tiny)|(?:Small)|(?:Large)|(?:Huge)|(?:Gargantuan) )'
+weaponEnchantmentREstring = r'(?:\+\d{1,2} )' # Gloom +10 keen dagger of human dread +54 (1d4+21/15-20)
+possiblyHyphenatedWordREstring = r"(?:[A-Za-z]+(?:\-[a-z]+)?(?:'s)?)" # add 's to make possessive
+attackNameREstring = r'(' + possiblyHyphenatedWordREstring + '(?: ' + possiblyHyphenatedWordREstring + ')*' + ')' # capturing instead of noncapturing parens
+compositeBowStrBonusREstring = r'(?: \(\+[1-5] Str bonus\))'
+# \+|\- doesn't work, possibly because needed parentheses around (A|B)
+attackBonusREstring = r'([+-]\d{1,3})' # capturing instead of noncapturing parens
+attackRollTypeREstring = r'(?: (?:ranged )?touch)'
+singleAttackModeREstring = r'(?:' + numberOfAttacksREstring + '?' + weaponSizeREstring + '?' + weaponEnchantmentREstring + '?' + attackNameREstring + compositeBowStrBonusREstring + '?' + ' ' + attackBonusREstring + attackRollTypeREstring + '?' + parenthesizedDamageREstring + '?' + ')'
+attacksREstring = singleAttackModeREstring + r'(?: or ' + singleAttackModeREstring + r')*'
+#noAttacksREstring = r'(?:\-)' # not much point in allowing this, since cannot extract an attack bonus or anything, will still have to specifically check for the case of no attacks
+#print('attacksREstring =', attacksREstring)
+attacksRE = re.compile(attacksREstring)
+#attackWithoutParensRE = re.compile(attackNameREstring + compositeBowStrBonusREstring + '?' + ' ' + attackBonusREstring + attackRollTypeREstring + '? ' + damageREstring)
+
 parentheticalREstring = r'\([^)]*\)' # ( followed by any characters other than ), then )
 parentheticalREstringWithGroup = r'\(([^)]*)\)' # for some unknown reason, including the group in the main causes noUnparenthesizedCommasRE to only match the interiors of parentheses
 parentheticalRE = re.compile(parentheticalREstringWithGroup)
@@ -240,8 +277,10 @@ matchObj = freqChangeRE.match("CL10 (with Graystaff only), at will - hold person
 assert matchObj is not None
 freqChangeRE.split("CL10 (with Graystaff only), at will - hold person; CL10 (not Graystaff dependent), at will - chill metal")
 
+
 eightByteIntMax = 9223372036854775807 # max can store in 
 assert eightByteIntMax + 1 == 2**63
+
 
 def parse_comma_separated_spells(commaSeparatedSpells):
   # comma errors:
@@ -598,6 +637,9 @@ class Monster(object):
     self.name = xls_row[0].value
     self.size = xls_row[1].value
     self.type_name = xls_row[2].value
+    if self.name in ('Energon, Xag-Ya','Energon, Xeg-Yi'):
+      self.type_name = 'Outsider'
+      # The .xls lists it as Elemental, but lists the rulebook as MotP and I checked the Manual of the Planes, it says Outsider.
     if xls_row[3].value == '': self.subtypes = [] # ''.split(',') is not an empty list, but rather a list containing ''
     else: self.subtypes = [fix_subtype(subtype) for subtype in xls_row[3].value.replace(' or ', ', ').replace('[alignment subtype]', 'Good, Evil, Lawful, Chaotic').split(',')]
     for subtype in self.subtypes: assert subtype != ''
@@ -606,6 +648,52 @@ class Monster(object):
     #touchAC = int(xls_row[9])
     #flatfootedAC = int(xls_row[10])
     # http://stackoverflow.com/questions/2415398/can-i-set-a-formula-for-a-particular-column-in-sql
+    
+    attacks = xls_row[12].value
+    if attacks[:6] == 'Bite 1': attacks = 'Bite +1' + attacks[6:]
+    elif '(' in attacks and ')' not in attacks: # mismatched parentheses
+      if attacks[-1] == '(': # typo, closing paren was open paren instead
+        attacks = attacks[:-1] + ')'
+      else: # typo, closing paren was left off
+        attacks = attacks + ')'
+    elif attacks[:43] == 'Wand of Orcus (+6 chaotic unholy greatclub)':
+      attacks = '+6 chaotic unholy greatclub' + attacks[43:]
+    elif attacks[:42] == 'Ruby Rod of Asmodeus (+6 unholy greatclub)':
+      attacks = '+6 unholy greatclub' + attacks[42:]
+    #attacks = attacks.replace("Dispater's ", '')
+    attacks = attacks.replace(' (mimic)', '')
+
+    if attacks == '-':
+      pass
+    elif attacks[:5] == 'Swarm' or attacks[:3] == 'Mob':
+      # has no attack bonus
+      pass
+    elif attacks == 'Vine 1d2+1 plus poison':
+      pass
+    else:
+      #matchObj = dieRollRE.search(attacks)
+      #if matchObj is not None:
+      #  print(self.name, attacks, 'dieRollRE', matchObj.group(0) )
+      #matchObj = numericalDamageRE.search(attacks)
+      #if matchObj is not None:
+      #  print(self.name, attacks, 'numericalDamageRE', matchObj.group(0) )
+      #matchObj = re.search(r'\(' + singleDamageREstring + '\)', attacks)
+      #if matchObj is not None:
+      #  print(self.name, attacks, 'singleDamageREstring', matchObj.group(0) )
+      #matchObj = parenthesizedDamageRE.search(attacks)
+      #if matchObj is not None:
+      #  print(self.name, attacks, 'parenthesizedDamageRE', matchObj.group(0) )
+      matchObj = attacksRE.match(attacks)
+      #if matchObj is None:
+        #matchObj = attackWithoutParensRE.match(attacks)
+      if matchObj is None:
+        print('no attacks match for', self.name, 'attacks', attacks)
+        raise Exception(self.name, attacks)
+      attackName = matchObj.group(1)
+      #else:
+      #  print(self.name, 'attacks', attacks, matchObj.group(1), matchObj.group(2) )
+    #if (self.type_name == 'Humanoid' or self.type_name == 'Animal') and ('Slam' in attacks or 'slam' in attacks):
+    #  print(self.type_name, self.name, 'has a slam attack', attacks)
 
     self.strength = integer_or_non(xls_row[20].value)
     self.dexterity = integer_or_non(xls_row[21].value)
@@ -613,6 +701,13 @@ class Monster(object):
     self.intelligence = integer_or_non(xls_row[23].value)
     self.wisdom = int(xls_row[24].value)
     self.charisma = int(xls_row[25].value)
+
+    listedFortitude = int(xls_row[17].value)
+    #if self.type_name in fortitude_divisors:
+    #  predictedFortitude = (self.HitDice if self.HitDice > 0 else 1)//fortitude_divisors[self.type_name] + fortitude_additions[self.type_name] + (0 if self.constitution is None else (self.constitution - 10)//2)
+    #  if listedFortitude != predictedFortitude and listedFortitude != predictedFortitude + 2:
+    #    print(self.name, 'has a listed Fortitude of', listedFortitude, 'with Con', self.constitution, 'and', self.HitDice, 'HD, which would predict', predictedFortitude)
+
     self.environment = xls_row[26].value
     #Monster.allEnvs.add(environment)
     #if environment == "Any":
@@ -818,8 +913,6 @@ class Monster(object):
     #size_id = curs.fetchone()[0]
     size_id = id_from_name(curs, 'dnd_racesize', self.size + '%')
     assert size_id is not None
-    #curs.execute('''SELECT id from dnd_monstertype WHERE name=?''', (self.type_name,) )
-    #type_id = curs.fetchone()[0]
     type_id = id_from_name(curs, 'dnd_monstertype', self.type_name)
     assert type_id is not None
     curs.execute('''INSERT INTO dnd_monster
@@ -943,6 +1036,51 @@ def read_xls(XLSfilepath="Monster Compendium.xls"):
   # BUT SLAs are given in the SLA column in ODE and not in alphabetical
   return alphabetical,ODE
 
+"""
+sqlite> .schema dnd_racetype
+CREATE TABLE "dnd_racetype" (
+  "id" int(11) NOT NULL ,
+  "name" varchar(32) NOT NULL,
+  "slug" varchar(32) NOT NULL,
+  "hit_die_size" smallint(5)  NOT NULL,
+  "base_attack_type" varchar(3) NOT NULL,
+  "base_fort_save_type" varchar(4) NOT NULL,
+  "base_reflex_save_type" varchar(4) NOT NULL,
+  "base_will_save_type" varchar(4) NOT NULL,
+  PRIMARY KEY ("id")
+);
+sqlite> select * from dnd_racetype;
+1|Aberration|aberration|8|CLR|BAD|BAD|GOOD
+2|Animal|animal|8|CLR|GOOD|GOOD|BAD
+3|Animal (good will)|animal-good-will|8|CLR|GOOD|GOOD|GOOD
+4|Contruct|contruct|10|CLR|BAD|BAD|BAD
+5|Dragon|dragon|12|FIG|GOOD|GOOD|GOOD
+6|Elemental (Air)|elemental-air|8|CLR|BAD|GOOD|BAD
+7|Elemental (Fire)|elemental-fire|8|CLR|GOOD|BAD|GOOD
+8|Elemental (Water)|elemental-water|8|CLR|GOOD|BAD|BAD
+9|Elemental (Earth)|elemental-earth|8|CLR|GOOD|BAD|BAD
+10|Fey|fey|6|WIZ|BAD|GOOD|GOOD
+11|Giant|giant|8|CLR|GOOD|BAD|BAD
+12|Humanoid (good fort)|humanoid-good-fort|8|CLR|GOOD|BAD|BAD
+13|Humanoid (good reflex)|humanoid-good-reflex|8|CLR|BAD|GOOD|BAD
+14|Humanoid (good will)|humanoid-good-will|8|CLR|BAD|BAD|GOOD
+15|Magical Beast|magical-beast|10|FIG|GOOD|GOOD|BAD
+16|Monstrous humanoid|monstrous-humanoid|8|FIG|BAD|GOOD|GOOD
+17|Ooze|ooze|10|CLR|BAD|BAD|BAD
+18|Outsider|outsider|8|FIG|GOOD|GOOD|GOOD
+19|Plant|plant|8|CLR|GOOD|BAD|BAD
+20|Undead|undead|12|WIZ|BAD|BAD|GOOD
+21|Vermin|vermin|8|CLR|GOOD|BAD|BAD
+"""
+fortitude_divisors = {'Animal':2, # certain animals have different good saves
+      'Construct':3, 'Dragon':2,
+      # Good saves depend on the element: Fortitude (earth, water) or Reflex (air, fire).
+      'Fey':3, 'Giant':2,
+      # Good Reflex saves (usually; a humanoid’s good save varies). # Especially if they have class levels.
+      'Ooze':3, 'Outsider':2, 'Plant':2, 'Undead':3, 'Vermin':2,
+      }
+fortitude_additions = {key:(2 if d==2 else 0) for key,d in fortitude_divisors.items()}
+
 def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   '''The original dnd_monster has only 29 monsters and has such design flaws as the default for attack being greatsword, so start from scratch.
   '''
@@ -962,6 +1100,8 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   in_feet tinyint(3) NOT NULL,
   FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   );''') # is this common enough that it would make more sense to have a number that is often NULL?
+  # see existing tables dnd_racespeed and dnd_racespeedtype:
+  # table with a single char for Burrow/Climb/Land/Fly/Swim, each monster_id might have a couple of entries
 
   rulebook_max_name_len = max(max(len(n) for n in rulebook_abbreviations.values() ), 128)
   rulebook_max_abbr_len = max(max(len(n) for n in rulebook_abbreviations.keys() ), 7)
@@ -992,7 +1132,7 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   id INTEGER PRIMARY KEY NOT NULL,
   name varchar(32) NOT NULL,
   slug varchar(32) NOT NULL
-  );''')
+  );''') # add BAB as float, 1 or 0.75 or 0.5
   curs.execute('''INSERT INTO dnd_monstertype SELECT id, name, slug FROM types_backup;''')
   curs.execute('''DROP TABLE types_backup;''')
   curs.execute('''INSERT INTO dnd_monstertype (name,slug) VALUES (?,?);''', ('Animal','animal') )
@@ -1316,7 +1456,6 @@ FOREIGN KEY(spell_id) REFERENCES dnd_spell(id)
   conn.commit()
   conn.close()
   
-# sqlite> select * from dnd_monsters INNER JOIN dnd_monstertype on dnd_monsters.type_id=dnd_monstertype.id;
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Incorporate an XLS file of monster data into a SQLite database.')
