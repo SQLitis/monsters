@@ -160,6 +160,35 @@ The (Incorporeal) shadow elementals follow the air rule.
 The (Cold, Evil) Cryonax surprisingly follows the air rule.
 
 
+We can search for monsters by home plane.
+
+.. code-block:: bash
+
+  sqlite> select dnd_monster.name,dnd_rulebook.name from dnd_monster inner join monster_on_plane on dnd_monster.id=monster_on_plane.monster_id inner join dnd_plane on (plane_id=dnd_plane.id or plane_id=dnd_plane.parent_plane) inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where dnd_plane.name="Thuldanin";
+
+The clause :bash:`plane_id=dnd_plane.id or plane_id=dnd_plane.parent_plane` means that if a monster is listed (plane_id) as being native to Acheron (parent_plane) as a whole, rather than Thuldanin specifically, we still want it to show up in our results, since it can be found in Thuldanin.
+
+But what if we want the results to list which layer each monster hails from? For that, we need something a little more complicated.
+
+.. code-block:: bash
+
+  sqlite> select dnd_monster.name,dnd_plane.name,dnd_rulebook.name from dnd_monster inner join monster_on_plane on dnd_monster.id=monster_on_plane.monster_id inner join dnd_plane on plane_id=dnd_plane.id left join (select parent_plane as planeID, name as layerName from dnd_plane) on plane_id=planeID inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where (dnd_plane.name="Thuldanin" or layerName="Thuldanin");
+
+The inner join with dnd_plane gets us the actual planar name listed in the monster's entry.
+We then do a separate left join so that, if the monster is listed for Acheron as a whole, we will still get the layerName Thuldanin to match against.
+
+
+Let's assume we don't know yet which layer we want, we're just trying to get a sense of what lives in Acheron.
+So we want to show all the layers, but our results should correctly list the name of the layer each monster lives on.
+
+.. code-block:: bash
+
+  sqlite> select dnd_monster.name,dnd_plane.name,dnd_rulebook.name from dnd_monster inner join dnd_rulebook on rulebook_id=dnd_rulebook.id inner join monster_on_plane on dnd_monster.id=monster_on_plane.monster_id inner join dnd_plane on plane_id=dnd_plane.id left join (select id as parentID, name as parentName from dnd_plane) on parent_plane=parentID where (dnd_plane.name="Acheron" or parentName="Acheron");
+
+As you can see, this is pretty clunky, so for now entries have been inserted into the table placing everything listed as Thuldanin also for Acheron.
+
+
+
 
 For one adventure, I wanted to have a set of seven otherworldly "living wells".
 
