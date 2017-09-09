@@ -54,6 +54,39 @@ We can immediately note that all types besides Humanoid give one of those automa
   sqlite> select dnd_monster.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id where dnd_monstertype.name="Humanoid" and not exists (select 1 from monster_special_ability inner join dnd_special_ability on monster_special_ability.special_ability_id=dnd_special_ability.id and monster_special_ability.monster_id=dnd_monster.id and (dnd_special_ability.name like "%darkvision%" or dnd_special_ability.name like "%low-light vision%") );
 
 
+Which humanoids have the fastest movement speeds?
+
+.. code-block:: bash
+
+  sqlite> select abbrev,dnd_monster.name,speed,dnd_rulebook.name from dnd_monster inner join dnd_monstertype on type_id=dnd_monstertype.id and dnd_monstertype.name="Humanoid" inner join monster_movement_mode on dnd_monster.id=monster_id inner join (select abbrev as maxAbbrev,max(speed) as maxSpeed from dnd_monster inner join dnd_monstertype on dnd_monstertype.id=type_id inner join monster_movement_mode on dnd_monster.id=monster_id where dnd_monstertype.name="Humanoid" group by abbrev) on abbrev=maxAbbrev and speed=maxSpeed inner join dnd_rulebook on rulebook_id=dnd_rulebook.id;
+  s|Selkie (seal form)|90|Fiend Folio
+  b|Asherati|30|Sandstorm
+  f|Phaethon|60|Key of Destiny
+  f|Gargoyle, Mutant Four-Armed|60|Tomb of Horror
+  c|Tasloi|40|Dragon Magazine
+  f|Entomanothrope, Werewasp (giant wasp form)|60|Web
+
+Hmm. The selkie and the asherati are great. But our flying and climbing winners might raise some eyebrows.
+
+.. code-block:: bash
+
+  sqlite> select abbrev,dnd_monster.name,speed,dnd_rulebook.name from dnd_monster inner join dnd_monstertype on type_id=dnd_monstertype.id and dnd_monstertype.name="Humanoid" inner join monster_movement_mode on dnd_monster.id=monster_id and (abbrev='c' or abbrev='f') inner join dnd_rulebook on rulebook_id=dnd_rulebook.id order by abbrev,speed;
+  c|Goblin, Forestkith|20|Monster Manual III
+  c|Goblin, Snow|20|Frostburn
+  c|Tasloi|20|Shining South
+  c|O'bati|20|Web
+  c|Vanara|20|Web
+  c|Spirit Folk, Mountain|30|Unapproachable East
+  f|Imago|40|Savage Species (Web Enhancement)
+  f|Saurial, Flyer|50|Serpent Kingdoms
+
+Since almost all monsters have a land speed, I went ahead and incorporated that in the main table, so that's a little easier to access.
+
+.. code-block:: bash
+
+  sqlite> select dnd_monster.name,land_speed,dnd_rulebook.name from dnd_monster inner join dnd_monstertype on type_id=dnd_monstertype.id and dnd_monstertype.name="Humanoid" inner join dnd_rulebook on rulebook_id=dnd_rulebook.id order by land_speed;
+  Varag|60|Monster Manual IV
+
 
 
 Suppose you noticed that creatures with gaze attacks can be safely viewed in mirrors.

@@ -226,6 +226,9 @@ if matchObj.group(0) != 'CL10 (with Graystaff only)':
 #if matchObj.group(1) != '10': # 10 (with Graystaff only) dunno if that's okay
 #  raise RuntimeError(matchObj.group(1) )
 
+# sometimes due to typo see 0 instead of right-paren
+movementModeRE = re.compile(r'([bcfs])(\d{1,3})(?: ?\(([a-v]{2,4})[\)0])?') # prf, gd, avg, pr, clu
+
 # put (?:) on all substrings just in case
 dieRollREstring = r'(?:\dd\d{1,2})'
 #dieRollRE = re.compile(dieRollREstring)
@@ -246,13 +249,13 @@ damageREstring = r'(?:' + singleDamageREstring + r'(?: (?:(?:plus)|(?:or)) ' + s
 parenthesizedDamageREstring = r'(?: +\(' + damageREstring + r'\))'
 #parenthesizedDamageRE = re.compile(parenthesizedDamageREstring)
 # Gargantuan +3 adamantine warhammer +37 (4d6+27/x3) or +3 javelin +22 (2d6+19) or slam +34 (1d8+16)
-numberOfAttacksREstring = r'(?:\d{1,3} )' # Hydra, 10-Headed 10 bites +14 (1d10+5) # Hecatoncheires 100 greatswords +73
+numberOfAttacksREstring = r'(\d{1,3} )' # Hydra, 10-Headed 10 bites +14 (1d10+5) # Hecatoncheires 100 greatswords +73
 # when spaces are needed to be sure a bit is separate, I arbitrarily assign the spaces to the end of each REstring
 weaponSizeREstring = r'(?:(?:Tiny)|(?:Small)|(?:Large)|(?:Huge)|(?:Gargantuan) )'
 weaponEnchantmentREstring = r'(?:\+\d{1,2} )' # Gloom +10 keen dagger of human dread +54 (1d4+21/15-20)
 possiblyHyphenatedWordREstring = r"(?:[A-Za-z]+(?:\-[a-z]+)?(?:'s)?)" # add 's to make possessive
 attackNameREstring = r'(' + possiblyHyphenatedWordREstring + '(?: ' + possiblyHyphenatedWordREstring + ')*' + ')' # capturing instead of noncapturing parens
-compositeBowStrBonusREstring = r'(?: \(\+[1-5] Str bonus\))'
+compositeBowStrBonusREstring = r'(?: \(\+\d{1,2} Str bonus\))'
 # \+|\- doesn't work, possibly because needed parentheses around (A|B)
 attackBonusREstring = r'([+-]\d{1,3})' # capturing instead of noncapturing parens
 attackRollTypeREstring = r'(?: (?:ranged )?touch)'
@@ -260,6 +263,7 @@ singleAttackModeREstring = r'(?:' + numberOfAttacksREstring + '?' + weaponSizeRE
 attacksREstring = singleAttackModeREstring + r'(?: or ' + singleAttackModeREstring + r')*'
 #noAttacksREstring = r'(?:\-)' # not much point in allowing this, since cannot extract an attack bonus or anything, will still have to specifically check for the case of no attacks
 #print('attacksREstring =', attacksREstring)
+singleAttackModeRE = re.compile(singleAttackModeREstring)
 attacksRE = re.compile(attacksREstring)
 #attackWithoutParensRE = re.compile(attackNameREstring + compositeBowStrBonusREstring + '?' + ' ' + attackBonusREstring + attackRollTypeREstring + '? ' + damageREstring)
 
@@ -644,12 +648,39 @@ class Monster(object):
     else: self.subtypes = [fix_subtype(subtype) for subtype in xls_row[3].value.replace(' or ', ', ').replace('[alignment subtype]', 'Good, Evil, Lawful, Chaotic').split(',')]
     for subtype in self.subtypes: assert subtype != ''
     self.HitDice = fraction_to_negative(xls_row[4].value)
-    swimflyburrowcrawl = xls_row[7].value
+    self.landSpeed = None if xls_row[6].value == '' else int(xls_row[6].value)
+    swimflyburrowcrawl = [] if xls_row[7].value == '' else xls_row[7].value.split(', ')
+    self.movementModes = list()
+    self.maneuverability = None
+    for mode in swimflyburrowcrawl:
+      if self.name == 'Uloriax' and mode == 'f20':
+        mode = 'c20' # http://archive.wizards.com/default.asp?x=dnd/fw/20040509a
+      matchObj = movementModeRE.match(mode)
+      if matchObj is None:
+        if self.name != "Inevitable, Marut":
+          raise Exception(self.name, swimflyburrowcrawl, mode)
+        # dunno why Inevitable, Marut has 34, but it does draw my attention to the fact that its speed is wrongly listed as 30feet when it should be 40feet
+        # no others have similar notation
+      else:
+        self.movementModes.append( (matchObj.group(1), int(matchObj.group(2) ) ) )
+        if matchObj.group(1) == 'f':
+          try:
+            if self.name == 'Albatross':
+              self.maneuverability = 'avg'
+            elif self.name == 'Energon, Xag-Az':
+              self.maneuverability = 'prf' # http://archive.wizards.com/default.asp?x=dnd/psb/20021122c
+            else:
+              self.maneuverability = matchObj.group(3)
+            if self.maneuverability not in ('clu', 'pr', 'avg', 'gd', 'prf', 'prft'):
+              raise ValueError(self.name, mode, self.maneuverability)
+          except IndexError:
+            raise Exception(self.name)
     #touchAC = int(xls_row[9])
     #flatfootedAC = int(xls_row[10])
     # http://stackoverflow.com/questions/2415398/can-i-set-a-formula-for-a-particular-column-in-sql
     
     attacks = xls_row[12].value
+    #attacks = xls_row[13].value
     if attacks[:6] == 'Bite 1': attacks = 'Bite +1' + attacks[6:]
     elif '(' in attacks and ')' not in attacks: # mismatched parentheses
       if attacks[-1] == '(': # typo, closing paren was open paren instead
@@ -683,13 +714,18 @@ class Monster(object):
       #matchObj = parenthesizedDamageRE.search(attacks)
       #if matchObj is not None:
       #  print(self.name, attacks, 'parenthesizedDamageRE', matchObj.group(0) )
+      # attacks.split(' or ') doesn't work because of Slam +22 (2d6+12 plus 3d6 sonic or 3d6 electricity
       matchObj = attacksRE.match(attacks)
       #if matchObj is None:
         #matchObj = attackWithoutParensRE.match(attacks)
       if matchObj is None:
         print('no attacks match for', self.name, 'attacks', attacks)
         raise Exception(self.name, attacks)
-      attackName = matchObj.group(1)
+      numberOfAttacks = None if matchObj.group(1) is None else int(matchObj.group(1) )
+      # a few monsters can make multiple attacks with a single attack action
+      #if numberOfAttacks is not None:
+      #  print(self.name, self.HitDice, self.type_name, numberOfAttacks, attacks) # only with more than hydra is darktentacles 9HD
+      attackName = matchObj.group(2)
       #else:
       #  print(self.name, 'attacks', attacks, matchObj.group(1), matchObj.group(2) )
     #if (self.type_name == 'Humanoid' or self.type_name == 'Animal') and ('Slam' in attacks or 'slam' in attacks):
@@ -916,9 +952,9 @@ class Monster(object):
     type_id = id_from_name(curs, 'dnd_monstertype', self.type_name)
     assert type_id is not None
     curs.execute('''INSERT INTO dnd_monster
-                 (name, rulebook_id, size_id, type_id, hit_dice, strength, dexterity, constitution, intelligence, wisdom, charisma, challenge_rating, law_chaos_id)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                 (self.name, rulebook_id, size_id, type_id, self.HitDice, self.strength, self.dexterity, self.constitution, self.intelligence, self.wisdom, self.charisma, self.challenge_rating, self.lawChaosID) )
+                 (name, rulebook_id, size_id, type_id, hit_dice, land_speed, strength, dexterity, constitution, intelligence, wisdom, charisma, challenge_rating, law_chaos_id)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                 (self.name, rulebook_id, size_id, type_id, self.HitDice, self.landSpeed, self.strength, self.dexterity, self.constitution, self.intelligence, self.wisdom, self.charisma, self.challenge_rating, self.lawChaosID) )
     monster_id = curs.lastrowid
 
     for subtype in self.subtypes:
@@ -927,6 +963,18 @@ class Monster(object):
       subtype_id = id_from_name(curs, 'dnd_monstersubtype', subtype)
       if subtype_id is None: raise IndexError(self.name + subtype)
       curs.execute('''INSERT INTO monster_has_subtype (monster_id, subtype_id) VALUES (?, ?);''', (monster_id, subtype_id) )
+    
+    curs.executemany('''INSERT INTO monster_movement_mode (monster_id,abbrev,speed) VALUES (?,?,?);''', [(monster_id,a,s) for (a,s) in self.movementModes])
+    if self.maneuverability == 'clu':
+      curs.execute('''INSERT INTO monster_maneuverability (monster_id,maneuverability) VALUES (?,?);''', (monster_id, 1) )
+    elif self.maneuverability == 'pr':
+      curs.execute('''INSERT INTO monster_maneuverability (monster_id,maneuverability) VALUES (?,?);''', (monster_id, 2) )
+    elif self.maneuverability == 'avg':
+      curs.execute('''INSERT INTO monster_maneuverability (monster_id,maneuverability) VALUES (?,?);''', (monster_id, 3) )
+    elif self.maneuverability == 'gd':
+      curs.execute('''INSERT INTO monster_maneuverability (monster_id,maneuverability) VALUES (?,?);''', (monster_id, 4) )
+    elif self.maneuverability == 'prf' or self.maneuverability == 'prft':
+      curs.execute('''INSERT INTO monster_maneuverability (monster_id,maneuverability) VALUES (?,?);''', (monster_id, 5) )
 
     #curs.execute('''SELECT id from dnd_plane WHERE name like "%{}";'''.format(self.environment) )
     #result = curs.fetchone()
@@ -1095,13 +1143,28 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   #print('maxlen among names =', max([str(row[0]) for row in alphabetical.get_rows()], key=len) )
   conn = sqlite3.connect(monsterOnlyDB)
   curs = conn.cursor()
-  curs.execute('''CREATE TABLE monster_fly_speed (
-  monster_id INTEGER NOT NULL,
-  in_feet tinyint(3) NOT NULL,
-  FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
-  );''') # is this common enough that it would make more sense to have a number that is often NULL?
+
   # see existing tables dnd_racespeed and dnd_racespeedtype:
   # table with a single char for Burrow/Climb/Land/Fly/Swim, each monster_id might have a couple of entries
+  # http://www.d20srd.org/srd/specialAbilities.htm#movementModes
+  curs.execute('''CREATE TABLE dnd_movement_mode (
+  id INTEGER PRIMARY KEY NOT NULL,
+  name char(6) NOT NULL,
+  abbrev char(1) NOT NULL
+  );''')
+  curs.execute('''INSERT INTO dnd_movement_mode (name, abbrev) VALUES ("Burrow", 'b'), ("Climb", 'c'), ("Fly", 'f'), ("Swim", 's');''')
+  curs.execute('''CREATE TABLE monster_movement_mode (
+  monster_id INTEGER NOT NULL,
+  abbrev char(1) NOT NULL,
+  speed smallint(2) NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
+FOREIGN KEY(abbrev) REFERENCES dnd_movement_mode(abbrev)
+  );''')
+  curs.execute('''CREATE TABLE monster_maneuverability (
+  monster_id INTEGER NOT NULL,
+  maneuverability tinyint(1) NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
+  );''')
 
   rulebook_max_name_len = max(max(len(n) for n in rulebook_abbreviations.values() ), 128)
   rulebook_max_abbr_len = max(max(len(n) for n in rulebook_abbreviations.keys() ), 7)
@@ -1109,7 +1172,7 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   curs.execute('''INSERT INTO rulebooks_backup SELECT id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM dnd_rulebook;''')
   curs.execute('''DROP TABLE dnd_rulebook;''')
   curs.execute('''CREATE TABLE dnd_rulebook (
-  id INTEGER PRIMARY KEY NOT NULL ,
+  id INTEGER PRIMARY KEY NOT NULL,
   dnd_edition_id INTEGER DEFAULT NULL,
   name varchar({}) NOT NULL,
   abbr varchar({}) NOT NULL,
@@ -1403,7 +1466,8 @@ FOREIGN KEY(terrain_id) REFERENCES dnd_terrain(id)
   name varchar({}) NOT NULL,
   size_id tinyint(1) NOT NULL,
   type_id tinyint(2) NOT NULL,
-  hit_dice tinyint(2) NOT NULL,
+  hit_dice smallint(2) NOT NULL,
+  land_speed smallint(2) DEFAULT NULL,
   natural_armor_bonus tinyint(2) DEFAULT NULL,
   strength tinyint(2) DEFAULT NULL,
   dexterity tinyint(2) DEFAULT NULL,
@@ -1445,6 +1509,24 @@ FOREIGN KEY(spell_id) REFERENCES dnd_spell(id)
   );''')
   # It's rare, but some monsters do have SLAs of different caster levels.
   insert_psionic_powers(curs)
+
+  curs.execute('''CREATE TABLE spell_brings_monster (
+  spell_id INTEGER NOT NULL,
+  monster_id INTEGER NOT NULL,
+FOREIGN KEY(spell_id) REFERENCES dnd_spell(id),
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
+  );''')
+  # sqlite> INSERT INTO spell_brings_monster (spell_id,monster_id) SELECT dnd_spell.id,dnd_monster.id FROM dnd_monster INNER JOIN dnd_spell ON dnd_spell.name="Summon Monster I" AND dnd_monster.name="Elysian Thrush";
+  # sqlite> select * from spell_brings_monster;
+  # 2344|2441
+  # manually did the command below in python3, no result, then tried in sqlite3 again:
+  # sqlite> INSERT INTO spell_brings_monster (spell_id,monster_id) SELECT dnd_spell.id,dnd_monster.id FROM dnd_monster INNER JOIN dnd_spell ON dnd_spell.name="Summon Monster II" AND dnd_monster.name="Clockwork Mender";
+  # sqlite> select * from spell_brings_monster;
+  # 2344|2441
+  # 1041|2442
+  curs.executemany('''INSERT INTO spell_brings_monster (spell_id,monster_id) SELECT dnd_spell.id,dnd_monster.id FROM dnd_spell INNER JOIN dnd_monster ON dnd_spell.name=? AND dnd_monster.name=?;''', [ ('Summon Monster I', 'Elysian Thrush'), ('Summon Monster II','Devil, Lemure'), ('Summon Monster II', 'Clockwork Mender'), ('Summon Monster II', 'Fetid Fungus'), ('Summon Monster II', 'Nerra, Varoot'), ('Summon Monster II', 'Kaorti'), ('Summon Monster II', 'Howler Wasp'), ('Summon Monster II', "Ur'Epona")
+  ] )
+
   # I'm guessing dropwhile has no overhead after failing
   for i,row in itertools.dropwhile(lambda p: p[0]==0,
                enumerate(ODE.get_rows() ) ):
