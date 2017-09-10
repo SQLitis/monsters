@@ -186,10 +186,19 @@ def fix_subtype(subtype):
     subtype = typeNameErrors[subtype]
   return subtype
 
+MINOR_WORDS = ['of', 'the', 'and', 'to', 'from', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX']
+def sensible_title(string):
+  # capitalize() turns VII into Vii
+  # for Blindness/Deafness, should standardize dnd_spell
+  if string == 'blindness/deafness' or string == 'Blindness/Deafness': return 'Blindness/Deafness'
+  elif string == 'remove blindness/deafness': return 'Remove Blindness/deafness'
+  #print(re.split('([ -])', string))
+  return ''.join(word if word in MINOR_WORDS else word.capitalize() for word in re.split('([ -])', string) )
+
 def spell_name_to_id(curs, spellName, allowNoneResult=False):
   if spellName == '':
     raise ValueError(spellName)
-  curs.execute('''SELECT published,dnd_spell.id from dnd_spell INNER JOIN dnd_rulebook on dnd_spell.rulebook_id=dnd_rulebook.id WHERE dnd_spell.name like ? ORDER BY published;''', (spellName,) )
+  curs.execute('''SELECT published,dnd_spell.id from dnd_spell INNER JOIN dnd_rulebook on dnd_spell.rulebook_id=dnd_rulebook.id WHERE dnd_spell.name = ? ORDER BY published;''', (sensible_title(spellName),) )
   results = curs.fetchall()
   #print('spell_name_to_id', spellName, results)
   if len(results) == 0:
@@ -204,16 +213,25 @@ def spell_name_to_id(curs, spellName, allowNoneResult=False):
   assert spell_id is not None
   return spell_id
 
-def id_from_name(curs, tableName, name, allowExtraOnLeft=False):
+def id_from_name(curs, tableName, name, allowExtraOnLeft=False, allowExtraOnRight=False):
   """
   This function uses SQL's like instead of exact equality, to enable tricks like passing "Colossal%" to match Colossal+.
   """
   if re.match("\w+$", tableName) is None:
     raise TypeError(tableName + " does not look like a valid SQL table name.")
+  if tableName == 'dnd_monstersubtype':
+    name = sensible_title(name) # Living Construct wants title(), but title() turns Tanar'ri into Tanar'Ri
   if allowExtraOnLeft:
     name = '%' + name
     #curs.execute('''SELECT id from {} WHERE name like "%{}";'''.format(tableName, name) ) # unsafe, but how to do it properly?
-  curs.execute('''SELECT id from {} WHERE name like ?;'''.format(tableName), (name,) )
+  if allowExtraOnRight:
+    name = name + '%'
+  #print('''SELECT id from {} WHERE name like ?;'''.format(tableName), name)
+  if allowExtraOnLeft or allowExtraOnRight:
+    operator = 'LIKE'
+  else:
+    operator = '='
+  curs.execute('''SELECT id from {} WHERE name {} ?;'''.format(tableName, operator), (name,) )
   results = curs.fetchall()
   # rowcount does not work for SELECT statements because we cannot determine the number of rows a query produced until all rows were fetched.
   # Even after all rows have been fetched, rowcount is still -1.
@@ -398,7 +416,8 @@ sqlite> select id,x from tbl;
 def insert_psionic_powers(curs):
   curs.execute('''INSERT INTO dnd_rulebook (dnd_edition_id, name, abbr, description, year, official_url, slug, published) VALUES (1, "Revised (v.3.5) System Reference Document", "SRD", "The System Reference Document is a comprehensive toolbox consisting of rules, races, classes, feats, skills, various systems, spells, magic items, and monsters compatible with the d20 System version of Dungeons & Dragons and various other roleplaying games from Wizards of the Coast. You may consider this material Open Game Content under the Open Game License, and may use, modify, and distribute it.", 2004, "http://www.wizards.com/default.asp?x=d20/article/srd35", "system-reference-document", ?);''',
     (datetime.date(2004, 5, 21),) )
-  srd_id = id_from_name(curs, 'dnd_rulebook', "Revised (v.3.5) System Reference Document")
+  srd_id = curs.lastrowid
+  assert srd_id == id_from_name(curs, 'dnd_rulebook', "Revised (v.3.5) System Reference Document")
   curs.execute('''CREATE TEMPORARY TABLE school_backup (id int, name varchar(32), slug varchar(32) );''')
   curs.execute('''INSERT INTO school_backup SELECT id, name, slug FROM dnd_spellschool;''')
   curs.execute('''DROP TABLE dnd_spellschool;''')
@@ -496,7 +515,13 @@ def insert_psionic_powers(curs):
   CONSTRAINT "sub_school_id_refs_id_75647c3f68dd90be" FOREIGN KEY ("sub_school_id") REFERENCES "dnd_spellsubschool" ("id")
   );''')
   curs.execute('''INSERT INTO dnd_spell SELECT * FROM spell_backup;''')
-  # this enables sanitizing, but does not by itself sanitize, so we still have all those varchar '0's in xp_component etc
+  curs.execute('''CREATE INDEX index_dnd_spell_name ON dnd_spell (name);''')
+  # creating an index on dnd_spell.name actually caused spell_name_to_id cost to INCREASE from 241sec to 259sec...
+  # but that was because spell_name_to_id was using the LIKE operator, and apparently SQLite doesn't use the index properly with the LIKE operator even when you don't have a leading %.
+  # Altering spell_name_to_id to use = instead of LIKE took some doing, and without an index it didn't make for any significant speedup...
+  # but creating and index *and* using = instead of LIKE caused spell_name_to_id runtime to drop like a rock, from 241sec to 1sec.
+
+  # Changing the schema of dnd_spell enables sanitizing, but does not by itself sanitize, so we still have all those varchar '0's in xp_component etc
   # Since casting times and ranges tend to be standardized, it would make more sense to have an intersection table spell_range and an intersection table spell_casting_time...
   # select count(*) from (select distinct casting_time from dnd_spell); returns 60, and a lot of those are probably misspellings or things like "1 action" for 1 standard action
   # For that matter, there are only 375 distinct areas: select count(*) from (select distinct area from dnd_spell);
@@ -589,13 +614,13 @@ def insert_psionic_powers(curs):
   insertPower('Detect Gems', 3, "http://www.d20srd.org/srd/monsters/dragonTrue.htm#goldDragon")
   insertPower('Create Wine', 2, "http://www.d20srd.org/srd/monsters/genie.htm#djinni")
   insertPower('Dreamscape', 2, "http://www.d20srd.org/srd/epic/spells/dreamscape.htm")
-  insertPower('Nailed To The Sky', 2, "http://www.d20srd.org/srd/epic/spells/nailedToTheSky.htm")
+  insertPower('Nailed to the Sky', 2, "http://www.d20srd.org/srd/epic/spells/nailedToTheSky.htm")
   insertPower('Hellball', 5, "http://www.d20srd.org/srd/epic/spells/hellball.htm")
   insertPower('Enslave', 4, "http://www.d20srd.org/srd/epic/spells/enslave.htm")
   insertPower('Safe Time', 2, "http://www.d20srd.org/srd/epic/spells/safeTime.htm")
   insertPower('Time Duplicate', 2, "http://www.d20srd.org/srd/epic/spells/timeDuplicate.htm")
-  insertPower('contingent recall and resurrection', 2, "http://www.d20srd.org/srd/epic/monsters/hoaryHunter.htm")
-  insertPower('contingent resurrection', 2, "http://www.d20srd.org/srd/epic/spells/contingentResurrection.htm")
+  insertPower('Contingent Recall and Resurrection', 2, "http://www.d20srd.org/srd/epic/monsters/hoaryHunter.htm")
+  insertPower('Contingent Resurrection', 2, "http://www.d20srd.org/srd/epic/spells/contingentResurrection.htm")
   insertPower('Ruin', 7, "http://www.d20srd.org/srd/epic/spells/ruin.htm")
   insertPower('Peripety', 1, "http://www.d20srd.org/srd/epic/spells/peripety.htm")
   insertPower('Spell Worm', 4, "http://www.d20srd.org/srd/epic/spells/spellWorm.htm")
@@ -845,6 +870,12 @@ class Monster(object):
         SLAstring = "CL12, at will - aid, continual flame, cure light wounds, daylight, detect magic, dispel magic, flare, holy aura, remove disease, remove fear; CL17, at will - charm person, charm monster, confusion, crushing despair, daze, good hope, rage, suggestion; 3/day - mass charm; 1/month - geas/quest; CL15, at will - detect chaos, detect evil, see invisibility, true seeing"
       elif self.name == "Dread, Greater":
         SLAstring = "CL20, at will - detect magic, blasphemy, deeper darkness, desecrate, detect good, detect law, greater dispel magic, fear, pyrotechnics, read magic, suggestion, symbol of death, symbol of fear, symbol of insanity, symbol of fear, symbol of persuasion, symbol of sleep, symbol of stunning, symbol of weakness, telekinesis, greater teleport (self +50lbs only), tongues (self only), unhallow, unholy aura, unholy blight, wall of fire; 3/day - magic missile; 1/day - fire storm, implosion"
+      elif self.name == 'Devil, Advespa':
+        SLAstring = "CL4, 3/day - disguise self, command, produce flame, pyrotechnics" # general 3.5 update booklet specifies change self is now disguise self http://archive.wizards.com/default.asp?x=dnd/dnd/20030718a
+      elif self.name == 'Guardinal, Lupinal':
+        SLAstring = "CL8, at will - disguise self, blink, blur, darkness, ethereal jaunt; 3/day - cone of cold, cure light wounds, fly, magic missile"  # general 3.5 update booklet specifies change self is now disguise self http://archive.wizards.com/default.asp?x=dnd/dnd/20030718a
+      elif self.name == 'Eladrin, Firre (fire pillar form)':
+        SLAstring = "CL10, at will - detect thoughts, fireball, greater invisibility, persistent image, see invisibility, wall of fire; 1/day - prismatic spray" # Errata: Remove polymorph from spell-like abilities.
     if self.name == "Pech":
         SLAstring = "CL4, 4/day - stone shape, stone tell; 1/day - wall of stone (requires four pechs), stone to flesh (requires eight pechs)"
     if SLAstring != '':
@@ -972,7 +1003,7 @@ class Monster(object):
     self.size = self.size.rstrip('+.')
     #curs.execute('''SELECT id from dnd_racesize WHERE name like ?''', (self.size + '%',) )
     #size_id = curs.fetchone()[0]
-    size_id = id_from_name(curs, 'dnd_racesize', self.size + '%')
+    size_id = id_from_name(curs, 'dnd_racesize', self.size, allowExtraOnRight=True)
     assert size_id is not None
     type_id = id_from_name(curs, 'dnd_monstertype', self.type_name)
     assert type_id is not None
@@ -1236,6 +1267,7 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   curs.execute('''INSERT INTO dnd_monstertype SELECT id, name, slug FROM types_backup;''')
   curs.execute('''DROP TABLE types_backup;''')
   curs.execute('''INSERT INTO dnd_monstertype (name,slug) VALUES (?,?);''', ('Animal','animal') )
+  curs.execute('''CREATE INDEX index_monstertype_name ON dnd_monstertype(name);''')
 
   curs.execute('''CREATE TEMPORARY TABLE subtypes_backup (id int, name varchar(32), slug varchar(32) );''')
   curs.execute('''INSERT INTO subtypes_backup SELECT id, name, slug FROM dnd_monstersubtype;''')
@@ -1252,6 +1284,7 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
     'Catfolk','Tayfolk','Mongrelfolk','Dwarf','Elf','Goblinoid','Gnoll','Gnome','Kenku','Human','Orc','Skulk','Maenad','Xeph','Darfellan','Hadozee',
     'Reptilian','Dragonblood','Psionic','Incarnum','Force','Void','Shapechanger',
     'Spirit','Dream','Tasloi','Swarm','Mob','Symbiont','Wretch')])
+  curs.execute('''CREATE INDEX index_monstersubtype_name ON dnd_monstersubtype(name);''')
   
   curs.execute('''DROP TABLE dnd_racesize;''')
   curs.execute('''CREATE TABLE dnd_racesize (
@@ -1259,6 +1292,7 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   name char(11) NOT NULL
   );''') # 11 in case what to say Medium-size
   curs.execute('''INSERT INTO dnd_racesize(name) VALUES ("Fine"), ("Diminutive"), ("Tiny"), ("Small"), ("Medium"), ("Large"), ("Huge"), ("Gargantuan"), ("Colossal");''')
+  curs.execute('''CREATE INDEX index_racesize_name ON dnd_racesize(name);''')
   """ need to not have parentheses at top level:
   sqlite> insert into blanh values (3, 4, 5);
   Error: table blanh has 1 columns but 3 values were supplied
@@ -1456,6 +1490,7 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
  'Warm plains',
  'Ziggurat', # Zargon on Material
   )
+  curs.execute('''CREATE INDEX index_dnd_plane_name ON dnd_plane (name);''')
   curs.execute('''CREATE TABLE monster_on_plane (
   monster_id INTEGER NOT NULL,
   plane_id INTEGER NOT NULL,
@@ -1492,6 +1527,7 @@ FOREIGN KEY(terrain_id) REFERENCES dnd_terrain(id)
                ('Cold Immunity', "A creature with cold immunity never takes cold damage. It has vulnerability to fire, which means it takes half again as much (+50%) damage as normal from fire, regardless of whether a saving throw is allowed, or if the save is a success or failure.") )
   curs.execute('''INSERT INTO dnd_special_ability (name, type, description) VALUES (?, ?, ?)''',
                ('Evasion', 'X', "If subjected to an attack that allows a Reflex save for half damage, a character with evasion takes no damage on a successful save. As with a Reflex save for any creature, a character must have room to move in order to evade. A bound character or one squeezing through an area cannot use evasion. As with a Reflex save for any creature, evasion is a reflexive ability. The character need not know that the attack is coming to use evasion.") )
+  curs.execute('''CREATE INDEX index_special_ability_name ON dnd_special_ability(name);''')
   #curs.execute('''INSERT INTO dnd_rulebook (id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published) VALUES (116, 7, "Monster Manual 2", "MM2", "", 1983, "", "monster-manual-ii", NULL, NULL);''')
   # see what it actually is with select * from dnd_rulebook where id=45;
   maxNameLen = len('Olhydra (Princess of Evil Water Creatures, Princess of Watery Evil, Mistress of the Black Tide)')
@@ -1597,7 +1633,7 @@ if __name__ == "__main__":
   profile.disable()
   with open('cProfile.txt', 'w') as statsFile:
       stats = pstats.Stats(profile, stream=statsFile)
-      stats.strip_dirs().sort_stats('tottime').print_stats()
+      stats.strip_dirs().sort_stats('cumtime').print_stats()
   #print(Monster.allEnvs)
   
 
