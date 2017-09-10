@@ -186,20 +186,46 @@ def fix_subtype(subtype):
     subtype = typeNameErrors[subtype]
   return subtype
 
-def spell_name_to_id(curs, spellName):
+def spell_name_to_id(curs, spellName, allowNoneResult=False):
+  if spellName == '':
+    raise ValueError(spellName)
   curs.execute('''SELECT published,dnd_spell.id from dnd_spell INNER JOIN dnd_rulebook on dnd_spell.rulebook_id=dnd_rulebook.id WHERE dnd_spell.name like ? ORDER BY published;''', (spellName,) )
   results = curs.fetchall()
   #print('spell_name_to_id', spellName, results)
   if len(results) == 0:
     words = spellName.split()
     if words[0].lower() in ('lesser', 'greater', 'mass', 'psionic'):
-      return spell_name_to_id(curs, ' '.join(words[1:]) + ', ' + words[0])
+      return spell_name_to_id(curs, ' '.join(words[1:]) + ', ' + words[0], allowNoneResult) # MMV lashemoi really does have a special ability called Lesser Strength from Pain that isn't a spell
     else:
+      if allowNoneResult:
+        return None
       raise KeyError(spellName + " not found in spell database")
   spell_id = results[-1][1]
   assert spell_id is not None
   return spell_id
 
+def id_from_name(curs, tableName, name, allowExtraOnLeft=False):
+  """
+  This function uses SQL's like instead of exact equality, to enable tricks like passing "Colossal%" to match Colossal+.
+  """
+  if re.match("\w+$", tableName) is None:
+    raise TypeError(tableName + " does not look like a valid SQL table name.")
+  if allowExtraOnLeft:
+    name = '%' + name
+    #curs.execute('''SELECT id from {} WHERE name like "%{}";'''.format(tableName, name) ) # unsafe, but how to do it properly?
+  curs.execute('''SELECT id from {} WHERE name like ?;'''.format(tableName), (name,) )
+  results = curs.fetchall()
+  # rowcount does not work for SELECT statements because we cannot determine the number of rows a query produced until all rows were fetched.
+  # Even after all rows have been fetched, rowcount is still -1.
+  if results == []:
+    return None
+  #if result is None:
+    #return None
+    #raise IndexError("{} does not appear in the SQL table {}.".format(name, tableName) )
+  else:
+    if len(results) != 1:
+      raise RuntimeError("{} results in {} for {}: {}".format(len(results), tableName, name, results) )
+    return results[0][0]
 
 
 
@@ -335,28 +361,6 @@ SRD 3.5 PsionicPowersQ-W
 
 
 
-def id_from_name(curs, tableName, name, allowExtraOnLeft=False):
-  """
-  This function uses SQL's like instead of exact equality, to enable tricks like passing "Colossal%" to match Colossal+.
-  """
-  if re.match("\w+$", tableName) is None:
-    raise TypeError(tableName + " does not look like a valid SQL table name.")
-  if allowExtraOnLeft:
-    name = '%' + name
-    #curs.execute('''SELECT id from {} WHERE name like "%{}";'''.format(tableName, name) ) # unsafe, but how to do it properly?
-  curs.execute('''SELECT id from {} WHERE name like ?;'''.format(tableName), (name,) )
-  results = curs.fetchall()
-  # rowcount does not work for SELECT statements because we cannot determine the number of rows a query produced until all rows were fetched.
-  # Even after all rows have been fetched, rowcount is still -1.
-  if results == []:
-    return None
-  #if result is None:
-    #return None
-    #raise IndexError("{} does not appear in the SQL table {}.".format(name, tableName) )
-  else:
-    if len(results) != 1:
-      raise RuntimeError("{} results in {} for {}: {}".format(len(results), tableName, name, results) )
-    return results[0][0]
 def insert_if_needed(curs, tableName, name, **kwargs):
   """
 it is NOT safe to re-insert an entry into a table:
@@ -772,10 +776,24 @@ class Monster(object):
 
     commaSeparatedSpecialAttacks = xls_row[14].value
     #print('commaSeparatedSpecialAttacks =', commaSeparatedSpecialAttacks)
-    self.specialAttacks = [ab.strip() for ab in commaSeparatedSpecialAttacks.split(',')]
+    if commaSeparatedSpecialAttacks == '-':
+      self.specialAttacks = []
+    else:
+      self.specialAttacks = [ab.strip() for ab in commaSeparatedSpecialAttacks.split(',')]
+      self.specialQualities = [ab for ab in self.specialAttacks if ab!='']
+      #if any(q=='' for q in self.specialAttacks):
+      #  raise Exception(self.name)
     #print('self.specialAttacks =', self.specialAttacks)
     commaSeparatedSpecialQualities = xls_row[16].value
-    self.specialQualities = [ab.strip() for ab in commaSeparatedSpecialQualities.split(',')]
+    if commaSeparatedSpecialQualities == '-':
+      self.specialQualities = []
+    else:
+      #if commaSeparatedSpecialQualities[-1] == ',':
+      #  commaSeparatedSpecialQualities = commaSeparatedSpecialQualities[:-1]
+      self.specialQualities = [ab.strip() for ab in commaSeparatedSpecialQualities.split(',')]
+      self.specialQualities = [ab for ab in self.specialQualities if ab!='']
+      #if any(q=='' for q in self.specialQualities):
+      #  raise Exception(self.name)
 
     self.SpellLikeAbilities = list()
     SLAstring = xls_row[15].value
@@ -927,6 +945,13 @@ class Monster(object):
         #onlyOneRow = csv.reader([quoteParens], skipinitialspace=True).__next__() # must use skipinitialspace for quoting to work http://stackoverflow.com/questions/6879596/why-is-the-python-csv-reader-ignoring-double-quoted-fields
         #onlyOneRow = [spell.replace('"(', '(').replace(')"', ')') for spell in onlyOneRow]
         #print('onlyOneRow=', onlyOneRow)
+
+  def check_if_special_ability_is_spell(self, curs, monster_id, ability):
+    if ability not in ('Poison', 'poison', 'death throes', 'Enslave', 'Camouflage', 'camouflage', 'Curse of lycanthropy', 'Darkvision', 'Low-Light Vision', 'scent', 'Spell Resistance', 'web', 'freeze'):
+      spell_id = spell_name_to_id(curs, ability, True)
+      if spell_id is not None:
+        #print(self.name, 'special attack', attack)
+        curs.execute('''INSERT INTO monster_has_spell_like_ability (monster_id, spell_id, caster_level, caster_level_scales_with_HD, uses_per_day, parenthetical) VALUES (?, ?, ?, ?, ?, ?)''', (monster_id, spell_id, self.HitDice, True, 127, 'listed as special ability, guessed to be SLA') )
   def insert_into(self, curs):
     #print('rulebook_abbrev =', self.rulebook_abbrev)
     rulebook_abbrevs = [s.strip() for s in self.rulebook_abbrev.split(',')]
@@ -1017,18 +1042,30 @@ class Monster(object):
           curs.execute('''INSERT INTO monster_on_plane (monster_id, plane_id) VALUES (?,?);''', (monster_id, plane_id) )
 
     for attack in self.specialAttacks:
-      if attack == '-': continue
+      #if attack == '-': continue
       ability_id = insert_if_needed(curs, 'dnd_special_ability', attack, special_attack=1)
       curs.execute('''INSERT INTO monster_has_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
+      self.check_if_special_ability_is_spell(curs, monster_id, attack)
+      #if attack not in ('Poison', 'poison', 'death throes', 'Enslave', 'Camouflage', 'camouflage', 'Curse of lycanthropy'):
+      #  spell_id = spell_name_to_id(curs, attack, True)
+      #  if spell_id is not None:
+          #print(self.name, 'special attack', attack)
+      #    curs.execute('''INSERT INTO monster_has_spell_like_ability (monster_id, spell_id, caster_level, caster_level_scales_with_HD, uses_per_day, parenthetical) VALUES (?, ?, ?, ?, ?, ?)''', (monster_id, spell_id, self.HitDice, True, 127, 'listed as special attack, guessed to be SLA') )
     for quality in self.specialQualities:
-      if quality == '-': continue
-      elif quality == "LLV": quality = "Low-Light Vision"
+      #if quality == '': continue
+      if quality == "LLV": quality = "Low-Light Vision"
       elif darkvisionRE.match(quality): quality = "Darkvision"
       elif damageReductionRE.match(quality): quality = "Damage Reduction"
       elif spellResistanceRE.match(quality): quality = "Spell Resistance"
       #if 'sensitiv' in quality: print(self.name, quality)
       ability_id = insert_if_needed(curs, 'dnd_special_ability', quality, special_attack=0)
       curs.execute('''INSERT INTO monster_has_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
+      self.check_if_special_ability_is_spell(curs, monster_id, quality)
+      #if quality not in ('Darkvision', 'Low-Light Vision', 'scent', 'Spell Resistance', 'poison', 'Poison', 'web', 'death throes', 'freeze'):
+      #  spell_id = spell_name_to_id(curs, quality, True)
+      #  if spell_id is not None:
+          #print(self.name, 'special quality', quality)
+      #    curs.execute('''INSERT INTO monster_has_spell_like_ability (monster_id, spell_id, caster_level, caster_level_scales_with_HD, uses_per_day, parenthetical) VALUES (?, ?, ?, ?, ?, ?)''', (monster_id, spell_id, self.HitDice, True, 127, 'listed as special quality, guessed to be SLA') )
     for (spellName, CL, usesPerDay, parenthetical) in self.SpellLikeAbilities:
       # probably want date of monster rulebook and take latest
       try:
@@ -1485,6 +1522,8 @@ FOREIGN KEY(law_chaos_id) REFERENCES dnd_law_chaos(id)
   # rulebook_id should eventually be NOT NULL,
   # but will need to add the monster books to dnd_rulebook,
   # which requires dnd_edition_id and stuff
+  # this pegs Dragon #309 as the start of 3.5ed http://www.enworld.org/forum/showthread.php?9651-DRAGON-Magazine-monster-index!
+  # Dragon #309 (War, Incursion) from July 2003 was the first D&D 3.5 issue. https://rpg.stackexchange.com/questions/14892/in-what-issue-did-dragon-dungeon-magazine-transition-to-3-5e-rules
   curs.execute('''CREATE TABLE monster_has_subtype (
   subtype_id INTEGER NOT NULL,
   monster_id INTEGER NOT NULL,
