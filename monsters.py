@@ -316,14 +316,16 @@ parentheticalREstringWithGroup = r'\(([^)]*)\)' # for some unknown reason, inclu
 parentheticalRE = re.compile(parentheticalREstringWithGroup)
 singleCharOrParenthesizedREstring = '[^,(]|' + parentheticalREstring
 noUnparenthesizedCommasRE = re.compile('(?:' + singleCharOrParenthesizedREstring + ')+')
-frequencyREstring = r"((?:A|at will(?: as a \w+ action:)?(?:\s*\(every \drds\))?)|(?:\d/day)|(?:\d/hour)|(?:\d/week)|(?:\d/tenday)|(?:\d/month)|(?:\d/year)|(?:\d/century))"
+frequencyREstring = r"((?:[aA]t will(?: as a \w+ action:)?(?:\s*\(every \drds\))?)|(?:\d/day)|(?:\d/hour)|(?:\d/week)|(?:\d/tenday)|(?:\d/month)|(?:\d/year)|(?:\d/century))"
 freqChangeRE = re.compile(r'(?:;|,|^)?(?:In addition,)?(?:continually active,)?\s*(?:(' + casterLevelREstringNoncapturing + "),)?\s*" + frequencyREstring + '\s*-\s*')
 # planetar: CL17, at will-continual flame, dispel magic, holy smite, invisibility (self only), lesser restoration, remove curse, remove disease, remove fear, speak with dead, 3/day - blade barrier, flame strike, power word stun, raise dead, waves of fatigue; 1/day - earthquake, greater restoration, mass charm monster, waves of exhaustion. 
 # emerald dragon: at will - object reading 3/day - greater invisibility
 # Bheur: CL10 (with Graystaff only), at will - hold person, solid fog; 3/day - cone of cold, ice storm, wall of ice; CL10 (not Graystaff dependent), at will - chill metal, ray of frost, Snilloc's snowball storm; 1/tenday - control weather
 matchObj = freqChangeRE.match("CL10 (with Graystaff only), at will - hold person; CL10 (not Graystaff dependent), at will - chill metal")
 assert matchObj is not None
-freqChangeRE.split("CL10 (with Graystaff only), at will - hold person; CL10 (not Graystaff dependent), at will - chill metal")
+assert freqChangeRE.split("CL10 (with Graystaff only), at will - hold person; CL10 (not Graystaff dependent), at will - chill metal") == ['', 'CL10 (with Graystaff only)', 'at will', 'hold person', 'CL10 (not Graystaff dependent)', 'at will', 'chill metal']
+assert freqChangeRE.split("CL4, At will - dancing lights, detect evil, detect magic, faerie fire; 3/day magic missile, sleep") == ['', 'CL4', 'At will', 'dancing lights, detect evil, detect magic, faerie fire; 3/day magic missile, sleep']
+
 
 
 eightByteIntMax = 9223372036854775807 # max can store in 
@@ -826,6 +828,26 @@ class Monster(object):
       if SLAstring == '':
         if self.name=="Devil, Ice (Gelugon)":
           SLAstring = "CL13, At will - cone of cold (DC 20), fly, ice storm (DC 19), greater teleport (self plus 50 pounds of objects only), persistent image (DC 20), unholy aura (DC 23), wall of ice"
+        elif self.name=="Eladrin, Coure":
+          SLAstring = "CL4, At will - dancing lights, detect evil, detect magic, faerie fire; 3/day - magic missile, sleep"
+        elif self.name[:15]=='Eladrin, Ghaele':
+          SLAstring = "CL12, At will - aid, charm monster (DC 17), color spray (DC 14), comprehend languages, continual flame, cure light wounds (DC 14), dancing lights, detect evil, detect thoughts (DC 15), disguise self, dispel magic, hold monster (DC 18), greater invisibility (self only), major image (DC 16), see invisibility, greater teleport (self plus 50 pounds of objects only); 1/day - chain lightning (DC 19), prismatic spray (DC 20), wall of force"
+        elif self.name == 'Galeb Duhr':
+          SLAstring = "CL20, At will - animate objects (stone only), stone shape; 1/day - move earth, passwall, transmute rock to mud, wall of stone"
+        elif self.name == 'Half-Fiend, Durzagon':
+          SLAstring = "CL10, 3/day - darkness, 1/day - desecrate, enlarge person (self only), invisibility (self only), unholy blight"
+        elif self.name == 'Demon, Blood Fiend':
+          SLAstring = "CL18, At will - detect good, detect magic, greater teleport (self plus maximum load of objects only); 3/day - chaos hammer, darkness, unholy blight; 1/day - blasphemy, desecrate"
+        elif self.name == 'Gargoyle, Crystal': # http://archive.wizards.com/default.asp?x=dnd/psb/20021025c
+          SLAstring = "ML3, 1/day - charm person, inflict pain, color spray"
+        elif self.name == 'Demon, Malrauthin':
+          SLAstring = "CL16, 1/day - horrid wilting"
+        # Dragon, Ectoplasmic, Very Young has Ectoplasmic Cocoon PLA but no manifester level, which makes no sense since duration 1round/level http://archive.wizards.com/default.asp?x=dnd/psb/20040123a
+        # dunno who the specific golem named Ruby is, but standard Golem, Gemstone, Ruby has no SLAs
+        elif self.name in ('Dragon, Ectoplasmic, Very Young', 'Dragon, Ferrous, Tungsten, Young', 'Ruby (Ruby Gemstone Golem)', 'Demon, Malrauthin'):
+          pass        
+        else:
+          raise Exception(self.name, self.rulebook_abbrev, 'has SLAs but they are not apparent')
       if self.name == 'Githyanki':
         SLAstring = "ML=HD/2, 3/day - far hand; 3/day - concealing amorpha; 3/day - dimension door; 3/day - telekinetic thrust; 1/day - plane shift"
       elif self.name == 'Githzerai':
@@ -853,7 +875,7 @@ class Monster(object):
       elif self.name == "Gibbering Orb":
         SLAstring = "CL27, at will - wish (takes pit fiend SLA and makes it at will)"
       elif self.name == "Bacchae":
-        SLAstring = "CL7, 3/day - charm person, Tasha's hideous laughter; 1/day - crushing despair, fear, good hope, rage"
+        SLAstring = "CL7, 3/day - charm person, Tasha's hideous laughter; 1/day - crushing despair, fear, good hope, rage" # hack; emotion is replaced with four different 3.5 spells, may as well list them all since they're all available just not on the same day
       elif self.name == "Kelpie":
         SLAstring = "CL7, at will - detect thoughts; 3/day - charm person, crushing despair, fear, good hope, rage"
       elif self.name == "Archon, Word":
@@ -876,6 +898,8 @@ class Monster(object):
         SLAstring = "CL8, at will - disguise self, blink, blur, darkness, ethereal jaunt; 3/day - cone of cold, cure light wounds, fly, magic missile"  # general 3.5 update booklet specifies change self is now disguise self http://archive.wizards.com/default.asp?x=dnd/dnd/20030718a
       elif self.name == 'Eladrin, Firre (fire pillar form)':
         SLAstring = "CL10, at will - detect thoughts, fireball, greater invisibility, persistent image, see invisibility, wall of fire; 1/day - prismatic spray" # Errata: Remove polymorph from spell-like abilities.
+      elif self.name == 'Archon, Warden':
+        SLAstring = "CL11, at will - aid, continual flame, detect scrying, detect thoughts, locate creature, scrying, see invisibility, true strike; 3/day - shield of the archons, true seeing"
     if self.name == "Pech":
         SLAstring = "CL4, 4/day - stone shape, stone tell; 1/day - wall of stone (requires four pechs), stone to flesh (requires eight pechs)"
     if SLAstring != '':
@@ -888,6 +912,7 @@ class Monster(object):
       #print('split this:', SLAstring)
       split = freqChangeRE.split(SLAstring)
       if split[0] == '': split = split[1:]
+      #if self.name == 'Eladrin, Coure': raise Exception(self.name, SLAstring, split)
       for new_level_or_new_freq_or_comma_separated_spells in split:
         #print('REsplit freqGroup =', new_level_or_new_freq_or_comma_separated_spells)
         if new_level_or_new_freq_or_comma_separated_spells is None: continue # capturing the group for caster level means ALWAYS capture that group even though it's optional, so when frequency is changed and caster level is not changed we'll get a None, annoying
@@ -979,6 +1004,8 @@ class Monster(object):
 
   def check_if_special_ability_is_spell(self, curs, monster_id, ability):
     if ability not in ('Poison', 'poison', 'death throes', 'Enslave', 'Camouflage', 'camouflage', 'Curse of lycanthropy', 'Darkvision', 'Low-Light Vision', 'scent', 'Spell Resistance', 'web', 'freeze'):
+      # There's little real harm in mistakenly listing a monster as having an SLA if it has an almost-identical ability;
+      # The only reason we want to eliminate things like scent and darkvision is because there's a large difference between being able to give those to others and having them only for yourself.
       spell_id = spell_name_to_id(curs, ability, True)
       if spell_id is not None:
         #print(self.name, 'special attack', attack)
