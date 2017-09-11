@@ -804,7 +804,7 @@ class Monster(object):
     if len(default_alignment_string) < 2: raise RuntimeError(default_alignment_string)
     if default_alignment_string == 'Any': default_alignment_string = 'NN'
     #print('default_alignment_string =', default_alignment_string)
-    self.lawChaosID = lawChaosToInt[default_alignment_string[0]]
+    self.lawChaosID = default_alignment_string[0]#lawChaosToInt[default_alignment_string[0]]
     self.goodEvilID = goodEvilToInt[default_alignment_string[1]]
     if xls_row[29].value == '-': self.challenge_rating = 0
     else: self.challenge_rating = fraction_to_negative(xls_row[29].value)
@@ -1077,6 +1077,7 @@ class Monster(object):
     elif self.maneuverability == 'prf' or self.maneuverability == 'prft':
       curs.execute('''INSERT INTO monster_maneuverability (monster_id,maneuverability) VALUES (?,?);''', (monster_id, 5) )
 
+    curs.execute('''INSERT INTO monster_has_alignment (monster_id, good_evil, law_chaos) VALUES (?,?,?);''', (monster_id, self.goodEvilID, self.lawChaosID) )
     #curs.execute('''SELECT id from dnd_plane WHERE name like "%{}";'''.format(self.environment) )
     #result = curs.fetchone()
     planeAndLocationRE = re.compile(r"([\w\s]+)\(([\w\s\']+)\)")
@@ -1379,6 +1380,12 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
   #);''')
   #curs.execute('''INSERT INTO dnd_law_chaos (id,description) VALUES (?,?), (?,?), (?,?);''',
   #             (1, "Lawful", -1, "Chaotic", 0, "Neutral") )
+  curs.execute('''CREATE TABLE monster_has_alignment (
+  monster_id INTEGER NOT NULL,
+  good_evil tinyint(1) NOT NULL,
+  law_chaos char(1) NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
+  );''')
   curs.execute('''CREATE TABLE dnd_plane (
   id INTEGER PRIMARY KEY NOT NULL,
   name TEXT NOT NULL,

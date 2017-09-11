@@ -191,6 +191,12 @@ The (Evil) taint elementals also follow the earth/water rule, possibly because t
 The (Incorporeal) shadow elementals follow the air rule.
 The (Cold, Evil) Cryonax surprisingly follows the air rule.
 
+In a similar vein, we can check whether all Outsiders are coded as either Native or Extraplanar. It turns out there are a few that are neither, but not many, mostly old ones.
+
+.. code-block:: bash
+
+  sqlite> select dnd_monster.name,dnd_rulebook.name from dnd_monster inner join (select distinct dnd_monster.id as monsterID from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id where dnd_monstertype.name="Outsider" except select distinct dnd_monster.id from dnd_monster inner join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id inner join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstersubtype.name="Extraplanar" or dnd_monstersubtype.name="Native") ) on dnd_monster.id=monsterID inner join dnd_rulebook on dnd_monster.rulebook_id=dnd_rulebook.id;
+
 
 We can search for monsters by home plane.
 
