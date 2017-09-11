@@ -902,6 +902,8 @@ class Monster(object):
         SLAstring = "CL20, at will - detect magic, blasphemy, deeper darkness, desecrate, detect good, detect law, greater dispel magic, fear, pyrotechnics, read magic, suggestion, symbol of death, symbol of fear, symbol of insanity, symbol of fear, symbol of persuasion, symbol of sleep, symbol of stunning, symbol of weakness, telekinesis, greater teleport (self +50lbs only), tongues (self only), unhallow, unholy aura, unholy blight, wall of fire; 3/day - magic missile; 1/day - fire storm, implosion"
       elif self.name == 'Devil, Advespa':
         SLAstring = "CL4, 3/day - disguise self, command, produce flame, pyrotechnics" # general 3.5 update booklet specifies change self is now disguise self http://archive.wizards.com/default.asp?x=dnd/dnd/20030718a
+      elif self.name == 'Devil, Imp':
+        SLAstring = "CL6, at will - detect good, detect magic, invisibility (self only); 1/day - suggestion; 1/week - commune (six questions)"
       elif self.name == 'Guardinal, Lupinal':
         SLAstring = "CL8, at will - disguise self, blink, blur, darkness, ethereal jaunt; 3/day - cone of cold, cure light wounds, fly, magic missile"  # general 3.5 update booklet specifies change self is now disguise self http://archive.wizards.com/default.asp?x=dnd/dnd/20030718a
       elif self.name == 'Eladrin, Firre (fire pillar form)':
@@ -959,7 +961,11 @@ class Monster(object):
           assert matchObj.group(1) is not None
           currentCL = matchObj.group(1)
           continue
+        # else match Obj is None
         for spell,parenthetical in parse_comma_separated_spells(new_level_or_new_freq_or_comma_separated_spells):
+          if self.name == 'Varrangoin, Arcanist' and spell == 'polymorph':
+            # Errata: replace polymorph other with baleful polymorph.
+            spell = 'Baleful Polymorph'
           self.SpellLikeAbilities.append( (spell, currentCL, currentUsesPerDay, parenthetical) )
       """
       matchObj = casterLevelRE.match(SLAstring)
