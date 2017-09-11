@@ -20,6 +20,7 @@ sys.path.append(os.path.join(os.getcwd(), 'xlrd-1.0.0') )
 #print(sys.path)
 import re
 import datetime
+import math
 import sqlite3
 import csv
 import xlrd # https://github.com/python-excel/xlrd
@@ -1052,9 +1053,9 @@ class Monster(object):
     type_id = id_from_name(curs, 'dnd_monstertype', self.type_name)
     assert type_id is not None
     curs.execute('''INSERT INTO dnd_monster
-                 (name, rulebook_id, size_id, type_id, hit_dice, land_speed, strength, dexterity, constitution, intelligence, wisdom, charisma, challenge_rating, law_chaos_id)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                 (self.name, rulebook_id, size_id, type_id, self.HitDice, self.landSpeed, self.strength, self.dexterity, self.constitution, self.intelligence, self.wisdom, self.charisma, self.challenge_rating, self.lawChaosID) )
+                 (name, rulebook_id, size_id, type_id, hit_dice, land_speed, strength, dexterity, constitution, intelligence, wisdom, charisma, challenge_rating)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                 (self.name, rulebook_id, size_id, type_id, self.HitDice, self.landSpeed, self.strength, self.dexterity, self.constitution, self.intelligence, self.wisdom, self.charisma, self.challenge_rating) )
     monster_id = curs.lastrowid
 
     for subtype in self.subtypes:
@@ -1272,10 +1273,25 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
 FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
 FOREIGN KEY(abbrev) REFERENCES dnd_movement_mode(abbrev)
   );''')
+  curs.execute('''CREATE TABLE dnd_maneuverability (
+  maneuverability INTEGER PRIMARY KEY NOT NULL,
+  name char(7) NOT NULL,
+  max_up_degrees tinyint(1) NOT NULL,
+  max_up_per_move FLOAT NOT NULL
+  );''')
+  max_up_degrees = [45, 45, 60, 90, 90]
+  max_up_per_move = [0.25, 0.25, 1/(1/math.tan(math.pi*60/180) + 1)/2, 0.5, 1]
+  #print(tuple(itertools.chain(*zip(max_up_degrees, max_up_per_move) ) ))
+  curs.execute('''INSERT INTO dnd_maneuverability (maneuverability,name,max_up_degrees,max_up_per_move) VALUES (1,"Clumsy",?,?), (2,"Poor",?,?), (3,"Average",?,?), (4,"Good",?,?), (5,"Perfect",?,?);''', tuple(itertools.chain(*zip(max_up_degrees, max_up_per_move) ) ) )
+  # max up angle: 60, 45, 45
+  # So if maneuverability is less than good, then in addition to upward movement counting double, they must spend an equal amount of movement (for clumsy or poor) or 1/\sqrt{3} as much movement (if average) on horizontal movement. If x = (1 - x)\sqrt{3}, then x = \sqrt{3} / (1 + \sqrt{3}) = 3/(3 + \sqrt3). That multiplies their net upward speed by 1/2 and 3/(3 + \sqrt3) = 5/8 = 10387/2**14 respectively.
+  # continued fraction? 1/(1 + \sqrt3): \sqrt3 = 1 + 2/(2 + ?)
+  # If x = (1 - x)*math.tan(angle), then (math.tan(angle) + 1)*x = math.tan(angle), so x = math.tan(angle)/(math.tan(angle) + 1).
   curs.execute('''CREATE TABLE monster_maneuverability (
   monster_id INTEGER NOT NULL,
   maneuverability tinyint(1) NOT NULL,
-FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
+FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
   );''')
 
   rulebook_max_name_len = max(max(len(n) for n in rulebook_abbreviations.values() ), 128)
@@ -1333,9 +1349,10 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   curs.execute('''DROP TABLE dnd_racesize;''')
   curs.execute('''CREATE TABLE dnd_racesize (
   id INTEGER PRIMARY KEY NOT NULL,
-  name char(11) NOT NULL
+  name char(11) NOT NULL,
+  biped_carry_factor tinyint(1) NOT NULL
   );''') # 11 in case what to say Medium-size
-  curs.execute('''INSERT INTO dnd_racesize(name) VALUES ("Fine"), ("Diminutive"), ("Tiny"), ("Small"), ("Medium"), ("Large"), ("Huge"), ("Gargantuan"), ("Colossal");''')
+  curs.execute('''INSERT INTO dnd_racesize (name,biped_carry_factor) VALUES ("Fine",1), ("Diminutive",2), ("Tiny",4), ("Small",6), ("Medium",8), ("Large",16), ("Huge",32), ("Gargantuan",64), ("Colossal",128);''')
   curs.execute('''CREATE INDEX index_racesize_name ON dnd_racesize(name);''')
   """ need to not have parentheses at top level:
   sqlite> insert into blanh values (3, 4, 5);
@@ -1346,14 +1363,22 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   sqlite> insert into blanh values 3, 4, 5;
   Error: near "3": syntax error
   """
-
-  curs.execute('''CREATE TABLE dnd_law_chaos (
-  id tinyint(1) PRIMARY KEY NOT NULL,
-  description CHAR(7) NOT NULL
+  curs.execute('''CREATE TABLE carrying_capacity (
+  strength INTEGER PRIMARY KEY NOT NULL,
+  fine_biped_max_load_ounces mediumint(3) NOT NULL
   );''')
-  #for pair in [(1, "Lawful"), (-1, "Chaotic"), (0, "Neutral")]:
-  curs.execute('''INSERT INTO dnd_law_chaos (id,description) VALUES (?,?), (?,?), (?,?);''',
-               (1, "Lawful", -1, "Chaotic", 0, "Neutral") )
+  #medium_biped_max_load_pounds mediumint(3) NOT NULL,
+  curs.execute('''INSERT INTO carrying_capacity (strength, fine_biped_max_load_ounces) VALUES (?,?), (?,?), (?,?), (?,?), (?,?), (?,?), (?,?), (?,?), (?,?), (?,?);''', tuple(itertools.chain(*[(i,10*i*2) for i in range(1, 11)]) ) )
+  #print(tuple(itertools.chain(*[(11,115), (12,130), (13,150), (14,175), (15,200), (16,230), (17,260), (18,300), (19,350)]) ) )
+  curs.execute('''INSERT INTO carrying_capacity (strength, fine_biped_max_load_ounces) VALUES (?,?), (?,?), (?,?), (?,?), (?,?), (?,?), (?,?), (?,?), (?,?);''', tuple(itertools.chain(*[(s,2*c) for (s,c) in [(11,115), (12,130), (13,150), (14,175), (15,200), (16,230), (17,260), (18,300), (19,350)] ]) ) )
+  curs.executemany('''INSERT INTO carrying_capacity (strength, fine_biped_max_load_ounces) SELECT strength+10, fine_biped_max_load_ounces*4 FROM carrying_capacity WHERE strength>=10*?;''', [(i,) for i in range(1, 9)])
+
+  #curs.execute('''CREATE TABLE dnd_law_chaos (
+  #id tinyint(1) PRIMARY KEY NOT NULL,
+  #description CHAR(7) NOT NULL
+  #);''')
+  #curs.execute('''INSERT INTO dnd_law_chaos (id,description) VALUES (?,?), (?,?), (?,?);''',
+  #             (1, "Lawful", -1, "Chaotic", 0, "Neutral") )
   curs.execute('''CREATE TABLE dnd_plane (
   id INTEGER PRIMARY KEY NOT NULL,
   name TEXT NOT NULL,
@@ -1593,12 +1618,12 @@ FOREIGN KEY(terrain_id) REFERENCES dnd_terrain(id)
   wisdom tinyint(2) NOT NULL,
   charisma tinyint(2) NOT NULL,
   challenge_rating tinyint(2) NOT NULL,
-  law_chaos_id tinyint(1) NOT NULL,
   level_adjustment tinyint(2) DEFAULT NULL,
 FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id),
-FOREIGN KEY(size_id) REFERENCES dnd_racesize(id),
-FOREIGN KEY(law_chaos_id) REFERENCES dnd_law_chaos(id)
+FOREIGN KEY(size_id) REFERENCES dnd_racesize(id)
  );'''.format(maxNameLen) )
+#  law_chaos_id tinyint(1) NOT NULL,
+#FOREIGN KEY(law_chaos_id) REFERENCES dnd_law_chaos(id)
   # rulebook_id should eventually be NOT NULL,
   # but will need to add the monster books to dnd_rulebook,
   # which requires dnd_edition_id and stuff
