@@ -84,6 +84,14 @@ rulebook_abbreviations = {'MM1':'Monster Manual',
  #DrM	Dragon Magic	MotP	Manual of the Planes	HOS	Holy Order of the Stars	SM	Silver Marches	LoMys	Lands of Mystery	ToBV	The Treasure of the Black Veils	108 total sources
  # if the abbreviation is just a number then it's a Dragon magazine number
 
+# until get proper version numbers and dates for rulebooks, quick fix for monsters only just linear-order the relevant rulebooks
+rulebook_priority = ('EPH', 'MM1', 'MM4', 'LoM', 'Sand', 'MH', 'MM2', 'C.Ps', 'OA', 'SaD', 'GotP', 'DrC', '318', '306')
+# Stand and Deliver is a first level adventure set in the Kingdoms of Kalamar campaign setting. This adventure is designed for use with the revised (3.5) edition of the rules
+# Garden of the Plantmaster: Campaign Resource and Adventure (Dungeons & Dragons: Kingdoms of Kalamar) Paperback – April, 2003
+  # this pegs Dragon #309 as the start of 3.5ed http://www.enworld.org/forum/showthread.php?9651-DRAGON-Magazine-monster-index!
+  # Dragon #309 (War, Incursion) from July 2003 was the first D&D 3.5 issue. https://rpg.stackexchange.com/questions/14892/in-what-issue-did-dragon-dungeon-magazine-transition-to-3-5e-rules
+# Miniatures Handbook is 3.5 2003, Sandstorm is March 1, 2005
+
 
 def fraction_to_negative(string):
   """All fractions of Hit Dice etc happen to be of the form 1/#,
@@ -1012,9 +1020,12 @@ class Monster(object):
         curs.execute('''INSERT INTO monster_has_spell_like_ability (monster_id, spell_id, caster_level, caster_level_scales_with_HD, uses_per_day, parenthetical) VALUES (?, ?, ?, ?, ?, ?)''', (monster_id, spell_id, self.HitDice, True, 127, 'listed as special ability, guessed to be SLA') )
   def insert_into(self, curs):
     #print('rulebook_abbrev =', self.rulebook_abbrev)
+    if self.name == 'Demon, Alkilith': self.rulebook_abbrev = 'FF'
     rulebook_abbrevs = [s.strip() for s in self.rulebook_abbrev.split(',')]
     if len(rulebook_abbrevs) > 1:
-      print(self.name, 'has multiple rulebooks:', rulebook_abbrevs)
+      #print(self.name, 'has multiple rulebooks:', rulebook_abbrevs)
+      rulebook_abbrevs = [next(a for a in rulebook_priority if a in rulebook_abbrevs)]
+      #print(rulebook_abbrevs)
     for rulebook_abbrev in rulebook_abbrevs:
       if rulebook_abbrev in ('BoK','BoKR'): rulebook_abbrev = 'BoKr'
       elif re.match(r'\d\d\d', rulebook_abbrev): rulebook_abbrev = r'\d\d\d'

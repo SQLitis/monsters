@@ -158,19 +158,18 @@ An earth whisper, as it turns out, commands earth creatures as an evil cleric co
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monster.name,hit_dice from dnd_monster inner join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id inner join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstersubtype.name="Earth") and hit_dice<=2 order by hit_dice;
-  Gen, Earth|1
+  sqlite> select distinct dnd_monster.name,hit_dice,dnd_rulebook.name from dnd_monster inner join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id inner join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where (dnd_monstersubtype.name="Earth") and hit_dice<=2 order by hit_dice;
+  Gen, Earth|1|Dragon Magazine
   Elemental, Earth, Small|2
   Paraelemental, Magma, Small|2
   Paraelemental, Ooze, Small|2
-  Stonechild|2
-  Gargoyle, Urban|2
+  Stonechild|2|Miniatures Handbook
 
 Earth whispers can advance in hit dice, or can be granted bonus hit dice by a bard. If we allow the hit dice to go a little higher, what spell-like abilities show up?
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_spellclasslevel.level,dnd_spell.name,dnd_monster.name,hit_dice from monster_spell_like_ability inner join dnd_monster on monster_spell_like_ability.monster_id=dnd_monster.id inner join dnd_spell on dnd_spell.id=monster_spell_like_ability.spell_id inner join dnd_spellclasslevel on dnd_spell.id=dnd_spellclasslevel.spell_id inner join monster_subtype on dnd_monster.id=monster_subtype.monster_id inner join dnd_monstersubtype on monster_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstersubtype.name="Earth") and hit_dice<=3 order by hit_dice,dnd_spellclasslevel.level;
+  sqlite> select distinct dnd_spellclasslevel.level,dnd_spell.name,dnd_monster.name,hit_dice from monster_has_spell_like_ability inner join dnd_monster on monster_has_spell_like_ability.monster_id=dnd_monster.id inner join dnd_spell on dnd_spell.id=monster_has_spell_like_ability.spell_id inner join dnd_spellclasslevel on dnd_spell.id=dnd_spellclasslevel.spell_id inner join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id inner join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstersubtype.name="Earth") and hit_dice<=3 order by hit_dice,dnd_spellclasslevel.level;
   2|Soften Earth and Stone|Mephit, Earth|3
   2|Glitterdust|Mephit, Salt|3
   3|Stinking Cloud|Mephit, Sulfur|3
