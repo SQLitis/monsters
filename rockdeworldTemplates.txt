@@ -1,0 +1,196 @@
+<b>Type Change:</b><br />
+<div class="spoiler">
+<div class="spoiler-body" name="spoiler-body">
+Mirage Mullah (Sa 177) LA varies --- any humanoid creature TC: Fey<br />
+Aleax (BoED 158) LA n/a - any creature TC: Construct<br />
+Arachnoid Creature (CSQ 124) LA n/a --- any animal, beast, or magical beast TC: Aberration<br />
+Arachnoid Creature (Und 80) LA n/a --- Any animal, beast or Magical beast Type Changes: Aberration<br />
+Blightspawned (Una 59) LA n/a --- Any animal, beast or plant Type Changes:  Plant<br />
+Bone Creature (BoVD 184) LA n/a --- Any Non-undead, corporeal creature that has a skeletal system Type Changes: Undead<br />
+Bone Naga (SK 73) LA n/a --- any naga TC: Undead<br />
+Bonesinger (Gh 158) LA n/a --- Any creature with at least one level of bard Type Changes:  Undead<br />
+Captured One (MM2 204) LA n/a --- Any giant, humanoid, monstrous humanoid, animal, beast, or vermin that is the same size as or smaller than the dominating raggamoffyn Type Changes: Construct<br />
+Chimeric Creature (MM2 206) LA n/a --- Any Medium size, Large, or Huge animal, beast, or vermin Type Changes: Magical Beast<br />
+Corpse Creature (BoVD 185) LA n/a --- Any Non-undead, nonconstruct, nonplant corporeal creature Type Changes:  Undead<br />
+Corrupted by the Abyss (EDP 190) LA n/a --- any corporeal creature TC: Aberration (3.5 update to Corrupted Creature)<br />
+Corrupted Creature (BoVD 186) LA n/a --- Any corporeal that is not an oustsider Type Changes:  Aberration<br />
+Crypt Spawn (MgoF 184) LA n/a --- Any living creature Type Changes:  Undead<br />
+Curst (MoF 87) LA n/a --- Any humanoid creature Type Changes: Undead (gives neat insanity)<br />
+Demilich (ELH 175) LA n/a --- Any Lich Type Changes: none<br />
+Dread Warrior (Una 62) LA n/a --- Any humanoid of at least 3 hit dice or levels Type Changes:  Undead<br />
+Dread Warrior (LE 169) LA n/a --- any humanoid creature with at least 3 character levels Type Changes: Undead<br />
+Effigy Creature (CAr 152) LA n/a - Any corporeal Aberration, animal, dragon, giant, humanoid, magical beast, monstrous humanoid, or vermin. Type Changes:  Construct<br />
+Elder Eidolon (LoM 146) LA n/a - any abberation, animal, dragon, giant, humanoid, magical beast, monstrous humanoid, plant or vermin TC: Construct; loses all subtypes; does not gain Augmented subtype<br />
+Gelatinous Creature (SS 116) LA n/a --- Any living creature except an ooze Type Changes:  Aberration<br />
+Gravewight (StS 31) LA n/a --- any humanoid, giant, or monstrous humanoid TC: Undead<br />
+Half-Elemental (RTEE 160) LA n/a --- any corporeal creature with an Intelligence score of 4 or more TC: Outsider<br />
+Half-Golem Will succeeded (MM2 209) LA n/a --- Any animal, beast, giant, humanoid creature, magical beast, or monstrous humanoid Type Changes: none<br />
+Half-Golem Will failed (MM2 209) LA n/a --- Any animal, beast, giant, humanoid creature, magical beast, or monstrous humanoid Type Changes: Construct<br />
+Half-Illithid (Und 89) LA n/a --- Any corporeal creature that is not a construct Type Changes: Aberration<br />
+Huecuva (FF 94) LA n/a --- Any humanoid with at least one level in the cleric, druid, monk or paladin class.  Type Changes:  Undead<br />
+Husk Vermin (DrU 126) LA n/a --- any vermin TC: Undead (Augmented Vermin)<br />
+JuJu Zombie (Una 66) LA n/a --- Any formerly living corporeal creature with an intelligence score of at least 1 Type Changes:  Undead<br />
+Lich, Good (MoF 90) LA n/a --- see Monster Manual Type Changes:  Undead<br />
+Living Spell (ECS 293) LA n/a - Arcane or Divine Spell Effect. Type Changes: Ooze<br />
+Living Spell (MM3 91) LA n/a --- an arcane or divine spell effect and not a creature Type Changes: Ooze<br />
+Monstrous Vampire (Gh 166) LA n/a --- Any aberration, animal, beast, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, vermin Type Changes:  Undead<br />
+Mumia (Gh 167) LA n/a --- Any living creature Type Changes:  Undead<br />
+Necromental (LM 112) LA n/a --- any elemental TC: Undead; gain Augmented subtype<br />
+Pennaggolan (OA 189) LA n/a --- Any humanoid Type Changes:  Undead<br />
+Petitioner (MP 199) LA n/a --- Any creature as determined by the nature of the campaign; see text Type Changes:  Outsider<br />
+Pseudonatural Creature (CAr 160) LA n/a - Any corporeal creature. Type Changes:  Outsider<br />
+Pseudonatural Creature (ELH 212) LA n/a --- Any corporeal creature Type Changes:  Outsider (Extraplanar)<br />
+Pseudonatural Creature (LoM 161) LA n/a - any corporeal creature TC: Outsider<br />
+Revenant (MoF 93) LA n/a --- Any humanoid creature Type Changes:  Undead<br />
+Revenant (CSQ 127) LA n/a --- any humanoid TC: Undead<br />
+Revived Fossil (LM 118) LA n/a --- any corporeal creature with a skeletal system TC: Undead, retains all subtypes except alignment and subtypes that indicate genus; gain Augmented subtype<br />
+Shade (FRCS 314) LA n/a --- Any humanoid Type Changes:  Outsider<br />
+Silveraith (CSW 127) LA n/a ---any living creature of at least 5 hit dice that uses magic; see text TC: Undead (Incorporeal)<br />
+Skeletal Dragon (Draco 192) LA n/a - Any Dragon. Type Changes: Undead<br />
+Skeleton (MM 225) LA n/a --- any corporeal creature Type Changes: Undead<br />
+Spectral Mage (MgoF 189) LA n/a --- Any arcane spellcaster Type Changes:  Undead &amp; Incorporeal subtype<br />
+Spellstitched (MM2 215) LA n/a --- Any corporeal undead Type Changes: Undead<br />
+Tainted Minion (HH 153) LA n/a --- any humanoid or monstrous humanoid with at least mild levels of both corruption and depravity TC: Undead; augmented subtype<br />
+Thoon-Thrall (MM5 111) LA n/a --- any humanoid creature that a thoon infiltrator could reasonably render helpless for 1 minute TC: Monstrous Humanoid; does not gain the augmented subtype but retains other subtypes except those from alignment and humanoid race<br />
+Umbral Creature (LM 128) LA n/a --- any abberation, dragon, giant, magical beast or monstrous humanoid, with Cha greater than 8 TC: Undead; gain Incorporeal and Augmented subtypes<br />
+Warforged, Quorcraft (SX 84) LA n/a - Any warforged. Type Changes: Construct<br />
+Web Mummy (MM4 165) LA n/a --- any corporeal giant, humanoid, or monstrous humanoid Type Changes: Undead<br />
+Worm That Walks (ELH 228) LA n/a --- Any evil wizard or sorcerer Type Changes:  Aberration<br />
+Yellow Musk Zombie (FF 191) LA n/a --- Any living creature that would ordinarily have an Intelligence score, and whose physiology includes a brain  Type Changes:  Plant<br />
+Zin-Carla (FP 184) LA n/a --- The body of any formerly living creature with Intelligence 3 or higher Type Changes:  Undead<br />
+Zombie (MM 265) LA n/a --- any corporeal creature Type Changes: Undead; retains alignment subtypes<br />
+Zombie Dragon (Draco 197) LA n/a - Any Dragon of atleast adult age Type Changes: Undead; Lose any subtypes it had.<br />
+Necropolitan (LM 114) LA +0 --- any humanoid or monstrous humanoid TC: Undead; gain Augmented subtype<br />
+Feral (SS 115) LA +1 --- Any corporeal humanoid or monstrous humanoid Type Changes:  Monstrous Humanoid<br />
+Symbiotic Creature (SS 131) LA +1 --- Any two living creatures of the following types: animal, humanoid, plant or vermin.  One must be at least two size categories smaller then the other. Type Changes: Aberration<br />
+Mulhorandi Divine Minion LA +1 --- any humanoid, monstrous humanoid, humanoid or monstrous humanoid with the celestial or fiendish template, or humanoid-shaped outsider TC: Outsider <a href="http://archive.wizards.com/default.asp?x=dnd/mb/20050209a" target="_blank" rel="nofollow">http://archive.wizards.com/default.asp?x=dnd/mb/20050209a</a><br />
+Dustform (Sa 161) LA +2 --- any living creature TC: Construct<br />
+Entropic Creature (PlH 122) LA +2 --- any corporeal aberration, animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, outsider, plant, undead, or vermin TC: Outsider unless the base creature was undead<br />
+Gravetouched Ghoul (LM 103) LA +2 --- any corporeal abberation, fey, giant, humanoid or monstrous humanoid, with Int and Cha greater than 3 TC: Undead; gains augmented subtype<br />
+Half-Fey (FF 89) LA +2 --- Any corporeal living creature Type Changes:  Fey<br />
+Monstrous Beast (SS 122) LA +2 --- Any animal or vermin Type Changes: Magical Beast<br />
+Saint (BoED 184) LA +2 --- Any living creature of good alignment that is not an outsider or an elemental Type Changes: Outsider (Native)<br />
+Telthor (Una 74) LA +2 --- Any animal or humanoid Type Changes:  Fey &amp; Incorporeal Subtype<br />
+Curst (LE 165) LA +3 --- any humanoid creature Type Changes: Undead (augmented humanoid)<br />
+Half-Elemental (MP 188) LA +3 --- Any corporeal creature with an Intelligence score of 4 or more Type Changes:  Outsider (Variable Subtype)<br />
+Half-Dragon (MM 146) LA +3 --- any living, corporeal creature Type Changes: Dragon<br />
+Insectile Creature (SS 121) LA +2 --- Any giant, humanoid, or monstrous humanoid Type Changes: Aberration<br />
+Spellwarped Creature (MM3 162) LA +3 --- any corporeal aberration, animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, plant, or vermin Type Changes: Aberration<br />
+Tauric Creature (MM2 216) LA +3 --- any Small or Medium-size corporeal humanoid and any Medium-size or Large corporeal animal, beast, or vermin with at least four legs Type Changes: Monstrous Humanoid<br />
+Swordwraith (FF 173) LA +3 --- Any humanoid or monstrous humanoid with levels in fighter TC:  Undead <a href="http://archive.wizards.com/default.asp?x=dnd/re/20040202a" target="_blank" rel="nofollow">http://archive.wizards.com/default.asp?x=dnd/re/20040202a</a><br />
+Air Element Creature (MP 191) LA +4 --- Any corporeal creature of the following types: Aberration, animal, beast, magical beast, plant or vermin Type Changes:  Elemental (Air)<br />
+Dracolich (Draco 147) LA +4 - Any evil dragon. Type Changes: Undead<br />
+Fire Element Creature (MP 193) LA +4 --- Any corporeal creature of the following types: Aberration, animal, beast, magical beast, plant or vermin Type Changes:  Elemental (Fire)<br />
+Half-Celestial (MM 144) LA +4 --- any living, corporeal creature with an Intelligence score of 4 or higher and nonevil alignment Type Changes: Outsider<br />
+Half-Farspawn (LoM 151) LA +4 - any corporeal aberration, animal, dragon, elemental, giant, humanoid, magical beast, monstrous humanoid, ooze, plant or vermin TC: Outsider<br />
+Half-Fiend (MM 147)  LA +4 --- any living, corporeal creature with an Intelligence score of 4 or more and nongood alignment Type Changes: Outsider<br />
+Half-Troll (FF 92) LA +4 --- Any animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, or outsider Type Changes:  Giant; outsider as base also gains extraplanar subtype<br />
+Lich (MM 166) LA +4 --- any humanoid creature, provided it can create the required phylactery Type Changes: Undead<br />
+Mindflayer, Alhoon (LoM 157) LA +4 - lich template applied to Mindflayer TC: Undead; Augmented Abberation<br />
+Mummified Creature (LM 110) LA +4 --- any corporeal giant, humanoid or monstrous humanoid TC: Undead; gain Augmented subtype<br />
+Mummified Creature (SS 126) LA +4 --- Any corporeal animal, giant, or humanoid Type Changes: Undead<br />
+Mummy, Greater (DD 159) LA +4 --- any humanoid creature; see text TC: Undead<br />
+Pseudonatural Creature (MP 212) LA +4 --- any corporeal creature TC: Outsider<br />
+Spectral Savant (CP 136) LA +4 - Any humanoid; see text. Type Changes:  Undead<br />
+Ti-Khana (FF 177) LA +4 --- Any lizard, dinosaur, snake, or any animal or magical beast that is reptilian Type Changes:  Magical Beast<br />
+Water Element Creature (MP 194) LA +4 --- Any corporeal creature of the following types: Aberration, animal, beast, magical beast, plant or vermin Type Changes:  Elemental (Water)<br />
+Wendigo (FF 186) LA +4 --- Any animal, giant, humanoid, magical beast, or monstrous humanoid Type Changes:  Fey &amp; Cold Subtype<br />
+Wight (SS 136) LA +4 --- Any humanoid Type Changes: Undead<br />
+Cold Element Creature (MP 195) LA +5 --- Any corporeal creature of the following types: Aberration, animal, beast, magical beast, plant or vermin Type Changes:  Elemental (Cold)<br />
+Death Knight (MM2 207) LA +5 --- Any evil humanoid creature of 6th level or higher Type Changes: Undead<br />
+Dry Lich (Sa 155) LA +5 --- any living creature; see text TC: Undead<br />
+Dust Stuffed (EH 114) LA +5 --- any humanoid or monstrous humanoid TC: Construct (Living Construct)<br />
+Earth Element Creature (MP 192) LA +5 --- Any corporeal creature of the following types: Aberration, animal, beast, magical beast, plant or vermin Type Changes:  Elemental (Earth)<br />
+Ghost (MM 116) LA +5 -- any aberration, animal, dragon, giant, humanoid, magical beast, monstrous humanoid, or plant. The creature must have a Charisma score of at least 6 Type Changes: Undead<br />
+Ghost Brute (LM 101) LA +5 --- any animal, magical beast or plant with charisma below 8 TC: Undead; gain Augmented and Incorporeal subtypes<br />
+Ghost Brute (SS 118) LA +5 --- Any animal, magical beast, or plant with a charisma score below 8 Type Changes: Undead &amp; Incorporeal subtype<br />
+Ghostly Dragon (Draco 161) LA +5 - Any Dragon. Type Changes: Undead (Incorporeal)<br />
+Half-Illithid (FF 90) LA +5 --- Any humanoid other then human Type Changes: Aberration<br />
+Keening Spirit (CSQ 126) LA +5 --- any evil female elf of any elf subtype; see text TC: Undead<br />
+Sacred Watcher (BoED 182) LA +5 --- any aberration, animal, dragon, giant, humanoid, magical beast, monstrous humanoid, or plant of good alignment Type Changes: Deathless<br />
+Umbral Creature (SS 134) LA +5 --- Any aberration, animal, dragon, giant, humanoid, magical beast, or monstrous humanoid; creature must have a charisma score of atleast 8 Type Changes: Undead &amp; Incorporeal subtype<br />
+Unholy Scion (HH 155) LA +5 --- any living humanoid or animal TC: Outsider (evil, native)<br />
+Vampiric Dragon (Draco 195) LA +5 - Any Dragon of atleast adult age. Type Changes: Undead; Lose any subtypes it had.<br />
+Vivacious Creature (PlH 131) LA +5 --- any corporeal aberration, animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, outsider, plant, or vermin TC: Outsider (Incorporeal, Extraplanar)<br />
+Wood Element Creature (MP 196) LA +5 --- Any corporeal creature of the following types: Aberration, animal, beast, magical beast, plant or vermin Type Changes:  Elemental (Wood)<br />
+Sepulchral Thief (Ci 133) LA +6 --- Any humanoid creature of 5HD or more, provided it is of chaotic neutral or any evil alignment; see text for other requirements. Type Changes:  Undead<br />
+Monster of Legend (MM2 213) LA +7 --- Any animal, beast, magical beast, or monstrous humanoid TC: Outsider (Native)<br />
+Spectral Creature (SS 129) LA +7 --- Any aberration, animal, dragon, giant, humanoid, magical beast, or monstrous humanoid; creature must have a charisma score of atleast 8 TC: Undead &amp; Incorporeal subtype<br />
+Wraith (SS 138) LA +7 --- Any humanoid TC: Undead &amp; Incorporeal subtype<br />
+Greenbound Creature (LE 173) LA +8 --- any animal, fey, giant, humanoid, monstrous humanoid, or vermin TC: Plant with the appropriate augmented subtype.<br />
+Vampire (MM 250) LA +8 --- any humanoid or monstrous humanoid creature TC: Undead; [Augmented Humanoid or Monstrous Humanoid]<br />
+Incarnate Construct (SS 120) LA -2 (minimum 0) --- Any construct creature with a generally humanoid form --- two arms, two legs, one head TC: Humanoid if medium-size or smaller, or Giant if it is Large or larger<br />
+</div>
+</div><br />
+<b>No Type Change:</b><br />
+<div class="spoiler">
+<div class="spoiler-body" name="spoiler-body">
+Multiheaded Creature (SS 124)  LA Variable --- Any corporeal creature that has a discernable head Type Changes: Unchanged; Animals become Magical Beasts<br />
+Acidborn Monster (Du 111) LA n/a - Any living corporeal animal, magical beast, plant or vermin of the aquatic subtype. Type Changes: Unchanged; Animal becomes Magical Beast (Augmented Animal)<br />
+Beast of Xvim (MoF 85) LA n/a --- Animals, beholders, green or blue dragons, hell hounds, cockatrices, imps, dark nagas, and undead Type Changes:  Unchanged<br />
+Chosen of Bane (FP 213) LA n/a --- Any humanoid creature Type Changes:  Unchanged<br />
+Dungeonbred Monster (Du 112) LA n/a - Any living corporeal aberration, animal, magical beast, or vermin that is Large or bigger. Type Changes: Unchanged.<br />
+Guardian Monster (Du 113) LA n/a - Any living corporeal aberration, animal, magical beast, or vermin with an Intelligence of 3 or lower. Type Changes: Unchanged; Animal becomes Magical Beast (Augmented Animal)<br />
+Hivenest Monster (Du 115) LA n/a - Any large or larger corporeal plant, undead, or construct and any Diminutive or Fine vermin with the swarm subtype. Type Changes: Unchanged<br />
+Horrid Animal (ECS 287) LA n/a - Any dire animal. Type Changes: Unchanged<br />
+Living Zombie (CR 128) LA n/a --- any corporeal creature (other than undead) that has a skeletal structure TC: Unchanged; Animals become Magical Beasts<br />
+Madborn (FN 125) LA n/a --- any giant, humanoid, or monstrous humanoid Type Changes: Unchanged (gives insanity)<br />
+Magebred Animal (ECS 295) LA n/a - Any living animal. Type Changes: Unchanged<br />
+Mob (DMG2 59) LA n/a --- any Small, Medium, or Large creature TC: Unchanged<br />
+Paragon Creature (ELH 208) LA n/a --- Any creature Type Changes:  Unchanged<br />
+Phantom (MM5 130) LA n/a --- any corporeal creature TC: Unchanged; animals and vermin become magical beasts with the appropriate augmented subtype<br />
+Quorbound Creature (SoS 150) LA n/a - Any animal or magical beast with an Intelligence of 1 or 2. Type Changes: Unchanged add Psionic subtype; Animal becomes Magical Beast<br />
+Quorbred Creature (SoS 151) LA n/a - Any aberration, animal, dragon, fey, giant, humanoid, magical beast, or monstrous humanoid. Type Changes: Unchanged; Animal becomes Magical Beast<br />
+Sentry Ooze (Du 114) LA n/a - Any living corporeal ooze with no Intelligence. Type Changes: Unchanged<br />
+Spellstiched (CAr 161) LA n/a - Any corporeal undead with a wisdom score of 10 or higher. Type Changes: Unchanged<br />
+Swarm-Shifter (LM 123) LA n/a --- any intelligent corporeal undead TC: Unchanged; gains Shapechanger subtype, also has swarm subtype when in swarm form<br />
+Tainted Raver (HH 154) LA n/a ---any humanoid or monstrous humanoid with at least mild levels of both corruption and depravity TC: Unchanged<br />
+The Magister (MgoF 185) LA n/a --- Any arcane spellcaster Type Changes:  Unchanged<br />
+Titanic Creature (MM2 217) LA n/a --- Any Medium-size or smaller animal or vermin Type Changes: Unchanged<br />
+Warbeast (MM2 219) LA n/a --- any Medium-size or larger animal, beast, or vermin Type Changes: Unchanged<br />
+Xorvintaal Dragon (MM5 43) LA n/a --- any young adult or older true dragon TC: Unchanged<br />
+Yuan-ti (Gh 173) LA n/a --- any humanoid TC: Unchanged; add Reptilian subtype<br />
+Yuan-ti (MoF 94) LA n/a --- any humanoid TC: Unchanged<br />
+Amphibious Creature (Sto 135) LA +0 --- any humanoid or monstrous humanoid TC: gain Aquatic subtype<br />
+Giant, Primordial (SX 79) LA +0 - Any giant. Type Changes: Unchanged<br />
+Vampire Lord Template LA +0 -- any humanoid or monstrous humanoid creature with a character level of at least 10 that has already had the vampire template applied to it TC: Unchanged <a href="http://archive.wizards.com/default.asp?x=dnd/mm/20021018a" target="_blank" rel="nofollow">http://archive.wizards.com/default.asp?x=dnd/mm/20021018a</a><br />
+Blooded One (Una 61) LA +1 --- Any humanoid Type Changes:  Unchanged<br />
+Chameleon Creature (Und 83) LA +1 --- Any corporeal creature except a construct, undead, or elemental Type Changes: Unchanged; Add Reptilian Subtype if humanoid<br />
+Dark Creature (TM 158) LA +1 --- any creature TC: Unchanged; Dark creatures encountered away from the Plane of Shadow have the extraplanar subtype.<br />
+Draconic Creature (Draco 149) LA +1 - Any living corporeal creature.  Type Changes: Unchanged; Animals become Magical Beast.<br />
+Draconic Creature (RDr 74) LA +1 --- any living, corporeal creature, except a dragon TC: Unchanged; add Dragonblood subtype; animals become magical beasts<br />
+Evolved Undead (LM 99) LA +1 --- any undead with an intelligence score TC: Unchanged<br />
+Faerzress-Infused Creature (Und 86) LA +1 --- Any corporeal creature Type Changes: Unchanged<br />
+God-Blooded (MM5 65) LA +1 --- any creature; see text TC: Unchanged<br />
+Gruumsh-Blooded (MM5 65) LA +1 --- any orc; see text TC: Unchanged<br />
+Imix-Blooded (MM5 65) LA +1 --- any evil creature; see text TC: Unchanged; gain Fire subtype<br />
+Kord-Blooded (MM5 66) LA +1 --- any non-evil living creature that has a Strength score of 16 or higher; see text TC: Unchanged<br />
+Lolth-Touched (MM4 92) LA +1 --- any nongood, nonlawful, corporeal living creature Type Changes: Unchanged<br />
+Orcus-Blooded (MM5 66) LA +1 --- any evil undead creature; see text TC: Unchanged<br />
+Orglash (Una 68) LA +1 --- Any elemental creature with the air subtype Type Changes:  Unchanged<br />
+Shadow-walker (Una 70) LA +1 --- Any humanoid Type Changes:  Unchanged<br />
+Thomil (Una 75) LA +1 --- Any elemental creature with the earth subtype Type Changes:  Unchanged<br />
+Vecna-Blooded (MM5 66) LA +1 --- any evil creature capable of casting 2nd level or higher arcane spells; see text TC: Unchanged<br />
+Yeenoghu-Blooded (MM5 67) LA +1 --- any gnoll; see text TC: Unchanged<br />
+Mineral Warrior (Und 96) LA +1 --- Any corporeal creature except a construct, undead, or elemental TC: Unchanged; Add Earth Subtype <a href="http://archive.wizards.com/default.asp?x=dnd/ex/20031003e" target="_blank" rel="nofollow">http://archive.wizards.com/default.asp?x=dnd/ex/20031003e</a><br />
+Entomanothrope (Web) LA +2 - Any humanoid or giant Type Changes: Unchanged; gain the shapechanger subtype <a href="http://archive.wizards.com/default.asp?x=dnd/re/20040621a" target="_blank" rel="nofollow">http://archive.wizards.com/default.asp?x=dnd/re/20040621a</a><br />
+Celestial Creature (MM 31) LA +2 --- Any corporeal animal, aberration, animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, plant, or vermin of good or neutral alignment Type Changes: Unchanged; Animal/Vermin become Magical Beast<br />
+Fiendish Creature (MM 108) LA +2 -- any corporeal aberration, animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, ooze, plant, or vermin of nongood alignment Type Changes: Unchanged; Animal/Vermin become Magical Beast<br />
+Half-Vampire (LM 106) LA +2 --- any humanoid or monstrous humanoid TC: Unchanged<br />
+Lycanthrope, Natural (MM 170) LA +3 --- any humanoid or giant Type Changes: Unchanged; Add [Shapechanger]<br />
+Lycanthrope, Afflicted (MM 170) LA +2 --- any humanoid or giant Type Changes: Unchanged; Add [Shapechanger]<br />
+Phrenic Creature (XPH 205) LA +2 --- any nonmindless creature that does not already have the psionic subtype Type Changes: Unchanged; Animals become Magical Beast [augmented animl]; gain psionic subtype http://www.d20srd.org/srd/psionic/monsters/phrenicCreature.htm<br />
+Reptilian Creature (SS 128) LA +2 --- Any humanoid, monstrous humanoid, or giant Type Changes: Unchanged; add reptilian subtype<br />
+Sanctified Creature (BoED 186) LA +2 --- any evil creature except for outsiders with the evil subtype Type Changes: Unchanged; Outsiders gain the Good subtype<br />
+Shadow Creature (LoM 167) LA +2 - any corporeal abberation, animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, plant, undead or vermin TC: Unchanged; animals or vermin become magical beasts<br />
+Winged Creature (SS 137) LA +2 --- Any animal, giant, humanoid, monstrous humanoid, or vermin that does not already have a fly speed Type Changes: Unchanged; Animals and vermin become magical beasts; Humanoids become monstrous humanoids<br />
+Xorvintaal Exarch (MM5 47) LA +2 --- any humanoid, living construct, monstrous humanoid, fey, giant, or undead TC: Unchanged<br />
+Half-Janni (Sa 164) LA +3 --- any humanoid TC: Unchanged<br />
+Voidmind Creature (MM3 187) LA +3 --- any living aberration, animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, or outsider of Tiny to Huge size Type Changes: Unchanged<br />
+Woodling (MM3 197) LA +3 --- any corporeal animal, dragon, fey, giant, humanoid, magical beast, or monstrous humanoid Type Changes: Unchanged<br />
+Axiomatic Creature (PlH 110) LA +4 --- any corporeal aberration, animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, ooze, plant, or vermin of nonchaotic alignment TC: Unchanged; Animals and Vermin become Magical Beasts<br />
+Hooded Pupil (LM 108) LA +4 --- any corporeal giant or humanoid TC: Unchanged<br />
+Anarchic Creature (PlH 107) LA +5 --- any corporeal aberration, animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, ooze, plant, or vermin of nonlawful alignment TC: Unchanged; Animals and Vermin become Magical Beasts<br />
+Mistling (FW 152) LA +6 --- any fey TC: Unchanged<br />
+</div>
+</div><br />

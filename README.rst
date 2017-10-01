@@ -432,6 +432,7 @@ Bigger animals are better at tripping...it helps to think of it not in terms of 
   Trip|11|Large|25|Wolf, Dire|Monster Manual|6
   Knockback|Brixashulty|Races of the Wild|2
   Knockback (Ex): A gore attack from a brixashulty can literally drive back a foe. When a brixa hits with its gore attack, it can immediately attempt a bull rush without entering the foe's space or provoking an attack of opportunity. The brixa makes a Strength check with a +7 bonus, which includes a +4 racial bonus. If the bull rush succeeds, the foe is driven back 5 feet and must make a DC 12 Reflex save or fall down. If being driven back would force the opponent into a barrier or into a square where it cannot stop (such as a wall or a square that already contains another creature), the foe falls down in its square instead.
+  A brixashulty kid is worth 30 gp and is ready for training by age two. It can live for up to 50 years.
 
   sqlite> select distinct ( (strength - 10)/2 + (size_id - 5)*4), dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and land_speed is not null order by (strength/2 + size_id*4), -hit_dice;
   4|Medium|19|Bear, Black|Monster Manual|3
@@ -449,9 +450,9 @@ Unfortunately, without a source of data on feats, we cannot know which animals h
 .. code-block:: bash
 
   sqlite> select distinct dnd_special_ability.name, (wisdom - 10)/2, dnd_racesize.name, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and dnd_special_ability.name like "%scent%" order by wisdom/2, -hit_dice;
-  scent|1|Small|Dog|Monster Manual|1 has Track feat
+  scent|1|Small|Dog|Monster Manual|1 has Track feat Dogs have a +4 racial bonus on Survival checks when tracking by scent.
   scent|1|Fine|Mouse|Dungeon Master's Guide v.3.5|-4 no Track feat
-  scent|2|Small|Vulture|Sandstorm|1 has Track feat
+  scent|2|Small|Vulture|Sandstorm|1 has Track feat A vulture has a +4 racial bonus on Spot and Survival checks.
   scent|3|Medium|Bat, Hunting|Monster Manual II|4 ironically does not have the Track feat
   scent|3|Small|Dinosaur, Swindlespitter|Monster Manual III|2 no Track feat
 
@@ -530,7 +531,7 @@ Unfortunately, without a source of data on feats, we cannot know which animals h
   Large|460|c|30|Ape|Monster Manual|4 should be treated as quadruped when climbing
   Large|800|c|30|Lizard, Giant, Footpad|Drow of the Underdark|5
   Large|350|c|40|Lizard, Giant, Quicksilver|Drow of the Underdark|4
-  Medium|75|c|60|Dinosaur, Cliff Raptor|Web|4
+  Medium|75|c|60|Dinosaur, Cliff Raptor|Web|4 http://archive.wizards.com/default.asp?x=dnd/fw/20040509a
   Large|800|c|60|Forest Sloth|Monster Manual II|14
   Large|260|f|40|Bat, Dire|Monster Manual|4
   Huge|1600|f|40|Bat, War|Monster Manual II|10
