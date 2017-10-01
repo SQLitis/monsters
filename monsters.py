@@ -29,13 +29,16 @@ import xlrd # https://github.com/python-excel/xlrd
 import cProfile,pstats
 
 rulebook_abbreviations = {'MM1':'Monster Manual',
- 'DotU':'Drow of the Underdark',
- 'Planar':'Planar Handbook',
+ 'Planar':'Planar Handbook', 'PlH':'Planar Handbook',
  'ToHS':'Towers of High Sorcery',
- 'CotSQ':'City of the Spider Queen',
+ 'CotSQ':'City of the Spider Queen', 'CSQ':'City of the Spider Queen',
+ 'WD':'City of Splendors: Waterdeep', 'CSW':'City of Splendors: Waterdeep',
+ 'City': 'Cityscape', 'Ci': 'Cityscape',
+ 'Sharn': 'Sharn - City of Towers',
  'Aldriv':"Aldriv's Revenge",
- 'Exp':'Expedition to the Demonweb Pits',
- 'Dunge':'Dungeonscape',
+ 'Exp':'Expedition to the Demonweb Pits', 'EDP':'Expedition to the Demonweb Pits',
+ 'Dunge':'Dungeonscape', 'Du':'Dungeonscape',
+ 'DMG': "Dungeon Master's Guide v.3.5", 'DMG2': "Dungeon Master's Guide II",
  'Psi':'Psionics Handbook (Web Enhancement)',
  'SoS':'Spectre of Sorrows',
  'CoV':'Champions of Valor',
@@ -47,48 +50,77 @@ rulebook_abbreviations = {'MM1':'Monster Manual',
  'MM5':'Monster Manual 5',
  'FF':'Fiend Folio',
  'ElderE':'Elder Evils',
- 'RoS':'Races of Stone',
+ 'RoS':'Races of Stone', 'RotW':'Races of the Wild', 'RDr':'Races of the Dragon',
+ # Races of the Wild excerpt Chordevoc http://archive.wizards.com/default.asp?x=dnd/ex/20050204a&page=5
  'ELH':'Epic Level Handbook',
- 'PoC':'Price of Courage', 'WD':'City of Splendors: Waterdeep', 'MT':"Midnight's Terror", 'RTF':'Return to the Temple of the Frog',
- 'RotW':'Races of the Wild', 'ECS':'Eberron Campaign Setting', 'ExUn':'Expedition to Undermountain', 'SotAC':'Secrets of the Alubelok Coast', 'Sheep':"Sheep's Clothing",
+ 'PoC':'Price of Courage',
+ 'MT':"Midnight's Terror", 'RTF':'Return to the Temple of the Frog',
+ 'ECS':'Eberron Campaign Setting', 'MoE': 'Magic of Eberron', 'EH': "Explorer's Handbook",
+ 'Sarlo': 'Secrets of Sarlona', 'SoS': 'Secrets of Sarlona',
+ "Xen'd":"Secrets of Xen'drik", 'SX':"Secrets of Xen'drik",
+ 'FoW':'The Forge of War', 'FW':'The Forge of War',
+ 'FN': 'Five Nations',
+ 'ExUn':'Expedition to Undermountain', 'SotAC':'Secrets of the Alubelok Coast', 'Sheep':"Sheep's Clothing",
  'A&EG':'Arms & Equipment Guide',
- 'SvgSp':'Savage Species (Web Enhancement)', "Xen'd":"Secrets of Xen'drik", 'LEoF':'Lost Empires of Faerun', 'Kruk':'The Lost Tomb of Kruk-Ma-Kali', 'SD':'Stone Dead',
- 'BoED':'Book of Exalted Deeds', 'FC1':'Fiendish Codex 1', 'Storm':'Stormwrack', 'FoW':'The Forge of War',
+ 'SvgSp':'Savage Species (Web Enhancement)', 'SS':'Savage Species',
+ 'LEoF':'Lost Empires of Faerun', 'LE':'Lost Empires of Faerun',
+ 'Kruk':'The Lost Tomb of Kruk-Ma-Kali', 'SD':'Stone Dead',
+ 'BoED':'Book of Exalted Deeds', 'FC1':'Fiendish Codex 1',
+ 'Storm':'Stormwrack', 'Sto':'Stormwrack',
  'SoCo':"Something's Cooking",
  'Draco':'Draconomicon',
  'MH':'Miniatures Handbook',
- 'BoKr':'Bestiary of Krynn', 'MgoF':'Magic of Faerun', 'RoF':'Races of Faerun', 'DoK':'Dragons of Krynn', 'MoF':'Monsters of Faerun',
+ 'BoKr':'Bestiary of Krynn', 'DoK':'Dragons of Krynn',
+ 'MgoF':'Magic of Faerun', 'RoF':'Races of Faerun', 'MoF':'Monsters of Faerun',
+ # Magic of Faerun was updated in Player's Guide to Faerun: Crypt Spawn: Undead (augmented [previous type]); +8/+12 (for sample); LA +2. Do not recalculate attack bonus, saves, or skill points. Add darkvision 60 ft. to special qualities. Spectral Mage: Undead (augmented [previous type], incorporeal); +2/-; LA +6. Do not recalculate attack bonus, saves, or skill points; add darkvision 60 ft. to special qualities. Skills: A spectral mage gains a +8 racial bonus on Hide and Intimidate checks.
+ # Monsters of Faerun was updated in Player's Guide to Faerun: Curst: Undead; +5/+8; 5 ft./5 ft.; LA +3. Revenant: Undead; +3/+5 (for sample); 5 ft./5 ft.; 5/magic; LA -. Add darkvision 60 ft. to special qualities. Replace regeneration with fast healing; add undead traits to special qualities. Fast Healing (Ex): A revenant regains lost hit points at the rate of 3 per round, except for damage dealt by fire, as long as it has at least 1 hit point. Fast healing does not restore hit points lost from starvation, thirst, or suffocation, and it does not allow the revenant to regrow or reattach lost body parts. Yuan-Ti, Tainted One: Monstrous humanoid; +3/+4 (for sample); LA +2. Use poison 1/day and polymorph 3/day; spell resistance changes to 12 + 1 per two levels; add darkvision 60 ft. to special qualities.
  'GotP':'Garden of the Plantmaster',
- 'StSt':'The Standing Stone', 'BoBS':'Bastion of Broken Souls', 'Forge': 'The Forge of Fury',
+ 'StSt':'The Standing Stone', 'StS':'The Standing Stone',
+ 'BoBS':'Bastion of Broken Souls', 'Forge': 'The Forge of Fury',
  'DrC':'Dragon Compendium', 'MoI':'Magic of Incarnum',
  'HoD':'Harvest of Darkness', 'EnvIm':'Environmental Impact',
- 'DDen':"Dangerous Denizens - The Monsters of Tellene",
- 'FN': 'Five Nations', 'KoD': 'Key of Destiny', 'BoVD': 'Book of Vile Darkness', 'ToB': 'Tome of Battle',
+ 'DDen':"Dangerous Denizens - The Monsters of Tellene", 'DD':"Dangerous Denizens - The Monsters of Tellene",
+ 'KoD': 'Key of Destiny', 'BoVD': 'Book of Vile Darkness', 'ToB': 'Tome of Battle',
  'EPH': 'Expanded Psionics Handbook', # many available http://www.d20srd.org/indexes/psionicMonsters.htm but SRD does not appear in their lists
  'Web': 'Web content',
- 'MoE': 'Magic of Eberron', 'ItDL': "Into the Dragon's Lair", 'FoN': 'Force of Nature', 'AoM': 'Age of Mortals', 'ToM': 'Tome of Magic', 'ShSo': 'Shining South', 'GW': 'Ghostwalk', 'Frost': 'Frostburn', 'Sarlo': 'Secrets of Sarlona', 'SaD': 'Stand and Deliver', 'HoB': 'Heroes of Battle',
- 'C.Ps': 'Complete Psionic', 'OA': 'Oriental Adventures', 'LM': 'Libris Mortis', 'Under': 'Underdark', 'C.Ar': 'Complete Arcane',
+ 'ItDL': "Into the Dragon's Lair", 'FoN': 'Force of Nature', 'AoM': 'Age of Mortals',
+ 'ToM': 'Tome of Magic', 'TM': 'Tome of Magic',
+ 'ShSo': 'Shining South',
+ 'GW': 'Ghostwalk', 'Gh': 'Ghostwalk',
+ 'Frost': 'Frostburn',
+ 'SaD': 'Stand and Deliver', 'HoB': 'Heroes of Battle',
+ 'C.Ps': 'Complete Psionic', 'OA': 'Oriental Adventures', 'LM': 'Libris Mortis',
+ 'Under': 'Underdark', 'Und': 'Underdark',
+ 'DotU':'Drow of the Underdark', 'DrU':'Drow of the Underdark',
+ 'C.Ar': 'Complete Arcane', 'CAr': 'Complete Arcane',
  'ToBV': 'The Treasure of the Black Veils', 'DS': 'Desert Sands', 'LDR': 'Lest Darkness Rise',
  'DCS': 'Dragonlance Campaign Setting',
- 'HOS': 'Holy Order of the Stars', 'MotP': 'Manual of the Planes',
+ 'HOS': 'Holy Order of the Stars',
+ 'MotP': 'Manual of the Planes', 'MP': 'Manual of the Planes',
  r'A\d\d': 'Dragon Magazine Annual 00/01',
  r'\d\d\d': 'Dragon Magazine',
- 'LoMys': 'Lands of Mystery', 'FC2': 'Fiendish Codex 2', 'DrM': 'Dragon Magic', 'CoR': 'Champions of Ruin', 'LoM': 'Lords of Madness', 'WndW': 'The Secret of the Windswept Wall', 'Sand': 'Sandstorm', 'C.War': 'Complete Warrior', 'City': 'Cityscape', 'SlvSk': 'The Silver Skeleton', 'RTEE': 'Return to the Temple of Elemental Evil', 'HoH': 'Heroes of Horror', 'TVoS': 'The Vessel of Stars', 'Serp': 'Serpent Kingdoms', 'SM': 'Silver Marches', 'BaS': 'Blood and Shadows - The Dark Elves of Tellene', 'UE': 'Unapproachable East', 'BoKR': 'Bestiary of Krynn Revised', 'Sharn': 'Sharn - City of Towers', 'Deities': 'Deities and Demigods', 'FRCS': 'Forgotten Realms Campaign Setting', 'F&P': 'Faiths and Pantheons'
+ 'LoMys': 'Lands of Mystery', 'FC2': 'Fiendish Codex 2', 'DrM': 'Dragon Magic',
+ 'CoR': 'Champions of Ruin', 'CR': 'Champions of Ruin',
+ 'LoM': 'Lords of Madness', 'WndW': 'The Secret of the Windswept Wall',
+ 'Sand': 'Sandstorm', 'Sa': 'Sandstorm',
+ 'C.War': 'Complete Warrior',
+ 'SlvSk': 'The Silver Skeleton', 'RTEE': 'Return to the Temple of Elemental Evil',
+ 'HoH': 'Heroes of Horror', 'HH': 'Heroes of Horror',
+ 'TVoS': 'The Vessel of Stars',
+ 'Serp': 'Serpent Kingdoms', 'SK': 'Serpent Kingdoms',
+ 'SM': 'Silver Marches', 'BaS': 'Blood and Shadows - The Dark Elves of Tellene',
+ 'UE': 'Unapproachable East', 'Una': 'Unapproachable East',
+ 'BoKR': 'Bestiary of Krynn Revised',
+ 'Deities': 'Deities and Demigods', 'FRCS': 'Forgotten Realms Campaign Setting',
+ 'F&P': 'Faiths and Pantheons', 'FP': 'Faiths and Pantheons' # 3.0
  }
- #EPH	Expanded Psionics Handbook	Sand	Sandstorm	Sarlo	Secrets of Sarlona	ItDL	Into the Dragon's Lair	SaD	Stand and Deliver	DS	Desert Sands
- #BoVD	Book of Vile Darkness	FC2	Fiendish Codex 2	ToB	Tome of Battle	FN	Five Nations	Serp	Serpent Kingdoms	Forge	The Forge of Fury	FoN	Force of Nature
- #City	Cityscape	Frost	Frostburn	ToM	Tome of Magic	MoE	Magic of Eberron	ShSo	Shining South	WndW	The Secret of the Windswept Wall	GW	Ghostwalk
- #C.Ar	Complete Arcane	HoB	Heroes of Battle	DCS	Dragonlance Campaign Setting	Sharn	Sharn - City of Towers	UE	Unapproachable East	RTEE	Return to the Temple of Elemental Evil	OA	Oriental Adventures
- #C.Psi	Complete Psionic	HoH	Heroes of Horror	AoM	Age of Mortals	CoR	Champions of Ruin	Under	Underdark	TVoS	The Vessel of Stars	###	Dragon Magazine
- #C.War	Complete Warrior	LM	Libris Mortis	KoD	Key of Destiny	F&P	Faiths and Pantheons, SlvSk	The Silver Skeleton	A##	Dragon Magazine Annual 00/01
- #Deities	Deities and Demigods	LoM	Lords of Madness	BoKR	Bestiary of Krynn Revised	FRCS	Forgotten Realms Campaign Setting	BaS	Blood and Shadows - The Dark Elves of Tellene	LDR	Lest Darkness Rise	Web	Web content
- #DrM	Dragon Magic	MotP	Manual of the Planes	HOS	Holy Order of the Stars	SM	Silver Marches	LoMys	Lands of Mystery	ToBV	The Treasure of the Black Veils	108 total sources
+# 108 total sources
  # if the abbreviation is just a number then it's a Dragon magazine number
 
 # until get proper version numbers and dates for rulebooks, quick fix for monsters only just linear-order the relevant rulebooks
 rulebook_priority = ('EPH', 'MM1', 'MM4', 'LoM', 'Sand', 'MH', 'MM2', 'C.Ps', 'OA', 'SaD', 'GotP', 'DrC', '318', '306')
 # Stand and Deliver is a first level adventure set in the Kingdoms of Kalamar campaign setting. This adventure is designed for use with the revised (3.5) edition of the rules
-# Garden of the Plantmaster: Campaign Resource and Adventure (Dungeons & Dragons: Kingdoms of Kalamar) Paperback – April, 2003
+# Garden of the Plantmaster: Campaign Resource and Adventure (Dungeons & Dragons: Kingdoms of Kalamar) Paperback - April, 2003
   # this pegs Dragon #309 as the start of 3.5ed http://www.enworld.org/forum/showthread.php?9651-DRAGON-Magazine-monster-index!
   # Dragon #309 (War, Incursion) from July 2003 was the first D&D 3.5 issue. https://rpg.stackexchange.com/questions/14892/in-what-issue-did-dragon-dungeon-magazine-transition-to-3-5e-rules
 # Miniatures Handbook is 3.5 2003, Sandstorm is March 1, 2005
@@ -254,6 +286,10 @@ def id_from_name(curs, tableName, name, allowExtraOnLeft=False, allowExtraOnRigh
       raise RuntimeError("{} results in {} for {}: {}".format(len(results), tableName, name, results) )
     return results[0][0]
 
+
+def iterate_over_types(curs):
+  curs.execute('''SELECT id,name FROM dnd_monstertype;''')
+  return curs.fetchall()
 
 
 darkvisionRE = re.compile(r"DV\d{2,3}")
@@ -490,7 +526,7 @@ def insert_psionic_powers(curs):
   curs.execute('''CREATE TABLE dnd_spell (
   id INTEGER PRIMARY KEY NOT NULL,
   added datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  rulebook_id int(11) NOT NULL,
+  rulebook_id INTEGER NOT NULL,
   page smallint(5)  DEFAULT NULL,
   name varchar(64) NOT NULL,
   slug varchar(64) NOT NULL,
@@ -657,7 +693,7 @@ def insert_psionic_powers(curs):
   insertPower('Umbral Body', 7, "You gain the incorporeal subtype (see page 164) and all advantages and traits associated with it.")
   insertPower('Potent Word of Nurturing', 12, "You grant a creature fast healing 10.")
   insertPower('Critical Word of Nurturing', 12, "you utter the reverse form of the life-giving words. You deal 8d6 points of damage to the subject.")
-  insertPower('Incarnation of Angels', 7, "The target gains the celestial creature template (MM 31). The target gains the fi endish creature template (MM 107).")
+  insertPower('Incarnation of Angels', 7, "The target gains the celestial creature template (MM 31). The target gains the fiendish creature template (MM 107).")
   insertPower("Archer's Eye", 7, "Your target's ranged attacks ignore penalties for concealment because her aim sharpens to focus on the unconcealed parts of her foe.")
   insertPower("Shockwave", 5, "A violent shock wave travels through the air, and creatures in the area must make Fortitude saves or be knocked prone and take 1d4 points of nonlethal damage.")
   insertPower("Preternatural Clarity", 3, "+5 insight bonus on any single attack roll, opposed ability or skill check, or saving throw. When your target uses the insight bonus, those within 10 feet of her can hear an echo of your original utterance, even if you're no longer present. Activating the effect is an immediate action. The target can choose to apply the bonus after she has rerolled the d20, but before the Dungeon Master reveals the result of the check.")
@@ -675,8 +711,21 @@ def insert_psionic_powers(curs):
   insertPower('Regenerate Worldskin', 2, "As a standard action, Ragnorra can initiate regeneration in any worldskin feature (see page 102). This ability has unlimited range. The growth regains 50 hit points per round.")
   insertPower('Skincasting', 2, "As a standard action, Ragnorra can activate the ability of any worldskin feature (see page 102) within 1,000 feet.")
   insertPower('Mass Aversion', telepathyID, "An anathema creates a compulsion effect targeting all enemies within 30 feet. The targets must succeed on a Will save (DC 27) or gain an aversion to snakes for 10 minutes. Affected subjects must stay at least 20 feet from any snake, yuan-ti, or ti-khana creature (described earlier in this book), whether alive or dead; if already within 20 feet, they move away. A subject can overcome the compulsion by succeeding on another Will save (DC 27), but still suffers from deep anxiety. This causes a -4 reduction to Dexterity until the effect wears off or the subject is no longer within 20 feet of a snake, yuan-ti, or ti-khana creature. This ability is otherwise similar to antipathy as cast by a 16th-level sorcerer.")
+
 class Monster(object):
   #allEnvs = set()
+  @staticmethod
+  def splitSpecialAbilities(commaSeparatedSpecialAbilities):
+    if commaSeparatedSpecialAbilities == '-':
+      return []
+    else:
+      specialAbs = [ab.strip() for ab in commaSeparatedSpecialAbilities.split(',')]
+      return [ab for ab in specialAbs if ab!='']
+  def set_default_alignment(self, default_alignment_string):
+    if default_alignment_string == 'Any' or default_alignment_string == 'N': default_alignment_string = 'NN'
+    self.lawChaosID = default_alignment_string[0]#lawChaosToInt[default_alignment_string[0]]
+    self.goodEvilID = goodEvilToInt[default_alignment_string[-1]]
+
   def __init__(self, xls_row):
     self.name = xls_row[0].value
     self.size = xls_row[1].value
@@ -802,34 +851,15 @@ class Monster(object):
     #    raise ValueError(environment)
     default_alignment_string = xls_row[28].value # can be something like "NG or NE"
     if len(default_alignment_string) < 2: raise RuntimeError(default_alignment_string)
-    if default_alignment_string == 'Any': default_alignment_string = 'NN'
-    #print('default_alignment_string =', default_alignment_string)
-    self.lawChaosID = default_alignment_string[0]#lawChaosToInt[default_alignment_string[0]]
-    self.goodEvilID = goodEvilToInt[default_alignment_string[1]]
+    self.set_default_alignment(default_alignment_string)
+
     if xls_row[29].value == '-': self.challenge_rating = 0
     else: self.challenge_rating = fraction_to_negative(xls_row[29].value)
     self.rulebook_abbrev = xls_row[30].value
 
-    commaSeparatedSpecialAttacks = xls_row[14].value
-    #print('commaSeparatedSpecialAttacks =', commaSeparatedSpecialAttacks)
-    if commaSeparatedSpecialAttacks == '-':
-      self.specialAttacks = []
-    else:
-      self.specialAttacks = [ab.strip() for ab in commaSeparatedSpecialAttacks.split(',')]
-      self.specialQualities = [ab for ab in self.specialAttacks if ab!='']
-      #if any(q=='' for q in self.specialAttacks):
-      #  raise Exception(self.name)
+    self.specialAttacks = Monster.splitSpecialAbilities(xls_row[14].value)
     #print('self.specialAttacks =', self.specialAttacks)
-    commaSeparatedSpecialQualities = xls_row[16].value
-    if commaSeparatedSpecialQualities == '-':
-      self.specialQualities = []
-    else:
-      #if commaSeparatedSpecialQualities[-1] == ',':
-      #  commaSeparatedSpecialQualities = commaSeparatedSpecialQualities[:-1]
-      self.specialQualities = [ab.strip() for ab in commaSeparatedSpecialQualities.split(',')]
-      self.specialQualities = [ab for ab in self.specialQualities if ab!='']
-      #if any(q=='' for q in self.specialQualities):
-      #  raise Exception(self.name)
+    self.specialQualities = Monster.splitSpecialAbilities(xls_row[16].value)
 
     self.SpellLikeAbilities = list()
     SLAstring = xls_row[15].value
@@ -1016,6 +1046,35 @@ class Monster(object):
         #onlyOneRow = csv.reader([quoteParens], skipinitialspace=True).__next__() # must use skipinitialspace for quoting to work http://stackoverflow.com/questions/6879596/why-is-the-python-csv-reader-ignoring-double-quoted-fields
         #onlyOneRow = [spell.replace('"(', '(').replace(')"', ')') for spell in onlyOneRow]
         #print('onlyOneRow=', onlyOneRow)
+  
+  statblockRE = re.compile(r"([\w ]+): CR (\d|\d/\d{1,2}); (Fine|Diminutive|Tiny|Small|Medium-size|Large|Huge|Gargantuan|Colossal) ([\w ]+); HD (\d|\d/\d)d\d(?:(?:\-|\+)\d{1,2})?; hp \d; Init \+\d; Spd (\d\d) ft\.(?:\, (?:burrow|climb|fly|swim) \d\d ft\.(?: \((?:clumsy|poor|average|good|perfect)\))?)*; AC \d\d, touch \d\d, flat-footed \d\d; Base Atk \+\d; Grp (?:\-|\+)\d{1,2}; Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)); Full Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)); Space/Reach (?:\d|\d/\d) ft\./\d ft\.; SA ([\w\-]+); SQ ([\w \,\-]+); AL (\w{1,2}); SV Fort \+\d, Ref \+\d, Will \+\d; Str (\d{1,2})\, Dex (\d{1,2})\, Con (\d{1,2})\, Int (\d{1,2})\, Wis (\d{1,2})\, Cha (\d{1,2})\.\s+Skills and Feats: [\w \+\-\d\,]+; [\w \,]+\.")
+  @staticmethod
+  def from_statblock(statblock, rulebook_abbrev):
+    matchObj = Monster.statblockRE.match(statblock)
+    if matchObj is None: raise ValueError(statblock)
+    ret = object.__new__(Monster)
+    ret.name = matchObj.group(1)
+    ret.challenge_rating = fraction_to_negative(matchObj.group(2) )
+    ret.size = matchObj.group(3)
+    ret.type_name = sensible_title(matchObj.group(4) )
+    ret.subtypes = []
+    ret.HitDice = fraction_to_negative(matchObj.group(5) )
+    ret.landSpeed = int(matchObj.group(6) )
+    ret.movementModes = []
+    ret.maneuverability = None
+    ret.specialAttacks = Monster.splitSpecialAbilities(matchObj.group(7) )
+    ret.specialQualities = Monster.splitSpecialAbilities(matchObj.group(8) )
+    ret.set_default_alignment(matchObj.group(9) )
+    ret.strength     = integer_or_non(matchObj.group(10) )
+    ret.dexterity    = integer_or_non(matchObj.group(11) )
+    ret.constitution = integer_or_non(matchObj.group(12) )
+    ret.intelligence = integer_or_non(matchObj.group(13) )
+    ret.wisdom       = integer_or_non(matchObj.group(14) )
+    ret.charisma     = integer_or_non(matchObj.group(15) )
+    ret.rulebook_abbrev = rulebook_abbrev
+    ret.environment = 'environment not given'
+    ret.SpellLikeAbilities = []
+    return ret
 
   def check_if_special_ability_is_spell(self, curs, monster_id, ability):
     if ability not in ('Poison', 'poison', 'death throes', 'Enslave', 'Camouflage', 'camouflage', 'Curse of lycanthropy', 'Darkvision', 'Low-Light Vision', 'scent', 'Spell Resistance', 'web', 'freeze'):
@@ -1046,6 +1105,8 @@ class Monster(object):
       # if the same monster is listed in multiple books with the same stats...what?
       #print(rulebook_abbrev, 'rulebook_id from dnd_rulebook =', rulebook_id)
     self.size = self.size.rstrip('+.')
+    # Colossal+ Although there is no size category larger than Colossal, the oldest epic dragons deal more damage with their attacks than other Colossal dragons, as shown on the Epic Dragon Face and Reach and Epic Dragon Attacks tables below.
+    # So Colossal+ can be folded into Colossal.
     #curs.execute('''SELECT id from dnd_racesize WHERE name like ?''', (self.size + '%',) )
     #size_id = curs.fetchone()[0]
     size_id = id_from_name(curs, 'dnd_racesize', self.size, allowExtraOnRight=True)
@@ -1091,7 +1152,7 @@ class Monster(object):
         # these are locations within the Gaping Maw, but for the moment we just want to store the layer
         locationWithin = 'Gaping Maw'
       elif locationWithin == 'Empyrea':
-        # Empyrea, the City of Tempered Souls, on Celestia’s fifth layer Mertion
+        # Empyrea, the City of Tempered Souls, on Celestia's fifth layer Mertion
         locationWithin = 'Mertion'
       elif locationWithin == "Stygia":
         if parentPlane == 'The Abyss':
@@ -1168,10 +1229,191 @@ class Monster(object):
       curs.execute('''INSERT INTO monster_has_spell_like_ability (monster_id, spell_id, caster_level, caster_level_scales_with_HD, uses_per_day, parenthetical)
                    VALUES (?, ?, ?, ?, ?, ?)''',
                    (monster_id, spell_id, casterLevel, caster_level_scales_with_HD, usesPerDay, parenthetical) )
-# Colossal+ Although there is no size category larger than Colossal, the oldest epic dragons deal more damage with their attacks than other Colossal dragons, as shown on the Epic Dragon Face and Reach and Epic Dragon Attacks tables below.
-# So Colossal+ can be folded into Colossal.
 
 # Creatures who could not be played in a default-campaign-setting game without adaptation have been omitted. This largely means outsiders native to planes unique to other settings.
+
+class Template(object):
+  #bookREcapturing = re.compile(r" \(([\w\d]{2,4}) (\d{2,3})\)")
+  augmentedRE = re.compile(r"; (?:gains? )?[aA]ugmented subtype| with the appropriate augmented subtype")
+  rockdeworldRE = re.compile(r"([\w\- \,]+)(?: \((?:(?:([\w\d]{2,5}) (\d{2,3}))|(?:Web))\))? +LA ((?:n/a)|(?:Variable)|(?:varies)|(?:\+|\-)\d)(?: \(minimum 0\))? -{1,3}([\w\d\- \,\.:;\(\)]+) (?:(?:Type Changes)|(?:TC)): +([\w ;\,\[\]\-/]+)(?: \([\.\d\w ]+\))?")
+  exceptTypesRE = re.compile(r" (?:except|that is not) an? ([\w\, ]+)")
+    # Any living creature except an ooze
+    # Any corporeal creature except a construct, undead, or elemental
+    # any living, corporeal creature, except a dragon
+    # but the word except appears for other reasons as well
+    # Any corporeal that is not an oustsider
+    # Any corporeal creature that is not a construct
+    # Any living creature of good alignment that is not an outsider or an elemental
+  changeOnlyTheseTypesRE = re.compile(r"Unchanged(?: add Psionic subtype)?; ([Aa]nimal)s?(?:(?: and |/| or )(\w+)s?)? becomes? ([Mm]agical [Bb]east)s?")
+  # Winged Creature SS 137 type not found: Unchanged; Animals and vermin become magical beasts; Humanoids become monstrous humanoids
+  # Beasts or Animals become Magical Beasts otherwise type is unchanged but can ignore that in favor of newer version of each such template
+
+  @staticmethod
+  def from_groups(groups):
+      name = groups[0]
+      assert name != ''
+      rulebook_abbrev = groups[1]
+      page = groups[2]
+      if page is None: assert rulebook_abbrev is None
+      if page == '': assert rulebook_abbrev == ''
+      if rulebook_abbrev is None or rulebook_abbrev == '':
+        assert page is None or page == ''
+        rulebook_abbrev = 'Web'
+        assert page is None
+      else:
+        #print('page =', page)
+        page = int(page)
+      #location = groups[1]
+      #if location == '':
+      #  rulebook_abbrev = 'Web'
+      #else:
+      #  matchObj = Template.bookREcapturing.match(location)
+      #  assert matchObj is not None
+      #  rulebook_abbrev = matchObj.group(1)
+      #  page = int(matchObj.group(2) )
+      levelAdjustment = groups[3]
+      # Note that if the template doesn't mention level adjustment, then the level adjustment should be +0, not -.
+      # However, half-golems and captured ones were given LA - in the 3.5 update to MM2.
+      if levelAdjustment in ('n/a', 'Variable', 'varies'):
+        levelAdjustment = None
+      else:
+        levelAdjustment = int(levelAdjustment)
+      baseCreature = groups[4]
+      resultType = groups[5]
+      #print('resultType =', resultType)
+      # According to Monster Manual rules, there is no point in specifically noting the augmented subtype when given: If a template changes the base creature's type, the creature also acquires the augmented subtype (see page 306) unless the template description indicates otherwise. The augmented subtype is always paired with the creature's original type. For example, a unicorn with the half-celestial template is an outsider with the augmented magical beast subtype. Unless a template indicates otherwise, the new creature has the traits of the new type but the features of the original type. The example half-celestial unicorn has outsider traits (darkvision out to 60 feet, no soul) and magical beast features (10-sided Hit Dice, base attack bonus equal to total Hit Dice, good Fortitude and Reflex saves, and so on).
+      if name == 'Vampire': resultType = 'Undead'
+      resultType = Template.augmentedRE.sub('', resultType)
+      #print(name, rulebook_abbrev, levelAdjustment, baseCreature, resultType)
+      ret = Template()
+      ret.name = name
+      ret.rulebook_abbrev = rulebook_abbrev
+      ret.page = page
+      ret.levelAdjustment = levelAdjustment
+      ret.baseCreature = baseCreature.strip()
+      ret.resultType = resultType.strip()
+      return ret
+  @staticmethod
+  def findall(string):
+    for groups in Template.rockdeworldRE.findall(string):
+      yield Template.from_groups(groups)
+  @staticmethod
+  def read_file(filename):
+    for line in open(filename):
+      if line[:6] == '</div>' or line[:11] == '<div class=' or line[:3] == '<b>':
+        continue
+      matchObj = Template.rockdeworldRE.match(line)
+      if matchObj is None:
+        raise Exception(line)
+      yield Template.from_groups(matchObj.groups() )
+  def insert_type_change(self, curs, baseTypeID, outputTypeID):
+    if self.resultType is None:
+      assert outputTypeID is None
+      assert baseTypeID is not None
+      outputTypeID = baseTypeID
+    #print(self.name, 'outputTypeID =', outputTypeID)
+    curs.execute('''INSERT INTO template_type (template_id, base_type, output_type) VALUES (?,?,?);''', (self.template_id, baseTypeID, outputTypeID) )
+  def insert_into(self, curs):
+    curs.execute('''SELECT id from dnd_rulebook where abbr=?;''',
+                 (self.rulebook_abbrev,) )
+    result = curs.fetchone()
+    if result is None:
+      print('no rulebook found:', self.name, self.rulebook_abbrev)
+    rulebook_id = result[0]
+
+    # A character who succeeds at all the saves he or she is required to make takes on the attributes of a half-golem as described below except that the character retains his or her alignment, gains a +4 bonus to Constitution, and does not change type or gain construct traits. As soon as the character fails one of these required saves, he or she becomes a half-golem of neutral evil alignment. The character then has no Constitution score and the character's type changes to construct, granting him or her construct traits.
+    # entropic Size and Type: Unless the creature was undead, its type changes to outsider. Size is unchanged. The creature also gains the extraplanar subtype.
+    outputTypeID = None
+    for (baseTypeID,name) in iterate_over_types(curs):
+      if self.resultType is not None and (self.resultType.startswith(name + ';') or self.resultType.startswith(name + ', retains') ):
+        outputTypeID = baseTypeID
+    if self.resultType == 'Unchanged' or self.resultType == 'none':
+      self.resultType = None
+    elif (self.resultType[:11] == 'Unchanged; ' or self.resultType=='gain Aquatic subtype') and ('ubtype' in self.resultType or 'Add [Shapechanger]' in self.resultType):
+      self.resultType = None # ignore subtypes for now
+    elif outputTypeID is None:
+      outputTypeID = id_from_name(curs, 'dnd_monstertype', self.resultType)
+      #if outputTypeID is None:
+        #print('template', self.name, self.rulebook_abbrev, self.page, 'type not found:', self.resultType)
+
+    curs.execute('''INSERT INTO dnd_template
+                 (name, rulebook_id, page, level_adjustment)
+                 VALUES (?, ?, ?, ?);''',
+                 (self.name, rulebook_id, self.page, self.levelAdjustment) )
+    self.template_id = curs.lastrowid
+    
+    # remember, outsiders are living: An outsider is at least partially composed of the essence (but not necessarily the material) of some plane other than the Material Plane. Unlike most other living creatures, an outsider does not have a dual nature --- its soul and body form one unit.
+    # thornier is dealing with Living Constructs, since that's a subtype, but those are few and can be neglected for now
+    self.baseCreature = self.baseCreature.replace('oustsider', 'outsider')
+
+    if self.baseCreature[:16] == 'Any Non-undead, ':
+      for (baseTypeID,name) in iterate_over_types(curs):
+        if 'non' + name.lower() not in self.baseCreature.lower():
+          self.insert_type_change(curs, baseTypeID, outputTypeID)
+      # sqlite> select dnd_template.name,base.name,output.name from template_type inner join dnd_template on template_id=dnd_template.id inner join dnd_monstertype as base on base_type=base.id inner join dnd_monstertype as output on output_type=output.id;
+      return
+    matchObj = Template.exceptTypesRE.search(self.baseCreature)
+    if matchObj is not None:
+      exceptTypesList = matchObj.group(1)
+      for (baseTypeID,name) in iterate_over_types(curs):
+        if name.lower() not in exceptTypesList.lower() and ('ny living' not in self.baseCreature or name!='Undead' or name!='Construct'):
+          #if outputTypeID is None: print(self.name)
+          self.insert_type_change(curs, baseTypeID, outputTypeID)
+      return
+    
+    # already eliminated the excepts, so if any type name is mentioned, we have a list of allowed type names
+    allTypeNames = set(pair[1] for pair in iterate_over_types(curs) )
+    baseTypeNames = set()
+    if any(name.lower() in self.baseCreature.lower() for name in allTypeNames):
+      for name in allTypeNames:
+        if name.lower() in self.baseCreature.lower() and 'generally ' + name.lower() + ' form' not in self.baseCreature.lower():
+          baseTypeNames.add(name)
+    elif self.baseCreature == 'Any Lich':
+      baseTypeNames = set(['Undead'])
+    elif self.baseCreature == 'any naga':
+      baseTypeNames = set(['Aberration', 'Undead', 'Monstrous Humanoid', 'Humanoid'])
+      # sqlite> select dnd_monstertype.name,dnd_monster.name from dnd_monster inner join dnd_monstertype on type_id=dnd_monstertype.id where dnd_monster.name like "%naga%";
+      # Undead|Naga, Bone Humanoid|Naga, Shinomen, Greensnake Monstrous Humanoid|Naga, Shinomen, Chameleon
+    else:
+      baseTypeNames = allTypeNames
+    # living is always used as a requirement
+    if 'living' in self.baseCreature and 'living construct' not in self.baseCreature:
+      baseTypeNames = baseTypeNames.difference(set(['Undead', 'Construct']) )
+      # except living constructs...
+
+    if self.resultType is not None:
+      matchObj = Template.changeOnlyTheseTypesRE.match(self.resultType)
+      if matchObj is not None:
+        twoOrThree = matchObj.groups()
+        assert len(twoOrThree) in (2,3)
+        for baseTypeName in twoOrThree[:-1]:
+          if baseTypeName is None: continue
+          #print('changeOnlyTheseTypesRE', len(twoOrThree), baseTypeName, twoOrThree[-1])
+          self.insert_type_change(curs, id_from_name(curs, 'dnd_monstertype', sensible_title(baseTypeName) ), id_from_name(curs, 'dnd_monstertype', sensible_title(twoOrThree[-1]) ) )
+        for name in baseTypeNames.difference(twoOrThree[:-1]):
+          sameID = id_from_name(curs, 'dnd_monstertype', name)
+          self.insert_type_change(curs, sameID, sameID)
+        return
+    if self.resultType == 'Outsider unless the base creature was undead':
+      undeadID = id_from_name(curs, 'dnd_monstertype', 'Undead')
+      self.insert_type_change(curs, undeadID, undeadID)
+      for name in baseTypeNames.difference(['Undead']):
+        self.insert_type_change(curs, id_from_name(curs, 'dnd_monstertype', name), id_from_name(curs, 'dnd_monstertype', 'Outsider') )
+      return
+    elif self.resultType == 'Humanoid if medium-size or smaller, or Giant if it is Large or larger':
+      for name in baseTypeNames:
+        self.insert_type_change(curs, id_from_name(curs, 'dnd_monstertype', name), id_from_name(curs, 'dnd_monstertype', 'Humanoid') )
+        self.insert_type_change(curs, id_from_name(curs, 'dnd_monstertype', name), id_from_name(curs, 'dnd_monstertype', 'Giant') )
+      return
+    
+    # if didn't hit any other case:
+    #print(self.name, 'default case', self.resultType)
+    for name in baseTypeNames:
+      self.insert_type_change(curs, id_from_name(curs, 'dnd_monstertype', name), outputTypeID)
+
+
+
+
 
 # http://stackoverflow.com/questions/4055564/what-does-the-number-in-parenthesis-really-mean
 # The number after INT is in base 10, not base 2.
@@ -1187,8 +1429,8 @@ class Monster(object):
 
 def read_xls(XLSfilepath="Monster Compendium.xls"):
   book = xlrd.open_workbook(XLSfilepath)
-  print(XLSfilepath, 'has', book.nsheets, 'sheets')
-  print('The sheet names are', book.sheet_names() )
+  #print(XLSfilepath, 'has', book.nsheets, 'sheets')
+  #print('The sheet names are', book.sheet_names() )
   alphabetical = book.sheet_by_index(0)
   templates = book.sheet_by_index(1)
   ODE = book.sheet_by_index(3)
@@ -1238,7 +1480,7 @@ fortitude_divisors = {'Animal':2, # certain animals have different good saves
       'Construct':3, 'Dragon':2,
       # Good saves depend on the element: Fortitude (earth, water) or Reflex (air, fire).
       'Fey':3, 'Giant':2,
-      # Good Reflex saves (usually; a humanoid’s good save varies). # Especially if they have class levels.
+      # Good Reflex saves (usually; a humanoid's good save varies). # Especially if they have class levels.
       'Ooze':3, 'Outsider':2, 'Plant':2, 'Undead':3, 'Vermin':2,
       }
 fortitude_additions = {key:(2 if d==2 else 0) for key,d in fortitude_divisors.items()}
@@ -1490,7 +1732,7 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
  'The Abyss (Ice Wastes)', # probably Iron Wastes
  'The Abyss (Screaming Jungle)', # Gaping Maw #88
  'The Abyss (Stygia)', # should be Baator
- 'Celestia (Empyrea)', # Empyrea, the City of Tempered Souls, on Celestia’s fifth layer Mertion
+ 'Celestia (Empyrea)', # Empyrea, the City of Tempered Souls, on Celestia's fifth layer Mertion
  'Mechanus (Regulus)', # modron city
  r"",
  'The Abyss, Carceri, Outlands, or Pandemonium',
@@ -1611,7 +1853,7 @@ FOREIGN KEY(terrain_id) REFERENCES dnd_terrain(id)
   curs.execute('''DROP TABLE dnd_monster;''')
   curs.execute('''CREATE TABLE dnd_monster (
   id INTEGER PRIMARY KEY NOT NULL,
-  rulebook_id int(11) DEFAULT NULL,
+  rulebook_id INTEGER DEFAULT NULL,
   name varchar({}) NOT NULL,
   size_id tinyint(1) NOT NULL,
   type_id tinyint(2) NOT NULL,
@@ -1677,7 +1919,36 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   # 1041|2442
   curs.executemany('''INSERT INTO spell_brings_monster (spell_id,monster_id) SELECT dnd_spell.id,dnd_monster.id FROM dnd_spell INNER JOIN dnd_monster ON dnd_spell.name=? AND dnd_monster.name=?;''', [ ('Summon Monster I', 'Elysian Thrush'), ('Summon Monster II','Devil, Lemure'), ('Summon Monster II', 'Clockwork Mender'), ('Summon Monster II', 'Fetid Fungus'), ('Summon Monster II', 'Nerra, Varoot'), ('Summon Monster II', 'Kaorti'), ('Summon Monster II', 'Howler Wasp'), ('Summon Monster II', "Ur'Epona")
   ] )
+  
+  curs.execute('''CREATE TABLE dnd_template (
+  id INTEGER PRIMARY KEY NOT NULL,
+  name varchar({}) NOT NULL,
+  rulebook_id INTEGER NOT NULL,
+  page smallint(2) DEFAULT NULL,
+  level_adjustment tinyint(1) DEFAULT NULL,
+FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
+  );'''.format(maxNameLen) )
+  # webcrawl for stats? http://www.realmshelps.net/monsters/templates/index.shtml
+  # Restless Prey http://archive.wizards.com/default.asp?x=dnd/fw/20030531a
+  # http://www.giantitp.com/forums/showthread.php?444021-Master-Template-List-(from-the-WotC-Forum)
+  curs.execute('''CREATE TABLE template_type (
+  template_id INTEGER NOT NULL,
+  base_type INTEGER NOT NULL,
+  output_type INTEGER NOT NULL,
+FOREIGN KEY(base_type) REFERENCES dnd_monstertype(id),
+FOREIGN KEY(output_type) REFERENCES dnd_monstertype(id),
+FOREIGN KEY(template_id) REFERENCES dnd_template(id)
+  );''')
+  # Savage Species type pyramid was void as soon as the 3.5 Monster Manual came out with rules which specified type changes that happen contrary to the type pyramid. For instance, Half-Dragon applied to an Aasimar changes it to Dragon type because that's what Monster Manual (the primary rule source for templates) says happens (page 146). The type pyramid says that type change doesn't occur, which is a disagreement. In the case of disagreements like this, the Primary Sources Errata Rule says Monster Manual is correct and so that Savage Species rule is no good.
+  #for template in Template.findall(open('rockdeworldTemplates.txt').read() ):
+  for template in Template.read_file('rockdeworldTemplates.txt'):
+    template.insert_into(curs)
 
+  Monster.from_statblock("Ferret: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +2; Spd 15 ft., climb 15 ft.; AC 17, touch 16, flat-footed 15; Base Atk +0; Grp -16; Atk +6 melee (1d2-4, bite); Full Atk +6 melee (1d2-4, bite); Space/Reach 1 ft./0 ft.; SA attach; SQ scent; AL N; SV Fort +2, Ref +4, Will +1; Str 3, Dex 15, Con 10, Int 6, Wis 12, Cha 5. Skills and Feats: Balance +10, Climb +11, Hide +13, Move Silently +9, Spot +14; Weapon Finesse. Attach (Ex): On a hit with its bite attack, it automatically deals bite damage each round (AC 15 when attached).", 'DMG').insert_into(curs)
+  Monster.from_statblock("Hedgehog: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +0; Spd 15 ft.; AC 17, touch 15, flat-footed 16; Base Atk +0; Grp -16; Atk +5 melee (1d3-4 bite); Full Atk +5 melee (1d3-4 bite); Space/Reach 1 ft./0 ft.; SA poison; SQ defensive ball; AL N; SV Fort +2, Ref +3, Will +1; Str 3, Dex 12, Con 10, Int 6, Wis 12, Cha 5. Skills and Feats: Hide +17, Listen +5, Spot +5; Weapon Finesse. Poison (Ex): When in a defensive ball (see below), spines poison foes touching the hedgehog; injury, Fortitude DC 10, initial and secondary damage 1d2 Dex. Defensive Ball (Ex): Rolls into a ball as a standard action, granting a +2 circumstance bonus on saves and AC. Unrolling is a free action.", 'DMG').insert_into(curs)
+  Monster.from_statblock("Mouse: CR 1/10; Fine animal; HD 1/4d8; hp 1; Init +0; Spd 10 ft., climb 10 ft.; AC 19, touch 18, flat-footed 19; Base Atk +0; Grp -21; Atk -; Full Atk -; Space/Reach 1/2 ft./0 ft.; SA -; SQ scent; AL N; SV Fort +2, Ref +2, Will +1; Str 1, Dex 11, Con 10, Int 6, Wis 12, Cha 2. Skills and Feats: Balance +8, Climb +10, Hide +20, Move Silently +12; feat.", 'DMG').insert_into(curs)
+  Monster.from_statblock("Screech Owl: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +3; Spd 10 ft., fly 30 ft. (average); AC 18, touch 17, flat-footed 15; Base Atk +0; Grp -15; Atk +7 melee (1d2-3, talons); Full Atk +7 melee (1d2-3, talons); Space/Reach 1 ft./0 ft.; SA -; SQ -; AL N; SV Fort +2, Ref +5, Will +2; Str 4, Dex 17, Con 10, Int 6, Wis 14, Cha 4. Skills and Feats: Listen +14, Move Silently +20, Spot +8; Weapon Finesse.", 'DMG').insert_into(curs)
+  Monster.from_statblock("Thrush: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +2; Spd 10 ft., fly 40 ft. (average); AC 17, touch 16, flat-footed 15; Base Atk +0; Grp -17; Atk -; Full Atk -; Space/Reach 1 ft./0 ft.; SA -; SQ -; AL N; SV Fort +2, Ref +4, Will +2; Str 1, Dex 15, Con 10, Int 6, Wis 14, Cha 6. Skills and Feats: Listen +8, Spot +8; Alertness.", 'DMG').insert_into(curs)
   # I'm guessing dropwhile has no overhead after failing
   for i,row in itertools.dropwhile(lambda p: p[0]==0,
                enumerate(ODE.get_rows() ) ):

@@ -369,6 +369,49 @@ What monsters have innate bardic music?
   Spectral Lyrist|Undead|6|Bardic music
 
 
+.. code-block:: bash
+
+  sqlite> select distinct dnd_special_ability.name, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id left join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and (dnd_monstersubtype.name is null or dnd_monstersubtype.name!="Swarm") and dnd_special_ability.name not like "%resistan%" and dnd_special_ability.name not like "%saves vs. spells%" and dnd_special_ability.name not like "immun%" and dnd_special_ability.name not like "disease%" and dnd_special_ability.name not like "%powerful%" and dnd_special_ability.name not like "double damage %" and dnd_special_ability.name!="Augmented critical" and dnd_special_ability.name!="Evasion" and dnd_special_ability.name!="uncanny dodge" and dnd_special_ability.name not like "%trample%" and dnd_special_ability.name!="stampede" and dnd_special_ability.name not like "rake %" and dnd_special_ability.name not like "rend 2d%" and dnd_special_ability.name not like "constrict %" and dnd_special_ability.name not like "swallow whole" and dnd_special_ability.name not like "coil slam 1d%" and dnd_special_ability.name not like "%tail sweep%" and dnd_special_ability.name not like "%Frenzy" and dnd_special_ability.name not like "rage" and dnd_special_ability.name != "Ferocity" and dnd_special_ability.name!="Damage Reduction" and dnd_special_ability.name!="Low-Light Vision" and dnd_special_ability.name!="Darkvision" and dnd_special_ability.name!="light sensitivity" and dnd_special_ability.name not like "scent" and dnd_special_ability.name not like "improved grab" and dnd_special_ability.name not like "pounce" and dnd_special_ability.name not like "blinds%" and dnd_special_ability.name not like "hold breath" order by hit_dice;
+
+  sqlite> select distinct dnd_special_ability.name, (hit_dice*3/4 + (strength - 10)/2 + (size_id - 5)*4), dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and dnd_special_ability.name like "%improved grab%" order by (hit_dice*3/4 + strength/2 + size_id*4), -hit_dice, -size_id;
+  improved grab|24|Large|27|Snake, Legendary|Monster Manual II|16
+  Improved grab|30|Huge|34|Woolly Mammoth|Frostburn|14
+  Improved grab|34|Large|33|Tiger, Legendary|Monster Manual II|26
+  Improved grab|35|Huge|39|Bear, Polar, Dire|Frostburn|18
+  Improved grab|36|Gargantuan|34|Dinosaur, Plesiosaur|Stormwrack|16
+  improved grab|40|Gargantuan|36|Dinosaur, Spinosaurus|Monster Manual II|20
+  Improved grab|43|Gargantuan|37|Toad, Titanic Mutant|Return to the Temple of the Frog|25
+  Improved grab|51|Huge|42|Dinosaur, Battletitan|Monster Manual III|36
+  improved grab|62|Colossal|46|Dinosaur, Liopleurodon|Dragon Magazine|38
+
+Interestingly, if we restrict to Large or smaller, there are no reversals; all Large are better grapplers than all Medium-size are better grapplers than all Small.
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_special_ability.name, (hit_dice*3/4 + (strength - 10)/2 + (size_id - 5)*4), dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and size_id<=6 and dnd_special_ability.name like "%improved grab%" order by (hit_dice*3/4 + strength/2 + size_id*4), -hit_dice;
+
+Unfortunately, without a source of data on feats, we cannot know which animals have the Track feat. On the other hand, Handle Animal might make the Track feat irrelevant: Track (DC 20): The animal tracks the scent presented to it. (This requires the animal to have the scent ability.)
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_special_ability.name, (wisdom - 10)/2, dnd_racesize.name, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and dnd_special_ability.name like "%scent%" order by wisdom/2, -hit_dice;
+  scent|1|Small|Dog|Monster Manual|1 has Track feat
+  scent|1|Fine|Mouse|Dungeon Master's Guide v.3.5|-4 no Track feat
+  scent|2|Small|Vulture|Sandstorm|1 has Track feat
+  scent|3|Medium|Bat, Hunting|Monster Manual II|4 ironically does not have the Track feat
+  scent|3|Small|Dinosaur, Swindlespitter|Monster Manual III|2 no Track feat
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_special_ability.name, (wisdom - 10)/2, dnd_racesize.name, land_speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and dnd_special_ability.name like "%blind%" order by dnd_special_ability.name, wisdom/2, -hit_dice;
+  Blindsight 100ft|2|Huge|20|Sea Tiger|Monster Manual III|10
+  Blindsight 60ft|2|Medium|40|Nifern|Serpent Kingdoms|2
+  Blindsense 120ft|3|Medium|20|Bat, Hunting|Monster Manual II|4
+  Blindsense 60ft|2|Tiny|10|Chordevoc|Races of the Wild|1
+  Blindsense 40ft|2|Large|20|Bat, Dire|Monster Manual|4
+  Blindsense 20ft|2|Diminutive|5|Bat|Monster Manual|-4
+
+`Chordevoc <http://archive.wizards.com/default.asp?x=dnd/ex/20050204a&page=5>`_
 
 
 On a lighter note, I always thought that a "living will" sounded like a magical incorporeal construct. Say, are there any incorporeal constructs?
