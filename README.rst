@@ -371,7 +371,13 @@ What monsters have innate bardic music?
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_special_ability.name, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id left join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and (dnd_monstersubtype.name is null or dnd_monstersubtype.name!="Swarm") and dnd_special_ability.name not like "%resistan%" and dnd_special_ability.name not like "%saves vs. spells%" and dnd_special_ability.name not like "immun%" and dnd_special_ability.name not like "disease%" and dnd_special_ability.name not like "%powerful%" and dnd_special_ability.name not like "double damage %" and dnd_special_ability.name!="Augmented critical" and dnd_special_ability.name!="Evasion" and dnd_special_ability.name!="uncanny dodge" and dnd_special_ability.name not like "%trample%" and dnd_special_ability.name!="stampede" and dnd_special_ability.name not like "rake %" and dnd_special_ability.name not like "rend 2d%" and dnd_special_ability.name not like "constrict %" and dnd_special_ability.name not like "swallow whole" and dnd_special_ability.name not like "coil slam 1d%" and dnd_special_ability.name not like "%tail sweep%" and dnd_special_ability.name not like "%Frenzy" and dnd_special_ability.name not like "rage" and dnd_special_ability.name != "Ferocity" and dnd_special_ability.name!="Damage Reduction" and dnd_special_ability.name!="Low-Light Vision" and dnd_special_ability.name!="Darkvision" and dnd_special_ability.name!="light sensitivity" and dnd_special_ability.name not like "scent" and dnd_special_ability.name not like "improved grab" and dnd_special_ability.name not like "pounce" and dnd_special_ability.name not like "blinds%" and dnd_special_ability.name not like "hold breath" order by hit_dice;
+  sqlite> select distinct dnd_special_ability.name, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id left join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and (dnd_monstersubtype.name is null or dnd_monstersubtype.name!="Swarm") and dnd_special_ability.name not like "%resistan%" and dnd_special_ability.name not like "%saves vs. spells%" and dnd_special_ability.name not like "immun%" and dnd_special_ability.name not like "disease%" and dnd_special_ability.name not like "%powerful%" and dnd_special_ability.name not like "double damage %" and dnd_special_ability.name!="Augmented critical" and dnd_special_ability.name!="Evasion" and dnd_special_ability.name!="uncanny dodge" and dnd_special_ability.name not like "%trample%" and dnd_special_ability.name!="stampede" and dnd_special_ability.name not like "rake %" and dnd_special_ability.name not like "rend 2d%" and dnd_special_ability.name not like "constrict %" and dnd_special_ability.name not like "swallow whole" and dnd_special_ability.name not like "coil slam 1d%" and dnd_special_ability.name not like "%tail sweep%" and dnd_special_ability.name not like "%Frenzy" and dnd_special_ability.name not like "rage" and dnd_special_ability.name != "Ferocity" and dnd_special_ability.name!="Damage Reduction" and dnd_special_ability.name!="Low-Light Vision" and dnd_special_ability.name!="Darkvision" and dnd_special_ability.name!="light sensitivity" and dnd_special_ability.name not like "%scent" and dnd_special_ability.name not like "improved grab"and dnd_special_ability.name not like "trip" and dnd_special_ability.name not like "pounce" and dnd_special_ability.name not like "blinds%" and dnd_special_ability.name not like "tremorsense %" and dnd_special_ability.name not like "hold breath" and dnd_special_ability.name not like "poison%" and dnd_special_ability.name not like "venom%" and dnd_special_ability.name!="blood drain" order by hit_dice;
+  sprint|Cheetah|Monster Manual|3
+  Fast Healing|Snake, Glacier|Serpent Kingdoms|2
+  Wounding|Bat, Guard|Monster Manual II|4
+  Acid spit|Dragon Newt|Web|1 Spit (Ex): The dragon newt can spit acidic globules with a range increment of 10 feet. This is a ranged touch attack that deals 1d4 points of acid damage.
+  Acidic bite|Titan Salamander|Web|4 Acidic Bite (Ex): The titan salamander's saliva is caustic and inflicts 1d6 points of additional acid damage on a successful bite attack. http://archive.wizards.com/default.asp?x=dnd/mm/20030920a
+  Blood squirt|Dinosaur, Bloodstriker|Monster Manual III|9
 
   sqlite> select distinct dnd_special_ability.name, (hit_dice*3/4 + (strength - 10)/2 + (size_id - 5)*4), dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and dnd_special_ability.name like "%improved grab%" order by (hit_dice*3/4 + strength/2 + size_id*4), -hit_dice, -size_id;
   improved grab|24|Large|27|Snake, Legendary|Monster Manual II|16
@@ -389,6 +395,54 @@ Interestingly, if we restrict to Large or smaller, there are no reversals; all L
 .. code-block:: bash
 
   sqlite> select distinct dnd_special_ability.name, (hit_dice*3/4 + (strength - 10)/2 + (size_id - 5)*4), dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and size_id<=6 and dnd_special_ability.name like "%improved grab%" order by (hit_dice*3/4 + strength/2 + size_id*4), -hit_dice;
+  Improved grab|0|Small|16|Lynx|Dangerous Denizens - The Monsters of Tellene|2
+  Improved grab|6|Medium|19|Crocodile|Monster Manual|3
+  Improved grab|6|Medium|18|Puma (Cougar, Mountain Lion)|Dangerous Denizens - The Monsters of Tellene|3
+  improved grab|6|Medium|19|Komodo Dragon|Dragon Magazine|3
+  Improved grab|7|Medium|19|Thudhunter|Arms & Equipment Guide|4 Thudhunter young are worth 200 gp on the open market.
+  Improved grab|7|Medium|18|Jaguar|Dangerous Denizens - The Monsters of Tellene|4
+  Improved grab|10|Large|18|Dinosaur, Cryptoclidus|Monster Manual II|3 has no land speed
+  Improved grab|16|Large|27|Bear, Brown|Monster Manual|6
+  Improved grab|18|Large|27|Bear, Polar|Monster Manual|8
+  Improved grab|23|Large|31|Bear, Dire|Monster Manual|12
+
+Of course, an animal could in theory be trained to grapple even if it doesn't naturally do so. This isn't terribly important, but can fill in a few gaps.
+
+.. code-block:: bash
+
+  sqlite> select distinct (hit_dice*3/4 + (strength - 10)/2 + (size_id - 5)*4), dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" order by (hit_dice*3/4 + strength/2 + size_id*4), -hit_dice;
+  2|Medium|14|Phynxkin|Dragon Magic|1
+  11|Large|18|Horse, Warhorse, Heavy|Monster Manual|4
+  12|Large|21|Ape|Monster Manual|4
+  13|Large|23|Drakkensteed|Dragon Magic|4
+  19|Medium|30|Ape, Legendary|Monster Manual II|13
+  55|Colossal|40|Dinosaur, Seismosaurus|Monster Manual II|32
+
+Bigger animals are better at tripping...it helps to think of it not in terms of the word trip, but in terms of knocking someone prone.
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_special_ability.name, ( (strength - 10)/2 + (size_id - 5)*4), dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and dnd_special_ability.name like "%trip%" order by (strength/2 + size_id*4), -hit_dice, -size_id;
+  Trip|2|Medium|15|Bat, Hunting|Monster Manual II|4
+  Trip|2|Medium|14|Hyena|Monster Manual|2
+  Trip|3|Medium|16|Cheetah|Monster Manual|3
+  Trip|3|Medium|17|War Mastiff|Heroes of Battle|3
+  Trip|7|Medium|25|Wolf, Legendary|Monster Manual II|14
+  Trip|9|Large|20|Jackal, Dire|Sandstorm|4
+  Trip|11|Large|25|Wolf, Dire|Monster Manual|6
+  Knockback|Brixashulty|Races of the Wild|2
+  Knockback (Ex): A gore attack from a brixashulty can literally drive back a foe. When a brixa hits with its gore attack, it can immediately attempt a bull rush without entering the foe's space or provoking an attack of opportunity. The brixa makes a Strength check with a +7 bonus, which includes a +4 racial bonus. If the bull rush succeeds, the foe is driven back 5 feet and must make a DC 12 Reflex save or fall down. If being driven back would force the opponent into a barrier or into a square where it cannot stop (such as a wall or a square that already contains another creature), the foe falls down in its square instead.
+
+  sqlite> select distinct ( (strength - 10)/2 + (size_id - 5)*4), dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and land_speed is not null order by (strength/2 + size_id*4), -hit_dice;
+  4|Medium|19|Bear, Black|Monster Manual|3
+  4|Medium|19|Crocodile|Monster Manual|3
+  8|Large|18|Camel|Monster Manual|3
+  10|Large|22|Ape, Dire|Monster Manual|5
+  10|Large|22|Bison|Monster Manual|5
+  10|Large|23|Drakkensteed|Dragon Magic|4
+  11|Large|25|Lizard, Giant, Footpad|Drow of the Underdark|5
+  12|Large|27|Bear, Brown|Monster Manual|6
+  16|Huge|27|Crocodile, Giant|Monster Manual|7
 
 Unfortunately, without a source of data on feats, we cannot know which animals have the Track feat. On the other hand, Handle Animal might make the Track feat irrelevant: Track (DC 20): The animal tracks the scent presented to it. (This requires the animal to have the scent ability.)
 
@@ -403,7 +457,7 @@ Unfortunately, without a source of data on feats, we cannot know which animals h
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_special_ability.name, (wisdom - 10)/2, dnd_racesize.name, land_speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and dnd_special_ability.name like "%blind%" order by dnd_special_ability.name, wisdom/2, -hit_dice;
+  sqlite> select distinct dnd_special_ability.name, (wisdom - 10)/2, dnd_racesize.name, land_speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and (dnd_special_ability.name like "%sense%" or dnd_special_ability.name like "%sight%") order by dnd_special_ability.name, wisdom/2, -hit_dice;
   Blindsight 100ft|2|Huge|20|Sea Tiger|Monster Manual III|10
   Blindsight 60ft|2|Medium|40|Nifern|Serpent Kingdoms|2
   Blindsense 120ft|3|Medium|20|Bat, Hunting|Monster Manual II|4
@@ -412,6 +466,82 @@ Unfortunately, without a source of data on feats, we cannot know which animals h
   Blindsense 20ft|2|Diminutive|5|Bat|Monster Manual|-4
 
 `Chordevoc <http://archive.wizards.com/default.asp?x=dnd/ex/20050204a&page=5>`_
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_special_ability.name, 10 + hit_dice/2 + (constitution - 10)/2, dnd_racesize.name, land_speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and (dnd_special_ability.name like "%poison%" or dnd_special_ability.name like "%venom%" or dnd_special_ability.name like "%drain%") and dnd_special_ability.name!="immunity to poison" and dnd_special_ability.name!="resistance to poison" order by hit_dice/2 + constitution/2, -hit_dice;
+  poison|8|Diminutive|15|Hedgehog|Dungeon Master's Guide v.3.5|-4 Dexterity
+  Poison|8|Tiny|10|Sea Snake, Tiny|Stormwrack|-4
+  Poison|10|Small|10|Sea Snake, Small|Stormwrack|1 Constitution Poison (Ex): A sea snake's poison is extraordinarily virulent. It has a +2 racial bonus on the poison's save DC.
+  Poison|10|Small||Stingray|Stormwrack|1 Poison (Ex): Injury, Fortitude DC 12, nauseated 1d4 hours/1d3 Dex. The save DC is Constitution-based and includes a +2 racial bonus. A creature that makes its saving throw against the poison's initial damage is instead sickened for 1d6 rounds.
+  poison|10|Small|20|Dragon Newt|Web|1 Strength http://archive.wizards.com/default.asp?x=dnd/mm/20030920a
+  Poison spray|12|Small|30|Dinosaur, Swindlespitter|Monster Manual III|2 Poison Spray (Ex): When threatened, a swindlespitter sprays a corrosive poison in a 15-foot cone from its mouth. Contact; Fort DC 12; initial damage blindness for 2d4 minutes; secondary damage 1d4 Con. The swindlespitter can spray this poison once every 1d4 rounds. Swindlespitters flee from blinded opponents if possible.
+  Venom spray|13|Medium|20|Sailsnake|Monster Manual IV|3 Venom Spray (Ex) 20-ft. cone, once every 6 rounds, blind for 1d4 rounds, Fortitude DC 13 half.
+  Poison|13|Medium|40|Nifern|Serpent Kingdoms|2 paralysis then Strength
+  blood drain|11|Medium|40|Weasel, Dire|Monster Manual|3 Blood Drain (Ex): A dire weasel drains blood for 1d4 points of Constitution damage each round it remains attached.
+  poison|14|Medium|30|Toad, Dire|Monster Manual II|4 Constitution
+  poison|14|Medium|50|Dinosaur, Fleshraker|Monster Manual III|4 Dexterity
+  poison|16|Huge|30|Snake, Dire|Monster Manual II|7 Constitution
+  poison|21|Huge|20|Lizard, Giant Banded|Sandstorm|10 Strength
+  poison|25|Large|30|Snake, Legendary|Monster Manual II|16 Constitution
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, land_speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" order by land_speed, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -hit_dice;
+  Colossal|51200|20|Dinosaur, Seismosaurus|Monster Manual II|32
+  Colossal|89600|20|Dinosaur, Diplodocus|Dragon Magazine|28
+  Gargantuan|25600|30|Elephant, Dire|Monster Manual II|20
+  Medium|87|40|Phynxkin|Dragon Magic|1
+  Medium|100|40|Dog, Riding|Monster Manual|2
+  Medium|100|40|Pony, War|Monster Manual|2
+  Medium|115|40|Nifern|Serpent Kingdoms|2
+  Medium|130|40|War Mastiff|Heroes of Battle|3
+  Medium|130|40|Pony, Whiteshield|Champions of Valor|2
+  Medium|175|40|Bear, Black|Monster Manual|3
+  Large|350|40|Titan Salamander|Web|4
+  Gargantuan|19200|40|Dinosaur, Giganotosaurus|Dragon Magazine|24
+  Medium|87|50|Hyena|Monster Manual|2
+  Medium|115|50|Cheetah|Monster Manual|3
+  Large|300|50|Horse, Warhorse, Heavy|Monster Manual|4
+  Large|18|50|Camel|Monster Manual|3
+  Large|18|50|Horse, Draft|Dangerous Denizens - The Monsters of Tellene|3
+  Large|23|50|Drakkensteed|Dragon Magic|4
+  Large|25|50|Wolf, Dire|Monster Manual|6
+  Huge|39|50|Bear, Polar, Dire|Frostburn|18
+  Medium|11|60|Deer|Silver Marches|2
+  Medium||60|Dinosaur, Deinonychus|Monster Manual|4 biped
+  Large|16|60|Horse, Warhorse, Light|Monster Manual|3
+  Large|20|60|Jackal, Dire|Sandstorm|4
+  Large|21|60|Dinosaur, Megaraptor|Monster Manual|8 biped
+  Large|22|60|Horse, Dire|Monster Manual II|8
+  Large|15|65|Axebeak|Arms & Equipment Guide|3 Axebeaks move five times their normal speed when running instead of four times the speed. Axebeak eggs are worth 20 gp on the open market. Note that axebeaks are bipeds, so cannot carry as much as the formula would indicate.
+  Large|29|80|Horse, Legendary|Monster Manual II|18
+
+  sqlite> select distinct dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, abbrev, speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" order by abbrev, speed, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -hit_dice;
+  Tiny|17|b|5|Lizard, Horned|Sandstorm|1
+  Medium|87|b|10|Wolverine|Monster Manual|3
+  Large|520|b|20|Dinosaur, Bloodstriker|Monster Manual III|9
+  Huge|1840|b|20|Tortoise, Dire|Sandstorm|14
+  Medium|87|c|10|Wolverine|Monster Manual|3
+  Large|520|c|10|Wolverine, Dire|Monster Manual|5
+  Huge|2400|c|10|Lizard, Giant Banded|Sandstorm|10
+  Medium|87|c|20|Phynxkin|Dragon Magic|1
+  Medium|100|c|30|Baboon|Monster Manual|1 should be treated as quadruped when climbing
+  Large|460|c|30|Ape|Monster Manual|4 should be treated as quadruped when climbing
+  Large|800|c|30|Lizard, Giant, Footpad|Drow of the Underdark|5
+  Large|350|c|40|Lizard, Giant, Quicksilver|Drow of the Underdark|4
+  Medium|75|c|60|Dinosaur, Cliff Raptor|Web|4
+  Large|800|c|60|Forest Sloth|Monster Manual II|14
+  Large|260|f|40|Bat, Dire|Monster Manual|4
+  Huge|1600|f|40|Bat, War|Monster Manual II|10
+  Medium|100|f|60|Bat, Hunting|Monster Manual II|4
+  Large|600|f|60|Drakkensteed|Dragon Magic|4
+  Large|300|f|80|Dinosaur, Pteranadon|Serpent Kingdoms|3
+  Gargantuan|11200|f|80|Roc|Monster Manual|18
+  Huge|1840|f|100|Dinosaur, Quetzelcoatlus|Monster Manual II|10
+
+Bats have good maneuverability.
+
 
 
 On a lighter note, I always thought that a "living will" sounded like a magical incorporeal construct. Say, are there any incorporeal constructs?

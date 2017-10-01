@@ -295,6 +295,7 @@ def iterate_over_types(curs):
 darkvisionRE = re.compile(r"DV\d{2,3}")
 damageReductionRE = re.compile(r"DR \d{1,2}/[\w\s\-]+")
 spellResistanceRE = re.compile(r"SR \d{1,2}")
+fastHealingRE = re.compile(r"FH\d{1,2}")
 
 casterLevelValueREstring = '(?:(?:\d{1,2})|(?:HD)|(?:lvl))\s*(?:\([\w\s]+\d?\))?'
 casterLevelTagREstring = '(?:C|M|T)L=?\s?'
@@ -1195,6 +1196,7 @@ class Monster(object):
       elif darkvisionRE.match(quality): quality = "Darkvision"
       elif damageReductionRE.match(quality): quality = "Damage Reduction"
       elif spellResistanceRE.match(quality): quality = "Spell Resistance"
+      elif fastHealingRE.match(quality): quality = "Fast Healing"
       #if 'sensitiv' in quality: print(self.name, quality)
       ability_id = insert_if_needed(curs, 'dnd_special_ability', quality, special_attack=0)
       curs.execute('''INSERT INTO monster_has_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
@@ -1593,9 +1595,10 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
   curs.execute('''CREATE TABLE dnd_racesize (
   id INTEGER PRIMARY KEY NOT NULL,
   name char(11) NOT NULL,
-  biped_carry_factor tinyint(1) NOT NULL
+  biped_carry_factor tinyint(1) NOT NULL,
+  quadruped_carry_factor tinyint(1) NOT NULL
   );''') # 11 in case what to say Medium-size
-  curs.execute('''INSERT INTO dnd_racesize (name,biped_carry_factor) VALUES ("Fine",1), ("Diminutive",2), ("Tiny",4), ("Small",6), ("Medium",8), ("Large",16), ("Huge",32), ("Gargantuan",64), ("Colossal",128);''')
+  curs.execute('''INSERT INTO dnd_racesize (name, biped_carry_factor, quadruped_carry_factor) VALUES ("Fine",1,2), ("Diminutive",2,4), ("Tiny",4,6), ("Small",6,8), ("Medium",8,12), ("Large",16,24), ("Huge",32,48), ("Gargantuan",64,96), ("Colossal",128,192);''')
   curs.execute('''CREATE INDEX index_racesize_name ON dnd_racesize(name);''')
   """ need to not have parentheses at top level:
   sqlite> insert into blanh values (3, 4, 5);
