@@ -1,0 +1,1090 @@
+Type IV Complete Contents:<br />
+<div class="spoiler">
+<div class="spoiler-body" name="spoiler-body"><br />
+<b>Aboleth Mucus</b><br />
+Price: 20 GP<br />
+Weight: 1#<br />
+(Savage Species p. 46)<br />
+This is one of the cheapest and deadliest poisons in the game, although not actually a poison so there's no check to see if you accidentally poison yourself. Thrown as a grenade-like weapon, so make a ranged touch attack to hit (no splash effect). If the creature fails a Fort save DC 19, it loses the ability to breathe air for 3 hours. A creature can hold it's breath for a number of rounds equal to twice its Constitution score, so it essentially has that many rounds to find someone who can cast <i>water breathing</i> or <i>air breathing</i>. <i>Delay poison</i> and <i>neutralize poison</i> won't help (it's not a poison), <i>dispel magic</i> won't help (it's non-magical), <i>deep breath</i> (Spell Compendium) won't work (it fills your lungs with air you still can't breathe), sticking your head in a bucket of water won't help (the mucus doesn't confer the ability to breathe water), and there may be a good argument that a <i>heal</i> spell won't work, either (unable to breathe isn't one of the conditions listed in the spell description). After failing a Con check, the creature starts to suffocate and falls unconscious, and two rounds later it dies. So while it may take a little longer than poison (2-3 minutes), getting hit with this is pretty much a death sentence for most creatures.<br />
+<br />
+<b>Acidic Fire</b> (x2, 30 GP ea.)<br />
+Price: 60 GP<br />
+Weight: 2#<br />
+(Eberron Campaign Setting p. 120)<br />
+What's better than burning things with acid? Burning things with flaming acid! Rather than carry separate flasks of Acid and Alchemist's Fire, it saves space to combine them into the same bottle. Although combining the two substances drops the damage die to 1d4, if you hit a creature that is still vulnerable to both acid and fire (I'm looking at you, Mr. Troll), you actually come out slightly ahead on the average damage (7.5 damage for Acidic Fire, 7 damage for Alchemist's Fire, and 3.5 damage for just plain ol' acid). The 2 points of splash damage isn't too shabby, either. Give a sack full of 19 flasks of Acidic Fire to an <i>unseen servant</i> and it can drop it in a square for 38 splash damage, no save. Um, was this supposed to be only one pound? <br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Alchemical Flare Stake</b> (x3, 15 GP ea.)<br />
+Price: 45 GP<br />
+Weight: 0.3#<br />
+(Expedition to Castle Ravenloft p. 208)<br />
+One-shot item, treated as a dagger, does 1d6 fire damage against corporeal undead. It also lodges into the undead's body and does an additional 1d6 fire damage every round (the undead creature, assuming it isn't mindless, can remove all stakes with a standard action). There's no duration listed, so it apparently continues to burn until the creature is dead or the stake is removed. There are also alchemical flare bolts for the same price, but they don't do additional damage on subsequent rounds. Although the description says treat the stakes like daggers for proficiency purposes, I'm not clear on whether they can be thrown Buffy-style like daggers... but it would be pure awesomesauce if they could.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Alchemical Sun Flash</b><br />
+Price: 50 GP<br />
+Weight: 1#<br />
+(Expedition to Castle Ravenloft p. 208)<br />
+Works just like alchemist's fire, but also explodes with a burst of daylight that dazzles creatures that are light sensitive, no save. Vampires are also staggered for one round, no save.<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Amber Amulet of Vermin: Giant Wasp</b><br />
+Price: 800 GP<br />
+Weight: --<br />
+(Magic Item Compendium p. 68)<br />
+Flying mount you can summon 1/day for up to 1 minute. It can also fight if need be, provide flanking, block hallways, test for traps, take out the garbage, etc.<br />
+<br />
+<b>Angel Radiance</b><br />
+Price: 20 GP<br />
+Weight: --<br />
+(Book of Exalted Deeds p. 37)<br />
+Bunko's Bargain Basement recommends Liquid Sunlight (Complete Scoundrel p. 110) as a cheap everburning torch, but this item is even better: same price, shines like a torch, but as a spell component it can be drawn as a free action. <br />
+<br />
+<b>Animal Call</b><br />
+Price: 20 GP<br />
+Weight: --<br />
+(Arms &amp; Equipment Guide p. 21)<br />
++1 circumstance bonus on Survival checks to find food, stacks with Fowler's Snare (+1 circumstance, Arms &amp; Equipment Guide) and Hunter's Kit (+2 circumstance, Secrets of Xendrik). Also can be used as a signal device.<br />
+<br />
+<b>Antitoxin</b> (x4, 50 GP ea.)<br />
+Price: 200 GP<br />
+Weight: --<br />
+(PHB)<br />
+Where else are you going to find a +5 alchemical bonus on saves for only 50 GP? Chug one of these vials when you know you're up against a creature using poison, and you've got a good chance to save yourself the cost of a <i>neutralize poison</i> potion or scroll. Lasts 1 hour.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Atramen Oil</b><br />
+Price: 50 GP<br />
+Weight: 1#<br />
+(Planar Handbook p. 75)<br />
+Throw as a grenade-like splash weapon, ranged touch attack with a 10' range increment, direct hit on a target takes -4 penalty on Fort saves for 1 minute. Any creature in the 5' splash gets a similar -1 penalty on Fort saves. Great way to soften up a target for poison or some other Fort-based attack.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Auran Mask</b><br />
+Price: 60 GP<br />
+Weight: --<br />
+(Complete Mage p. 134)<br />
+Provides a +5 circumstance bonus against inhaled toxins (which stacks with Antitoxin), but this is easily overshadowed by 10 minutes of <i>water breathing</i>. Requires less upkeep than Air Plants. For longer durations, consider a potion of <i>water breathing</i> for 750 GP, which lasts for 10 hours.<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Bag of Tricks, Tan</b><br />
+Price: 6300 GP<br />
+Weight: --<br />
+(DMG)<br />
+One of my favorite items. All of these animals are decent scrappers and can be used as a mount by a medium-sized rider in a pinch (to control in combat, Ride check DC 20 as a move action, or Ride check DC 10 as a free action for the Warhorse). The brown bear, lion, and tiger are all excellent grapplers with improved grab (great way to shut down or distract spellcasters), and who doesn't love tossing a charging rhino at their enemies? Test for pressure plates/pit traps, block passageways, throw behind enemies to break up formations, provide flanking, or push/pull heavy objects.<br />
+<br />
+<b>Bead of Beckoning</b><br />
+Price: 2000 GP<br />
+Weight: --<br />
+(Arms &amp; Equipment Guide p. 135)<br />
+This one-shot item lets you cast summon nature's ally IV, which has a lot of utility: elemental (whirlwind, earthglide), unicorn (CLW x3, CMW, neutralize poison), 1d3 thoqqua (dig permanent tunnels through solid rock), or 1d4+1 badgers (dig through softer earth). Lasts 10 rounds.<br />
+<br />
+<b>Bitterleaf Oil</b><br />
+Price: 25 GP<br />
+Weight: --<br />
+(Races of the Dragon p. 122)<br />
+Although created and used by kobolds to prevent shedding, there's nothing in the description that says it can't be used by non-kobolds. Boosts natural healing, gain 1 HP per character level (up to a maximum of 5 HP) after a full night's rest. Each bottle contains 10 applications. Combine with a Magic Bedroll (Magic Item Compendium) for even more natural healing.<br />
+<br />
+<b>Black Fan Talisman</b><br />
+Price: 150 GP<br />
+Weight: --<br />
+(Oriental Adventures p. 136)<br />
+This wonderful little one-shot item provides a +10 circumstance bonus on Diplomacy checks, and it lasts an *HOUR*. A Diplomancer can do a lot of damage in an hour. <br />
+<br />
+<b>Blessed Bandage</b><br />
+Price: 10 GP<br />
+Weight: --<br />
+(Magic Item Compendium p. 152)<br />
+Immediately stabilize a dying creature. While there are dozens of ways to stabilize or heal someone below 0 HPs, the main advantage of this item is it can be used untrained without a Heal check, so it can be applied by an <i>unseen servant</i>, <i>wood wose</i>, etc. <br />
+<br />
+<b>Bloodspike, Spatter</b><br />
+Price: 50 GP<br />
+Weight: --<br />
+(Magic of Eberron p. 140)<br />
+Adds 1 acid damage to bite attack for 1 hour, or end effect with a free action to spit 1d6 acid damage as a ranged touch attack.<br />
+<br />
+<b>Bloodspike, Tempo</b><br />
+Price: 150 GP<br />
+Weight: --<br />
+(Magic of Eberron p. 140)<br />
+Within one hour, expend to take an additional move action on your turn.<br />
+<br />
+<b>Bloodspike, Thickener</b><br />
+Price: 100 GP<br />
+Weight: --<br />
+(Magic of Eberron p. 140)<br />
+For one hour, weapon damage reduced by 1 point (minimum 1).<br />
+<br />
+<b>Bottle of Air</b><br />
+Price: 7250 GP<br />
+Weight: 2#<br />
+(DMG)<br />
+Not quite a continuous <i>water breathing</i> item, but pretty close. <br />
+<br />
+<b>Cablespool</b><br />
+Price: 175 GP<br />
+Weight: 6#<br />
+(Savage Species p. 46)<br />
+100' winch that pulls with a Strength of 16 (lift 230 lbs, drag 1150 lbs). While the cable is too thin to climb up for anybody except a Desmodu, you can use it to descend up to 100' without taking any falling damage.<br />
+<br />
+<b>Camouflage Paint</b><br />
+Price: 1500 GP<br />
+Weight: 0.5#<br />
+(Magic Item Compendium p. 153)<br />
++5 circumstance bonus to Hide checks, stacks with Blend Cream (+1 alchemical, Complete Adventurer) and Camouflage Kit (+2 circumstance, Complete Adventurer). Lasts for five applications.<br />
+<br />
+<b>Candle, Focusing</b><br />
+Price: 100 GP<br />
+Weight: 1#<br />
+(Complete Adventurer p. 118)<br />
++1 circumstance bonus on Appraise, Decipher Script, Forgery, and Search checks. Note: if you think you'll need this for longer than an hour, you can increase the duration to 15 days (365 days / 24 hours = 15.21 days) with a little Unguent of Timelessness (19 GP per dose, DMG).<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Candle, Insectbane</b> (x10, 1 SP ea.)<br />
+Price: 1 GP<br />
+Weight: --<br />
+(Arms &amp; Equipment Guide p. 21)<br />
+Keeps nonmonstrous vermin away, 5' radius, burns for 1 hour. Vermin Ointment (Secrets of Xendrik p. 139, included below) does the same thing and costs 20 GP, but it also affects monstrous vermin if they fail a Fortitude save DC 15. If you're surrounded by inexhaustible number of insect swarms, 10 hours should be long enough to allow all your spellcasters to rest and regain spells. <br />
+<br />
+<b>Chaos Flask</b> (x2, 100 GP ea.)<br />
+Price: 200 GP<br />
+Weight: 1#<br />
+(Planar Handbook p. 76)<br />
+Make a Wisdom check DC 13 as a free action to shape this material into almost any non-magical object of the same volume or smaller (depending on the material or density). Similar to a one-shot Marvelous Pigments, but no price limit. Most alchemical items are small and non-magical, so this is a great wild card to have up your sleeve. Know what else is small and non-magical? Vials of poison. For only 100 GP, you can whip up a vial of Black Lotus Extract at a 4400 GP discount. (The nastiest poison in print is Megapede Poison, DC 44, primary/secondary 2d6 Con damage + 1d4 Dex penalty, 24000 GP, Dungeonscape p. 129.) Lasts a number of rounds equal to your Wisdom score, but as long as your Wis is 11+, that should be long enough for the poison's secondary effect to kick in. Another good use would be expensive material components for spells. Need 5,000 GP diamond for a raise dead? (Sadly, this won't work for <i>resurrection</i>'s 10 minute casting time unless your Wis is 100+.) Also, check out Flux Slime (Epic Level Handbook p. 107): 10' <i>antimagic field</i>, permanently disjunct magic items (no save), or 2d6 Con damage (no save) against any creature with (Su) or SLA abilities. If destroyed by cold, fire, or sunlight, it explodes and every creature within 50' may get a permanent random mutation.<br />
+<br />
+<b>Chardalyn</b><br />
+Price: 1000/3500/8000 GP<br />
+Weight: 1#/2#/3#<br />
+(Silver Marches Web Enhancement p. 3 and Lords of Darkness p. 181)<br />
+This one-shot &quot;spell-storing&quot; item may only useful for spellcasters, but I'm including it anyway because it was so frickin' hard to find. A spellcaster can cast a single spell into this brittle rock, and it will store this spell indefinitely, or until it's thrown against a hard surface. Lords of Darkness gives the stats for throwing: ranged touch attack up to 100', 20' range increment. The Silver Marches Web Enhancement gives the prices based on size: 1000 GP for up to a 3rd level spell, 3500 GP up to a 6th level spell, or 8000 GP up to a 9th level spell. However, no weight is given, so I assumed the weight is similar to other thrown weapons with a 20' range increment. 1-3 lbs seemed appropriate.<br />
+<br />
+<b>Clearwater Tablet</b><br />
+Price: 1 GP<br />
+Weight: --<br />
+(Complete Scoundrel p. 110)<br />
+Removes any disease, poison, or other toxins from 1 gallon of water. Doesn't work on magical potions, oils, or alcohol-based liquids, and clean water ceases to be much of an issue once you get hold of a Travel Cloak, but you never know where it might come in handy. <br />
+<br />
+<b>Dagger, Riverine</b><br />
+Price: 2002 GP<br />
+Weight: 1#<br />
+(Stormwrack p. 128)<br />
+Wall of force in the shape of a dagger. Backup weapon for dealing with ethereal and incorporeal creatures. Note: add Rusting as a +1 enhancement (Shining South) to destroy any ferrous metal object with the equivalent of <i>rusting grasp</i> at will.<br />
+<br />
+<b>Decanter of Endless Water</b><br />
+Price: 9000 GP<br />
+Weight: 2#<br />
+(DMG)<br />
+You've got to love any item that can provide a refreshing drink to you and any friendly army in the neighborhood, blast a kobold off his feet, destroy the economy of a desert nation, and and <a href="http://rustyandco.com/comic/level-5-5/" target="_blank" rel="nofollow">turn badgers into projectile weapons</a>. <br />
+<br />
+<b>Defoliator</b><br />
+Price: 20 GP<br />
+Weight: 1#<br />
+(Arms &amp; Equipment Guide p. 33)<br />
+Grenade-like weapon that does 2d4 damage to plant creatures and auto-kills any non-creature plant that is size medium or smaller in a 5' radius burst, AKA a &quot;Get Out of Entangle Free Card&quot;. Since all slimes, molds, and fungi are treated as plants (and are not considered creatures), this item also instantly kills Green Slime, Yellow Mold, Brown Mold (DMG), Snowflake Lichen (Frostburn), Grey Slime, and Bone Fungus (Dungeonscape) in a 5' radius. It also does 2d4 damage to wooden objects, dissolving them like acid, although hardness still applies. <br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Drow House Insignia</b><br />
+Price: 360/2160/5400 GP<br />
+Weight: 1#<br />
+(Races of Faerun p. 173)<br />
+These unique necklaces are used to identify which noble house a drow belongs to, but they also have one low-level spell that can be activated 1/day. The level of the spell determines the price (1st = 360 GP, 2nd = 2160 GP, 3rd = 5400 GP). The available spells include: <i>blur, cat's grace, cloak of dark power, comprehend languages, feather fall, jump, levitate, read magic, scatterspray, shield, spider climb, unseen servant</i>, and <i>water breathing</i>. The one we're most interested in is <i>unseen servant</i>. See the entry for Collar of Perpetual Attendance below if you're not sure why. Upgrade to the Collar as soon as finances permit.<br />
+<br />
+<b>Earplugs</b><br />
+Price: 3 SP<br />
+Weight: --<br />
+(Arms &amp; Equipment Guide p. 22)<br />
++1 circumstance bonus on saves against deafness and sonic attacks.<br />
+<br />
+<b>Eggshell Grenade, Dust</b> (x10, 10 GP ea.)<br />
+Price: 100 GP<br />
+Weight: --<br />
+(Oriental Adventures p. 78)<br />
+Thrown as a grenade-like weapon, so make a ranged touch attack with a range increment of 5'. A dust grenade that hits its target directly blinds the target for 1d4 rounds *NO SAVE*. Anyone else within the 5' radius splash must make a Fort save DC 10 or be blinded for 1 round. This is an amazingly effective weapon that works on a wide variety of opponents, but don't overuse this one or your DM will come down on you with a banhammer like a ton of bricks.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Expandable Pole</b><br />
+Price: 5 GP<br />
+Weight: 1#<br />
+(Song &amp; Silence p. 53)<br />
+Every adventurer needs the obligatory 10' pole, but this one &quot;goes to 11&quot;. It can be adjusted to 5', 7', 9', or 11' lengths, or collapsed down to 1'. Another version, called a Mobile Brace, can be found in Races of Faerun, which has more detailed rules on how much weight it can support and for using it to secure a rope for climbing, but it weights 3 lbs. Dungeonscape has a similar &quot;Collapsable Pole&quot; that goes out to 12', but it weighs 8 lbs. I chose this version to conserve weight.<br />
+<br />
+<b>Everfull Mug</b><br />
+Price: 200 GP<br />
+Weight: --<br />
+(Magic Item Compendium p. 160)<br />
+While I'm offended by the rather suspicious definition of &quot;everfull&quot;, this mug can provide up to 36 ounces (half a six pack? That's &quot;everfull&quot;?) per day of alcoholic beverage, and is less weight than a bottle of wine. <br />
+<br />
+<b>Fast Torch</b> (x2, 5 GP ea.)<br />
+Price: 10 GP<br />
+Weight: 1#<br />
+(Complete Mage p. 134)<br />
+When you absolutely, positively must light something on fire with only a swift action. <br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Feather Fall Talisman</b><br />
+Price: 50 GP<br />
+Weight: --<br />
+(Sharn City of Towers p. 170)<br />
+One-shot item, activate <i>feather fall</i> as a free action. While there are a variety of similar items to prevent falling damage, this is the cheapest.<br />
+<br />
+<b>Feather Token, Fan</b><br />
+Price: 200 GP<br />
+Weight: --<br />
+(DMG)<br />
+One-shot item to get rid of smoke, <i>obscuring mist</i>, [I[pyrotechnics[/I], <i>fog cloud</i>, <i>stinking cloud</i>, <i>cloudkill</i>, <i>solid fog</i>, <i>acid fog</i>, etc. If you can afford it, consider upgrading to a Wind Fan (5500 GP, DMG).<br />
+<br />
+<b>Feather Token, Swan Boat</b><br />
+Price: 450 GP<br />
+Weight: --<br />
+(DMG)<br />
+Aside from the utility of having a boat when you really need one, the ability to create a large wooden structure at a moment's notice has plenty of other applications. Unfortunately, we're not given a size or weight, but given that it can accommodate 8 horses, we know it's at least 20' x 40' or 10' x 80'. The boat can be used to block a passage, divide a battlefield, provide hard cover, an enclosed place to sleep, raw materials for a large bonfire or giant wooden badger, or squish something nasty, e.g., what I like to call the Swan Boat of Death: give your feather token to an <i>unseen servant</i> or someone who can fly over whatever it is you want to flatten. At a height of 10', falling object damage caps at 20d6. If we assume the swan boat weighs at least 4000 lbs (pretty safe bet for a 20' x 40' boat), anything underneath it when the token is activated takes 20d6 falling object damage, no save (yes, it's in the falling object rules, no Ref save to avoiding falling objects). When you can afford it, upgrade to a Folding Boat (7200 GP) so you can use it over and over again. <br />
+<br />
+<b>Feather Token, Tree</b><br />
+Price: 400 GP<br />
+Weight: --<br />
+(DMG)<br />
+Much like the swan boat, the tree token offers a variety of battlefield control possibilities. Block off a narrow passage, provide hard cover, put an easily-climbable object next to a shear wall, chop it down to cross a chasm/create a 60' wall 5' high, or just piss off a druid. The description goes out of its way to mention it's an instantaneous effect, so you could try the &quot;drop it on somebody from above&quot; trick.<br />
+<br />
+<b>Feather Token, Whip</b><br />
+Price: 500 GP<br />
+Weight: --<br />
+(DMG)<br />
+This is a great low-level item to have around if you can't afford a +1 weapon yet and suddenly stumble into something that has DR/magic. It attacks as a magic weapon on its own, 15' reach, lasts an hour, and it gets a free grapple with a pretty hefty bonus, denying the target its Dex bonus and making the party rogue very happy. The only real downside is if your DM decides it gets all of the disadvantages of an ordinary whip: nonlethal damage, and no damage if the target has an armor bonus of +1 or a natural armor bonus of +3. The item description doesn't specify, but I'd like to think it does lethal damage even against armored targets.<br />
+<br />
+<b>Firestone</b><br />
+Price: 50 GP<br />
+Weight: 0.5#<br />
+(Dragon Compendium p. 117)<br />
+Thrown as a grenade-like weapon, it does 1d6 fire damage, but unlike a splash weapon, it has an area effect that damages everything in the 5' square without a Ref save. Ranged touch attacks are pretty easy to begin with, but targeting a stationary square rather than a creature makes them even ridiculously more so. This might allow you to throw a whole bag full of these into a square for Xd6 fire damage, X = however many firestones fit in the bag. Another interesting tactic might be to give this bag to an <i>unseen servant</i>, and have it drop or empty the bag into a square from above (doesn't require an attack roll). No weight was given in the Dragon Compendium or the original Dragon article, so I'm assuming a firestone weighs the same as a sling bullet (1/2 lb). Thus, an <i>unseen servant</i> could put 39 into a sack (20 lbs total) and drop it in a square for 39d6 fire damage, no save.<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Flint &amp; Steel</b><br />
+Price: 1 GP<br />
+Weight: --<br />
+(PHB)<br />
+If your sparker burns out and your magnifying glass won't work, best to have this as a fallback. <br />
+<br />
+<b>Flour Pouch</b> (x4, 1 SP ea.)<br />
+Price: 4 SP<br />
+Weight: --<br />
+(Dungeonscape p. 32)<br />
+Thrown as splash weapon, 5' burst. Locates invisible creatures, reduces their concealment to 20%, and reduces their hide bonus. To completely negate concealment, see Torch Bug Paste (25 GP, Complete Scoundrel).<br />
+<br />
+<b>Folding Boat</b><br />
+Price: 7200 GP<br />
+Weight: 4#<br />
+(DMG)<br />
+Same as the Feather Token: Swan Boat, but you can use it over and over again: battlefield control, hard cover, safe place to sleep, or drop it on something you want to squish from above. Unfortunately, an <i>unseen servant</i> can't speak the command words, but a Raven familiar could have loads of fun with this thing.<br />
+<br />
+<b>Forger's Paper</b> (x10, 10 GP ea.)<br />
+Price: 100 GP<br />
+Weight: --<br />
+(Complete Scoundrel p. 110)<br />
++2 alchemical bonus on Forgery checks, so it stacks with a Forgery Kit (see below). In many ways, Forgery is more powerful than Bluff, Diplomacy, Disguise, or Intimidate put together. Why? Because it's resisted by Forgery, a skill no one ever takes. Stacks with Forgery Kit and Focusing Candle.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Forgery Kit</b><br />
+Price: 40 GP<br />
+Weight: 5#<br />
+(Complete Adventurer p. 122)<br />
++2 circumstance bonus on Forgery checks. This kit includes a variety of inks, papers, pens, and seals. Unfortunately, there was a price and weight increase from where it was first printed in the Arms &amp; Equipment Guide, and any mention of waxes, guides and magnifying glasses was removed. Still, this is probably worth it just to avoid the fuss and bother of buying all the included items separately. Each kit lasts for 10 uses, and it stacks with Forger's Paper and a Focusing Candle.<br />
+<br />
+<b>Garlic</b> (x10, 1 CP ea.)<br />
+Price: 1 SP<br />
+Weight: --<br />
+(Arms &amp; Equipment Guide p. 31)<br />
+Mash a few cloves up into a paste and smear it on yourself, your equipment, or various openings/furniture to drive away vampires. Unlike wasting 150 GP on Alchemical Vampire Repellent (Expedition to Castle Ravenloft p. 209), garlic doesn't have a specific duration. The rules in the Monster Manual are pretty vague on mechanics, so you may want to work out with your DM how close vampires can approach and how long it lasts. <br />
+<br />
+<b>Ghostblight</b><br />
+Price: 100 GP<br />
+Weight: --<br />
+(Complete Adventurer p. 122)<br />
+Can be used with a Weapon Capsule Retainer (100 GP, Complete Adventurer) or applied as an oil with a standard action. Used against incorporeal creatures to ignore the 50% miss chance, lasts for 3 rounds. There's a similar substance in Libris Mortis called Ghostoil, but it takes a full round action to apply and only lasts for 2 rounds. <br />
+Craft (Alchemy) DC: 35<br />
+<br />
+<b>Ghostwall Shellac</b> <br />
+Price: 150 GP<br />
+Weight: 1#<br />
+(Dungeonscape p. 35)<br />
+This item requires at least 1 hour prep time and a gallon of water, so it won't help while you're being attacked by an incorporeal creature, but if you have time to paint your armor and weapons with this stuff (up to a 100 square feet), they'll work like Ghost Touch weapons/armor for 4d6 hours.<br />
+Craft (Alchemy) DC: 30<br />
+<br />
+<b>Goodberry Wine</b><br />
+Price: 250 GP<br />
+Weight: 0.5#<br />
+(Five Nations p. 82)<br />
+Each jug contains 5 doses, so for 50 GP you get the equivalent of a maximized <i>potion of cure light wounds</i> (each dose heals 8 HP). This is a much better deal than the CLW potion or the Healing Salve from Tome &amp; Blood. The only drawback is you're limited to one dose every 8 hours. Other benefits include it counts as a full meal for a medium creature, it works in the Mournland, and it uses transmutation magic so it should have full effect on a Warforged.  <br />
+<br />
+<b>Hammersphere</b><br />
+Price: 1500 GP<br />
+Weight: 0.5#<br />
+(Magic Item Compendium p. 161)<br />
+An excellent fire-and-forget weapon that's effective against incorporeal/ethereal creatures and anything with DR. <br />
+<br />
+<b>Hand of the Mage</b><br />
+Price: 900 GP<br />
+Weight: 2#<br />
+(DMG)<br />
+A handy (&quot;{groan}&quot; &quot;What?!&quot;) item to have around. Lift and manipulate any object up to 5 lbs within 35'. When you can afford to upgrade, pick up a Collar of Perpetual Attendance for <i>unseen servant</i> at will.<br />
+<br />
+<b>Holy Water</b><br />
+Price: 25 GP<br />
+Weight: 1#<br />
+(PHB)<br />
+Thrown as a splash weapon, 2d4 damage to undead and evil outsiders. There are equivalents for each major alignment (Unholy Water in the PHB, Axiomatic and Anarchic Water in the Planar Handbook), but undead and evil outsiders are much more common than any other alignment type. You can also douse incorporeal undead for 2d4 damage, but unfortunately they still get their 50% miss chance against this attack. In that case, load the Holy Water into a Sprayer (Arms &amp; Equipment Guide p. 25) to turn it into an area effect which ignores concealment.<br />
+<br />
+<b>Icewild Lichen Paste</b><br />
+Price: 50 GP<br />
+Weight: --<br />
+(Secrets of Sarlona p. 138)<br />
+Reduces fatigue or exhaustion by a step for 2d4 hours. At the end of that duration, character is fatigued for 2d4 minutes. Multiple doses taken within 24 hours cause 1d4 Constitution damage.<br />
+<br />
+<b>Ioun Stone, Dull Grey</b><br />
+Price: 135 GP<br />
+Weight: --<br />
+(DMG 3.0)<br />
+A burned-out ioun stone (25 GP) no longer confers any magical effects, but it does still float around your head. Get your friendly neighborhood cleric to cast <i>continual flame</i> on it (which may cost 50 to 110 GP), and you can create a slotless light source that keeps your hands free.<br />
+<br />
+<b>Ipecac</b><br />
+Price: 50 GP<br />
+Weight: --<br />
+(Expedition to Castle Ravenloft p. 209)<br />
+If you ever get swallowed by a creature, empty this into its stomach. The creature is forced to regurgitate you, and is nauseated for 1d4 rounds, no save. It can also be used to induce vomiting after ingesting a poison, giving a +5 untyped bonus to the secondary effect. Each vial contains 10 doses.<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Jeweler's Loupe</b><br />
+Price: 20 GP<br />
+Weight: --<br />
+(Arms &amp; Equipment Guide p. 24)<br />
++1 circumstance bonus on Appraise checks with art/gems/jewelry. Combine with a magnifying glass for another +2 circumstance bonus. Make either of them masterwork for 50 GP and get another +2 circumstance bonus.<br />
+<br />
+<b>Kyo Crystals</b><br />
+Price: 50 GP<br />
+Weight: --<br />
+(Expedition to Undermountain p. 217)<br />
+One-shot items similar to potions, but unlike potions activating them with a standard action does not provoke an AoO. They cost the same as potions (I've listed a cost above for a 1st level spell because I thought they were the most useful), but the spell must be chosen from a limited list: <i>burning hands</i>, <i>cure light wounds</i>, <i>cure moderate wounds</i> (150 GP), <i>cure serious wounds</i> (250 GP), <i>light</i> (25 GP), <i>mage armor</i>, <i>magic missle</i>, <i>magic weapon</i>, <i>mirror image</i> (150 GP), or <i>ray of frost</i> (25 GP). Oddly enough, you don't have to have these spells on your spell list to create these items, so wizards can create <i>cure</i> crystals. Of the available spells, <i>magic missle</i> (autohit force damage) and <i>magic weapon</i> (easier than applying an oil) look like the most useful.<br />
+<br />
+<b>Liquid Ice</b><br />
+Price: 30 GP<br />
+Weight: 1#<br />
+(Dragon Compendium p. 118)<br />
+Empty your waterskin on the ground and you can use this to create a non-magical 10' x 10' ice sheet, or extinguish a 10' x 10' section of fire. As per the DMG p. 91, slippery ice counts as difficult terrain, costing 2 squares of movement. It also has the same effect as a <i>grease</i> spell, as described in the PHB under the Balance skill: targets without 5 ranks in Balance that are attacked on a slippery surface are considered flat-footed. From there, you can add Razor Ice Powder to create a 10' x 10' section of Razor Ice (1d4 slashing damage and 1d6 cold damage for each square entered, no save). Liquid Ice can also be thrown as a splash weapon, doing 1d6 cold damage on a direct hit and 1 splash damage. If your DM doesn't allow Dragon Compendium material, you can use Freeze Powder (100 GP, Frostburn p. 79) instead, although this can't be thrown as a splash weapon. If you need an alternative for splash damage, use Alchemist's Frost (25 GP, Eberron Campaign Setting p. 120). Note: Neither Dragon Compendium nor the original Dragon Magazine article listed a weight, so I had to guess. Alchemist's Frost, Freeze Powder, and Frostfire all weighed 1 lb., so I figured Liquid Ice would most likely weigh the same.<br />
+Craft (Alchemy) DC: 25  <br />
+<br />
+<b>Liquid Smoke</b><br />
+Price: 20 GP<br />
+Weight: 1#<br />
+(Oriental Adventures p. 78)<br />
+Same price as a smokestick, but reacts with air and thus does not need to be lit. Provides concealment, blocks LOS, or a cheap theatrical effect.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Smokestick</b><br />
+Price: 20 GP<br />
+Weight: 0.5#<br />
+(PHB)<br />
+Provides concealment, blocks LOS, or a cheap theatrical effect. Liquid Smoke is the same price but easier to use (it doesn't require an action to light).<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Magic Bedroll</b><br />
+Price: 500 GP<br />
+Weight: 6#<br />
+(Magic Item Compendium p. 163)<br />
+Not to be confused with Heward's Fortifying Bedroll (Complete Mage). This bedroll provides the benefits of <i>endure elements</i> and restores 1 HP per character level after 8 hours of rest. Combine with Bitterleaf Oil to gain more natural healing, although unlike the oil, the bedroll doesn't have a 5 HP maximum limit.<br />
+<br />
+<b>Magnifying Glass</b><br />
+Price: 100 GP<br />
+Weight: --<br />
+(PHB)<br />
++2 circumstance bonus on Appraise checks on small objects. Combine with Jeweler's Loupe for another +1. Make it masterwork for another 50 GP and another +2 circumstance bonus. Also, start a fire without flint &amp; steel, or incinerate a few anthills for some easy XP.<br />
+<br />
+<b>Manacles, Masterwork</b><br />
+Price: 50 GP<br />
+Weight: 2#<br />
+(PHB)<br />
+Requires a Strength check DC 28 or Escape Artist check DC 35 to get out of. Useful for keeping hostages/prisoners (particularly spellcasters) out of trouble. <br />
+<br />
+<b>Marbles</b> (x4, 2 SP ea.)<br />
+Price: 8 SP<br />
+Weight: 8#<br />
+(Arms &amp; Equipment Guide p. 24)<br />
+These are deployed much like caltrops, so it takes a standard action to spread. Basically a 5' x 5' square of non-magical <i>grease</i>. Dump them under an opponent without 5 ranks of Balance to deny his Dex bonus and make the party rogue happy.<br />
+<br />
+<b>Moonfire Salve</b><br />
+Price: 2500 GP<br />
+Weight: 0.5#<br />
+(Magic of Faerun p. 163)<br />
+One-shot item with multiple effects, depending on how you use it. Apply to forehead for <i>dispel magic</i>, apply to feet for <i>fly</i>, apply to eyes for <i>darkvision</i>, apply to hand for <i>greater mage hand</i>, or eat it for <i>cure serious wounds</i>.<br />
+<br />
+<b>Mordrei'in</b><br />
+Price: 25 GP<br />
+Weight: --<br />
+(Faiths of Eberron p. 153)<br />
++2 alchemical bonus to Concentration and Spot checks for 10 minutes. For fluff reasons, may only be available to elves from Aerenal.<br />
+<br />
+<b>Needle</b> (x2, 5 SP ea.)<br />
+Price: 1 GP<br />
+Weight: --<br />
+(PHB)<br />
+Mend clothing, sew a sack closed, or hide it in a haystack. You can also magnetize it and use it as a compass, or bend it into a fishhook. <br />
+<br />
+<b>Net</b><br />
+Price: 20 GP<br />
+Weight: 6#<br />
+(PHB)<br />
+Although this is an exotic weapon, ranged touch attacks are usually easy enough to hit even with the non-proficiency penalty. A hit with a net entangles a creature (-2 attack penalty, -4 Dex penalty, restricts movement), which can be a cheap and easy debuff or delaying tactic. If you're running into larger creatures, use a lasso instead. Check with your DM if the Dex penalty from multiple sources stack (lasso, tanglefoot, etc.). There's also a Razor Net version (50 GP, Dragon Compendium) that does 1d6 damage if the target fails their check to get out of the net (Escape Artist check DC 20 or Strength check DC 25), but it's a little too easy to escape and the razors cut up the net, preventing it from being used again.<br />
+<br />
+<b>Noxious Smokestick</b><br />
+Price: 80 GP<br />
+Weight: 0.5#<br />
+(Eberron Campaign Setting p. 121)<br />
+Creates 10' cube of smoke and anyone inside has to make a Fort save DC 15 or become nauseated for 1 round. While this makes it a little tricky to light, you can fix that by having an <i>unseen servant</i> light it and carry it around.<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Oil</b><br />
+Price: 1 SP<br />
+Weight: 1#<br />
+(PHB)<br />
+There are rules for turning these things into splash weapons, but it takes a full-round action to prep and with a 50% failure rate, it's probably not worth the bother. Spreading it on the ground and lighting it on fire may be a bit more promising if you have enough time to prep for it.<br />
+<br />
+<b>Panic Button, Escaping</b><br />
+Price: 750 GP<br />
+Weight: --<br />
+(Complete Scoundrel p. 115)<br />
+One-shot <i>dimension door</i>, up to 30'. <br />
+<br />
+<b>Panther Tears</b> (x2, 30 GP ea.)<br />
+Price: 60 GP<br />
+Weight: 0.2#<br />
+(Secrets of Xendrik p. 139)<br />
+Eye drops that give you low-light vision for 1 hour. This also gives you light sensitivity, but for only 10 GP Sundark Goggles will fix that for you.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Piton</b> (x10, 1 SP ea.)<br />
+Price: 1 GP<br />
+Weight: 5#<br />
+(PHB)<br />
+Attach ropes, spike doors, trepanize your friends and neighbors.<br />
+<br />
+<b>Potion Belt, Masterwork</b><br />
+Price: 60 GP<br />
+Weight: 1#<br />
+(Forgotten Realms Campaign Setting p. 97)<br />
+Once per round, you can retrieve a potion as a free action. Holds up to 10 potions. While this item should really be worn rather than kept in the haversack, I'm mentioning it here just in case you weren't aware of it before.<br />
+<br />
+<b>Quicksilver</b><br />
+Price: 50 GP<br />
+Weight: --<br />
+(Complete Adventurer p. 122)<br />
+Can be used with a Weapon Capsule Retainer (100 GP, Complete Adventurer) or applied as an oil with a standard action. Allows weapon to deal damage as if coated with silver (including -1 damage), lasts for 3 rounds. If you can afford it, consider upgrading to Silversheen (250 GP, DMG) which lasts an hour.<br />
+Craft (Alchemy) DC: 30<br />
+<br />
+<b>Quickspark</b><br />
+Price: 25 GP<br />
+Weight: --<br />
+(Complete Adventurer p. 122)<br />
+Of all the various alchemical items that do energy damage, Quickspark is the easiest to use and you're less likely to run into electricity resistance than fire or cold. It can be applied to a weapon as on oil with a standard action, or as a swift action when used with a Weapon Capsule Retainer (100 GP, Complete Adventurer). It can't be thrown on its own and does no splash damage, but you can apply it to any grenade-like weapon just like any other weapon. A Quickspark + Acidic Fire, for example, does an average of 11 energy damage over 2 rounds. Alchemist's Spark (Eberron Campaign Setting) is easier to throw, does a little more damage (1d8) and also splashes for 1 damage, but can't be applied to a weapon. A Sparkstone (Arms &amp; Equipment Guide) can be thrown as a grenade-like weapon for 1d6 electricity damage and it will arc to one adjacent opponent (but only one) for half damage. <br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Razor Ice Powder</b><br />
+Price: 50 GP<br />
+Weight: 1#<br />
+(Frostburn p. 79)<br />
+When combined with the contents of a waterskin and Liquid Ice (Dragon Compendium p. 118) or Freeze Powder (Frostburn p. 79), you can create a 10' x 10' square of slippery Razor Ice, which does 1d4 slashing damage and 1d6 cold damage for each square entered, no save.<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Rod of Ropes</b><br />
+Price: 4000 GP<br />
+Weight: 4#<br />
+(Complete Scoundrel p. 116)<br />
+This doesn't exactly replace the cablespool, but it does oh so much more: ascend/descend 60' per round, autograbbing grappling hook up to 300', bull rush opponents within 30', and a double-grapple 600' zipline slider. Even better, activation is a move action, leaving you with a standard action for all those &quot;I'm Batman!&quot; stunts. <br />
+<br />
+<b>Rope Climber</b><br />
+Price: 15 GP<br />
+Weight: 3#<br />
+(Races of Faerun p. 160)<br />
++5 circumstance bonus on Climb checks to ascend a rope, although it halves the rate of ascent. Full-round action to thread or remove the Rope Climber from a rope.<br />
+<br />
+<b>Rope, Silk</b> (50')<br />
+Price: 10 GP<br />
+Weight: 5#<br />
+(PHB)<br />
+When you can afford it, most of your rope needs should be met with Troll Gut Rope, but if you need to tie something up for longer than 12 hours, it's good to have some normal rope handy. Keep in mind that the Cablespool can be used for descent, and Shapesand can be used to make temporary equipment (ropes, ladders) that retains its shape within 100' of you. <br />
+<br />
+<b>Sack</b> (x3, 1 SP ea.)<br />
+Price: 3 SP<br />
+Weight: 1.5#<br />
+(PHB)<br />
+Loot redistribution device. <br />
+<br />
+<b>Scarab, Golembane</b><br />
+Price: 2500 GP<br />
+Weight: --<br />
+(DMG)<br />
+Until you can afford a Greater Demolition Crystal (and a +3 weapon to put it on), this little bit of bling is a great way to ruin a golem's day.<br />
+<br />
+<b>Screaming Flask</b><br />
+Price: 40 GP<br />
+Weight: 1#<br />
+(Complete Mage p. 135)<br />
+1d8 sonic damage in a 15' cone, Fort save DC 15 vs. deafness.<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Shapesand</b> (jug)<br />
+Price: 100 GP<br />
+Weight: 12#<br />
+(Sandstorm p. 102)<br />
+Through the exertion of your will (Wisdom check DC 16), you can create any mundane non-magical object out of sand that supposedly &quot;serves as a normal item of the same sort&quot;. (So... does that mean I can turn it into 12 lbs of acid or alchemist's fire? How about explosives or poisons? How about a masterwork gatling gun? Hmm...) It retains that shape as long as it stays within 100' of you, but you can also reshape it whenever you like by making another Wisdom check. While the question of acid/explosives/poisons will have to be settled by your DM, you have any tool you can possibly imagine at your fingertips. Need a hammer? Done. Don't need the hammer anymore, need a shovel? Done. It's particularly useful for tools that wear out after a certain number of uses, such as hacksaws and drills. How about exotic weapons or armor (Shapesand Fullplate = 500 GP, shapesand Mechanus Gear = 700 GP)? It can do that, too, although be aware, if an enemy recognizes you're using shapesand, he could try to reshape it under his control with a Wisdom check of his own.<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Slippery Oil</b><br />
+Price: 50 GP<br />
+Weight: --<br />
+(Dragon Compendium p. 119)<br />
++5 untyped bonus to Escape Artist checks, so it stacks with Spelunker's Oil (+2 alchemical, 15 GP, Drow of the Underdark). Lasts 1 hour.<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Sparker</b><br />
+Price: 2 GP<br />
+Weight: --<br />
+(Arms &amp; Equipment Guide p. 25)<br />
+Works similar to a tindertwig (standard action to light a torch), but cheaper. 10 uses for only 2 GP.<br />
+<br />
+<b>Sphere of Awakening</b><br />
+Price: 1800 GP<br />
+Weight: 1#<br />
+(Magic Item Compendium p. 186)<br />
+A must-have for anyone on watch. 1/day, instantly wakes up all of your allies as a swift action. In addition, you and all allies are immune to fatigue, exhaustion, and sleep effects for 10 minutes. If you've got any barbarian, frenzied berserker, or dervish in the party that has to deal with fatigue, this will immediately get rid of it. <br />
+<br />
+<b>Sprayer</b><br />
+Price: 15 GP<br />
+Weight: 4#<br />
+(Arms &amp; Equipment Guide p. 25)<br />
+Spray a 10' long cloud of oil, holy water, an inhaled poison, or our new favorite special substance: aboleth mucus. It's an area effect, essentially a 5' x 10' line, but it doesn't require an attack roll and can be given to an <i>unseen servant</i>. The description says acid won't work, but doesn't mention alchemist's fire (which should work if the storage drum is airtight, but I'm not sure it is). Quickflame, Quickfrost, or Quickspark (Complete Adventurer) might also work, as well as Alchemist's Frost (Eberron Campaign Setting), but Alchemist's Spark requires two liquids in separate containers to be mixed. Atramen Oil, Liquid Smoke, or Stonebreaker Acid could also be interesting options when delivered by a sprayer. <br />
+<br />
+<b>Stamp of the Messenger, Gold</b><br />
+Price: 2750 GP<br />
+Weight: 1#<br />
+(City of Splendors: Waterdeep p. 151)<br />
+This stamp produces a magical wax seal that you can attach to any object up to 0.5 lbs. The wax will animate as a fine-sized construct and then deliver the object to anyone within two miles (40' fly speed). In addition to being an ideal delivery device for <i>explosive runes</i>, you can use this to pinpoint hidden/invisible opponents.<br />
+<br />
+<b>Stonebreaker Acid</b><br />
+Price: 20 GP<br />
+Weight: 1#<br />
+(Arms &amp; Equipment Guide p. 35)<br />
+Thrown as grenade-like weapon. Against stone objects/creatures, 5d10 damage over 2 rounds that ignores hardness. While Delver Slime (150 GP, Savage Species) may deal more damage per application, Stonebreaker Acid is a lot cheaper. Stone has 15 hit points per inch of thickness, so 740gp of Stonebreaker Acid (185d10 avg 1017dmg) with get through almost 68inches.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Sundark Goggles</b><br />
+Price: 10 GP<br />
+Weight: --<br />
+(Races of the Dragon p. 123) <br />
+Never take the Daylight Adaptation feat ever again. These handy little shades negate the dazed penalty for creatures with Light Sensitivity, and also provide a +2 circumstance bonus on saves against gaze attacks. Creatures without low-light or darkvision take a -2 penalty on spot and search checks.<br />
+<br />
+<b>Suregrip</b><br />
+Price: 20 GP<br />
+Weight: --<br />
+(Complete Adventurer p. 119)<br />
++1 alchemical bonus on Climb checks, stacks with Climber's Kit (+2 circumstance, PHB), Rope Climber (+5 circumstance, Races of Faerun), and Spider Kit (+2 circumstance, Drow of the Underdark).<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Survival Pouch</b><br />
+Price: 3300 GP<br />
+Weight: 5#<br />
+(Magic Item Compendium p. 187)<br />
+5/day, you can pull out one of the following: trail rations, 2 gallons of water in a waterskin, tent plus two bedrolls, 50' rope, shovel, campfire/8 torches, composite shortbow with 20 arrows in a quiver, or a mule with bit/bridle/saddle/saddlebags. While this duplicates some items we have already, what we're really after are the 5 mules/day. Mules are large sturdy creatures that can be used as mounts, pack bearers, trapfinders, or 10' x 10' blocks of meat you can use to block corridors, distract opponents, delay pursuers, etc. The description says they won't fight but treat them as summoned creatures, which means they respond to verbal commands (almost all summoned creatures understand Common as their default language) to the best of their abilities without having to muck around with tricks and Handle Animal checks. <br />
+<br />
+<b>Talisman of the Disk</b><br />
+Price: 500 GP<br />
+Weight: --<br />
+(Magic Item Compendium p. 188)<br />
+<i>Tenser's floating disk</i> at will, lasts up to 3 hours. Aside from just carrying around loot, use it to glide allies over rough/dangerous terrain, or give it to one of the frontline meatshields to create a &quot;side-car&quot;, allowing a second melee fighter to move alongside and full-attack without having to use his own move action.<br />
+<br />
+<b>Tarpaulin, Honey Leather</b> (big)<br />
+Price: 40 GP<br />
+Weight: 1#<br />
+(Races of the Wild p. 170)<br />
+An upgrade from a winter blanket, wearing a honey leather tarpaulin gives a +1 circumstance bonus on Survival checks to resist the effects of severe weather, or +2 bonus if you're stationary. The big tarpaulin is waterproof, 6' square, and could be used to wrap your equipment to prevent it from getting wet, collect rainwater, cover a 5' pit trap, smother a small fire, or convert it into a float bladder.<br />
+<br />
+<b>Torch Bug Paste</b> (x4, 25 GP ea.)<br />
+Price: 100 GP<br />
+Weight: --<br />
+(Complete Scoundrel p. 120)<br />
+Thrown as a splash weapon, non-magical <i>faerie fire</i> effect, which pinpoints invisible creatures and completely negates concealment.<br />
+<br />
+<b>Travel Cloak</b><br />
+Price: 1200 GP<br />
+Weight: 1#<br />
+(Magic of Faerun p. 166)<br />
+Provides trail rations 3/day, a flask that produces up to 2 gallons of cool water or sugared hot tea per day, <i>endure elements</i> against cold, and can be transformed into a one-person tent 1/day.<br />
+<br />
+<b>Trollbane</b><br />
+Price: 90 GP<br />
+Weight: --<br />
+(Dungeonscape p. 37)<br />
+Running into a regenerating creature when the party isn't ready for it can quickly turn into a TPK. While one dose of Alchemist's Fire, Bladefire, or Quickflame might be cheaper, trollbane allows all of a weapon's damage (not just fire/acid) to ignore regeneration. Save this for high-damage single-hit attacks, such as two-handed power-attack leap-attack ubercharger combos.<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Troll Gut Rope</b><br />
+Price: 500 GP<br />
+Weight: 7#<br />
+(Magic Item Compendium p. 190)<br />
+50' rope, 1/day provides an extra 300' of rope that lasts for 12 hours. If you need to tie up something longer than that, stick with normal non-magical rope. Since you may need to tie something up for longer than 12 hours, keep at least one coil of normal silk rope handy.<br />
+<br />
+<b>Unguent of Timelessness</b><br />
+Price: 150 GP<br />
+Weight: --<br />
+(DMG)<br />
+Used primarily to extend the duration of some alchemical items by 365 times. It can be applied to any item that was once alive, which basically means it has to consist primarily of organic materials. Candles and torches burn for 15 days (365 hours = 15.21 days). Lamp oil (created from whale fat or crude oil) burns for 91.25 days. Certain alchemical items could also be considered organic, such as a Focusing Candle (Complete Adventurer), Icewild Lichen Paste (Secrets of Sarlona), Fire Beetle Lamp (Races of Dragon) or Torch Bug Paste (Complete Scoundrel). There's no restriction to non-magical items, so you could add this to a section of Troll Gut Rope and it would last 182.5 days instead of 12 hours. It can also be used to keep a corpse fresh for <i>raise dead</i>. Each flask contains 8 doses (19 GP per dose).<br />
+<br />
+<b>Universal Solvent</b><br />
+Price: 50 GP<br />
+Weight: --<br />
+(DMG)<br />
+Gets you out of sticky situations. In addition to countering Sovereign Glue, it can dissolve tanglefoot bags, kuo-toa shields, and other adhesives.<br />
+<br />
+<b>Vermin Ointment</b><br />
+Price: 20 GP<br />
+Weight: 1#<br />
+(Secrets of Xendrik p. 139)<br />
+Vermin of diminuative size or smaller (including swarms) can't get within 5' of you unless magically compelled (and with most vermin being mindless, good luck with that). Larger vermin must make a Fortitude save DC 15 or become sickened.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Whiteshiver Elixir</b><br />
+Price: 1500 GP<br />
+Weight: 1#<br />
+(Expedition to the Ruins of Greyhawk p. 222)<br />
+Gain all of the benefits and immunities of the plant subtype for 10 minutes: low-light vision, immunity to crits, mind-affects, paralysis, polymorph, poison, sleep, and stunning.<br />
+<br />
+<b>Wick, Candle</b> (x5, 2 SP ea.)<br />
+Price: 1 GP<br />
+Weight: --<br />
+(Arms &amp; Equipment Guide p. 27)<br />
+Can be used anywhere you would use Twine (Dungeonscape p. 33), such as tripwires, improvised alarm systems, fishing lines, signal kites, or hang from the ceiling to detect invisible flying creatures. In addition, you can use it as a timing device: it takes 30 seconds (5 rounds) to burn 1 inch. Comes in 50' rolls. <br />
+</div>
+</div>
+
+<b>Honorable Mentions or Cut Due to Weight</b><br />
+<br />
+<div class="spoiler">
+<div class="spoiler-body" name="spoiler-body"><br />
+<br />
+<b>Alchemist's Spark</b><br />
+Price: 25 GP<br />
+Weight: 1#<br />
+(Eberron Campaign Setting p. 120)<br />
+There are at least two other alchemical items that do electricity damage: Quickspark (Complete Adventurer) and Sparkstone (Arms &amp; Equipment Guide). Alchemist's Spark does a little more damage (1d8) and is the only one that does splash damage. Sparkstone can arc to one adjacent target for half damage, but that works out to 1 damage 66% of the time, so you're better off with Alchemist's Spark anyway. Quickspark may be a little more useful since it can be applied to a weapon as an oil or as a swift action with a Weapon Capsule Retainer, but it can't be thrown on its own.<br />
+Craft (Alchemy) DC: 22<br />
+<br />
+<b>Aspect Mirror</b><br />
+Price: 4000 GP<br />
+Weight: 10#<br />
+(Complete Scoundrel p. 113)<br />
+There are several magic items that allow communication between party members at a distance, but they usually have a limited number of uses per day (Sending Stones, Linked armor/shield property) or a limit on the distance (Rings of Communication). The Aspect Mirror beats them all hands-down, because it allows unlimited visual and verbal communication between linked mirrors anywhere on the same plane. <br />
+<br />
+<b>Babbling Wheel</b><br />
+Price: 2000 GP<br />
+Weight: --<br />
+(Savage Species p. 55)<br />
+While the Will save DC 11 is utterly pathetic, everybody rolls a 1 eventually. If you're going to use this item, you can make sure the entire party makes their save at the beginning of the day, and they won't be affected for the rest of the day. This is an item that can be given to an <i>unseen servant</i> or monk that has nothing else to do during combat.<br />
+<br />
+<b>Bag of Tricks, Rust</b><br />
+Price: 3000 GP<br />
+Weight: --<br />
+(DMG)<br />
+Originally I had this in Type III, but the Survival Pouch seemed like a much better deal. Still, nothing wrong with having both. While I recommended against the grey bag, the rust bag has four different medium-sized creatures that are more useful in combat. They may be a little light on HD, they're strong enough to last as a flanker or distraction for a round or two. They can all be used as trap-finders (within the limitations of what you can tell them to do with the tricks listed under Handle Animal), they all have scent, and the wolf has the Trip ability and the Track feat with a decent racial bonus to go with it. <br />
+<br />
+<b>Blend Cream</b><br />
+Price: 50 GP<br />
+Weight: 1#<br />
+(Complete Adventurer p. 118)<br />
++1 alchemical bonus on Hide checks, stacks with Camouflage Kit and Camouflage Paint.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Blister Oil</b><br />
+Price: 15 GP<br />
+Weight: 0.5#<br />
+(Races of Stone p. 159)<br />
+I originally excluded this item from the Type I Haversack because I considered the Fortitude save DC 15 to be too low to be reliably effective. However, in <a href="http://www.giantitp.com/forums/showthread.php?t=168100" target="_blank">another thread</a> Dark_Juggernaut noticed that on a failed save, blister oil does 1d4 damage *per application*, and there is no limit to the number of applications you can put on a single object. Thus, with a little time and effort, you can create a &quot;Blister Oil Bomb&quot; that does Xd4 untyped damage, X = 1d8 applications per 15 GP. 10 vials (150 GP) does an average of 112.5 damage. 78 vials (1170 GP, 877.5 average damage) will take out a Tarrasque (apply to a Lasso + Sovereign Glue, wait 20+ rounds until target fails a Fort save). As impressive as that may be, the save DC is still disappointingly low (Fortitude is the best save for most monsters), you still have to trick/entice/force a creature to touch the object, and I'm a little puzzled why you pay full price for a vial that may not be entirely full. Even so, I thought taking down a Tarrasque was worth at least an Honorable Mention. You might be able to pull this trick off on a DM *once*, but after that I wouldn't press your luck.<br />
+<br />
+<b>Camouflage Kit</b><br />
+Price: 40 GP<br />
+Weight: 5#<br />
+(Complete Adventurer p. 122)<br />
++2 circumstance bonus on Hide checks, stacks with Blend Cream and Camouflage Paint.<br />
+<br />
+<b>Crampons</b><br />
+Price: 5 GP<br />
+Weight: 1#<br />
+(Frostburn p. 78)<br />
++2 circumstance bonus on Climb checks and Balance checks on icy surfaces.<br />
+<br />
+<b>Climber's Kit</b><br />
+Price: 80 GP<br />
+Weight: 5#<br />
+(PHB)<br />
++2 circumstance bonus that stacks with the Spider Kit. In most cases, however, a potion of <i>spiderclimb</i> works much better for only 150 GP<br />
+<br />
+<b>Darklight</b><br />
+Price: 500 GP<br />
+Weight: 1#<br />
+(Secrets of Sarlona p. 140)<br />
+Outside of glowing jello and little crystal stones that float around your head, this is one of the more interesting light sources in the game. Once imbued with 1 PP, it operates for 24 hours (or more, up to 7 days with 7 PP). It affects an 80' radius, and has four modes of illumination that can be changed with a free action: no light, shadowy light, bright light, and beacon. The light given off is supposedly &quot;not magical or psionic in nature&quot; so it gets overridden by any magical <i>light</i>/<i>darkness</i> effects, but when combined with darkvision, blindsense/blindsight, or some other vison/detection enhancement, this can give you continuous all-day concealment. The only drawback is you need at least 1 PP to use it, and so far I haven't found an easy way for a non-psionic user to power it up. The best I could find is a buckler +1 with the Manifesting enhancement (+6000 GP, MIC p. 12): 1/day, draw up to 3 PP from the shield to manifest a psionic power.<br />
+<br />
+<b>Darkweave Silk Pantaloons</b><br />
+Price: 108 GP<br />
+Weight: --<br />
+(Eberron Campaign Setting p. 122)<br />
++1 circumstance bonus to Hide checks under shadowy or dark conditions. Note: it doesn't have to be silk pantaloons, but there is no &quot;legs&quot; or &quot;pants&quot; item slot, so anything you wear on your legs shouldn't interfere with your existing armor or magic items.<br />
+<br />
+<b>Dust of Sneezing and Choking</b><br />
+Price: 2500 GP<br />
+Weight: --<br />
+(DMG)<br />
+Some DMs don't notice this item tucked away in the Cursed Items section, but many DMs who know exactly what it can do frequently ban it outright. If used against a party, it's pretty much a guaranteed Total Party Kill (TPK). Used *by* the party, and it's pretty much guaranteed Total Party Gets To Kill Anything. The reason the dust is so powerful is even if a creature hit by it makes its Fort save to resist the Constitution damage, it's still stunned 5d4 rounds (average 12.5 rounds, minimum 5 rounds). If your DM allows you to get hold of this, then I'd advise only using this item as a last resort &quot;Get Out of Certain Death Free&quot; card. Once the DM sees how powerful it is, odds are good you'll never be able to use it gain. <br />
+<br />
+<b>Earthsilk Jersey</b><br />
+Price: 150 GP<br />
+Weight: 2#<br />
+(Races of Stone p. 160)<br />
+DR 1/slashing or bludgeoning... meh. Given how many different damage types can get past this, and it stops working if you get a crit with a piercing attack (but not a slash crit...?), I don't think it's worth the bother.<br />
+<br />
+<b>Earthsilk Rope</b><br />
+Price: 12 GP<br />
+Weight: 7#<br />
+(Races of Stone p. 160)<br />
+This is a little stronger than a normal silk rope, but I'm not sure ropes breaking comes up often enough to be all that much of a concern, unless you're a dwarf that demands &quot;fine dwarven craftsmanship!&quot; whenever possible.<br />
+<br />
+<b>Faith Token</b><br />
+Price: 300 GP<br />
+Weight: --<br />
+(Champions of Valor p. 64)<br />
+These necklaces are tied to a particular Forgotten Realms deity (which may not be available in your campaign), and may only be activated by a member of that faith (although this is listed as an optional prerequisite... otherwise, try UMD). They allow you to cast one 0-level spell twice per day, or two different 0-level spells once per day each. I won't describe them all here, but I'll mention a few that look the most useful: Corellon Larethian (<i>detect magic</i>, <i>summon instrument</i>), Garl Glittergold (<i>prestidigitation</i>, <i>virtue</i>), or Ilmater (<i>cure minor wounds</i>). Note: you can use <i>summon instrument</i> to summon a handbell up to the maximum weight you can lift in one hand.<br />
+<br />
+<b>Fishing Tackle</b><br />
+Price: 20 GP<br />
+Weight: 5#<br />
+(Arms &amp; Equipment Guide p. 22)<br />
++1 circumstance bonus on Survival checks to gather food near bodies of water containing fish. Includes birch poles, silk line, sinkers, hooks, lures, and tackle box, any of which could be repurposed into something else.<br />
+<br />
+<b>Fowler's Snare</b><br />
+Price: 20 GP<br />
+Weight: 5#<br />
+(Arms &amp; Equipment Guide p. 22)<br />
++1 circumstance bonus on Survival checks to catch birds, stacks with Animal Call and Hunter's Kit. <br />
+<br />
+<b>Frostfire</b><br />
+Price: 40 GP<br />
+Weight: 1#<br />
+(Savage Species p. 47)<br />
+Much like Alchemist's Fire, Frostfire is thrown as a grenade-like weapon and does 1d6 cold damage on the first round and another 1d6 cold damage on the next round if it isn't scraped off (full round action, Ref save DC 15 to remove or automatically wash it off with alcoholic/acidic liquid). No splash damage. More expensive but better damage than Alchemist's Frost or Quickfrost. <br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Glamerweave Rhinestone Battle Stockings</b><br />
+Price: 101 GP<br />
+Weight: --<br />
+(Eberron Campaign Setting p. 122)<br />
++1 circumstance bonus on Diplomacy checks. If you're willing to spend 500 GP + double the normal cost of the clothing, you can upgrade to Clebdecher Glamerweave (Sharn: City of Towers p. 158), which increases the circumstance bonus to +2. Note: It doesn't have to be rhinestone battle stockings, but there is no &quot;legs&quot; or &quot;pants&quot; item slot, so anything you wear on your legs shouldn't interfere with your existing armor or magic items.<br />
+<br />
+<b>Blast Disk</b><br />
+Price: 900 GP<br />
+Weight: 1#<br />
+(Magic Item Compendium p. 152)<br />
+While I appreciate that this explosive can be set off either by proximity or a timer, a Glyph Seal (Magic Item Compendium p. 161) can do so much more, and be used over and over again.<br />
+<br />
+<b>Glyph Seal</b><br />
+Price: 1000 GP<br />
+Weight: --<br />
+(Magic Item Compendium p. 161)<br />
+This spell-storing item works like a <i>glyph of warding</i> you can use over and over again, but you're not limited to offensive spells. Any spell up to 2nd level can be stored inside, so you can use it for buffs or utility spells. Attach it to a pouch that contains spell components or ammunition (which can be drawn as a free action), and you can trigger it to cast a spell on you as a free action. Attach it to your weapon and when you hit another creature, it &quot;touched&quot; the warded object and gets hit with the spell. <br />
+<br />
+<b>Glyph Seal, Greater</b><br />
+Price: 4000 GP<br />
+Weight: --<br />
+(Magic Item Compendium p. 161)<br />
+Between the lesser and greater Glyph Seal versions, there's an odd &quot;donut hole&quot; where you can't use 3rd or 4th level spells, but the greater version can store any spell 5th level or higher. Check with your DM if metamagic feats can increase the effective spell level, or if you have to use Heighten Spell to get up to 5th. Much cheaper than a ring/weapon of Spell-Storing.<br />
+<br />
+<b>Glove of the Master Strategist</b><br />
+Price: 3600 GP<br />
+Weight: --<br />
+(Ghostwalk p. 71)<br />
+Everything a Glove of Storing can do, plus <i>true strike</i> 1/day, without the horrendous 3.5 price increase. And yes, there was a 3.5 update released for Ghostwalk, and the price stayed the same, so it's official. Allows you to swap out whatever's in your hand as a free action, up to 20 pounds (which would include the haversack, if you were so inclined). Also a nifty way to get your hand free to draw an item from your haversack, throw a grenade-like weapon, or swap a melee weapon for a ranged weapon. Since it stores an item in stasis, it can also be used to store torches or other alchemical items with specific durations, such as a Focusing Candle, Hearthfire, Fire Beetle Lamp, or possibly a Chaos Flask that have been shaped into something else.<br />
+<br />
+<b>Heartstone</b><br />
+Price: 1800 GP<br />
+Weight: --<br />
+(Monster Manual p. 194)<br />
+You may have to kill a Night Hag (CR 9) to get this, but it may be worth tracking down for the ten cheap &quot;Get Out of Disease Free&quot; cards. This periapt gives you a +2 resistance bonus to all saves and automatically cures any disease you may pick up. The only downside is it shatters after ten uses (including saving throws), but you can keep it in your pack until you need a <i>remove disease</i> in a hurry. At 180 GP per use, that's a great bargain compared to a scroll (375 GP), potion (750 GP), or having to deal with the Awful Stupid Paladin in the party. This downside disappears if your Use Magic Device check is +24 or more, in which case you can &quot;emulate a race&quot;, pretending to be a Night Hag at will. You can then use all of the heartstone's powers, including <i>etherealness</i> at will, in which case this item is horrendously underpriced. However, you still need to roll UMD every time you use it, and if you roll a natural 1, it will stop working for 24 hours.  <br />
+<br />
+<b>Hunter's Kit</b><br />
+Price: 50 GP<br />
+Weight: 5#<br />
+(Secrets of Xendrik p. 139)<br />
++2 circumstance bonus to Survival checks when hunting or foraging for food, stacks with Animal Call and Fowler's Snare. Lasts for 10 uses.<br />
+<br />
+<b>Hand of the Oak Father</b><br />
+Price: 5000 GP<br />
+Weight: 1#<br />
+(Magic Item Compendium p. 109)<br />
+A bit of an eclectic mix of 1/day spells. If you're looking to upgrade a Goodberry Bracelet, Hand of the Oak Father can cast <i>goodberry</i> once per day for 2d4 berries. It can also cast <i>barkskin</i> (natural armor buff), <i>entangle</i> (battlefield control), <i>plant growth</i> (uh... agribusiness buff?), <i>speak with plants</i> (gardening tips, maybe?), and <i>tree shape</i> (disguise/hide). <br />
+<br />
+<b>Heart of the Beast</b><br />
+Price: 2000 GP<br />
+Weight: 1#<br />
+(Magic of Faerun p. 160)<br />
+Eat your heart out, Mr. Cleric. <i>Divine Powah!</i> as a one-shot, lasts 10 rounds. It doesn't really have any use outside of combat (and may only be of interest to non-melee types), but I thought it was worth mentioning if you weren't aware of it.<br />
+<br />
+<b>Inquisitive's Kit</b><br />
+Price: 300 GP<br />
+Weight: 4#<br />
+(Eberron Campaign Sourcebook p. 122)<br />
++4 circumstance bonus on Search checks along with some special rules for finding clues with the Search skill. There may be some overlap with other kits (paper, inks, magnifying glass, etc.). If your DM doesn't want to bother with the special Scooby Doo rules and lets you apply the +4 bonus to any Search check, then make some room in you haversack for this ASAP.<br />
+<br />
+<b>Jumping Caltrops</b><br />
+Price: 250 GP<br />
+Weight: 2#<br />
+(Magic Item Compendium p. 162)<br />
+More of an annoyance than a threat, really, but you don't have to spend any actions directing them and they apparently know the difference between enemies and allies.<br />
+<br />
+<b>Liquid Sunlight</b><br />
+Price: 20 GP<br />
+Weight: --<br />
+(Complete Scoundrel p. 111)<br />
+Bunko's Bargain Basement suggested this as a much cheaper everburning torch, but I opted to include the Angel Radiance instead, since as a spell component it can be drawn as a free action. However, liquid sunlight has a unique feature: as alchemical items, they can be crafted cheaply and quickly. Which means if you crafted a whole bunch of them and introduced affordable illumination into a pre-industrial world, you could revolutionize agriculture, manufacturing, transportation, labor practices, literacy, crime prevention and whatnot. Only with, you know, wizards and dragons and stuff still around. <br />
+Craft (Alchemy) DC: 30<br />
+<br />
+<b>Messenger Arrow</b><br />
+Price: 400 GP<br />
+Weight: 0.1#<br />
+(<a href="http://www.wizards.com/default.asp?x=dnd/we/20030607a" target="_blank" rel="nofollow">Ghostwalk Web Enhancement</a> p. 8)<br />
+This one-shot arrow or bolt can be used to cast <i>helping hand</i>, which can locate *any* target within 100' in 1 round. This can be used to locate <i>invisible</i> or hidden creatures, even those with the Darkstalker feat. Heck, it's also an evocation spell, so it works against <i>obscure object</i>, <i>sequester</i>, and <i>mind blank</i>. For another +160 GP, you can add the Spell Storing property and trigger a <i>faerie fire</i> or <i>glitterdust</i> when the arrow lands (you can also do this by attaching a keyed Glyph Seal to the arrow, 1000 GP, MIC p. 161). <br />
+<br />
+<b>Papyrus of Deception</b><br />
+Price: 2000 GP<br />
+Weight: --<br />
+(Complete Adventurer p. 134)<br />
+When used to forge a document, provides a +5 enhancement bonus that stacks with Forgery Kit and Wondrous Writing Set but not Forger's Paper. While I love using the Forgery skill, my main worry with the Papyrus is there's a good chance you're going to be giving it to an important official who won't give it back, in which case 2000 GP is a bit of a steep investment for a one-shot item that you should be able to use over and over again. <i>Instant summons</i> won't help either, because as soon as you give it to someone else, it's no longer an unattended item. My best advice is after the official has failed his Forgery roll, have the party skill monkey make a Sleight of Hand check to retrieve the Papyrus or switch it with a more disposable copy: use Forger's Paper to create a duplicate, ask for the document back &quot;to check one of the signatures&quot;, replace the Papyrus with the disposable copy, and hope the official didn't put a lot of ranks in his Spot skill.<br />
+<br />
+<b>Potion Bladder</b><br />
+Price: 25 GP<br />
+Weight: 0.5#<br />
+(Drow of the Underdark p. 92)<br />
+Allows drinking a potion as a standard action without triggering an attack of opportunity. Also allows drinking a potion underwater.<br />
+<br />
+<b>Portable Fountain</b><br />
+Price: 1800 GP<br />
+Weight: --<br />
+(Sandstorm p. 134)<br />
+Can only be used 1/day but provides 10 gallons of water every day (which should fill about 20 standard waterskins). While a Replenishing Skin (1000 GP, Magic Item Compendium) may be cheaper, you'll get more water out of the fountain. I originally included this item in the Haversack Type III, but with the Travel Cloak and Survival Pouch, it wasn't really necessary.<br />
+<br />
+<b>Powder of the Black Veil</b><br />
+Price: 750 GP<br />
+Weight: --<br />
+(Magic Item Compendium p. 169)<br />
+Although the item description says this powder can be thrown into an area, it also says the 10' burst is centered on the user, so I guess you have to throw it down at your feet. This puts you inside the cloud, but you are immune to the blinding effect. Any other creature inside the cloud is blind, no save. They can move out of the cloud, and the blindness lasts an additional 1d4 rounds if they fail a Will save DC 13. I thought the powder also blocked line-of-sight or provided total concealment, but there's no mention of that in the description. While eggshell grenades are cheaper and easier to use, this powder can affect multiple targets if they're standing close enough together.<br />
+<br />
+<b>Shriek Paste</b><br />
+Price: 50 GP<br />
+Weight: 1#<br />
+(Dragon Compendium p. 119 or Underdark p. 67)<br />
+When exposed to light, this paste screams like a shrieker. This is almost as cool as glowing Jello, and I'd love to come up with more interesting things to do with this, but I can't think of any practical applications other than as a part of an improvised alarm system or anti-theft device.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Sovereign Glue</b><br />
+Price: 2400 GP<br />
+Weight: --<br />
+(DMG)<br />
+Expensive and somewhat difficult to handle more than an ounce without Oil of Slipperiness, but this glue can lead to untold wackiness with a little creativity. Permanently seal doors/windows/locks, add it to a doorknob or pour it on a monster's foot to prevent them from moving, never get disarmed again, add handholds to make a shear surface climbable, or dab it on an alchemical flare stake and stab a lich for 1d6 damage every round until it dies.<br />
+<br />
+<b>Spelunker's Kit</b><br />
+Price: 80 GP<br />
+Weight: 5#<br />
+(Underdark p. 67)<br />
++2 circumstance bonus on Balance, Climb, Escape Artist, and Survival checks when in tough-to-access areas or cramped spaces. This bonus stacks with the Climber's Kit and Spider Kit, although I imagine wearing all three kits at once wouldn't be all that comfortable. This kit includes a headlamp, head protection, protective clothing, gloves, kneepads, and heavy boots. <br />
+<br />
+<b>Spider Kit</b><br />
+Price: 110 GP<br />
+Weight: 5#<br />
+(Drow of the Underdark p. 92)<br />
++2 circumstance bonus on Climb checks that stacks with the Climber's Kit and Spelunker's Kit. In most cases, however, a potion of <i>spiderclimb</i> works much better for only 150 GP.<br />
+<br />
+<b>Swimmer's Kit</b><br />
+Price: 15 GP<br />
+Weight: 5#<br />
+(Arms &amp; Equipment Guide p. 28)<br />
++2 circumstance bonus on swim checks. Includes snorkel, goggles, and fins. Can't be worn with other clothing or armor, but might be worth it to repurpose the items for something else.<br />
+<br />
+<b>Tarmak War Paint</b><br />
+Price: 500 GP<br />
+Weight: ?? (not listed in description)<br />
+(Dragonlance Campaign Setting p. 232)<br />
+For those of you who want to get on that whole &quot;Braveheart&quot; kink, here you go. This blue body paint provides a +5 natural armor bonus and fast healing 5. Both effects wear off after it heals 20 HP. This makes it difficult to determine just how long it will last, but even at a minimum of four rounds, +5 NA and fast healing 5 from a non-magical source is astounding, if not outright pushing the boundaries of credibility. If you don't take any damage, the +5 NA bonus could last for days/weeks/etc. This is another prime candidate for a Chaos Flask, if you'd rather pay only 100 GP for this item, although this limits the duration to a number of rounds equal to your Wisdom score. It should probably belong in a Type II or Type III Haversack, but I'm including it here as an Honorable Mention because of how obscure the sourcebook is (Dragonlance Campaign Setting was released by a 3rd party publisher but with the official D&amp;D trademark license, not the D20 license) and the price is a lot higher than other alchemical items. <br />
+Craft (Alchemy) DC: 25<br />
+</div>
+</div>
+
+<b>Collar of Perpetual Attendance</b><br />
+Price: 2000 GP<br />
+Weight: 0.25#<br />
+(WotC online article, <a href="http://www.wizards.com/default.asp?x=dnd/fools/20030401c" target="_blank" rel="nofollow">Fabulous Cats!</a>)<br />
+<i>Unseen servant</i> at will. How is this so powerful? Well, it may be a mindless, shapeless force, but it can perform any activity that an unskilled human can do. This means it gets the same actions every round that any other creature would get: one move + one standard action, or one full-round action. Although it usually takes a move action to direct a spell, this means you can convert your move action into another standard action or more. It has a speed of 15' (10' if encumbered), so it can move up to 30' a round, and while it doesn't have a fly speed exactly (it has no weight, so it can't &quot;fall&quot;), it can move vertically up or down within the spell's range (up to 30' from the collar).<br />
+<br />
+<i>Unseen servants</i> can also make skill checks so long as the skill is not &quot;trained only&quot; and the DC is 10 or less. This does allow them to &quot;Aid Another&quot; on skill checks (DC 10), although they can't take a 10 on the check. This allows them to Aid Another on:<br />
+<br />
+Balance, Bluff (including feint), Climb, Concentration, Craft, Diplomacy, Disguise, Forgery, Gather Info, Heal, Hide, Intimidate, Jump, Listen, Move Silently, Perform, Ride, Search, Sense Motive, Spot, Survival, Swim, Use Rope, and maybe a few of the other non-PHB skills out there.<br />
+<br />
+Other things an <i>unseen servant</i> can do:<br />
+<br />
+* retrieve/fold a net<br />
+* reload a crossbow or sling<br />
+* drop/pick up caltrops<br />
+* light/carry a smokestick (mobile concealment) or noxious smokestick (save vs. nausea) <br />
+* light an oil slick or <i>web</i> on fire<br />
+* drop a sack full of 19 acid flasks in a square (19 splash damage, no save), 19 acidic fire flasks (38 splash damage, no save) or a sack full of 39 firestones (39d6 damage, no save)<br />
+* drop a bag of flour or torch bug paste into a square<br />
+* spread a bag of marbles into a square (5' x 5' nonmagical grease)<br />
+* pump a sprayer full of holy water, oil, aboleth mucus, or poison (area effect, 5' x 10' line, autohit/no save).<br />
+* apply an oil/cream to a willing/unconscious target<br />
+* apply a blessed bandage/healing salve or forcefeed a goodberry/<i>cure</i> potion to a dying creature<br />
+* hold a darkwood feycraft tower shield<br />
+* activate a feather token such as a tree or swan boat (20d6 falling object damage, no save)<br />
+* blow a horn of fog, play drums of panic, or spin a babbling wheel <br />
+* block a charge (if told not to get out of the way, charger has to treat it as an unintentional over-run or bull-rush)<br />
+* bull-rush a kobold into oncoming traffic<br />
+* open a fire trapped item while holding a piece of parchment inscribed with explosive runes (burning parchment = attempt to erase)<br />
+* crush a skull talisman (Frostburn)<br />
+* drop/break chardalyn stone (Silver Marches Web Enhancement) or Shalantha's Delicate Disk (Lost Empires of Faerun)<br />
+* activate an explosive pack (Secrets of Sarlona)<br />
+* activate/carry/drop a ditherbomb (Races of the Dragon)<br />
+* open a screaming flask (Complete Mage)<br />
+* blow a sand pipe (Secrets of Xendrik), 15' cone of burning sand<br />
+* spread powder of the black veil (MIC), 10' cube of no save blindness<br />
+* set/trigger a blast disk (Heroes of Battle) or exploding/sleeping/stunning spike (MIC)<br />
+* spread/drop slashing sand (MIC) or vial of icy sheets (Frostburn)<br />
+<br />
+<b>Gloves of Object Reading</b><br />
+Price: 3000 GP<br />
+Weight: --<br />
+(Magic Item Compendium p. 107)<br />
+While most people might use this item to handle an object and learn something about the previous owner, it can also be used to drive a DM completely bugf*ck crazy: &quot;Ok, so this gold piece... the previous owner, did he wear nice clothes? What color was his hair? Did he have a spellbook? Can I see what spells were in it? No? Okay, next gold piece...&quot; If you ask the right questions, the key to any locked door, puzzle, or riddle the DM throws at you should be right at your fingertips (the owner or creator had to get through the door/puzzle/riddle at some point, right?). Also, not sure what a magic item does? These gloves should give you the equivalent of a free <i>identify</i>: how was the item created, how it was used, what is the command word to activate it, and so forth. Plenty of &quot;social engineering&quot; possibilities, too... pick apart the weaknesses of any important NPCs or BBEGs from whatever objects they leave behind. Return lost items to their owners (for a small -- or perhaps not too small -- &quot;finder's fee&quot;, of course). In only a few minutes, identify forged documents, fake art/gems/jewelry, cursed magic items, or trapped objects. The possibilities are endless.<br />
+<br />
+<b>Nolzur's Marvelous Pigments</b><br />
+Price: 4000 GP<br />
+Weight: --<br />
+(DMG)<br />
+The definitive &quot;whatever you can possibly imagine&quot; item. Not only can you create mundane equipment, but any non-magical alchemical item is only 10 minutes away. Don't like how the dungeon is laid out? Paint some doors, walls, tunnels, or a few lava pits. A judicious painter knows how to conserve paint, however. Need to get through a wall? Instead of painting an entire door or tunnel, paint cracks in the wall so it's easier to break down. Or paint a hole and go through with a potion of <i>gaseous form</i>. When you add non-magical items such as Ectoplasm Equipment/Stabilizer (Ghostwalk, non-magical ghost touch weapons) and Chaos Flasks (Planar Handbook, create poisons or diamonds) on top of that, the possibilities are staggering. The only real drawback with the pigments is it's not entirely clear from the description how you track the amount of material you can create. There are two different limitations: by surface area (up to 100' square feet), or by GP cost (up to 2000 GP). However, it's not clear if the 2000 GP limit is per item created or a total per pot of pigments. For example, if the owner paints a 10' x 10' x 10' room, can he fill the entire volume with suits of full plate and vials of poison, or does everything in the room have to total up to 2000 GP or less? If you go by surface area, this works for simple features such as doors, pits, and pools of lava, but not so well for smaller objects with complex shapes, such as weapons/alchemical items/trombones/etc. If you go by GP cost, this works well for smaller items but you may be stuck digging through obscure sourcebooks to find a price for a 5' cube of ice/lava/mozzarella/etc. Work with your DM to determine which method works best.<br />
+<br />
+<b>Stone Dragon Belt, Novice</b><br />
+Price: 3000 GP<br />
+Weight: 1#<br />
+(Tome of Battle p. 150)<br />
+This item is used primarily to get access to the Mountain Hammer maneuver, the ultimate Swiss-Army chainsaw and dungeon redecorating tool, which is a standard action strike that ignores DR, hardness, and does an extra 2d6 damage. This allows you to cut down, break apart, or sunder anything your heart desires, over and over again. There are a few requirements, however. Because it's a Stone Dragon strike, you have to be in contact with the ground. You also need a high enough Initiator Level. For a non-martial adept, this means you need 6 levels/HD. You can only use the maneuver once per encounter, or if you're out of combat, you have to meditate for 5 minutes to re-ready the maneuver. If you already have martial adept levels and a high enough initiator level, then you can use your usual recovery method. If you don't have a high enough level yet, you can pick up either the Charging Minotaur or Stone Bones strike instead. If you have an Initiator Level of 5 or more, you can also get access to the 3rd level strikes Bonecrusher and Stone Dragon's Fury. The item description doesn't specify how you choose a new maneuver, but it stands to reason that if you take the item off and wait 24 hours for it to re-attune, you can select a different maneuver.
+<br />
+
+<b>Angriz's Chest</b><br />
+Price: 1000 GP<br />
+Weight: 50#<br />
+(Races of the Dragon p. 124)<br />
+Keeps dead flesh fresh and palatable. While there are certain alchemical/special substances that this might work well with (Fire Beetle Lamps, Torch Bug Paste), Unguent of Timelessness is usually cheaper. Also, a bit too heavy to be practical.<br />
+<b>Ascender/Slider</b><br />
+Price: 20 GP<br />
+Weight: 1#<br />
+(Arms &amp; Equipment Guide p. 21)<br />
++1 circumstance bonus on Climb checks going up a single rope, or Strength check DC 15 to slide down a rope and ignore falling damage. However, the Rope Climber provides a better bonus on ascent, and the Cablespool can be used to descend without a Strength check.<br />
+<b>Bag of Tricks, Grey</b><br />
+Price: 900 GP<br />
+Weight: --<br />
+(DMG)<br />
+The bag of tricks is one of my favorite items, but I must recommend against the cheapest version. The badger is the only animal with enough size/reach to threaten the squares around it or provide flanking. The rest of the animals are all tiny, and are unlikely to be any help in or out of combat. All of the animals have scent (except the bat, which gets blindsense 20' instead), which might make them useful for locating invisible creatures, but not enough skill ranks to be all that effective at it.<br />
+<br />
+<b>Bloodflower Salve</b><br />
+Price: 10 GP<br />
+Weight: --<br />
+(Serpent Kingdoms p. 149)<br />
+A very odd item... rub this on someone's body, and then sometime later, as long as you're within 25' you can speak a command word to have it deliver a <i>cure minor wounds</i> effect. But it's supposedly an alchemical substance and not magical... huh.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Bolt Cutters</b><br />
+Price: 6 GP<br />
+Weight: 5#<br />
+(Arms &amp; Equipment Guide p. 21)<br />
+A useful tool, but can be replicated with Shapesand until you can get hold of Stone Dragon Belt/Mountain Hammer, which can cut through just about anything.<br />
+<br />
+<b>Box of Brown Mold</b><br />
+Price: 3000 GP<br />
+Weight: ???<br />
+(DMG p. 71)<br />
+I'm not sure how to categorize this one. It's an auto-resetting trap that does 3d6 nonlethal cold damage in a 5' burst whenever the box is opened. If any kind of fire is brought within 5' of the mold, it doubles in size, but any amount of cold damage instantly kills it. Presumably, opening the box and dropping in a lit torch would create a rapidly expanding patch of 3d6 cold damage. Assuming you work out with the DM how exactly this expansion happens, there's no listed size or weight, so I'm not sure this would actually fit in the haversack.<br />
+<br />
+<b>Dust of Negation</b><br />
+Price: 3300 GP<br />
+Weight: --<br />
+(Lords of Madness p. 214)<br />
+Anti-magic field, cloud released as a 10' spread, lasts for 2 minutes. Rendered somewhat irrelevant in that the target creature can just walk out of the area of effect.<br />
+<br />
+<b>Fast Torch</b> (x2, 5 GP ea.)<br />
+Price: 10 GP<br />
+Weight: 1#<br />
+(Complete Mage p. 134)<br />
+This item consists of a tube of waxed paper set into a short wooden handle. The end opposite the handle has a wax seal, and the whole item is about the size of a normal torch. An alchemical substance packed inside the tube ignites when exposed to air. Lighting the torch is as simple as removing the wax seal, which requires a swift action.
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Red Tidewater</b><br />
+Price: 25 GP<br />
+Weight: 0.5#<br />
+(Planar Handbook p. 77)<br />
+If your DM won't allow dust eggshell grenades, this may be a reasonable alternative. While this has the same Ref save DC 15 as a Flash Pellet, it has a much longer duration (2d4 rounds) for only half the cost. Flashstones have a slightly higher Ref save DC 16 and a 15' diameter burst.<br />
+<br />
+<b>Flash Pellet</b><br />
+Price: 50 GP<br />
+Weight: --<br />
+(Complete Adventurer p. 118)<br />
+If your DM won't allow dust eggshell grenades, this may be a reasonable alternative. Ref save DC 15, 5' radius burst. However, Red Tidewater has a much better duration for half the cost, and a Flashstone has a slightly higher save DC and bigger burst.<br />
+Craft (Alchemy) DC: 25<br />
+<br />
+<b>Flashstone</b><br />
+Price: 50 GP<br />
+Weight: --<br />
+(Dragon Compendium p. 117)<br />
+As above, another reasonable alternative for dust eggshell grenades. Ref save DC 16 and a 15' diameter burst, so it's a bit more effective than a Flash Pellet. Red Tidewater is cheaper and has a much better duration.<br />
+Craft (Alchemy) DC: 20<br />
+<br />
+<b>Replenishing Skin</b><br />
+Price: 1000 GP<br />
+Weight: 4#<br />
+(Magic Item Compendium p. 173)<br />
+A standard waterskin holds about 1/2 gallon of water, so a replenishing skin can produce an average of 4.5 gallons per day if you're diligent about emptying it. While there's nothing really disappointing about a Replenishing Skin, a Travel Cloak or Survival Pouch provides more water and a variety of other features.<br />
+<br />
+
+Panacolo
+Price: 250 GP
+(Lords of Darkness p. 184)
+Initial: none
+Secondary: +2 untyped bonus to DC for all arcane spells user casts for the next 1d4 hours
+Side: 1d6 points Cha damage
+Overdose: second dose taken within one hour increases DC bonus to +3, but user takes 2d8 Cha damage. For additonal doses taken within the hour, the user takes additional Cha damage but do not increase DC further.
+Comments: Magical effect. Great way for Int-based casters to improve save DCs, and stacks well with Mushroom Powder and Haunspeir.
+Addiction: Low
+Terran Brandy
+Price: 500 GP
+(Book of Vile Darkness p. 43)
+Initial: +2 alchemical bonus to caster level
+Secondary: 2 points Con damage
+Side: none
+Overdose: 1 point Con damage
+Comments: Magical drug, so this won't work in an anti-magic field. Great way to boost caster level if you can prevent/cure the Con damage.
+Addiction: Low
+Craft (Alchemy) DC: 30
+Sakrash ("Twilight Mind")
+Price: 500 GP
+(Lords of Darkness p. 184)
+Initial: user dazzled for 1 minute
+Secondary: user immune to effects that read or alter thoughts/emotions for 1d4 hours (includes detect thoughts, zone of truth, calm emotions, cause fear)
+Side: attempts to communicate telepathically/empathically fail
+Overdose: none
+Comments: Magical effect. The strange wording on this doesn't explicitly say the user is immune to all mind-affecting spells... it doesn't mention charm or compulsion spells, but I can't imagine how those could *not* involve altering the target's thoughts. So yeah, looks like for only 500 GP you can get the equivalent of mind blank for 1d4 hours. 
+Addiction: none
+Darkeye (Sharn, City of Towers)
+50gp, Alchemy DC: 25. A toxic beverage: DC 12 ingested, paralysis/secondary damage 1 Con. However, if the victim fails his saving throw against the secondary damage, the paralysis continues and he must make another save after a minute has passed. This continues until the victim makes a successful saving throw.
+During the period of paralysis, the victim is poised on the brink of life and death. Some victims see visions of their past, while others hear the voices of departed friends and family. The experience sensitizes the victim to the emanations of the beyond. For an hour after consuming darkeye, the victim gains +1 effective caster level when casting any sort of necromantic spell
+
+

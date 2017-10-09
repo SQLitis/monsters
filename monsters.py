@@ -27,6 +27,24 @@ import xlrd # https://github.com/python-excel/xlrd
 # https://www.blog.pythonlibrary.org/2014/04/30/reading-excel-spreadsheets-with-python-and-xlrd/
 #import ipdb
 import cProfile,pstats
+import time
+
+import urllib.request, zipfile
+import requests
+import defusedxml.ElementTree
+import defusedxml.sax
+import ast
+import logging
+# These two lines enable debugging at httplib level (requests->urllib3->http.client)
+# You will see the REQUEST, including HEADERS and DATA, and RESPONSE with HEADERS but without DATA.
+# The only thing missing will be the response.body which is not logged.
+try:
+    import http.client as http_client
+except ImportError:
+    # Python 2
+    import httplib as http_client
+http_client.HTTPConnection.debuglevel = 1
+import pycurl
 
 rulebook_abbreviations = {'MM1':'Monster Manual',
  'Planar':'Planar Handbook', 'PlH':'Planar Handbook',
@@ -254,7 +272,8 @@ def spell_name_to_id(curs, spellName, allowNoneResult=False):
   assert spell_id is not None
   return spell_id
 
-def id_from_name(curs, tableName, name, allowExtraOnLeft=False, allowExtraOnRight=False):
+EDITION_PRIORITY = ('Core (3.5)', 'Supplementals (3.5)', 'Forgotten Realms (3.5)', 'Eberron (3.5)', 'Core (3.0)', 'Oriental Adventures (3.0)', 'Forgotten Realms (3.0)')
+def id_from_name(curs, tableName, name, allowExtraOnLeft=False, allowExtraOnRight=False, useEdition=False):
   """
   This function uses SQL's like instead of exact equality, to enable tricks like passing "Colossal%" to match Colossal+.
   """
@@ -272,7 +291,12 @@ def id_from_name(curs, tableName, name, allowExtraOnLeft=False, allowExtraOnRigh
     operator = 'LIKE'
   else:
     operator = '='
-  curs.execute('''SELECT id from {} WHERE name {} ?;'''.format(tableName, operator), (name,) )
+  if useEdition:
+    SQLcmd = '''SELECT {0}.id, dnd_dndedition.name from {0} INNER JOIN dnd_rulebook on dnd_rulebook.id=rulebook_id LEFT JOIN dnd_dndedition on dnd_edition_id=dnd_dndedition.id WHERE {0}.name {1} ?;'''.format(tableName, operator)
+    print('useEdition', SQLcmd.replace('?', name) )
+    curs.execute(SQLcmd, (name,) )
+  else:
+    curs.execute('''SELECT id from {} WHERE name {} ?;'''.format(tableName, operator), (name,) )
   results = curs.fetchall()
   # rowcount does not work for SELECT statements because we cannot determine the number of rows a query produced until all rows were fetched.
   # Even after all rows have been fetched, rowcount is still -1.
@@ -281,6 +305,14 @@ def id_from_name(curs, tableName, name, allowExtraOnLeft=False, allowExtraOnRigh
   #if result is None:
     #return None
     #raise IndexError("{} does not appear in the SQL table {}.".format(name, tableName) )
+  if useEdition:
+    for edition in EDITION_PRIORITY:
+      for (ret,editionName) in results:
+        if editionName == edition:
+          return ret
+    if len(results) != 1:
+      raise RuntimeError("{} results in {} for {}: {}".format(len(results), tableName, name, results) )
+    return results[0][0]
   else:
     if len(results) != 1:
       raise RuntimeError("{} results in {} for {}: {}".format(len(results), tableName, name, results) )
@@ -713,6 +745,249 @@ def insert_psionic_powers(curs):
   insertPower('Skincasting', 2, "As a standard action, Ragnorra can activate the ability of any worldskin feature (see page 102) within 1,000 feet.")
   insertPower('Mass Aversion', telepathyID, "An anathema creates a compulsion effect targeting all enemies within 30 feet. The targets must succeed on a Will save (DC 27) or gain an aversion to snakes for 10 minutes. Affected subjects must stay at least 20 feet from any snake, yuan-ti, or ti-khana creature (described earlier in this book), whether alive or dead; if already within 20 feet, they move away. A subject can overcome the compulsion by succeeding on another Will save (DC 27), but still suffers from deep anxiety. This causes a -4 reduction to Dexterity until the effect wears off or the subject is no longer within 20 feet of a snake, yuan-ti, or ti-khana creature. This ability is otherwise similar to antipathy as cast by a 16th-level sorcerer.")
 
+
+
+def cache_IMarvinTPA(cacheDir='IMarvinTPAcache'):
+  if cacheDir is None: cacheDir='IMarvinTPAcache'
+  if os.path.exists(cacheDir):
+    print('IMarvinTPAcache already cached')
+    return
+  print('creating folder', cacheDir)
+  os.mkdir(cacheDir)
+  os.mkdir(os.path.join(cacheDir, 'images') )
+  logging.basicConfig()
+  logging.getLogger().setLevel(logging.DEBUG)
+  requests_log = logging.getLogger("requests.packages.urllib3")
+  requests_log.setLevel(logging.DEBUG)
+  requests_log.propagate = True
+  start = time.time()
+  for i in range(1, 979):
+    #i = 1000
+    # Monster 978 does not exist. monster 977 does
+    #print('cache_IMarvinTPA', i)
+    url = r'http://www.imarvintpa.com/dndlive/TokMonsters.php?ID=' + str(i)
+    rptok = os.path.join(cacheDir, '{0:03d}'.format(i) + '.rptok')
+    print('cache_IMarvinTPA', i, (time.time() - start)/128, url, 'about to urlretrieve')
+    if False:
+      try:
+        urllib.request.urlretrieve(url, filename=rptok)
+      except urllib.error.HTTPError as E:
+        if str(E) != "HTTP Error 404: Not Found":
+          raise
+        # if we get a 404, we're done (sometimes it does that instead of the text thing, maybe it's a user-agent issue)
+        break
+    elif False:
+      # It hangs exactly 128seconds when I ping from Python, not at all when I use Chrome. How does it know?
+      headers = {
+                 'Host':'www.imarvintpa.com',
+                 'Connection':'keep-alive',
+                 'User-Agent':r'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+                 'Upgrade-Insecure-Requests':1,
+                 'Accept':r'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                 'Accept-Encoding':'gzip, deflate',
+                 'Accept-Language':r'en-US,en;q=0.8',
+                 'Cookie':'PHPSESSID=91398-wkyL4qShHt6vZJ30',
+                 }
+      print('cache_IMarvinTPA', i-1, (time.time() - start)/128, 'about to requests.get')
+      response = requests.get(url, headers=headers)
+      print('cache_IMarvinTPA', i, (time.time() - start)/128, 'done requests.get')
+      if response.status_code != requests.codes.ok:
+        if response.status_code != 404:
+          response.raise_for_status()
+        else: # 404
+          break
+      open(rptok, 'wb').write(response.content)
+    else:
+      # For some reason, urllib and requests are both delayed exactly 128seconds, but curl isn't.
+      curl = pycurl.Curl()
+      curl.setopt(curl.URL, url)
+      with open(rptok, 'wb') as fileObj:
+        curl.setopt(curl.WRITEDATA, fileObj)
+        curl.perform()
+        curl.close()
+    print('cache_IMarvinTPA downloaded', url, i, (time.time() - start)/128)
+    # the token files are ZIP files http://lmwcs.com/rptools/wiki/Token
+    try:
+      zipfile.ZipFile(rptok)
+    except zipfile.BadZipFile:
+      #if not zipfile.is_zipfile(rptok): # for some reason, sometimes says not is_zipfile but can still open it
+      # then it should be a text file saying Monster 1000 does not exist.
+      assert os.path.getsize(rptok) < 1000
+      text = open(rptok, 'r').read()
+      if text != "Monster {} does not exist.\n".format(i):
+        print('rptok =', rptok, 'text =', text, open(rptok, 'rb').read() )
+        raise Exception(text)
+      else: # no monster with that number, so we've reached the end
+        print('cache_IMarvinTPA has reached the end of the monsters')
+        break
+    #with zipfile.ZipFile(rptok) as archive:
+      #archive.extract(os.path.join('assets', ) )
+    #break
+
+accidentallyEscapedSlash = re.compile(r'<i>(\w+)<\\/i>')
+assert accidentallyEscapedSlash.sub(r'<i>\1</i>', " <i>spikes<\/i> +30 ") == " <i>spikes</i> +30 "
+def parse_IMarvinTPA(curs, cacheDir='IMarvinTPAcache'):
+  if cacheDir is None: cacheDir='IMarvinTPAcache'
+
+  curs.execute('''CREATE TABLE monster_family (
+  id INTEGER PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL
+  );''')
+  curs.execute('''CREATE TEMPORARY TABLE feat_backup (
+  id INTEGER PRIMARY KEY NOT NULL,
+  rulebook_id INTEGER NOT NULL,
+  page smallint(2) DEFAULT NULL,
+  name varchar(64) NOT NULL,
+  description longtext NOT NULL,
+  benefit longtext NOT NULL,
+  special longtext NOT NULL,
+  normal longtext NOT NULL,
+  slug varchar(64) NOT NULL,
+  description_html longtext NOT NULL,
+  benefit_html longtext NOT NULL,
+  special_html longtext NOT NULL,
+  normal_html longtext NOT NULL,
+FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
+  );''')
+  curs.execute('''INSERT INTO feat_backup (rulebook_id, page, name, description, benefit, special, normal, slug, description_html, benefit_html, special_html, normal_html) SELECT rulebook_id, page, name, description, benefit, special, normal, slug, description_html, benefit_html, special_html, normal_html FROM dnd_feat;''')
+  curs.execute('''DROP TABLE dnd_feat;''')
+  curs.execute('''CREATE TABLE dnd_feat (
+  id INTEGER PRIMARY KEY NOT NULL,
+  rulebook_id INTEGER NOT NULL,
+  page smallint(2) DEFAULT NULL,
+  name varchar(64) NOT NULL,
+  description longtext NOT NULL,
+  benefit longtext NOT NULL,
+  special longtext NOT NULL,
+  normal longtext NOT NULL,
+  slug varchar(64) NOT NULL,
+  description_html longtext NOT NULL,
+  benefit_html longtext NOT NULL,
+  special_html longtext NOT NULL,
+  normal_html longtext NOT NULL,
+FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
+  );''')
+  curs.execute('''INSERT INTO dnd_feat SELECT * FROM feat_backup;''')
+  curs.execute('''CREATE INDEX index_dnd_feat_name ON dnd_feat (name);''')
+  curs.execute('''DROP TABLE dnd_monsterhasfeat;''')
+  curs.execute('''CREATE TABLE monster_has_feat (
+  monster_id INTEGER NOT NULL,
+  feat_id INTEGER NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
+FOREIGN KEY(feat_id) REFERENCES dnd_feat(id)
+  );''')
+  
+  """sqlite> select dnd_rulebook.name, dnd_edition_id, dnd_dndedition.name, published, year from dnd_feat inner join dnd_rulebook on rulebook_id=dnd_rulebook.id inner join dnd_dndedition on dnd_edition_id=dnd_dndedition.id where dnd_feat.name="Improved Sunder";
+Deities and Demigods|7|Supplementals (3.0)|2002-02-01|
+Enemies and Allies|7|Supplementals (3.0)|2001-10-01|
+Player's Handbook v.3.5|1|Core (3.5)|2000-08-01| yeah, that was actually published in 2003
+Sword and Fist: A Guidebook to Monks and Fighters|7|Supplementals (3.0)|2001-01-01|
+  """
+
+  for i in range(1, 1000):
+    rptok = os.path.join(cacheDir, '{0:03d}'.format(i) + '.rptok')
+    if not os.path.exists(rptok):
+      break
+    with zipfile.ZipFile(rptok) as archive:
+      #fileObj = archive.open('content.xml')
+      #content = fileObj.read()
+      content = archive.read('content.xml')
+      content = content.decode('us-ascii')
+      #print(content)
+      content = accidentallyEscapedSlash.sub(r'<i>\1</i>', content)
+      root = defusedxml.ElementTree.fromstring(content)
+      assert root.tag == 'net.rptools.maptool.model.Token'
+      # family only appears as eg "family":"Abomination"
+      race = root.find(r"./propertyMap/store/entry[string='Race']/net.rptools.CaseInsensitiveHashMap_-KeyValue[key='Race']/value[@class='string']")
+      raceDict = ast.literal_eval(race.text)
+      #name = raceDict['name']
+      #typeName = raceDict['type']
+      #family = raceDict['family']
+      #subtypes = raceDict['subtype']
+      if raceDict['name'] == 'Bralani':
+        raceDict['family'] = 'Eladrin'
+      if raceDict['family'] is not None and raceDict['family'] != '':
+        curs.execute('''INSERT INTO monster_family (name) VALUES (?);''', (raceDict['family'],) )
+      if any(raceDict['name'].startswith(ageCategory) for ageCategory in ('Wyrmling', 'Very young', 'Young', 'Juvenile', 'Young Adult', 'Adult', 'Mature adult', 'Old', 'Very old', 'Ancient', 'Wyrm', 'Great wyrm') ):
+        continue
+
+      monsterID = id_from_name(curs, 'dnd_monster', raceDict['name'])
+      if monsterID is None:
+        # 'family': 'Dragon, Epic', 'name': 'Wyrmling Force Dragon'
+        # Dragon, Epic, Force, Wyrmling
+        familyFirst = raceDict['family'] + ', ' + ' '.join(word for word in raceDict['name'].split() if word not in [w.rstrip(',') for w in raceDict['family'].split()])
+        monsterID = id_from_name(curs, 'dnd_monster', familyFirst)
+        if monsterID is None:
+          words = raceDict['name'].split()
+          maybeDescriptor = words[0]
+          assert maybeDescriptor[-1] != ','
+          if len(words) > 1 and maybeDescriptor not in raceDict['family']:
+            descriptorLast = raceDict['family'] + ', ' + ' '.join(word for word in words if word not in [w.rstrip(',') for w in raceDict['family'].split()] and word!=maybeDescriptor) + ', ' + maybeDescriptor
+            print('descriptorLast =', descriptorLast)
+            monsterID = id_from_name(curs, 'dnd_monster', descriptorLast)
+      if monsterID is None:
+        words = raceDict['name'].split()
+        if len(words) > 1:
+          maybeDescriptor = words[0]
+          assert maybeDescriptor[-1] != ','
+          descriptorLast = ' '.join(word for word in words[1:]) + ', ' + maybeDescriptor
+          print('descriptorLast =', descriptorLast)
+          # there are two elder treants with different stats, one from Monster Mayhem
+          monsterID = id_from_name(curs, 'dnd_monster', descriptorLast, useEdition=True)
+      if monsterID is None:
+        words = raceDict['name'].split()
+        if len(words) == 2:
+          # Behemoth Eagle to Behemoth, Eagle
+          monsterID = id_from_name(curs, 'dnd_monster', words[0] + ', ' + words[1])
+      if monsterID is None:
+        if raceDict['name'] == 'Devastation Spider': continue
+        monsterID = id_from_name(curs, 'dnd_monster', raceDict['name'], allowExtraOnRight=True) # Devastation Spider, Web-spinner
+        # really, when there are multiple variations we want to assign feats to each...in that particular case, hmm...I guess a monster can't have multiple land_speeds...
+      if monsterID is None:
+        if raceDict['name'] == 'Demilich': # http://www.d20srd.org/srd/epic/monsters/demilich.htm
+          continue # skip templates for now
+        if raceDict['name'][:13] == 'Pseudonatural': continue
+        continue
+        raise Exception(raceDict)
+
+      # <fe>fast healing</fe> 15, <i>spell resistance</i> 34, <fe>damage reduction</fe> 10/chaotic and epic and adamantine
+      # no idea what's going on with <fe>
+      #print(root)
+      #for child in root.find('propertyMap').find('store'):
+      #  print(child)
+      for feat in root.findall(r"./propertyMap/store/entry[string='RealFeats']/net.rptools.CaseInsensitiveHashMap_-KeyValue[key='RealFeats']/value[@class='string']/fe"):
+        featName = feat.text
+        featID = id_from_name(curs, 'dnd_feat', featName, useEdition=True)
+        curs.execute('''INSERT INTO monster_has_feat (monster_id, feat_id) VALUES (?,?);''', (monsterID, featID) )
+      #with archive.open('content.xml') as xml:
+        #defusedxml.sax.parse(xml)
+        #defusedxml.ElementTree.parse(xml)
+        # https://docs.python.org/3/library/xml.html
+    # IMarvinTPA's XML files do not have sources, but the HTML at http://www.imarvintpa.com/dndlive/Monsters.php?ID=1 do
+
+# IMarvinTPA family same as what comes before the comma? sometimes
+"""
+sqlite> select name from dnd_monster where name like "%, %";
+Dragon, Planar, Beast, Wyrmling
+Dragon, Planar, Concordant, Wyrmling
+Golem, Black Ice
+Eel, Moray
+Vulture, Giant
+Demon, Anzu
+Living Spell, Living Fireball
+Demon, Skurchur
+Imp, Choleric
+White Hart (White Stag, Elven Deer)
+Imix (Prince of evil Fire Creatures, Lord of Hellfire, The Eternal Flame)
+Elemental Weird, Air, Lesser
+Swarm, Crystal Beetle
+"""
+
+
+
+
+
+
 class Monster(object):
   #allEnvs = set()
   @staticmethod
@@ -729,6 +1004,8 @@ class Monster(object):
 
   def __init__(self, xls_row):
     self.name = xls_row[0].value
+    if self.name[:16] == 'Elemental Primal':
+      self.name = 'Elemental, Primal' + self.name[16:]
     self.size = xls_row[1].value
     self.type_name = xls_row[2].value
     if self.name in ('Energon, Xag-Ya','Energon, Xeg-Yi'):
@@ -1487,7 +1764,8 @@ fortitude_divisors = {'Animal':2, # certain animals have different good saves
       }
 fortitude_additions = {key:(2 if d==2 else 0) for key,d in fortitude_divisors.items()}
 
-def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
+def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite',
+                    marvinCache=None):
   '''The original dnd_monster has only 29 monsters and has such design flaws as the default for attack being greatsword, so start from scratch.
   '''
   monsterOnlyDB = 'dnd_monsters.sqlite'
@@ -1496,11 +1774,20 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite'):
   assert not os.path.exists(monsterOnlyDB)
   shutil.copyfile(DBpath, monsterOnlyDB)
   print('creating file', monsterOnlyDB)
+  
+  conn = sqlite3.connect(monsterOnlyDB)
+  curs = conn.cursor()
+
+  if marvinCache is not None:
+    if os.path.exists(marvinCache):
+      #os.rmdir(marvinCache)
+      print('deleting', marvinCache)
+      shutil.rmtree(marvinCache)
+  cache_IMarvinTPA(marvinCache)
+
   alphabetical,ODE = read_xls(XLSfilepath)
   #ipdb.set_trace()
   #print('maxlen among names =', max([str(row[0]) for row in alphabetical.get_rows()], key=len) )
-  conn = sqlite3.connect(monsterOnlyDB)
-  curs = conn.cursor()
 
   # see existing tables dnd_racespeed and dnd_racespeedtype:
   # table with a single char for Burrow/Climb/Land/Fly/Swim, each monster_id might have a couple of entries
@@ -1541,6 +1828,7 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
 
   rulebook_max_name_len = max(max(len(n) for n in rulebook_abbreviations.values() ), 128)
   rulebook_max_abbr_len = max(max(len(n) for n in rulebook_abbreviations.keys() ), 7)
+  # backup mirrors the schema of the original
   curs.execute('''CREATE TEMPORARY TABLE rulebooks_backup (id int, dnd_edition_id int, name varchar({}), abbr varchar({}), description longtext, year varchar(4), official_url varchar(255), slug varchar(128), image varchar(128), published date);'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
   curs.execute('''INSERT INTO rulebooks_backup SELECT id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM dnd_rulebook;''')
   curs.execute('''DROP TABLE dnd_rulebook;''')
@@ -1554,10 +1842,10 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
   slug varchar(128) DEFAULT NULL,
   image varchar(100) DEFAULT NULL,
   published date DEFAULT NULL,
-  year int(20) DEFAULT NULL,
+  year smallint(2) DEFAULT NULL,
   FOREIGN KEY(dnd_edition_id) REFERENCES dnd_dndedition(id)
   );'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
-  curs.execute('''INSERT INTO dnd_rulebook (id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published) SELECT id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM rulebooks_backup;''')
+  curs.execute('''INSERT INTO dnd_rulebook (dnd_edition_id, name, abbr, description, year, official_url, slug, image, published) SELECT dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM rulebooks_backup;''')
   curs.execute('''DROP TABLE rulebooks_backup;''')
   curs.executemany('''INSERT INTO dnd_rulebook (abbr,name) VALUES (?,?);''', rulebook_abbreviations.items() )
 
@@ -1923,6 +2211,22 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   curs.executemany('''INSERT INTO spell_brings_monster (spell_id,monster_id) SELECT dnd_spell.id,dnd_monster.id FROM dnd_spell INNER JOIN dnd_monster ON dnd_spell.name=? AND dnd_monster.name=?;''', [ ('Summon Monster I', 'Elysian Thrush'), ('Summon Monster II','Devil, Lemure'), ('Summon Monster II', 'Clockwork Mender'), ('Summon Monster II', 'Fetid Fungus'), ('Summon Monster II', 'Nerra, Varoot'), ('Summon Monster II', 'Kaorti'), ('Summon Monster II', 'Howler Wasp'), ('Summon Monster II', "Ur'Epona")
   ] )
   
+  # http://www.imarvintpa.com/dndlive/Index_Deities.php
+  # have to follow links, but has deities with alignments and domains
+  
+  # database only has 165 items
+  # http://www.imarvintpa.com/dndlive/Index_It_Fam.php
+  # http://www.imarvintpa.com/dndlive/Index_It_Cat.php
+  # http://www.imarvintpa.com/dndlive/Index_It_Sub.php
+  # http://www.imarvintpa.com/dndlive/Index_It_Slot.php
+  # dump to plaintext first?
+  # http://www.giantitp.com/forums/showthread.php?148101-3-x-Shax-s-Indispensible-Haversack-(Equipment-Handbook)
+  #  has some things Marvin doesn't like Angel Radiance http://www.imarvintpa.com/dndlive/Index_It_Source.php?Sources=Book+of+Exalted+Deeds
+  
+  # skill ranks! http://www.imarvintpa.com/dndlive/index.php
+  # the MapTool Token link on each monster leads to XML
+  # http://www.imarvintpa.com/dndlive/TokMonsters.php?ID=1
+  
   curs.execute('''CREATE TABLE dnd_template (
   id INTEGER PRIMARY KEY NOT NULL,
   name varchar({}) NOT NULL,
@@ -1960,6 +2264,9 @@ FOREIGN KEY(template_id) REFERENCES dnd_template(id)
     monster = Monster(row)
     monster.insert_into(curs)
     #if i > 8000: break
+
+  if False: parse_IMarvinTPA(curs, marvinCache)
+
   conn.commit()
   conn.close()
   
@@ -1972,6 +2279,7 @@ if __name__ == "__main__":
   parser.add_argument('DBpath', metavar='underlying database location',
                       nargs='?', default='dnd.sqlite',
                       help='path to the SQLite database')
+  parser.add_argument('--marvin-cache', metavar='IMarvinTPA cache location', help='directory to cache IMarvinTPA skill rank data')
   args = parser.parse_args()
   if not os.path.exists(args.XLSpath):
     raise OSError("The XLS table to translate was not found at {}; try python monsters.py --help for usage.".format(args.XLSpath) )
@@ -1979,7 +2287,8 @@ if __name__ == "__main__":
     raise OSError("The underlying database was not found at {}; try python monsters.py --help for usage.".format(args.DBpath) )
   profile = cProfile.Profile()
   profile.enable()
-  create_database(args.XLSpath, DBpath=args.DBpath)
+  print('args =', args)
+  create_database(args.XLSpath, DBpath=args.DBpath, marvinCache=args.marvin_cache)
   profile.disable()
   with open('cProfile.txt', 'w') as statsFile:
       stats = pstats.Stats(profile, stream=statsFile)
