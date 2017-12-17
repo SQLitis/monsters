@@ -643,6 +643,7 @@ UNIQUE(name)
 
   # still have problems with things like defensive precognition/precognition, defensive  
   def insertPower(name, schoolID, url):
+    # https://stackoverflow.com/questions/418898/sqlite-upsert-not-insert-or-replace
     curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                  (srd_id, name, name.lower().replace(' ', '-'), schoolID, url) )
   insertPower('Defensive Precognition', clairsentienceID, "http://www.d20srd.org/srd/psionic/powers/precognitionDefensive.htm")
@@ -1882,7 +1883,7 @@ def make_item_tables(curs):
   ,affinities VARCHAR(128) DEFAULT NULL
 ,UNIQUE(name)
   );''')
-  curs.execute('''INSERT INTO dnd_itemslot (name, abbrev, examples, affinities) VALUES ("held", "-h", "weapons, shields, tools", NULL), ("Arms", "A", "armbands, bracelets, bracers", "Combat, Allies"), ("Body", "B", "armor, robes", "Multiple effects"), ("Face", "Fa", "goggles, lenses, masks, spectacles, third eyes", "Vision"), ("Feet", "Ft", "boots, sandals, shoes, slippers", "Movement"), ("Hands", "Ha", "gauntlets, gloves", "Quickness, Destructive power"), ("Head", "Hd", "circlets, crowns, hats, headbands, helmets, phylacteries", "Mental improvement, ranged attacks, Interaction, Morale, alignment"), ("Rings", "R", "rings", NULL), ("Shoulders", "S", "capes, cloaks, mantles, shawls", "Transformation, protection"), ("Throat", "Th", "amulets, badges, brooches, collars, medals, medallions, necklaces, pendants, periapts, scarabs, scarfs, torcs", "Protection, discernment"), ("Torso", "To", "shirts, tunics, vests, vestments", "Physical improvement, Class ability improvement"), ("Waist", "W", "belts, girdles, sashes", "Physical improvement");''')
+  curs.execute('''INSERT INTO dnd_itemslot (name, abbrev, examples, affinities) VALUES ("held", "-h", "weapons, shields, tools", NULL), ("Shield", "-s", "augment crystals", NULL), ("Armor", "-a", "augment crystals", NULL), ("ArmorOrShield", "-as", "augment crystals", NULL), ("Weapom", "-w", "augment crystals", NULL), ("Arms", "A", "armbands, bracelets, bracers", "Combat, Allies"), ("Body", "B", "armor, robes", "Multiple effects"), ("Face", "Fa", "goggles, lenses, masks, spectacles, third eyes", "Vision"), ("Feet", "Ft", "boots, sandals, shoes, slippers", "Movement"), ("Hands", "Ha", "gauntlets, gloves", "Quickness, Destructive power"), ("Head", "Hd", "circlets, crowns, hats, headbands, helmets, phylacteries", "Mental improvement, ranged attacks, Interaction, Morale, alignment"), ("Rings", "R", "rings", NULL), ("Shoulders", "S", "capes, cloaks, mantles, shawls", "Transformation, protection"), ("Throat", "Th", "amulets, badges, brooches, collars, medals, medallions, necklaces, pendants, periapts, scarabs, scarfs, torcs", "Protection, discernment"), ("Torso", "To", "shirts, tunics, vests, vestments", "Physical improvement, Class ability improvement"), ("Waist", "W", "belts, girdles, sashes", "Physical improvement");''')
   curs.execute('''CREATE INDEX index_dnd_itemslot_name ON dnd_itemslot(name);''')
   curs.execute('''CREATE TABLE armorweapon_property_type (
   id INTEGER PRIMARY KEY NOT NULL
@@ -1944,6 +1945,7 @@ def make_item_tables(curs):
   # The aura strength can always be rederived from the caster level dnd_itemauratype table.
   # Armor and weapon properties don't really belong with the main table especially when you're looking at
   # the low end of price, since they require at least a +1 to start.
+  # A least augment crystal functions whenever attached to an object of at least masterwork quality, even if the object itself has no magical properties.
   curs.execute('''CREATE TABLE dnd_armorweapon_property (
   id INTEGER PRIMARY KEY NOT NULL
   ,name varchar(64) NOT NULL
@@ -2508,7 +2510,7 @@ FOREIGN KEY(terrain_id) REFERENCES dnd_terrain(id)
   challenge_rating tinyint(2) NOT NULL,
   level_adjustment tinyint(2) DEFAULT NULL,
 FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id),
-FOREIGN KEY(size_id) REFERENCES dnd_racesize(id),
+FOREIGN KEY(size_id) REFERENCES dnd_racesize(id)
  );'''.format(maxNameLen) )
 #  law_chaos_id tinyint(1) NOT NULL,
 #FOREIGN KEY(law_chaos_id) REFERENCES dnd_law_chaos(id)

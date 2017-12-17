@@ -36,7 +36,19 @@ Craft (Alchemy) DC: 25<br />
 Price: 800 GP<br />
 Weight: --<br />
 (Magic Item Compendium p. 68)<br />
-Flying mount you can summon 1/day for up to 1 minute. It can also fight if need be, provide flanking, block hallways, test for traps, take out the garbage, etc.<br />
+Flying mount you can summon 1/day for up to 1 minute. It can also fight if need be, provide flanking, block hallways, test for traps, take out the garbage, etc. Str18, Large, fly 60feet (good) with four wings so light load 300pounds.<br />
+<br />
+<b>Amber Amulet of Vermin: Giant Praying Mantis</b><br />
+Price: 700 GP<br />
+Weight: --<br />
+(Magic Item Compendium p. 68)<br />
+Flying mount you can summon 1/day for up to 1 minute. It can also fight if need be, provide flanking, block hallways, test for traps, take out the garbage, etc. Str19, Large, fly 40feet (poor) with only two wings so probably worse than the giant wasp.<br />
+<br />
+<b>Amber Amulet of Vermin: Huge Centipede</b><br />
+Price: 700 GP<br />
+Weight: --<br />
+(Magic Item Compendium p. 68)<br />
+Climbing mount you can summon 1/day for up to 1 minute. It can also fight if need be, grapple, block hallways, test for traps, take out the garbage, etc. Str17, Huge, Climb +11, climb 40feet, max load 1560pounds, light load 520pounds.<br />
 <br />
 <b>Angel Radiance</b><br />
 Price: 20 GP<br />
