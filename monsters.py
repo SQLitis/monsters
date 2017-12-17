@@ -2169,7 +2169,6 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
 UNIQUE(abbr),
 FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
   );'''.format(rulebook_max_abbr_len) )
-  curs.execute('''INSERT INTO rulebook_abbrev (abbr, rulebook_id) SELECT abbr, id FROM dnd_rulebook WHERE abbr!="EE" and abbr!="DD" and name!="Monster Manual";''')
   # backup mirrors the schema of the original
   curs.execute('''CREATE TEMPORARY TABLE rulebooks_backup (id int, dnd_edition_id int, name varchar({}), abbr varchar({}), description longtext, year varchar(4), official_url varchar(255), slug varchar(128), image varchar(128), published date);'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
   curs.execute('''INSERT INTO rulebooks_backup SELECT id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM dnd_rulebook;''')
@@ -2188,6 +2187,7 @@ FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
   UNIQUE(name)
   );'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
   curs.execute('''INSERT INTO dnd_rulebook (dnd_edition_id, name, description, year, official_url, slug, image, published) SELECT dnd_edition_id, name, description, year, official_url, slug, image, published FROM rulebooks_backup;''')
+  curs.execute('''INSERT INTO rulebook_abbrev (abbr, rulebook_id) SELECT abbr, dnd_rulebook.id FROM rulebooks_backup INNER JOIN dnd_rulebook ON dnd_rulebook.name=rulebooks_backup.name WHERE abbr!="EE" and abbr!="DD" and dnd_rulebook.name!="Monster Manual";''')
   curs.execute('''DROP TABLE rulebooks_backup;''')
   # Many of the rulebooks in rulebook_abbreviations are not listed yet, so list them first.
   curs.executemany('''INSERT OR IGNORE INTO dnd_rulebook (name) VALUES (?);''', [(name,) for name in rulebook_abbreviations.values()] )
