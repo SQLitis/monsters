@@ -14,6 +14,7 @@ from __future__ import print_function
 import os,sys,os.path
 import shutil
 import itertools
+import collections
 import argparse
 #os.chdir('xlrd-1.0.0')
 sys.path.append(os.path.join(os.getcwd(), 'xlrd-1.0.0') )
@@ -46,15 +47,17 @@ except ImportError:
 http_client.HTTPConnection.debuglevel = 1
 import pycurl
 
-rulebook_abbreviations = {'MM1':'Monster Manual',
+rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MM':'Monster Manual v.3.5',
  'Planar':'Planar Handbook', 'PlH':'Planar Handbook',
  'ToHS':'Towers of High Sorcery',
  'CotSQ':'City of the Spider Queen', 'CSQ':'City of the Spider Queen',
  'WD':'City of Splendors: Waterdeep', 'CSW':'City of Splendors: Waterdeep',
- 'City': 'Cityscape', 'Ci': 'Cityscape',
- 'Sharn': 'Sharn - City of Towers',
+ 'City': 'CityScape', #'Ci': 'CityScape',
+ 'Sharn': 'Sharn - City of Towers', 'SCoT': 'Sharn City of Towers',
  'Aldriv':"Aldriv's Revenge",
  'Exp':'Expedition to the Demonweb Pits', 'EDP':'Expedition to the Demonweb Pits',
+ 'ExRav': 'Expedition to Castle Ravenloft', 'ExGre': 'Expedition to the Ruins of Greyhawk',
+ 'ExUn':'Expedition to Undermountain',
  'Dunge':'Dungeonscape', 'Du':'Dungeonscape',
  'DMG': "Dungeon Master's Guide v.3.5", 'DMG2': "Dungeon Master's Guide II",
  'Psi':'Psionics Handbook (Web Enhancement)',
@@ -62,10 +65,10 @@ rulebook_abbreviations = {'MM1':'Monster Manual',
  'CoV':'Champions of Valor',
  'Loona':'Loona, Port of Intrigue',
  'ToH':'Tomb of Horror',
- 'MM2':'Monster Manual 2',
- 'MM3':'Monster Manual 3',
- 'MM4':'Monster Manual 4',
- 'MM5':'Monster Manual 5',
+ #'MM2':'Monster Manual 2',
+ #'MM3':'Monster Manual 3',
+ #'MM4':'Monster Manual 4',
+ #'MM5':'Monster Manual 5',
  'FF':'Fiend Folio',
  'ElderE':'Elder Evils',
  'RoS':'Races of Stone', 'RotW':'Races of the Wild', 'RDr':'Races of the Dragon',
@@ -78,12 +81,12 @@ rulebook_abbreviations = {'MM1':'Monster Manual',
  "Xen'd":"Secrets of Xen'drik", 'SX':"Secrets of Xen'drik",
  'FoW':'The Forge of War', 'FW':'The Forge of War',
  'FN': 'Five Nations',
- 'ExUn':'Expedition to Undermountain', 'SotAC':'Secrets of the Alubelok Coast', 'Sheep':"Sheep's Clothing",
+ 'SotAC':'Secrets of the Alubelok Coast', 'Sheep':"Sheep's Clothing",
  'A&EG':'Arms & Equipment Guide',
  'SvgSp':'Savage Species (Web Enhancement)', 'SS':'Savage Species',
  'LEoF':'Lost Empires of Faerun', 'LE':'Lost Empires of Faerun',
  'Kruk':'The Lost Tomb of Kruk-Ma-Kali', 'SD':'Stone Dead',
- 'BoED':'Book of Exalted Deeds', 'FC1':'Fiendish Codex 1',
+ 'BoED':'Book of Exalted Deeds', 'FC1':'Fiendish Codex I', 'FC2': 'Fiendish Codex II',
  'Storm':'Stormwrack', 'Sto':'Stormwrack',
  'SoCo':"Something's Cooking",
  'Draco':'Draconomicon',
@@ -98,16 +101,16 @@ rulebook_abbreviations = {'MM1':'Monster Manual',
  'DrC':'Dragon Compendium', 'MoI':'Magic of Incarnum',
  'HoD':'Harvest of Darkness', 'EnvIm':'Environmental Impact',
  'DDen':"Dangerous Denizens - The Monsters of Tellene", 'DD':"Dangerous Denizens - The Monsters of Tellene",
- 'KoD': 'Key of Destiny', 'BoVD': 'Book of Vile Darkness', 'ToB': 'Tome of Battle',
+ 'KoD': 'Key of Destiny', 'BoVD': 'Book of Vile Darkness', #'ToB': 'Tome of Battle',
  'EPH': 'Expanded Psionics Handbook', # many available http://www.d20srd.org/indexes/psionicMonsters.htm but SRD does not appear in their lists
- 'Web': 'Web content',
+ #'Web': 'Web content',
  'ItDL': "Into the Dragon's Lair", 'FoN': 'Force of Nature', 'AoM': 'Age of Mortals',
  'ToM': 'Tome of Magic', 'TM': 'Tome of Magic',
  'ShSo': 'Shining South',
  'GW': 'Ghostwalk', 'Gh': 'Ghostwalk',
  'Frost': 'Frostburn',
  'SaD': 'Stand and Deliver', 'HoB': 'Heroes of Battle',
- 'C.Ps': 'Complete Psionic', 'OA': 'Oriental Adventures', 'LM': 'Libris Mortis',
+ 'C.Ps': 'Complete Psionic', 'OA': 'Oriental Adventures', #'LM': 'Libris Mortis',
  'Under': 'Underdark', 'Und': 'Underdark',
  'DotU':'Drow of the Underdark', 'DrU':'Drow of the Underdark',
  'C.Ar': 'Complete Arcane', 'CAr': 'Complete Arcane',
@@ -117,11 +120,11 @@ rulebook_abbreviations = {'MM1':'Monster Manual',
  'MotP': 'Manual of the Planes', 'MP': 'Manual of the Planes',
  r'A\d\d': 'Dragon Magazine Annual 00/01',
  r'\d\d\d': 'Dragon Magazine',
- 'LoMys': 'Lands of Mystery', 'FC2': 'Fiendish Codex 2', 'DrM': 'Dragon Magic',
+ 'LoMys': 'Lands of Mystery', 'DrM': 'Dragon Magic',
  'CoR': 'Champions of Ruin', 'CR': 'Champions of Ruin',
  'LoM': 'Lords of Madness', 'WndW': 'The Secret of the Windswept Wall',
  'Sand': 'Sandstorm', 'Sa': 'Sandstorm',
- 'C.War': 'Complete Warrior',
+ 'C.War': 'Complete Warrior', 'C.Adv': 'Complete Adventurer', 'C.Sco': 'Complete Scoundrel', 'C.Mag': 'Complete Mage', 
  'SlvSk': 'The Silver Skeleton', 'RTEE': 'Return to the Temple of Elemental Evil',
  'HoH': 'Heroes of Horror', 'HH': 'Heroes of Horror',
  'TVoS': 'The Vessel of Stars',
@@ -130,7 +133,8 @@ rulebook_abbreviations = {'MM1':'Monster Manual',
  'UE': 'Unapproachable East', 'Una': 'Unapproachable East',
  'BoKR': 'Bestiary of Krynn Revised',
  'Deities': 'Deities and Demigods', 'FRCS': 'Forgotten Realms Campaign Setting',
- 'F&P': 'Faiths and Pantheons', 'FP': 'Faiths and Pantheons' # 3.0
+ 'F&P': 'Faiths and Pantheons', #'FP': 'Faiths and Pantheons', # 3.0
+ 'MIC': 'Magic Item Compendium',
  }
 # 108 total sources
  # if the abbreviation is just a number then it's a Dragon magazine number
@@ -148,13 +152,11 @@ def fraction_to_negative(string):
   """All fractions of Hit Dice etc happen to be of the form 1/#,
   so they can be encoded as negative integers.
   """
-  #print('fraction_to_negative', string, type(string) )
   try:
     return int(string)
   except ValueError as E:
     if string[:2] == '1/':
       return -int(string[2:])
-    #elif string == '-': return None
     else:
       raise
 
@@ -163,7 +165,7 @@ def integer_or_non(string):
   else: return int(string)
 
 goodEvilToInt = {'G':1, 'E':-1, 'N':0, 'X':0}
-lawChaosToInt = {'L':1, 'C':-1, 'N':0, 'X':0}
+#lawChaosToInt = {'L':1, 'C':-1, 'N':0, 'X':0}
 # X really means any, like angels are any good, maybe really I should have an intersection table of monster_ids and alignments
 
 spellNameErrors = {'resistance to energy':'Resist Energy', # Angel, Solar
@@ -249,10 +251,16 @@ MINOR_WORDS = ['of', 'the', 'and', 'to', 'from', 'I', 'II', 'III', 'IV', 'V', 'V
 def sensible_title(string):
   # capitalize() turns VII into Vii
   # for Blindness/Deafness, should standardize dnd_spell
-  if string == 'blindness/deafness' or string == 'Blindness/Deafness': return 'Blindness/Deafness'
+  if string is None: return None
+  elif string == 'blindness/deafness' or string == 'Blindness/Deafness': return 'Blindness/Deafness'
   elif string == 'remove blindness/deafness': return 'Remove Blindness/deafness'
   #print(re.split('([ -])', string))
-  return ''.join(word if word in MINOR_WORDS else word.capitalize() for word in re.split('([ -])', string) )
+  try:
+    words = re.split('([ -])', string)
+  except TypeError as E:
+    print(type(string), string)
+    raise
+  return ''.join( (word if word in MINOR_WORDS else word.capitalize() ) for word in words)
 
 def spell_name_to_id(curs, spellName, allowNoneResult=False):
   if spellName == '':
@@ -468,6 +476,7 @@ sqlite> insert into tbl (x) values ('a');
 sqlite> select id,x from tbl;
 1|a
 2|a
+  INSERT OR IGNORE?
   """
   existingID = id_from_name(curs, tableName, name)
   kwargs['name'] = name
@@ -493,34 +502,7 @@ sqlite> select id,x from tbl;
     return curs.lastrowid
 
 
-def insert_psionic_powers(curs):
-  curs.execute('''INSERT INTO dnd_rulebook (dnd_edition_id, name, abbr, description, year, official_url, slug, published) VALUES (1, "Revised (v.3.5) System Reference Document", "SRD", "The System Reference Document is a comprehensive toolbox consisting of rules, races, classes, feats, skills, various systems, spells, magic items, and monsters compatible with the d20 System version of Dungeons & Dragons and various other roleplaying games from Wizards of the Coast. You may consider this material Open Game Content under the Open Game License, and may use, modify, and distribute it.", 2004, "http://www.wizards.com/default.asp?x=d20/article/srd35", "system-reference-document", ?);''',
-    (datetime.date(2004, 5, 21),) )
-  srd_id = curs.lastrowid
-  assert srd_id == id_from_name(curs, 'dnd_rulebook', "Revised (v.3.5) System Reference Document")
-  curs.execute('''CREATE TEMPORARY TABLE school_backup (id int, name varchar(32), slug varchar(32) );''')
-  curs.execute('''INSERT INTO school_backup SELECT id, name, slug FROM dnd_spellschool;''')
-  curs.execute('''DROP TABLE dnd_spellschool;''')
-  curs.execute('''CREATE TABLE dnd_spellschool (
-  id INTEGER PRIMARY KEY NOT NULL,
-  name varchar(32) NOT NULL,
-  slug varchar(32) NOT NULL
-  );''')
-  curs.execute('''CREATE UNIQUE INDEX dnd_spellschool_name ON dnd_spellschool(name);''')
-  curs.execute('''INSERT INTO dnd_spellschool SELECT id, name, slug FROM school_backup;''')
-  curs.execute('''DROP TABLE school_backup;''')
-  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Psychometabolism', 'psychometabolism') )
-  psychometabolismID = curs.lastrowid
-  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Psychoportation', 'psychoportation') )
-  psychoportationID = curs.lastrowid
-  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Psychokinesis', 'psychokinesis') )
-  psychokinesisID = curs.lastrowid
-  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Metacreativity', 'metacreativity') )
-  metacreativityID = curs.lastrowid
-  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Clairsentience', 'clairsentience') )
-  clairsentienceID = curs.lastrowid
-  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Telepathy', 'telepathy') )
-  telepathyID = curs.lastrowid
+def recreate_spell_table(curs):
   curs.execute('''CREATE TEMPORARY TABLE spell_backup (
   id INTEGER PRIMARY KEY NOT NULL,
   added datetime NOT NULL,
@@ -589,12 +571,14 @@ def insert_psionic_powers(curs):
   verified tinyint(1) NOT NULL DEFAULT 0,
   verified_author_id int(11) DEFAULT NULL,
   verified_time datetime DEFAULT NULL,
-  CONSTRAINT "verified_author_id_refs_id_283e8e34" FOREIGN KEY ("verified_author_id") REFERENCES "auth_user" ("id"),
+UNIQUE(rulebook_id, name),
+FOREIGN KEY(verified_author_id) REFERENCES auth_user(id),
   CONSTRAINT "rulebook_id_refs_id_514d0131604a89b" FOREIGN KEY ("rulebook_id") REFERENCES "dnd_rulebook" ("id"),
   CONSTRAINT "school_id_refs_id_5015d8d2133c7ac3" FOREIGN KEY ("school_id") REFERENCES "dnd_spellschool" ("id"),
   CONSTRAINT "sub_school_id_refs_id_75647c3f68dd90be" FOREIGN KEY ("sub_school_id") REFERENCES "dnd_spellsubschool" ("id")
   );''')
   curs.execute('''INSERT INTO dnd_spell SELECT * FROM spell_backup;''')
+  curs.execute('''DROP TABLE spell_backup;''')
   curs.execute('''CREATE INDEX index_dnd_spell_name ON dnd_spell (name);''')
   # creating an index on dnd_spell.name actually caused spell_name_to_id cost to INCREASE from 241sec to 259sec...
   # but that was because spell_name_to_id was using the LIKE operator, and apparently SQLite doesn't use the index properly with the LIKE operator even when you don't have a leading %.
@@ -605,6 +589,7 @@ def insert_psionic_powers(curs):
   # Since casting times and ranges tend to be standardized, it would make more sense to have an intersection table spell_range and an intersection table spell_casting_time...
   # select count(*) from (select distinct casting_time from dnd_spell); returns 60, and a lot of those are probably misspellings or things like "1 action" for 1 standard action
   # For that matter, there are only 375 distinct areas: select count(*) from (select distinct area from dnd_spell);
+
   curs.execute('''CREATE TABLE dnd_range (
   id INTEGER PRIMARY KEY NOT NULL,
   name varchar(32),
@@ -616,63 +601,93 @@ def insert_psionic_powers(curs):
   curs.execute('''INSERT INTO dnd_range (name,feetCL0,feet_per_level) VALUES (?,?,?)''',
                ('Unlimited', eightByteIntMax, eightByteIntMax) )
 
-  curs.execute('''DROP TABLE spell_backup;''')
+def insert_psionic_powers(curs):
+  curs.execute('''INSERT INTO dnd_rulebook (dnd_edition_id, name, description, year, official_url, slug, published) VALUES (1, "Revised (v.3.5) System Reference Document", "The System Reference Document is a comprehensive toolbox consisting of rules, races, classes, feats, skills, various systems, spells, magic items, and monsters compatible with the d20 System version of Dungeons & Dragons and various other roleplaying games from Wizards of the Coast. You may consider this material Open Game Content under the Open Game License, and may use, modify, and distribute it.", 2004, "http://www.wizards.com/default.asp?x=d20/article/srd35", "system-reference-document", ?);''',
+    (datetime.date(2004, 5, 21),) )
+  srd_id = curs.lastrowid
+  assert srd_id == id_from_name(curs, 'dnd_rulebook', "Revised (v.3.5) System Reference Document")
+  curs.execute('''CREATE TEMPORARY TABLE school_backup (id int, name varchar(32), slug varchar(32) );''')
+  curs.execute('''INSERT INTO school_backup SELECT id, name, slug FROM dnd_spellschool;''')
+  curs.execute('''DROP TABLE dnd_spellschool;''')
+  curs.execute('''CREATE TABLE dnd_spellschool (
+  id INTEGER PRIMARY KEY NOT NULL,
+  name varchar(32) NOT NULL,
+  slug varchar(32) NOT NULL,
+UNIQUE(name)
+  );''')
+  curs.execute('''CREATE UNIQUE INDEX dnd_spellschool_name ON dnd_spellschool(name);''')
+  curs.execute('''INSERT INTO dnd_spellschool (name, slug) SELECT name, slug FROM school_backup;''')
+  curs.execute('''DROP TABLE school_backup;''')
+  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Psychometabolism', 'psychometabolism') )
+  psychometabolismID = curs.lastrowid
+  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Psychoportation', 'psychoportation') )
+  psychoportationID = curs.lastrowid
+  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Psychokinesis', 'psychokinesis') )
+  psychokinesisID = curs.lastrowid
+  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Metacreativity', 'metacreativity') )
+  metacreativityID = curs.lastrowid
+  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Clairsentience', 'clairsentience') )
+  clairsentienceID = curs.lastrowid
+  curs.execute('''INSERT INTO dnd_spellschool (name, slug) VALUES (?, ?)''', ('Telepathy', 'telepathy') )
+  telepathyID = curs.lastrowid
+  
+  recreate_spell_table(curs)
 
   # It will be better to get the SRD psionic powers from dnd35.db, but that power table makes everything varchar even level, so will need processing
   for (name, discipline, xp_cost, manifesting_time, spellrange, target, area, effect, duration, saving_throw,power_resistance, full_text) in get_powers_from_dnd35_db():
     slug = name.lower().replace(',','').replace(' ','-')
     curs.execute('''SELECT id FROM dnd_spellschool WHERE name like ?''', (discipline,) )
     schoolID = curs.fetchone()[0]
-    curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, xp_component, casting_time, range, target, effect, area, duration, saving_throw, spell_resistance, description_html) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
-                 (srd_id, name, slug, schoolID, xp_cost, manifesting_time, spellrange, target, effect, area, duration, saving_throw,power_resistance, full_text) )
+    curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, xp_component, casting_time, range, target, effect, area, duration, saving_throw, spell_resistance, description, description_html) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
+                 (srd_id, name, slug, schoolID, xp_cost, manifesting_time, spellrange, target, effect, area, duration, saving_throw, power_resistance, full_text, full_text) )
 
   # still have problems with things like defensive precognition/precognition, defensive  
   def insertPower(name, schoolID, url):
-    curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
+    curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                  (srd_id, name, name.lower().replace(' ', '-'), schoolID, url) )
   insertPower('Defensive Precognition', clairsentienceID, "http://www.d20srd.org/srd/psionic/powers/precognitionDefensive.htm")
   insertPower('Offensive Precognition', clairsentienceID, "http://www.d20srd.org/srd/psionic/powers/precognitionOffensive.htm")
   insertPower('Offensive Prescience', clairsentienceID, "http://www.d20srd.org/srd/psionic/powers/precognitionOffensive.htm")
 
-  curs.execute('''INSERT INTO dnd_spell (added, rulebook_id, name, school_id, description, description_html, slug) VALUES (?, ?, ?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (added, rulebook_id, name, school_id, description, description_html, slug) VALUES (?, ?, ?, ?, ?, ?, ?)''',
                (datetime.datetime.now(), srd_id, "Ego Whip", telepathyID, "Your rapid mental lashings assault the ego of your enemy, debilitating its confidence. The target takes 1d4 points of Charisma damage, or half that amount (minimum 1 point) on a successful save. A target that fails its save is also dazed for 1 round.", "http://www.d20srd.org/srd/psionic/powers/egoWhip.htm", 'ego-whip') )
-  curs.execute('''INSERT INTO dnd_spell (added, rulebook_id, name, slug, school_id, description, description_html) VALUES (?, ?, ?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (added, rulebook_id, name, slug, school_id, description, description_html) VALUES (?, ?, ?, ?, ?, ?, ?)''',
                (datetime.datetime.now(), srd_id, "Id Insinuation", 'id-insinuation', telepathyID, "As the confusion spell, except as noted here.", "http://www.d20srd.org/srd/psionic/powers/idInsinuation.htm") )
-  curs.execute('''INSERT INTO dnd_spell (added, rulebook_id, name, slug, school_id, description, description_html) VALUES (?, ?, ?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (added, rulebook_id, name, slug, school_id, description, description_html) VALUES (?, ?, ?, ?, ?, ?, ?)''',
                (datetime.datetime.now(), srd_id, "Disable", 'disable', telepathyID, "You broadcast a mental compulsion that convinces one or more creatures of 4 Hit Dice or less that they are disabled. Creatures with the fewest HD are affected first. Among creatures with equal Hit Dice, those who are closest to the power's point of origin are affected first. Hit Dice that are not sufficient to affect a creature are wasted. Creatures that are rendered helpless or are destroyed when they reach 0 hit points cannot be affected.", "http://www.d20srd.org/srd/psionic/powers/disable.htm") )
-  curs.execute('''INSERT INTO dnd_spell (added, rulebook_id, name, slug, school_id, description, description_html) VALUES (?, ?, ?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (added, rulebook_id, name, slug, school_id, description, description_html) VALUES (?, ?, ?, ?, ?, ?, ?)''',
                (datetime.datetime.now(), srd_id, "False Sensory Input", 'false-sensory-input', telepathyID, "You have a limited ability to falsify one of the subject's senses. The subject thinks she sees, hears, smells, tastes, or feels something other than what her senses actually report. You can't create a sensation where none exists, nor make the subject completely oblivious to a sensation, but you can replace the specifics of one sensation with different specifics. For instance, you could make a human look like a dwarf (or one human look like another specific human), a closed door look like it is open, a vat of acid smell like rose water, a parrot look like a bookend, stale rations taste like fresh fruit, a light pat feel like a dagger thrust, a scream sound like the howling wind, and so on.", "http://www.d20srd.org/srd/psionic/powers/falseSensoryInput.htm") )
-  curs.execute('''INSERT INTO dnd_spell (added, rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (added, rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?, ?)''',
                (datetime.datetime.now(), srd_id, "Mental Disruption", 'mental-disruption', telepathyID, "http://www.d20srd.org/srd/psionic/powers/mentalDisruption.htm") )
-  curs.execute('''INSERT INTO dnd_spell (added, rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (added, rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?, ?)''',
                (datetime.datetime.now(), srd_id, "Mindlink", 'mindlink', telepathyID, "http://www.d20srd.org/srd/psionic/powers/mindlink.htm") )
-  curs.execute('''INSERT INTO dnd_spell (added, rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (added, rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?, ?)''',
                (datetime.datetime.now(), srd_id, "Psionic Dominate", 'dominate-psionic', telepathyID, "http://www.d20srd.org/srd/psionic/powers/dominatePsionic.htm") )
   #curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
   #             (srd_id, "Thought Shield", 'thought-shield', telepathyID, "http://www.d20srd.org/srd/psionic/powers/thoughtShield.htm") )
-  curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                (srd_id, "Psionic Modify Memory", 'modify-memory-psionic', telepathyID, "http://www.d20srd.org/srd/psionic/powers/modifyMemoryPsionic.htm") )
-  curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                (srd_id, "Cloud Mind", 'cloud-mind', telepathyID, "http://www.d20srd.org/srd/psionic/powers/cloudMind.htm") )
   #curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
   #             (srd_id, "Read Thoughts", 'read-thoughts', telepathyID, "http://www.d20srd.org/srd/psionic/powers/readThoughts.htm") )
   insertPower('Detect Hostile Intent', telepathyID, "http://www.d20srd.org/srd/psionic/powers/detectHostileIntent.htm")
-  curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                (srd_id, "Remote Viewing", 'remote-viewing', clairsentienceID, "http://www.d20srd.org/srd/psionic/powers/remoteViewing.htm") )
-  curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                (srd_id, "Aura Sight", 'aura-sight', clairsentienceID, "http://www.d20srd.org/srd/psionic/powers/auraSight.htm") )
-  curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                (srd_id, "Detect Psionics", 'detect-psionics', clairsentienceID, "http://www.d20srd.org/srd/psionic/powers/detectPsionics.htm") )
   insertPower('Mental Barrier', clairsentienceID, "http://www.d20srd.org/srd/psionic/powers/mentalBarrier.htm")
-  curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                (srd_id, "Psionic Plane Shift", 'plane-shift-psionic', psychoportationID, "http://www.d20srd.org/srd/psionic/powers/planeShiftPsionic.htm") )
-  curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                (srd_id, "Psionic Daze", 'daze-psionic', telepathyID, "http://www.d20srd.org/srd/psionic/powers/dazePsionic.htm") )
-  curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                (srd_id, "Psionic Charm", 'charm-psionic', telepathyID, "http://www.d20srd.org/srd/psionic/powers/charmPsionic.htm") )
-  curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                (srd_id, "Psionic Dominate", 'dominate-psionic', telepathyID, "http://www.d20srd.org/srd/psionic/powers/dominatePsionic.htm") )
-  curs.execute('''INSERT INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
+  curs.execute('''INSERT OR IGNORE INTO dnd_spell (rulebook_id, name, slug, school_id, description_html) VALUES (?, ?, ?, ?, ?)''',
                (srd_id, "Psionic Suggestion", 'suggestion-psionic', telepathyID, "http://www.d20srd.org/srd/psionic/powers/suggestionPsionic.htm") )
   insertPower('Far Hand', psychokinesisID, "http://www.d20srd.org/srd/psionic/powers/farHand.htm")
   insertPower('Concealing Amorpha', metacreativityID, "http://www.d20srd.org/srd/psionic/powers/concealingAmorpha.htm")
@@ -827,6 +842,23 @@ def cache_IMarvinTPA(cacheDir='IMarvinTPAcache'):
 accidentallyEscapedSlash = re.compile(r'<i>(\w+)<\\/i>')
 assert accidentallyEscapedSlash.sub(r'<i>\1</i>', " <i>spikes<\/i> +30 ") == " <i>spikes</i> +30 "
 def parse_IMarvinTPA(curs, cacheDir='IMarvinTPAcache'):
+  """
+  The big problem is matching up monsters whose names are not listed exactly the same.
+  Unfortunately, neither source has page numbers.
+http://monsterfinder.dndrunde.de/ has pages for the following books:
+Book of Exalted Deeds 
+Book of Vile Darkness 
+Fiend Folio 
+Libris Mortis 
+Lords of Madness 
+Monster Manual I (3.5) (without entries from SRD)
+Monster Manual II 
+Monster Manual III 
+Monster Manual IV 
+Monsters of Faerun 
+Planar Handbook 
+System Reference Document (with most from MM)
+  """
   if cacheDir is None: cacheDir='IMarvinTPAcache'
 
   curs.execute('''CREATE TABLE monster_family (
@@ -865,6 +897,7 @@ FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
   benefit_html longtext NOT NULL,
   special_html longtext NOT NULL,
   normal_html longtext NOT NULL,
+UNIQUE(rulebook_id, name)
 FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
   );''')
   curs.execute('''INSERT INTO dnd_feat SELECT * FROM feat_backup;''')
@@ -985,7 +1018,16 @@ Swarm, Crystal Beetle
 
 
 
+nameParentheticalRE = re.compile(r"\(([\w\-\,' ]+)\)")
+parenBeforeCommaRE = re.compile(r'\).*,')
 
+AGE_CATEGORIES = ('Wyrmling', 'Very Young', 'Young', 'Juvenile', 'Young Adult', 'Adult', 'Mature Adult', 'Old', 'Very Old', 'Ancient', 'Wyrm', 'Great Wyrm', 'Elder') # Elder sometimes means other things
+MONSTERS_WITH_AGES = set( ('Dragon', 'Arrowhawk', 'Tojanida', 'Urkhan Worm (Tractor Worm)') )
+MONSTERS_WITH_LINEAR_ORDERING = set()
+# Salamanders reproduce asexually, each producing a single larva every ten years and incubating the young in fire pits until they reach maturity. Flamebrothers and average salamanders are actually different species, while nobles rise from the ranks of the average.
+SIZE_NAMES = ('Fine', 'Diminutive', 'Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan', 'Colossal')
+appearInNamesMoreThanOnce = [collections.defaultdict(set) for i in range(4) ]
+allUnknownTerms = (set(), set(), set(), set() )
 
 
 class Monster(object):
@@ -1006,6 +1048,77 @@ class Monster(object):
     self.name = xls_row[0].value
     if self.name[:16] == 'Elemental Primal':
       self.name = 'Elemental, Primal' + self.name[16:]
+    # Lycanthrope, Drow Werebat
+    # Lycanthrope, Goblin Rat
+    if self.name == 'Lycanthrope, Goblin Rat, (human form)': self.name = 'Lycanthrope, Goblin Rat (human form)'
+    reducedName = self.name
+    parentheticals = list()
+    for matchObj in nameParentheticalRE.finditer(self.name):
+      parenthetical = matchObj.group(1)
+      #if ',' in parenthetical and parenthetical not in ('Hill Troll, Mountain Troll', 'Cougar, Mountain Lion', 'The Hunger Eternal, The Devourer, the Ebon Maw', 'White Stag, Elven Deer'):
+      #  raise Exception(self.name)
+      if ',' in parenthetical:
+        aliasList = [alias.strip() for alias in parenthetical.split(',')]
+        #print(self.name, 'aliasList =', aliasList)
+        reducedName = reducedName.replace(matchObj.group(0), '') # eliminates parenthesized commas for splitting later
+      #if ',' in self.name[matchObj.end(0):]:
+      #  if parenthetical not in ('Lost', 'Starkin'):
+      #    print('parenthetical', self.name)
+      if parenthetical[-5:] == ' form':
+        form = parenthetical[:-5]
+      elif parenthetical[:4] == 'with':
+        form = parenthetical
+      elif parenthetical[-14:] == ' manifestation':
+        form = parenthetical[:-14]
+      elif parenthetical in ('incorporeal', 'manifested fully', 'unfurled', 'hunched'):
+        form = parenthetical
+      else:
+        parentheticals.append(parenthetical)
+        print(self.name, file=open('unknownParentheticals.txt', 'a') )
+    if len(parentheticals) > 1:
+      raise Exception(self.name, parentheticals)
+    #reducedName = nameParentheticalRE.sub('', self.name) # handily eliminates parenthesized commas
+    nameSegments = [segment.strip() for segment in reducedName.split(',')]
+    nameSegments = [segment for segment in nameSegments if segment not in SIZE_NAMES and segment.lower() != 'medium-size'] # have size separately
+    nameSegments[-1] = nameParentheticalRE.sub('', nameSegments[-1]).strip()
+    # Parentheticals that appear before the last comma are usually ones we want to keep, like Chromatic (Lost).
+    if len(nameSegments) > 5:
+      raise Exception(self.name)
+    if 'Dire' in nameSegments and 'Lycanthrope' not in nameSegments:
+      alphabetizedBy = 'Dire' # Bear, Polar, Dire
+    elif 'Legendary' in nameSegments:
+      alphabetizedBy = 'Legendary'
+    elif 'hydra' in nameSegments[0]:
+      alphabetizedBy = 'Hydra' # Cryohydra, 5-Headed
+    else:
+      alphabetizedBy = nameSegments[0]
+    #if not (all(segment not in AGE_CATEGORIES for segment in nameSegments) or (nameSegments[-1] in AGE_CATEGORIES and alphabetizedBy in MONSTERS_WITH_AGES) ):
+    #  raise Exception(self.name)
+    nameSegments = tuple(nameSegments)
+    assert 'Dragon' not in nameSegments or alphabetizedBy == 'Dragon'
+    if alphabetizedBy in MONSTERS_WITH_AGES:
+      assert nameSegments[-1] in AGE_CATEGORIES
+      ageCategory = nameSegments[-1]
+      nameSegments = nameSegments[:-1]
+    if 'Lycanthrope' in nameSegments and alphabetizedBy != 'Lycanthrope':
+      raise Exception(self.name, nameSegments, alphabetizedBy)
+    if alphabetizedBy == 'Lycanthrope':
+      # only odd one out is Lycanthrope, Wereboar, Dire, Hill Giant
+      if len(nameSegments) > 2:
+        assert nameSegments == ('Lycanthrope', 'Wereboar', 'Dire', 'Hill Giant')
+        nameSegments = ('Lycanthrope', 'Hill Giant Dire Wereboar')
+    #for segment in nameSegments[:-1]:
+    #  if '(' in segment:
+    #    matchObj = nameParentheticalRE.search(segment)
+    #    if matchObj is None:
+    #      raise Exception(segment, self.name)
+    #    parenthetical = matchObj.group(1)
+    #    if parenthetical not in ('Lost', 'Starkin'):
+    #      raise Exception(nameSegments, parenthetical)
+    for i,segment in enumerate(nameSegments):
+      appearInNamesMoreThanOnce[i][segment].add(tuple(nameSegments[i+1:]) )
+    allUnknownTerms[len(nameSegments) - 1].add(', '.join(nameSegments) )
+
     self.size = xls_row[1].value
     self.type_name = xls_row[2].value
     if self.name in ('Energon, Xag-Ya','Energon, Xeg-Yi'):
@@ -1133,6 +1246,10 @@ class Monster(object):
 
     if xls_row[29].value == '-': self.challenge_rating = 0
     else: self.challenge_rating = fraction_to_negative(xls_row[29].value)
+    if self.challenge_rating < self.HitDice/3 and self.type_name == 'Dragon':
+      # suspect that missing a digit like Dragon, Chromatic, Blue, Young Adult
+      self.challenge_rating += 10
+
     self.rulebook_abbrev = xls_row[30].value
 
     self.specialAttacks = Monster.splitSpecialAbilities(xls_row[14].value)
@@ -1374,11 +1491,11 @@ class Monster(object):
       if rulebook_abbrev in ('BoK','BoKR'): rulebook_abbrev = 'BoKr'
       elif re.match(r'\d\d\d', rulebook_abbrev): rulebook_abbrev = r'\d\d\d'
       elif re.match(r'A\d\d', rulebook_abbrev): rulebook_abbrev = r'A\d\d'
-      curs.execute('''SELECT id from dnd_rulebook where abbr=?;''',
+      curs.execute('''SELECT rulebook_id FROM rulebook_abbrev WHERE abbr=?;''',
                    (rulebook_abbrev,) )
       result = curs.fetchone()
       if result is None:
-        print('no rulebook found:', self.name, rulebook_abbrev)
+        raise Exception('no rulebook found:', self.name, rulebook_abbrev)
       rulebook_id = result[0]
       # if the same monster is listed in multiple books with the same stats...what?
       #print(rulebook_abbrev, 'rulebook_id from dnd_rulebook =', rulebook_id)
@@ -1523,7 +1640,7 @@ class Template(object):
     # Any corporeal that is not an oustsider
     # Any corporeal creature that is not a construct
     # Any living creature of good alignment that is not an outsider or an elemental
-  changeOnlyTheseTypesRE = re.compile(r"Unchanged(?: add Psionic subtype)?; ([Aa]nimal)s?(?:(?: and |/| or )(\w+)s?)? becomes? ([Mm]agical [Bb]east)s?")
+  changeOnlyTheseTypesRE = re.compile(r"Unchanged;?(?: add (?:Psionic|Dragonblood) subtype)?; ([Aa]nimal)s?(?:(?: and |/| or )(\w+)s?)? becomes? ([Mm]agical [Bb]east)s?")
   # Winged Creature SS 137 type not found: Unchanged; Animals and vermin become magical beasts; Humanoids become monstrous humanoids
   # Beasts or Animals become Magical Beasts otherwise type is unchanged but can ignore that in favor of newer version of each such template
 
@@ -1591,15 +1708,26 @@ class Template(object):
       assert baseTypeID is not None
       outputTypeID = baseTypeID
     #print(self.name, 'outputTypeID =', outputTypeID)
+    if outputTypeID is None:
+      raise Exception(self.name)
     curs.execute('''INSERT INTO template_type (template_id, base_type, output_type) VALUES (?,?,?);''', (self.template_id, baseTypeID, outputTypeID) )
   def insert_into(self, curs):
-    curs.execute('''SELECT id from dnd_rulebook where abbr=?;''',
+    curs.execute('''SELECT rulebook_id from rulebook_abbrev where abbr=?;''',
                  (self.rulebook_abbrev,) )
     result = curs.fetchone()
     if result is None:
       print('no rulebook found:', self.name, self.rulebook_abbrev)
     rulebook_id = result[0]
 
+    self.baseCreature = self.baseCreature.replace('oustsider', 'outsider')
+    self.resultType = self.resultType.replace('animl', 'animal')
+
+    curs.execute('''INSERT INTO dnd_template
+                 (name, rulebook_id, page, level_adjustment)
+                 VALUES (?, ?, ?, ?);''',
+                 (self.name, rulebook_id, self.page, self.levelAdjustment) )
+    self.template_id = curs.lastrowid
+    
     # A character who succeeds at all the saves he or she is required to make takes on the attributes of a half-golem as described below except that the character retains his or her alignment, gains a +4 bonus to Constitution, and does not change type or gain construct traits. As soon as the character fails one of these required saves, he or she becomes a half-golem of neutral evil alignment. The character then has no Constitution score and the character's type changes to construct, granting him or her construct traits.
     # entropic Size and Type: Unless the creature was undead, its type changes to outsider. Size is unchanged. The creature also gains the extraplanar subtype.
     outputTypeID = None
@@ -1608,42 +1736,38 @@ class Template(object):
         outputTypeID = baseTypeID
     if self.resultType == 'Unchanged' or self.resultType == 'none':
       self.resultType = None
-    elif (self.resultType[:11] == 'Unchanged; ' or self.resultType=='gain Aquatic subtype') and ('ubtype' in self.resultType or 'Add [Shapechanger]' in self.resultType):
+    # Type Changes: Unchanged; Animals become Magical Beast [augmented animl]; gain psionic subtype
+    elif (self.resultType[:11] == 'Unchanged; ' or self.resultType=='gain Aquatic subtype') and ('ubtype' in self.resultType or 'Add [Shapechanger]' in self.resultType) and 'become' not in self.resultType:
       self.resultType = None # ignore subtypes for now
     elif outputTypeID is None:
       outputTypeID = id_from_name(curs, 'dnd_monstertype', self.resultType)
       #if outputTypeID is None:
         #print('template', self.name, self.rulebook_abbrev, self.page, 'type not found:', self.resultType)
 
-    curs.execute('''INSERT INTO dnd_template
-                 (name, rulebook_id, page, level_adjustment)
-                 VALUES (?, ?, ?, ?);''',
-                 (self.name, rulebook_id, self.page, self.levelAdjustment) )
-    self.template_id = curs.lastrowid
-    
-    # remember, outsiders are living: An outsider is at least partially composed of the essence (but not necessarily the material) of some plane other than the Material Plane. Unlike most other living creatures, an outsider does not have a dual nature --- its soul and body form one unit.
-    # thornier is dealing with Living Constructs, since that's a subtype, but those are few and can be neglected for now
-    self.baseCreature = self.baseCreature.replace('oustsider', 'outsider')
-
-    if self.baseCreature[:16] == 'Any Non-undead, ':
-      for (baseTypeID,name) in iterate_over_types(curs):
-        if 'non' + name.lower() not in self.baseCreature.lower():
-          self.insert_type_change(curs, baseTypeID, outputTypeID)
-      # sqlite> select dnd_template.name,base.name,output.name from template_type inner join dnd_template on template_id=dnd_template.id inner join dnd_monstertype as base on base_type=base.id inner join dnd_monstertype as output on output_type=output.id;
-      return
-    matchObj = Template.exceptTypesRE.search(self.baseCreature)
-    if matchObj is not None:
-      exceptTypesList = matchObj.group(1)
-      for (baseTypeID,name) in iterate_over_types(curs):
-        if name.lower() not in exceptTypesList.lower() and ('ny living' not in self.baseCreature or name!='Undead' or name!='Construct'):
-          #if outputTypeID is None: print(self.name)
-          self.insert_type_change(curs, baseTypeID, outputTypeID)
-      return
-    
-    # already eliminated the excepts, so if any type name is mentioned, we have a list of allowed type names
     allTypeNames = set(pair[1] for pair in iterate_over_types(curs) )
     baseTypeNames = set()
-    if any(name.lower() in self.baseCreature.lower() for name in allTypeNames):
+
+    # remember, outsiders are living: An outsider is at least partially composed of the essence (but not necessarily the material) of some plane other than the Material Plane. Unlike most other living creatures, an outsider does not have a dual nature --- its soul and body form one unit.
+    # thornier is dealing with Living Constructs, since that's a subtype, but those are few and can be neglected for now
+    matchObj = Template.exceptTypesRE.search(self.baseCreature)
+    if matchObj is not None: # base has an except-types clause
+      exceptTypesList = matchObj.group(1)
+      #print(self.name, self.baseCreature, exceptTypesList)
+      baseTypeNames = set(name for name in allTypeNames if name.lower() not in exceptTypesList.lower() and ('ny living' not in self.baseCreature or name!='Undead' or name!='Construct') )
+      #for (baseTypeID,name) in iterate_over_types(curs):
+      #  if name.lower() not in exceptTypesList.lower() and ('ny living' not in self.baseCreature or name!='Undead' or name!='Construct'):
+          #if outputTypeID is None: print(self.name)
+      #    self.insert_type_change(curs, baseTypeID, outputTypeID)
+      #return
+    elif self.baseCreature[:16] == 'Any Non-undead, ':
+      baseTypeNames = set(name for name in allTypeNames if 'non' + name.lower() not in self.baseCreature.lower() )
+      #for (baseTypeID,name) in iterate_over_types(curs):
+      #  if 'non' + name.lower() not in self.baseCreature.lower():
+      #    self.insert_type_change(curs, baseTypeID, outputTypeID)
+      # sqlite> select dnd_template.name,base.name,output.name from template_type inner join dnd_template on template_id=dnd_template.id inner join dnd_monstertype as base on base_type=base.id inner join dnd_monstertype as output on output_type=output.id;
+      #return
+    # already eliminated the excepts, so if any type name is mentioned, we have a list of allowed type names
+    elif any(name.lower() in self.baseCreature.lower() for name in allTypeNames):
       for name in allTypeNames:
         if name.lower() in self.baseCreature.lower() and 'generally ' + name.lower() + ' form' not in self.baseCreature.lower():
           baseTypeNames.add(name)
@@ -1660,19 +1784,26 @@ class Template(object):
       baseTypeNames = baseTypeNames.difference(set(['Undead', 'Construct']) )
       # except living constructs...
 
+    if 'Draconic' in self.name or self.name == "Shadow Creature": assert self.resultType is not None
     if self.resultType is not None:
       matchObj = Template.changeOnlyTheseTypesRE.match(self.resultType)
+      if ('Draconic' in self.name or self.name == "Shadow Creature") and matchObj is None:
+        raise Exception(self.name, self.resultType)
       if matchObj is not None:
         twoOrThree = matchObj.groups()
+        #print(self.name, 'twoOrThree =', twoOrThree)
         assert len(twoOrThree) in (2,3)
+        twoOrThree = [sensible_title(typeName) for typeName in twoOrThree] # make sure match for .difference() later
         for baseTypeName in twoOrThree[:-1]:
           if baseTypeName is None: continue
           #print('changeOnlyTheseTypesRE', len(twoOrThree), baseTypeName, twoOrThree[-1])
-          self.insert_type_change(curs, id_from_name(curs, 'dnd_monstertype', sensible_title(baseTypeName) ), id_from_name(curs, 'dnd_monstertype', sensible_title(twoOrThree[-1]) ) )
+          #print(self.name, baseTypeName, twoOrThree[-1])
+          self.insert_type_change(curs, id_from_name(curs, 'dnd_monstertype', baseTypeName), id_from_name(curs, 'dnd_monstertype', twoOrThree[-1]) )
         for name in baseTypeNames.difference(twoOrThree[:-1]):
           sameID = id_from_name(curs, 'dnd_monstertype', name)
           self.insert_type_change(curs, sameID, sameID)
         return
+
     if self.resultType == 'Outsider unless the base creature was undead':
       undeadID = id_from_name(curs, 'dnd_monstertype', 'Undead')
       self.insert_type_change(curs, undeadID, undeadID)
@@ -1690,12 +1821,209 @@ class Template(object):
     for name in baseTypeNames:
       self.insert_type_change(curs, id_from_name(curs, 'dnd_monstertype', name), outputTypeID)
 
+assert Template.changeOnlyTheseTypesRE.match(r"Unchanged; Animals become Magical Beast [augmented animl]; gain psionic subtype")
+assert Template.changeOnlyTheseTypesRE.match(r"Unchanged; animals or vermin become magical beasts")
+
+
+
+
+
+
+ShaxItemRE = re.compile(r'<b>(?P<name>[\w\s]+)</b>[\s\w\d\.\,\(\)]*?<br />\nPrice: (?P<price>\d+) (?P<coin>[CSG])P<br />\nWeight: (?P<weight>\d+\.?\d*|\-+)#?<br />\n\((?P<book>[\w\s]+) p\. (?P<page>\d+)\)<br />\n(?P<desc>.+)')
+assert(ShaxItemRE.match('<b>Acidic Fire</b> (x2, 30 GP ea.)<br />\nPrice: 60 GP<br />\nWeight: 0.3#<br />\n(Expedition to Castle Ravenloft p. 208)<br />\nblah').group('name') == 'Acidic Fire')
+assert(ShaxItemRE.match("<b>Kyo Crystals</b><br />\nPrice: 50 GP<br />\nWeight: --<br />\n(Expedition to Undermountain p. 217)<br />\nOne-shot items similar to potions, but unlike potions activating them with a standard action does not provoke an AoO. They cost the same as potions (I've listed a cost above for a 1st level spell because I thought they were the most useful), but the spell must be chosen from a limited list: <i>burning hands</i>, <i>cure light wounds</i>, <i>cure moderate wounds</i> (150 GP), <i>cure serious wounds</i> (250 GP), <i>light</i> (25 GP), <i>mage armor</i>, <i>magic missle</i>, <i>magic weapon</i>, <i>mirror image</i> (150 GP), or <i>ray of frost</i> (25 GP). Oddly enough, you don't have to have these spells on your spell list to create these items, so wizards can create <i>cure</i> crystals. Of the available spells, <i>magic missle</i> (autohit force damage) and <i>magic weapon</i> (easier than applying an oil) look like the most useful.").group('weight') == '--')
+def readShax(filepath='ShaxItems.txt'):
+  print('readShax')
+  items = []
+  rulebooks = set()
+  contents = open(filepath, 'r').read()
+  split = contents.split('<br />\n<br />\n')
+  #print(split[0], ' = split[0]')
+  #print(split[1], ' = split[1]')
+  for entry in split:
+    matchObj = ShaxItemRE.match(entry)
+    #print('entry', len(entry), entry[:20])
+    if matchObj is not None:
+      name = matchObj.group('name')
+      price_sp = int(matchObj.group('price') )
+      if matchObj.group('coin') == 'G':
+        price_sp *= 10
+      elif matchObj.group('coin') == 'C':
+        price_sp /= 10
+      try:
+        weight = float(matchObj.group('weight') )
+      except ValueError:
+        weight = 0
+      book = matchObj.group('book').replace('Xendrik', "Xen'drik")
+      rulebooks.add(book)
+      page = int(matchObj.group('page') )
+      assert (name, price_sp, weight, matchObj.group('desc'), page, book) not in items
+      items.append( (name, price_sp, weight, matchObj.group('desc'), page, book) )
+  print('done readShax')
+  return items
+
+"""
+CREATE INDEX "dnd_item_slug" ON "dnd_item" ("slug");
+CREATE INDEX "dnd_item_dnd_item_52094d6e" ON "dnd_item" ("name");
+CREATE INDEX "dnd_item_dnd_item_51956a35" ON "dnd_item" ("rulebook_id");
+CREATE INDEX "dnd_item_dnd_item_35a44c52" ON "dnd_item" ("body_slot_id");
+CREATE INDEX "dnd_item_dnd_item_c181fb11" ON "dnd_item" ("aura_id");
+CREATE INDEX "dnd_item_dnd_item_a7ff055e" ON "dnd_item" ("activation_id");
+CREATE INDEX "dnd_item_dnd_item_6a812853" ON "dnd_item" ("property_id");
+CREATE INDEX "dnd_item_dnd_item_ed720ca8" ON "dnd_item" ("synergy_prerequisite_id");
+"""
+def make_item_tables(curs):
+  curs.execute('''DROP TABLE dnd_itemslot;''')
+  curs.execute('''CREATE TABLE dnd_itemslot (
+  id INTEGER PRIMARY KEY NOT NULL
+  ,name CHAR(9) NOT NULL
+  ,abbrev CHAR(2) DEFAULT NULL
+  ,examples VARCHAR(128) DEFAULT NULL
+  ,affinities VARCHAR(128) DEFAULT NULL
+,UNIQUE(name)
+  );''')
+  curs.execute('''INSERT INTO dnd_itemslot (name, abbrev, examples, affinities) VALUES ("held", "-h", "weapons, shields, tools", NULL), ("Arms", "A", "armbands, bracelets, bracers", "Combat, Allies"), ("Body", "B", "armor, robes", "Multiple effects"), ("Face", "Fa", "goggles, lenses, masks, spectacles, third eyes", "Vision"), ("Feet", "Ft", "boots, sandals, shoes, slippers", "Movement"), ("Hands", "Ha", "gauntlets, gloves", "Quickness, Destructive power"), ("Head", "Hd", "circlets, crowns, hats, headbands, helmets, phylacteries", "Mental improvement, ranged attacks, Interaction, Morale, alignment"), ("Rings", "R", "rings", NULL), ("Shoulders", "S", "capes, cloaks, mantles, shawls", "Transformation, protection"), ("Throat", "Th", "amulets, badges, brooches, collars, medals, medallions, necklaces, pendants, periapts, scarabs, scarfs, torcs", "Protection, discernment"), ("Torso", "To", "shirts, tunics, vests, vestments", "Physical improvement, Class ability improvement"), ("Waist", "W", "belts, girdles, sashes", "Physical improvement");''')
+  curs.execute('''CREATE INDEX index_dnd_itemslot_name ON dnd_itemslot(name);''')
+  curs.execute('''CREATE TABLE armorweapon_property_type (
+  id INTEGER PRIMARY KEY NOT NULL
+  ,name CHAR(16) NOT NULL
+  ,slug CHAR(16) NOT NULL
+,UNIQUE(name)
+  );''')
+  curs.execute('''INSERT INTO armorweapon_property_type (name, slug) SELECT name, slug from dnd_itemproperty;''')
+  curs.execute('''CREATE INDEX index_armorweapon_property_type_name ON armorweapon_property_type(name);''')
+
+  curs.execute('''CREATE TABLE item_level (
+  level TINYINT(2)
+  ,market_price_max_gp int(6)
+  );''');
+  curs.execute('''INSERT INTO item_level VALUES (-2, 50), (1, 150), (2, 400), (3, 800), (4, 1300), (5, 1800), (6, 2300), (7, 3000), (8, 4000), (9, 5000), (10, 6500), (11, 8000), (12, 10000), (13, 13000), (14, 18000), (15, 25000), (16, 35000), (17, 48000), (18, 64000), (19, 80000), (20, 100000), (21, 120000), (22, 140000), (23, 160000), (24, 180000), (25, 200000), (26, 220000), (27, 240000), (28, 260000), (29, 280000), (30, 300000);''')
+  # http://www.d20srd.org/srd/spells/detectMagic.htm
+  curs.execute('''DROP TABLE dnd_itemauratype;''')
+  curs.execute('''CREATE TABLE dnd_itemauratype (
+  name CHAR(12) NOT NULL,
+  min_caster_level TINYINT(2) DEFAULT NULL,
+  max_spell_level TINYINT(1) DEFAULT NULL,
+  linger_duration CHAR(14)
+  );''')
+  curs.execute('''INSERT INTO dnd_itemauratype (name, min_caster_level, max_spell_level, linger_duration) VALUES ("Faint", NULL, 3, "1d6 rounds"), ("Moderate", 6, 6, "1d6 minutes"), ("Strong", 12, 9, "1d6x10 minutes"), ("Overwhelming", 21, NULL, "1d6 days");''')
+  
+  # It was Shakespeare, in his play Henry IV (1597), who first used "avoirdupois" to mean "heaviness."
+  # pound is equal to 16 ounces, the ounce 16 drams, and the dram 27.344 grains.
+  # The avoirdupois pound contains 7,000 grains
+  # Troy weight, traditional system of weight in the British Isles based on the grain, pennyweight (24 grains), ounce (20 pennyweights), and pound (12 ounces).
+  # The troy pound is 5760 grains (12 oz t), while an avoirdupois pound is approximately 21.53% heavier at 7000 grains
+  # The standard weight measurements used for all precious metal products are Troy ounces and pounds. All legal tender silver, gold and platinum coins are struck according to these Troy weights, which are not to be confused with the Avoirdupois weights.
+  # 1 troy ounce = 480 grains; 1 ounce = 437.5 grains. Basic elementary school math will tell you that 1 Troy ounce contains 2.75 grams more of metal than the standard ounce.
+  # Apothecaries' weight, traditional system of weight in the British Isles used for the measuring and dispensing of pharmaceutical items and based on the grain, scruple (20 grains), dram (3 scruples), ounce (8 drams), and pound (12 ounces).
+  # The standard coin weighs about a third of an ounce (fifty to the pound). So D&D uses about 16ounces to the pound.
+  # The avoirdupois pound contains 7,000 grains. It is equal to about 1.22 apothecaries' or troy pounds (5760grains).
+
+  curs.execute('''CREATE TEMPORARY TABLE item_backup (id int(11), name varchar(64), slug varchar(64), rulebook_id int(11), page smallint(5), price_gp int(10), price_bonus smallint(5), item_level smallint(5), body_slot_id int(11), caster_level smallint(5), aura_id int(11), aura_dc varchar(16), activation_id int(11), weight double, visual_description longtext, description longtext, description_html longtext, type varchar(3), property_id int(11), cost_to_create varchar(128), synergy_prerequisite_id int(11), required_extra varchar(64) );''')
+  curs.execute('''INSERT INTO item_backup SELECT id, name, slug, rulebook_id, page, price_gp, price_bonus, item_level, body_slot_id, caster_level, aura_id, aura_dc, activation_id, weight, visual_description, description, description_html, type, property_id, cost_to_create, synergy_prerequisite_id, required_extra FROM dnd_item;''')
+  curs.execute('''DROP TABLE dnd_item;''')
+  curs.execute('''CREATE TABLE dnd_item (
+  id INTEGER PRIMARY KEY NOT NULL
+  ,name varchar(64) NOT NULL
+  ,slug varchar(64) DEFAULT NULL
+  ,rulebook_id INTEGER
+  ,page unsigned smallint(3) DEFAULT NULL
+  ,market_price_copper_pieces unsigned int(8) DEFAULT NULL
+  ,body_slot_id INTEGER DEFAULT NULL
+  ,caster_level UNSIGNED TINYINT(2) DEFAULT NULL
+  ,activation_id, INTEGER DEFAULT NULL
+  ,weight double DEFAULT NULL
+  ,visual_description longtext DEFAULT NULL
+  ,description longtext NOT NULL
+  ,description_html longtext DEFAULT NULL
+,FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
+,FOREIGN KEY(body_slot_id) REFERENCES dnd_itemslot(id)
+,FOREIGN KEY(activation_id) REFERENCES dnd_itemactivationtype(id)
+  );''')
+  # The Spellcraft DC to identify the aura can always be rederived: 15 + caster_level/2 as DC.
+  # The aura strength can always be rederived from the caster level dnd_itemauratype table.
+  # Armor and weapon properties don't really belong with the main table especially when you're looking at
+  # the low end of price, since they require at least a +1 to start.
+  curs.execute('''CREATE TABLE dnd_armorweapon_property (
+  id INTEGER PRIMARY KEY NOT NULL
+  ,name varchar(64) NOT NULL
+  ,slug varchar(64) DEFAULT NULL
+  ,rulebook_id INTEGER
+  ,page unsigned smallint(3) DEFAULT NULL
+  ,candidates_id INTEGER
+  ,price_in_gp unsigned int(6) DEFAULT NULL
+  ,price_as_armorweapon_bonus unsigned tinyint(1) DEFAULT NULL
+  ,synergy_prereq INTEGER
+  ,caster_level TINYINT(2) DEFAULT NULL
+  ,activation_id, INTEGER DEFAULT NULL
+  ,visual_description longtext DEFAULT NULL
+  ,description longtext NOT NULL
+  ,description_html longtext DEFAULT NULL
+,UNIQUE(rulebook_id, name)
+,FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
+,FOREIGN KEY(candidates_id) REFERENCES armorweapon_property_type(id)
+,FOREIGN KEY(synergy_prereq) REFERENCES dnd_armorweapon_property(id)
+,FOREIGN KEY(activation_id) REFERENCES dnd_itemactivationtype(id)
+  );''')
+  items = readShax()
+  if False:
+    for item in items:
+      curs.execute('''SELECT dnd_rulebook.id FROM dnd_rulebook WHERE dnd_rulebook.name=?;''', item[-1:] )
+      if curs.fetchone() is None:
+        raise Exception(item)
+  items = set(items)
+  curs.executemany('''INSERT INTO dnd_item (name, market_price_copper_pieces, weight, description, page, rulebook_id) SELECT ?, ?*10, ?, ?, ?, dnd_rulebook.id FROM dnd_rulebook WHERE dnd_rulebook.name=?;''', items)
+"""
+I changed the dnd_itemslot table because separating weapons from gauntlets doesn't work for spiked gauntlets.
+A normal humanoid creature has twelve body slots, enumerated here with some examples of the kinds of items that might be worn there (for nonhumanoid creatures, see Size and Shape, below).
+As a default rule, treat creatures of any shape as having all the normal body slots available. Creatures never gain extra body slots for having extra body parts (for example, a marilith still has only one hands body slot and two rings body slots).
+Amorphous Creatures: Creatures without any shape, such as most oozes and the phasm (in its normal form), have no body slots and can't wear magic items at all.
+Headless Creatures: Creatures without an identifiable head, such as shambling mounds, lack the face, head, and throat body slots.
+Armless Creatures: Creatures without forelimbs, such as snakes, don't have the arms, hands, or rings body slot (but see multilegged creatures, below). A creature with only a single forelimb retains these body slots, and can wear both of a pair on the same limb (such as both gloves on the same hand, and so on).
+Multilegged Creatures: Creatures with more than two legs can treat their foremost pair of limbs as their arms (allowing them access to the arms, hands, and rings body slots), even if those limbs are used for locomotion rather than for manipulation.
+Fingerless Creatures: Creatures without flexible digits or extremities, such as horses, lack the rings body slot. A creature need not be able to manipulate objects to wear rings: a hell hound can wear a ring on a toe of its forelimb.
+Legless Creatures: Creatures without hind limbs, such as lillends, don't have the feet body slot.
+Arms: armbands, bracelets, bracers. Combat, Allies
+Body: armor, robes. Multiple effects
+ One robe or suit of armor on the body (over a vest, vestment, or shirt)
+ One belt around the waist (over a robe or suit of armor)
+A = Arms; B = Body; Fa = Face; Ft = Feet; Ha = Hands; Hd = Head; R = Ring; S = Shoulders; Th = Throat; To = Torso; W = Waist
+the following entries on the Body Slot line.
+-: The item functions or can be activated as long as it is carried somewhere on your body (but not if it's stored in an extradimensional or nondimensional storage space, such as a bag of holding). Some rare items in this category might describe a particular manner in which you must carry them for the item to function (such as ioun stones).
+- (held): You must hold the item or otherwise manipulate the item with your hand for it to function or be activated. All weapons and shields have this entry, as do many tools. In the case of a shield, simply carrying it isn't enough. you must wear it properly as described on page 125 of the Player's Handbook.
+ Technically, however, you can gain the magical benefits of as many shields as you can wear.
+- ([armor, shield, or weapon] crystal): Augment crystals are magic items that function only when attached to a suit of armor, shield, weapon, or other appropriate item. Like properties, you can only gain an augment crystal's benefit while you're wearing or holding the item in the appropriate manner.
+
+Properties are part of another item (a weapon, shield, or suit of armor), and they function or can be activated as long as the item is worn or held properly. A shield property offers no benefit if the shield is slung over your shoulder, and a weapon (typically) doesn't offer any benefit if it's sheathed.
+Instead of a body slot entry, a property has a property entry, which describes the types of items to which this property can be applied.
+Unless noted otherwise in the property's Property entry, each special property in this chapter can be added either to a suit of armor or shield.
+Unlike most other items, properties have no weight.
+To add a special property to a shield or suit of armor, the shield or armor must already have at least a +1 enhancement bonus.
+
+An item's market price determines its level. Find the market price range on Table 6-3: Item Levels by Price in which this value falls; this tells you its level. For example, a cloak of elvenkind has a market price of 2,500 gp. This falls between 2,301 gp and 3,000 gp, which makes the cloak a 7th-level magic item.
+Fast-Play Exception: For magic weapons and armor, it's easiest to ignore the portion of market price derived from the masterwork item itself, as long as that's just a small fraction of the overall price. For example, treat a +1 greatsword (2,350 gp) as a 6th-level item, even though its actual market price is a little bit above that range. Don't abuse this shortcut by claiming that +1 full plate (2,650 gp market price) is only a 4th-level item (801–1,300 gp).
+When you need to equip a bunch of NPCs in a hurry, or you just want a playable PC for tonight's game, you might reasonably choose for speed to take precedence over precision. replaces the precision of market price with the abstraction of level. A cloak of resistance +1, pipes of the sewers, and a divine scroll of slay living are all 4th-level magic items, even though their market prices are slightly different.
+Be warned that this system consciously trades precision for speed. It allows you to equip a character quickly, but it doesn't necessarily spend every last gold piece available, nor does it exactly replicate what you could purchase with the normal systems available. When creating an important NPC, building a player character's equipment list for a long-term campaign, or designing a treasure hoard (see page 265), consider using the normal rules in place of these.
+
+When detect magic identifies a magic item's school of magic, this information refers to the school of the spell placed within the potion, scroll, or wand, or the prerequisite given for the item. If more than one spell is given as a prerequisite, use the highest-level spell. If no spells are included in the prerequisites, use the following default guidelines.
+Armor and protection items	Abjuration
+Weapons or offensive items	Evocation
+Bonus to ability score, on skill check, etc.	Transmutation
+"""
+
+
 
 
 
 
 # http://stackoverflow.com/questions/4055564/what-does-the-number-in-parenthesis-really-mean
-# The number after INT is in base 10, not base 2.
+# The number after INT is in base 10, not base 2. https://blogs.oracle.com/jsmyth/what-does-the-11-mean-in-int11
+# https://dba.stackexchange.com/questions/369/int5-vs-smallint5/370
+# An int can be between -2147483648 and 2147483647 signed, or 0 and 4294967295 unsigned.
+# A smallint is between -32768 and 32767 signed, or 0 and 65535 unsigned.
+# TINYINT -128 to 127
+# The (5) represents the display width of the field.
+# The display width does not constrain the range of values that can be stored in the column.
 # You get no performance improvement if you use CHAR against VARCHAR in one field, but the table contains other fields that are VARCHAR.
 # Slug is used to make a name that is not acceptable for various reasons - e.g. containing special characters, too long, mixed-case, etc. - appropriate for the target usage. What target usage means is context dependent
 # FOREIGN KEY https://www.sqlite.org/foreignkeys.html
@@ -1785,6 +2113,9 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite',
       shutil.rmtree(marvinCache)
   cache_IMarvinTPA(marvinCache)
 
+  #def seven(x): return 7
+  #conn.create_function("seven", 1, seven) # not accessible from sqlite3
+
   alphabetical,ODE = read_xls(XLSfilepath)
   #ipdb.set_trace()
   #print('maxlen among names =', max([str(row[0]) for row in alphabetical.get_rows()], key=len) )
@@ -1828,6 +2159,15 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
 
   rulebook_max_name_len = max(max(len(n) for n in rulebook_abbreviations.values() ), 128)
   rulebook_max_abbr_len = max(max(len(n) for n in rulebook_abbreviations.keys() ), 7)
+  # Before we shove the old table aside, we save the abbreviations from it.
+  # This means we have to preserve the id numbers, but we had to do that anyway due to those id numbers being referenced everywhere.
+  curs.execute('''CREATE TABLE rulebook_abbrev (
+  abbr CHAR({}),
+  rulebook_id INTEGER,
+UNIQUE(abbr),
+FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
+  );'''.format(rulebook_max_abbr_len) )
+  curs.execute('''INSERT INTO rulebook_abbrev (abbr, rulebook_id) SELECT abbr, id FROM dnd_rulebook WHERE abbr!="EE" and abbr!="DD" and name!="Monster Manual";''')
   # backup mirrors the schema of the original
   curs.execute('''CREATE TEMPORARY TABLE rulebooks_backup (id int, dnd_edition_id int, name varchar({}), abbr varchar({}), description longtext, year varchar(4), official_url varchar(255), slug varchar(128), image varchar(128), published date);'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
   curs.execute('''INSERT INTO rulebooks_backup SELECT id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM dnd_rulebook;''')
@@ -1836,18 +2176,24 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
   id INTEGER PRIMARY KEY NOT NULL,
   dnd_edition_id INTEGER DEFAULT NULL,
   name varchar({}) NOT NULL,
-  abbr varchar({}) NOT NULL,
   description longtext DEFAULT NULL,
   official_url varchar(255) DEFAULT NULL,
   slug varchar(128) DEFAULT NULL,
   image varchar(100) DEFAULT NULL,
   published date DEFAULT NULL,
   year smallint(2) DEFAULT NULL,
-  FOREIGN KEY(dnd_edition_id) REFERENCES dnd_dndedition(id)
+  FOREIGN KEY(dnd_edition_id) REFERENCES dnd_dndedition(id),
+  UNIQUE(name)
   );'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
-  curs.execute('''INSERT INTO dnd_rulebook (dnd_edition_id, name, abbr, description, year, official_url, slug, image, published) SELECT dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM rulebooks_backup;''')
+  curs.execute('''INSERT INTO dnd_rulebook (dnd_edition_id, name, description, year, official_url, slug, image, published) SELECT dnd_edition_id, name, description, year, official_url, slug, image, published FROM rulebooks_backup;''')
   curs.execute('''DROP TABLE rulebooks_backup;''')
-  curs.executemany('''INSERT INTO dnd_rulebook (abbr,name) VALUES (?,?);''', rulebook_abbreviations.items() )
+  # Many of the rulebooks in rulebook_abbreviations are not listed yet, so list them first.
+  curs.executemany('''INSERT OR IGNORE INTO dnd_rulebook (name) VALUES (?);''', [(name,) for name in rulebook_abbreviations.values()] )
+  # Now that the rulebooks are listed, we set up their abbreviations.
+  curs.executemany('''INSERT OR REPLACE INTO rulebook_abbrev (abbr, rulebook_id) SELECT ?, dnd_rulebook.id FROM dnd_rulebook WHERE name=?;''', rulebook_abbreviations.items() )
+  curs.execute('''CREATE INDEX index_dnd_rulebook_name ON dnd_rulebook(name);''')
+
+  make_item_tables(curs)
 
   curs.execute('''CREATE TEMPORARY TABLE types_backup (id int, name varchar(32), slug varchar(32) );''')
   curs.execute('''INSERT INTO types_backup SELECT id, name, slug FROM dnd_monstertype;''')
@@ -1855,7 +2201,8 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
   curs.execute('''CREATE TABLE dnd_monstertype (
   id INTEGER PRIMARY KEY NOT NULL,
   name varchar(32) NOT NULL,
-  slug varchar(32) NOT NULL
+  slug varchar(32) NOT NULL,
+UNIQUE(name)
   );''') # add BAB as float, 1 or 0.75 or 0.5
   curs.execute('''INSERT INTO dnd_monstertype SELECT id, name, slug FROM types_backup;''')
   curs.execute('''DROP TABLE types_backup;''')
@@ -1868,7 +2215,8 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
   curs.execute('''CREATE TABLE dnd_monstersubtype (
   id INTEGER PRIMARY KEY NOT NULL,
   name varchar(32) NOT NULL,
-  slug varchar(32) NOT NULL
+  slug varchar(32) NOT NULL,
+UNIQUE(name)
   );''')
   curs.execute('''INSERT INTO dnd_monstersubtype SELECT id, name, slug FROM subtypes_backup;''')
   curs.execute('''DROP TABLE subtypes_backup;''')
@@ -2160,7 +2508,7 @@ FOREIGN KEY(terrain_id) REFERENCES dnd_terrain(id)
   challenge_rating tinyint(2) NOT NULL,
   level_adjustment tinyint(2) DEFAULT NULL,
 FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id),
-FOREIGN KEY(size_id) REFERENCES dnd_racesize(id)
+FOREIGN KEY(size_id) REFERENCES dnd_racesize(id),
  );'''.format(maxNameLen) )
 #  law_chaos_id tinyint(1) NOT NULL,
 #FOREIGN KEY(law_chaos_id) REFERENCES dnd_law_chaos(id)
@@ -2214,7 +2562,7 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   # http://www.imarvintpa.com/dndlive/Index_Deities.php
   # have to follow links, but has deities with alignments and domains
   
-  # database only has 165 items
+  # SQLite database only has 165 items
   # http://www.imarvintpa.com/dndlive/Index_It_Fam.php
   # http://www.imarvintpa.com/dndlive/Index_It_Cat.php
   # http://www.imarvintpa.com/dndlive/Index_It_Sub.php
@@ -2251,11 +2599,11 @@ FOREIGN KEY(template_id) REFERENCES dnd_template(id)
   for template in Template.read_file('rockdeworldTemplates.txt'):
     template.insert_into(curs)
 
-  Monster.from_statblock("Ferret: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +2; Spd 15 ft., climb 15 ft.; AC 17, touch 16, flat-footed 15; Base Atk +0; Grp -16; Atk +6 melee (1d2-4, bite); Full Atk +6 melee (1d2-4, bite); Space/Reach 1 ft./0 ft.; SA attach; SQ scent; AL N; SV Fort +2, Ref +4, Will +1; Str 3, Dex 15, Con 10, Int 6, Wis 12, Cha 5. Skills and Feats: Balance +10, Climb +11, Hide +13, Move Silently +9, Spot +14; Weapon Finesse. Attach (Ex): On a hit with its bite attack, it automatically deals bite damage each round (AC 15 when attached).", 'DMG').insert_into(curs)
-  Monster.from_statblock("Hedgehog: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +0; Spd 15 ft.; AC 17, touch 15, flat-footed 16; Base Atk +0; Grp -16; Atk +5 melee (1d3-4 bite); Full Atk +5 melee (1d3-4 bite); Space/Reach 1 ft./0 ft.; SA poison; SQ defensive ball; AL N; SV Fort +2, Ref +3, Will +1; Str 3, Dex 12, Con 10, Int 6, Wis 12, Cha 5. Skills and Feats: Hide +17, Listen +5, Spot +5; Weapon Finesse. Poison (Ex): When in a defensive ball (see below), spines poison foes touching the hedgehog; injury, Fortitude DC 10, initial and secondary damage 1d2 Dex. Defensive Ball (Ex): Rolls into a ball as a standard action, granting a +2 circumstance bonus on saves and AC. Unrolling is a free action.", 'DMG').insert_into(curs)
-  Monster.from_statblock("Mouse: CR 1/10; Fine animal; HD 1/4d8; hp 1; Init +0; Spd 10 ft., climb 10 ft.; AC 19, touch 18, flat-footed 19; Base Atk +0; Grp -21; Atk -; Full Atk -; Space/Reach 1/2 ft./0 ft.; SA -; SQ scent; AL N; SV Fort +2, Ref +2, Will +1; Str 1, Dex 11, Con 10, Int 6, Wis 12, Cha 2. Skills and Feats: Balance +8, Climb +10, Hide +20, Move Silently +12; feat.", 'DMG').insert_into(curs)
-  Monster.from_statblock("Screech Owl: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +3; Spd 10 ft., fly 30 ft. (average); AC 18, touch 17, flat-footed 15; Base Atk +0; Grp -15; Atk +7 melee (1d2-3, talons); Full Atk +7 melee (1d2-3, talons); Space/Reach 1 ft./0 ft.; SA -; SQ -; AL N; SV Fort +2, Ref +5, Will +2; Str 4, Dex 17, Con 10, Int 6, Wis 14, Cha 4. Skills and Feats: Listen +14, Move Silently +20, Spot +8; Weapon Finesse.", 'DMG').insert_into(curs)
-  Monster.from_statblock("Thrush: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +2; Spd 10 ft., fly 40 ft. (average); AC 17, touch 16, flat-footed 15; Base Atk +0; Grp -17; Atk -; Full Atk -; Space/Reach 1 ft./0 ft.; SA -; SQ -; AL N; SV Fort +2, Ref +4, Will +2; Str 1, Dex 15, Con 10, Int 6, Wis 14, Cha 6. Skills and Feats: Listen +8, Spot +8; Alertness.", 'DMG').insert_into(curs)
+  Monster.from_statblock("Ferret: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +2; Spd 15 ft., climb 15 ft.; AC 17, touch 16, flat-footed 15; Base Atk +0; Grp -16; Atk +6 melee (1d2-4, bite); Full Atk +6 melee (1d2-4, bite); Space/Reach 1 ft./0 ft.; SA attach; SQ scent; AL N; SV Fort +2, Ref +4, Will +1; Str 3, Dex 15, Con 10, Int 2, Wis 12, Cha 5. Skills and Feats: Balance +10, Climb +11, Hide +13, Move Silently +9, Spot +14; Weapon Finesse. Attach (Ex): On a hit with its bite attack, it automatically deals bite damage each round (AC 15 when attached).", 'DMG').insert_into(curs)
+  Monster.from_statblock("Hedgehog: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +0; Spd 15 ft.; AC 17, touch 15, flat-footed 16; Base Atk +0; Grp -16; Atk +5 melee (1d3-4 bite); Full Atk +5 melee (1d3-4 bite); Space/Reach 1 ft./0 ft.; SA poison; SQ defensive ball; AL N; SV Fort +2, Ref +3, Will +1; Str 3, Dex 12, Con 10, Int 2, Wis 12, Cha 5. Skills and Feats: Hide +17, Listen +5, Spot +5; Weapon Finesse. Poison (Ex): When in a defensive ball (see below), spines poison foes touching the hedgehog; injury, Fortitude DC 10, initial and secondary damage 1d2 Dex. Defensive Ball (Ex): Rolls into a ball as a standard action, granting a +2 circumstance bonus on saves and AC. Unrolling is a free action.", 'DMG').insert_into(curs)
+  Monster.from_statblock("Mouse: CR 1/10; Fine animal; HD 1/4d8; hp 1; Init +0; Spd 10 ft., climb 10 ft.; AC 19, touch 18, flat-footed 19; Base Atk +0; Grp -21; Atk -; Full Atk -; Space/Reach 1/2 ft./0 ft.; SA -; SQ scent; AL N; SV Fort +2, Ref +2, Will +1; Str 1, Dex 11, Con 10, Int 2, Wis 12, Cha 2. Skills and Feats: Balance +8, Climb +10, Hide +20, Move Silently +12; feat.", 'DMG').insert_into(curs)
+  Monster.from_statblock("Screech Owl: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +3; Spd 10 ft., fly 30 ft. (average); AC 18, touch 17, flat-footed 15; Base Atk +0; Grp -15; Atk +7 melee (1d2-3, talons); Full Atk +7 melee (1d2-3, talons); Space/Reach 1 ft./0 ft.; SA -; SQ -; AL N; SV Fort +2, Ref +5, Will +2; Str 4, Dex 17, Con 10, Int 2, Wis 14, Cha 4. Skills and Feats: Listen +14, Move Silently +20, Spot +8; Weapon Finesse.", 'DMG').insert_into(curs)
+  Monster.from_statblock("Thrush: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +2; Spd 10 ft., fly 40 ft. (average); AC 17, touch 16, flat-footed 15; Base Atk +0; Grp -17; Atk -; Full Atk -; Space/Reach 1 ft./0 ft.; SA -; SQ -; AL N; SV Fort +2, Ref +4, Will +2; Str 1, Dex 15, Con 10, Int 2, Wis 14, Cha 6. Skills and Feats: Listen +8, Spot +8; Alertness.", 'DMG').insert_into(curs)
   # I'm guessing dropwhile has no overhead after failing
   for i,row in itertools.dropwhile(lambda p: p[0]==0,
                enumerate(ODE.get_rows() ) ):
@@ -2266,10 +2614,16 @@ FOREIGN KEY(template_id) REFERENCES dnd_template(id)
     #if i > 8000: break
 
   if False: parse_IMarvinTPA(curs, marvinCache)
-
+  
   conn.commit()
   conn.close()
   
+  for i,s in enumerate(allUnknownTerms):
+    print('\n'.join(sorted(s) ), file=open('names' + str(i + 1) + '.txt', 'w') )
+  for i,counter in enumerate(appearInNamesMoreThanOnce):
+    print('\n'.join(str(blah) + str(s) for blah,s in counter.items() if len(s) > 1), file=open('counts' + str(i) + '.txt', 'w') )
+
+
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Incorporate an XLS file of monster data into a SQLite database.')

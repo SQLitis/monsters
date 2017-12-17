@@ -525,6 +525,8 @@ Just for fun, remember that Moonrats are indistinguishable from normal rats exce
   Mlarraun Poison (Ex): spit, contact, Fortitude DC11, initial damage blindness 2d6hours, secondary damage blindness 4d6hours and 1d4 points of damage. The poison need not touch the eyes to cause blindness.
 
 
+Mounts?
+
 .. code-block:: bash
 
   sqlite> select distinct dnd_monstertype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, land_speed, dnd_monster.name, dnd_rulebook.name, hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) order by land_speed, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -DC;
@@ -556,6 +558,58 @@ Just for fun, remember that Moonrats are indistinguishable from normal rats exce
   Large|22|60|Horse, Dire|Monster Manual II|8
   Large|15|65|Axebeak|Arms & Equipment Guide|3 Axebeaks move five times their normal speed when running instead of four times the speed. Axebeak eggs are worth 20 gp on the open market. Note that axebeaks are bipeds, so cannot carry as much as the formula would indicate.
   Large|29|80|Horse, Legendary|Monster Manual II|18
+
+The warbeast template, found by searching for templates below, adds +10 to land speed (maybe other speeds, it's not clear) and +3 Strength at the cost of 1HD.
+
+Of course, merchant caravans care about speed less than they care about efficiency of load-carrying.
+Let's assume for the moment that size category can be a proxy for how much food and care an animal needs. Unfortunately, the database has no way to distinguish carnivores from herbivores, or quadrupeds from bipeds.
+While the thought of a horde of skunks pulling a wagon is amusing, let's stick to animals that can individually carry more than a human.
+We'll order by DC first, then carrying capacity, so that for any given level of Handle Animal available, we can look and see the best animal. Doing it this way, there is only any point in noting an animal at a higher DC if it is better in some way than the best option at a lower DC.
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_monstertype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, land_speed, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) and fine_biped_max_load_ounces*quadruped_carry_factor/3/16 > 33 and size_id<6 order by DC, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, land_speed;
+  Animal|Medium|87|40|Phynxkin|Dragon Magic|16
+  Animal|Medium|100|40|Baboon|Monster Manual|16
+  Animal|Medium|115|40|Nifern|Serpent Kingdoms|17
+  Animal|Medium|75|40|Pony|Monster Manual|17 30gp
+  Animal|Medium|50|30|Donkey|Monster Manual|17 8gp
+  Animal|Medium|87|30|Donkey, Uglib|Champions of Valor|17
+  Animal|Medium|100|40|Pony, War|Monster Manual|17 100gp
+  Animal|Medium|130|40|Pony, Hammer|Champions of Valor|17
+  Animal|Medium|130|40|Pony, Island|Champions of Valor|17
+  Animal|Medium|130|40|Pony, Whiteshield|Champions of Valor|17
+  Animal|Medium|100|40|Boar|Monster Manual|18
+  Animal|Medium|100|40|Pig|Dangerous Denizens - The Monsters of Tellene|18
+  Animal|Medium|175|40|Bear, Black|Monster Manual|18
+  Animal|Medium|100|20|Bat, Hunting|Monster Manual II|19
+  Animal|Medium|175|60|Dinosaur, Deinonychus|Monster Manual|19
+  Magical Beast|Small|76|20|Darkmantle|Monster Manual|21
+  Magical Beast|Medium|130|50|Elven Hound|Races of the Wild|22
+  Magical Beast|Medium|150|20|Frog, Giant|Return to the Temple of Elemental Evil|23
+  Animal|Medium|800|40|Ape, Legendary|Monster Manual II|28
+
+  Animal|Large|230|30|Mule|Monster Manual|18 8gp
+  Animal|Large|230|60|Horse, Warhorse, Light|Monster Manual|18 150gp
+  Animal|Large|230|60|Horse, Light, Steppe|Champions of Valor|18
+  Animal|Large|300|40|Camel, Two-Humped (Bactrian)|Sandstorm|18
+  Animal|Large|300|50|Camel|Monster Manual|18
+  Animal|Large|300|50|Camel, Dromedary|Sandstorm|18
+  Animal|Large|300|50|Horse, Draft|Dangerous Denizens - The Monsters of Tellene|18
+  Animal|Large|300|60|Camel, Racing|Dangerous Denizens - The Monsters of Tellene|18
+  Animal|Large|350|40|Camel, Draft|Dangerous Denizens - The Monsters of Tellene|18
+  Animal|Large|460|30|Ape|Monster Manual|19
+  Animal|Large|600|50|Drakkensteed|Dragon Magic|19
+  Animal|Large|520|40|Bison|Monster Manual|20
+  Animal|Large|800|30|Lizard, Giant, Footpad|Drow of the Underdark|20
+  Animal|Large|400|40|Megaloceros|Frostburn|21
+  Animal|Large|1040|40|Bear, Brown|Monster Manual|21
+  Animal|Large|1040|40|Boar, Dire|Monster Manual|22
+
+The surprise standouts are boars and dire boars. Just as willing to eat foliage as the bodies of your fallen foes, they're strong and not too slow.
+
+
+What about other movement modes? For example, a tiny climber might be able to get your grappling hook where you need it more silently than you can.
 
   sqlite> select distinct dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, abbrev, speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" order by abbrev, speed, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -hit_dice;
   Tiny|17|b|5|Lizard, Horned|Sandstorm|1
@@ -605,6 +659,279 @@ Trainable (Ex): A thrum worm is easier to train and handle than most other magic
 
   sqlite> select distinct dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, abbrev, speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Magical Beast" and intelligence<3 and abbrev='c' order by fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -hit_dice, speed;
   No magical beasts make significantly better climbers than the best animals.
+
+
+We can also search for templates with a final (not initial) type of animal:
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_template.name, dnd_rulebook.name, page from dnd_template inner join template_type on dnd_template.id=template_id inner join dnd_monstertype on dnd_monstertype.id=output_type inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where dnd_monstertype.name="Animal";
+  Dungeonbred Monster|Dungeonscape|112
+  Warbeast|Monster Manual II|219
+  Chameleon Creature|Underdark|83
+  Dark Creature|Tome of Magic|158
+  Kord-Blooded|Monster Manual V|66
+  Mineral Warrior|Underdark|96
+  Voidmind Creature|Monster Manual III|187
+  Woodling|Monster Manual III|197
+
+A chameleon creature has a climb speed equal to one-half its highest nonflying speed.
+Of course, it's not likely to be a better climber than an ape or a forest sloth. And very high speeds tend to be swim speeds anyway, and those animals tend to be Aquatic, which means they won't really get to use that climb speed unless they're amphibious.
+The chameleon template does, however, allow an animal that has only a swim speed (yet can breathe air) to function on land.
+A mineral warrior gains a burrow speed equal to one-half the base creature's highest speed.
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_monstersubtype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/16 as maxLoad, abbrev, speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_movement_mode.monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id left join monster_has_subtype on monster_has_subtype.monster_id=dnd_monster.id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id left join monster_has_special_ability on monster_has_special_ability.monster_id=dnd_monster.id left join dnd_special_ability on special_ability_id=dnd_special_ability.id where dnd_monstertype.name="Animal" and abbrev="s" and (dnd_monstersubtype.name is null or dnd_monstersubtype.name!="Aquatic" or dnd_special_ability.name like "%Amphibious%") order by speed, maxLoad, -hit_dice;
+  Medium|57|s|80|Porpoise|Monster Manual|2
+
+Kord-blooded is an acquired template that can be added to any non-evil living creature that has a Strength score of 16 or higher.
+Kord's Athleticism (Su): Once per day, as a swift action, a Kord-blooded creature can call upon the blood invested in him to gain a tremendous surge of prowess. For the next minute, the Kord-blooded creature gains a +4 bonus on Strength and Dexterity checks, Strength- and Dexterity-based skill checks, and grapple checks.
+
+What about hirelings? Maybe what you really need is for someone to dangle a rope down into the chasm, and when you come running out of the dungeon in the "Get to the choppa!" moment, pull you up leaving your pursuers behind.
+
+.. code-block:: bash
+
+  sqlite> select distinct law_chaos, dnd_monstertype.name, dnd_racesize.name, strength, fine_biped_max_load_ounces*biped_carry_factor/16, land_speed, dnd_monster.name, intelligence, dnd_rulebook.name, challenge_rating from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id inner join monster_has_alignment on dnd_monster.id=monster_has_alignment.monster_id where intelligence>=3 and challenge_rating<2 order by fine_biped_max_load_ounces*biped_carry_factor, challenge_rating, law_chaos;
+  L|Humanoid|Small|9|67|30|Kobold|10|Monster Manual|-4
+  L|Aberration|Tiny|14|87|5|Cerebral Symbiont, Psionic Sinew|6|Fiend Folio|-8
+  L|Humanoid|Medium|10|100|20|Mongrelfolk|9|Fiend Folio|-3
+  L|Humanoid|Medium|14|175|20|Skarn|10|Magic of Incarnum|-2
+  N|Humanoid|Medium|15|200|20|Neanderthal|8|Frostburn|-2
+  C|Humanoid|Medium|17|260|30|Orc|8|Monster Manual|-2
+  L|Outsider|Medium|15|200|30|Planetouched, Zenythri|10|Monster Manual II|1
+  N|Giant|Medium|15|200|30|Half-Giant|10|Expanded Psionics Handbook|1 http://www.d20srd.org/srd/psionic/monsters/halfGiant.htm
+  L|Monstrous Humanoid|Large|12|260|30|Naga, Shinomen, Chameleon|13|Oriental Adventures|1
+  N|Humanoid|Large|13|300|30|Saurial, Hornhead|12|Serpent Kingdoms|1
+
+Honorable mention for portability goes to the psionic sinew, though it's not very mobile on its own so you'll need to do most of the work of setting it up to do its job.
+A psionic sinew is blind, but its entire body is a primitive sensory organ that can ascertain prey by scent and vibration. This ability enables it to discern objects and creatures within 60 feet.
+Share Spells (Su): Any spell the host creature casts on itself automatically also affects the symbiont. The host and symbiont can share spells even if the spells normally do not affect creatures of the host or symbiont's type. Spells targeted on the host by another spellcaster do not affect the symbiont, and vice versa.
+Unlike with familiars, the spell does not automatically end if the symbiont detaches from the host, so in theory a psionic sniew could be Enlarge Personed, but the duration is likely too short to be useful.
+Treasure: None. A psionic sinew does not speak any language, but it understands Undercommon. Usually lawful evil. It's not particularly clear what the worm *wants*, really.
+
+Mongrelfolk are an excellent bargain choice. Often Lawful Neutral, with -2 Int and -4 Cha, they tend towards following rather than leading, but they're still more than smart enough to follow complex instructions.
+Mongrelfolk are also particularly poor.
+Treasure: 50% coins, standard goods, 50% items
+
+Treasure values are not integrated into the database yet, so we'll have to do this by hand for now.
+EL1 has an average of 0.05*25=1.25 platinum pieces, 0.52*90=46 gold pieces, 0.23*450=103.5 silver pieces, and 0.15*3,500=525 copper pieces, for a total of 12.5 + 46 + 10.35 + 5.25 = 58.5 + 15.6 = 74.1gp.
+EL1 has a 5% chance of 1 gem plus a 5% chance of 1 art, total 275/20 + 55 = 13.75 + 55 = 68.75gp.
+EL1 has a 0.24 probability of 1 mundane item plus a 5% chance of 1 minor magic item, total 0.24*350 + 1,000/20 = 84 + 50 = 134gp.
+The CR 1/3 mongrelfolk cuts all of those by a factor of 3 to start with (because three randomly-chosen mongrelfolk would be an EL1 encounter), and then cuts the coins and items in half again (for the coins that means half as many coins, for the items that means half the chance, per the Monster Manual).
+That leaves the mongrelfolk with 12.35gp in coins, 22.92gp in goods, and 22.33gp in items. And remember, that's an average. Some mongrelfolk have much less. They're cheap hires, is what I'm saying. This might have something to do with the fact that even the narrator seems prejudiced against them.
+
+Mongrelfolk speak Common and their own pidgin language.
+Mongrelfolk are extremely cowardly, and they avoid direct conflict as much as possible. If we're talking about first-level Commoners hired as porters for adventurers, cowardice and common sense are basically the same thing. They construct traps around their lairs rather than relying on combat to keep intruders away. I like these folks already.
+
+They have average strength but +4 Con, so you don't need to worry about their endurance; they'll outlast you.
+Speed: 20 ft. (hide armor); base 30 ft.
+
+A note of caution. Just because someone says he's a first-level Commoner doesn't mean he is. and "Often Lawful Neutral" doesn't mean the mongrelfolk in front of you is Lawful. A mongrelfolk's favored class is rogue. Mongrelfolk have a +8 racial bonus on Hide and Sleight of Hand checks. So, you know. Detect Law is your friend. Detect Evil wouldn't be a bad idea either.
+
+Sound Imitation (Ex): A mongrelfolk can mimic any voice or sound it has heard. Listeners must succeed on a Will save (DC 16) to detect the ruse.
+
+Neanderthals, orcs, and skarns all cost about as much to hire as humans. They offer enhanced strength, but are hard to find (neanderthals) or hard to find trustworthy people among (orcs) or hard to convince to leave the city (skarns). The advantage is that the stronger each porter is, the fewer you have to bring (and protect).
+
+Neanderthals, stunningly, have Treasure: Standard. Neanderthals speak Common. Often neutral.
+A neanderthal's base land speed is 30 feet. +2 Strength, +2 Constitution, -2 Intelligence.
+
+Skarns have +2 Strength. Skarn base land speed is 30 feet. Skarns speak Common.
+Skarns are usually lawful. They count an equal number of adherents to the ethos of good and evil among their race, but chaotic skarns are rare. The hierarchical skarn society features clearly defined social classes.
+With a height of about 6 feet and a weight of approximately 210 pounds, a typical skarn is signifi cantly more massive than an average human. Skarns adorn their spines with jewelry, and even in everyday circumstances they keep these natural weapons polished and sharp.
+
+Orcs are Often chaotic evil, so you might have a bit of a job finding a Lawful one, especially if you want Lawful Neutral rather than Lawful Evil. Treasure: Standard.
+
+Zenythri have +2 Strength, -2 Charisma.
+Half-giants have +2 Strength.
+
+A saurial hornhead can lift as much as any three mongrelfolk, but they're expensive, hard to communicate with, and too big to be transported conveniently.
+Saurial hornheads have +2 Strength...and +2 Intelligence, so don't underestimate them. Treasure: Standard. Usually neutral good.
+Hornheads tend to be careful, rational planners. They choose their words carefully and avoid taking action without prior contemplation. Most are interested in alchemy, engineering, and other mental pursuits, and many also enjoy physical tasks requiring discipline, such as blacksmithing and weaponsmithing.
+Most adventuring hornheads are consumed by a desire to understand the particulars of the world around them. Some choose to study the laws of other cultures, some the philosophical underpinnings of a religion, and some the arcane secrets of new spells. A hornhead's favored class is wizard, although some choose to develop an innate talent for sorcery instead.
+Hornheads speak Draconic. They understand (but do not speak) Common, Elven, Sylvan, and Celestial.
+Automatic Languages: Draconic. Bonus Languages: Common, Elven, Sylvan, and Celestial. Hornheads have difficulty with other languages. Although they can understand and read all the bonus languages they know, they cannot speak them without spending skill points.
+Hornhead base speed is 30 feet.
+This bipedal lizard is as big as an ogre and has a tail longer than its own body.
+
+Maybe you don't need somebody strong, though. Maybe you just need someone who's easy to carry, easy to hide, and can do basic tasks like trip the spring on a cablespool. The obvious answer is a small female halfling commoner.
+
+.. code-block:: bash
+
+  sqlite> select distinct law_chaos, dnd_monstertype.name, dnd_racesize.name, strength, fine_biped_max_load_ounces*biped_carry_factor/16, land_speed, dnd_monster.name, intelligence, dnd_rulebook.name, challenge_rating from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id inner join monster_has_alignment on dnd_monster.id=monster_has_alignment.monster_id where intelligence>=3 and size_id<5 and challenge_rating<2 order by challenge_rating, size_id, law_chaos;
+  L|Monstrous Humanoid|Tiny|4|20|20|Muckdweller|10|Serpent Kingdoms|-4
+  L|Humanoid|Small|9|67|30|Kobold|10|Monster Manual|-4
+  C|Plant|Small|8|60|20|Twig Blight|5|Monster Manual II|-3
+  C|Humanoid|Small|10|75|30|Tasloi|10|Shining South|-3
+  C|Humanoid|Small|11|86|30|Xvart|10|Dragon Magazine|-3
+  N|Humanoid|Small|11|86|30|Goblin|10|Monster Manual|-3
+  C|Outsider|Tiny|7|35|20|Gen, Air|13|Dragon Magazine|-2
+  C|Outsider|Tiny|9|45|20|Gen, Earth|13|Dragon Magazine|-2
+  L|Plant|Tiny|8|40|20|Myconid, Junior Worker|9|Monster Manual II|-2
+  N|Fey|Tiny|3|15|40|Jermlaine|8|Monster Manual II|-2
+  N|Construct|Diminutive|1|2|20|Homunculus, Expeditious Messenger|8|Eberron Campaign Setting|-3
+  N|Construct|Tiny|8|40|50|Homunculus, Furtive Filcher|12|Eberron Campaign Setting|-2
+  N|Construct|Tiny|8|40|10|Homunculus, Arbalester|12|Magic of Eberron|-2
+  N|Construct|Tiny|8|40|50|Stone Spirit, Tiny|8|Oriental Adventures|-2
+  L|Construct|Small|10|75|20|Warforged, Scout|9|Monster Manual III|-2
+  N|Construct|Tiny|8|40|20|Homunculus|10|Monster Manual|1
+  N|Dragon|Tiny|6|30|15|Pseudodragon|10|Monster Manual|1
+  N|Fey|Tiny|5|25|20|Sprite, Grig|10|Monster Manual|1
+  N|Construct|Tiny|7|35|20|Bogun|8|Monster Manual II|1
+  N|Fey|Tiny|3|15|15|Petal|15|Monster Manual III|1
+  L|Plant|Small|11|86|20|Myconid, Average Worker|10|Monster Manual II|1
+  N|Elemental|Small|17|195|20|Elemental, Earth, Small|4|Monster Manual|1
+  N|Construct|Small|16|172|30|Homunculus, Packmate|8|Magic of Eberron|1
+
+Muckdwellers are usually lawful evil. Many serve kuo-toa or lizardfolk tribes, surviving on the periphery and venerating their gods. Muckdwellers speak Draconic.
+bipedal creature that resembles an upright Gila monster. A muckdweller looks like a miniature bibedal dinosaur with mottled gray and brown scales and a pale yellow underbelly. Its short tail is used for balancing and swimming. It has partially webbed feet and small, weak, prehensile foreclaws.
+Though they are not tool users, they do occasionally build rafts of weeds, twigs and mud on which to float and hunt, as well as shelters where they can hide from predators. Treasure: Standard. Int 10, Wis 9, Cha 8.
+Muckdwellers hibernate during the winter months in temperate or colder climes.
+Be warned, because of theor meed fpr warmth, they'll probably want to share your bedroll.
+
+A kobold is 2 to 2-1/2 feet tall and weighs 35 to 45 pounds. Kobolds don't offer much in the way of advantages over halflings.
+
+You don't hire a homunculus; you build one. A homunculus cannot be created until almost the level where you could have skeletons, but unlike skeletons, a homunculus is intelligent. Craft Construct (see page 303), arcane eye, mirror image, mending, caster must be at least 4th level; Price - (never sold); Cost 1,050 gp + 78 XP.
+The creator must be at least 7th level and possess the Craft Wondrous Item feat to make a bogun.
+
+A warforged scout stands about 3 feet tall and weighs 60 pounds. Warforged scouts speak the language of their
+creators, usually Common. Often lawful neutral.
+Just as the warforged strive to find a place in society in times of peace, they simultaneously struggle to find ways to relate to the races that created them. In general, the humanoid races regard the warforged as an unpleasant reminder of the brutality of war and avoid dealing with them when possible. Some societies regard them as the property of the military forces that paid to have them built, and most warforged in those lands serve as slave laborers. In other lands, they are free but sometimes the victims of discrimination, hard-pressed to fi nd work or any kind of acceptance. Most warforged, not particularly emotional creatures, accept their struggles and servitude with equanimity, but others seethe with resentment against all other races as well as those warforged whose only desire is to please their masters.
+
+Petals often act as servants, messengers, or attendants to larger or more prestigious fey including sprites and dryads. When not in service to another fey, they tend to cluster near some more powerful plant creature (such as a treant) for protection.
+Petals are fast flyers, so are somewhat capable of keeping themselves safe.
+A typical petal stands 1-1/2 feet tall and weighs 3 pounds.
+Petals speak Sylvan and Common. Usually neutral good. Treasure: Standard. Level Adjustment: +2 (cohort)
+
+A few jermlaines can speak Common, Dwarf, Gnome, Goblin, or Orc, but seldom can any individual speak more than one of those languages.
+Myconids do not speak, and only CR2 elder workers and above can communicate telepathically.
+
+That brings up another question. Traditionally, the way to communicate with people when you don't share a common language is to employ a translator. But when your job of boldly going where no man has gone before takes you to isolated tribes, that isn't terribly practical. Any adept or cleric can Comprehend Languages, but for two-way communication you need two of them, each sharing a common language with one side.
+...*or* you can employ a *universal* translator.
+
+.. code-block:: bash
+
+  sqlite> select distinct law_chaos, dnd_monster.name, challenge_rating, dnd_rulebook.name, intelligence from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id left join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id left join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id inner join monster_has_alignment on dnd_monster.id=monster_has_alignment.monster_id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstersubtype.name="Tanar'ri" or dnd_monstersubtype.name="Baatezu" or dnd_monstersubtype.name="Angel" or dnd_monstersubtype.name="Archon" or dnd_monstersubtype.name="Demodand" or dnd_monstersubtype.name="Yugoloth" or dnd_monstersubtype.name="Eladrin" or dnd_monstersubtype.name="Loumara" or dnd_monstersubtype.name="Obyrith" or dnd_monstersubtype.name="Symbiont" or dnd_special_ability.name like "%telepathy%" or dnd_special_ability.name like "%tongues%" or dnd_special_ability.name like "%language%") and challenge_rating<=2 order by (challenge_rating);
+  Cerebral Symbiont, Mind Leech|-8|Fiend Folio|16
+  Puppeteer|1|Expanded Psionics Handbook|14 http://www.d20srd.org/srd/psionic/monsters/puppeteer.htm
+  Fiendish Symbiont, Soul Tick|-8|Fiend Folio|14
+  Naga, Shinomen, Greensnake|-2|Oriental Adventures|11
+  Pseudodragon|1|Monster Manual|10
+  Sheengrass Swarm|1|Web|5 http://archive.wizards.com/default.asp?x=dnd/psb/20040521d
+  Demon, Mane|1|Fiendish Codex I|3
+  Archon, Lantern|2|Monster Manual|6
+  Demon, Dretch|2|Monster Manual|5
+  Eladrin, Coure|2|Book of Exalted Deeds|12
+  X|Protectar|2|Miniatures Handbook|10
+  N|Dabus|2|Expedition to the Demonweb Pits|12
+
+Telepathy (Su): A mind leech can communicate telepathically with its host, if its host has a language.
+Attach (Ex): If a mind leech hits with its bite attack, it burrows into the target's flesh and makes its way to the brain stem. Since the bite deals no damage and the leech secretes an anesthetic, the host is often unaware it has been bitten until the mind leech has established itself at the seat of the host's central nervous system.
+a mind leech has a base Ego score of 8 (Int 16, Wis 14, Cha 16), plus 2 for its mind blast special attack, 4 for its psionic abilities of charm monster and suggestion, 1 for its detect thoughts psionic ability, and 1 for its telepathy, for a total Ego of 16.
+Using a mind leech as a babelfish is a white-knuckle maneuver, since a mind leech can seize control of the host with its psionic abilities without regard to Ego.
+A puppeteer can translate without needing to seize a host. On the other hand, a puppeteer can Charm people without needing to seize a host.
+
+When characters with fiendish symbionts interact with nonevil NPCs, a -6 circumstance penalty is applied on all Charisma-based checks (Diplomacy, Bluff, and so on).
+
+A sheengrass swarm is a very interesting option, but it sounds like a sheengrass swarm cannot be carried, and while its land speed of 30feet is respectable, its range is limited.
+Earth Root (Ex): A sheengrass swarm can travel only on soft natural ground (such as soil or earth, but not stone).
+
+Pseudodragons are a trap: when you go to look at the actual ability text, it doesn't work like other Telepathy abilities.
+Telepathy (Su): Pseudodragons can communicate telepathically with creatures that speak Common or Sylvan, provided they are within 60 feet.
+
+If you have access to the Outer Planes, you have a lot of options. If you're confined to the Material Plane, you basically have the Coke-or-Pepsi choice of mind leech or puppeteer. Puppeteers can only charm humanoids, so there's that. Both Lawful Evil, both highly intelligent. If you successfully form an alliance --- good luck with that --- they probably won't outright betray you, but you'll be trusting a highly intelligent evil creature to tell you what people are saying and tell other people what *you* are saying. Oh, and in the case of the mind leech, you have to convince people to allow the mind leech into their brains before you can communicate with them.
+
+A commanded undead creature is under the mental control of the evil cleric. The cleric must take a standard action to give mental orders to a commanded undead.
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_monster.name, intelligence, dnd_monstertype.name, dnd_monstersubtype.name, dnd_racesize.name, hit_dice, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monstertype.id=dnd_monster.type_id left join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Undead" or dnd_monstertype.name="Dragon" or dnd_monstertype.name="Plant" or dnd_monstertype.name="Elemental" or dnd_monstersubtype.name="Air" or dnd_monstersubtype.name="Earth" or dnd_monstersubtype.name="Fire" or dnd_monstersubtype.name="Water" or dnd_monster.name like "%Naga%") and intelligence>=3 and hit_dice<=1 order by hit_dice, dnd_monstertype.name;
+  Myconid, Junior Worker|9|Plant|Tiny|1|Monster Manual II
+  Twig Blight|5|Plant|Small|1|Monster Manual II
+  Volodni|8|Plant|Medium|1|Unapproachable East
+  Ghostly Visage|12|Undead|Tiny|1|Fiend Folio
+  Little Thing|8|Undead|Small|1|Web
+  Naga, Shinomen, Greensnake|11|Humanoid|Medium|1|Oriental Adventures
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_template.name, dnd_rulebook.name, page from dnd_template inner join template_type on dnd_template.id=template_id inner join dnd_monstertype on dnd_monstertype.id=output_type inner join (select id as input_id, name as input_name from dnd_monstertype) on input_id=base_type inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where (dnd_monstertype.name="Undead" or dnd_monstertype.name="Plant" or dnd_monstertype.name="Dragon" or (dnd_monstertype.name="Elemental" and input_name!="Elemental") ) and input_name!="Undead" and input_name!="Plant" and input_name!="Dragon" and input_name!="Animal" order by dnd_rulebook.name;
+  Bone Naga|Serpent Kingdoms|73 http://archive.wizards.com/default.asp?x=dnd/ex/20040709a&page=4
+   Telepathy (Su): A bone naga can communicate telepathically with any creature within 250 feet that has a language.
+  Bonesinger|Ghostwalk|158
+  Tainted Minion|Heroes of Horror|153
+  Mummified Creature|Libris Mortis: The Book of the Dead|110
+  Necromental|Libris Mortis: The Book of the Dead|112
+  Half-Dragon|Monster Manual v.3.5|146
+
+Tainted minion is an acquired template that can be added to any humanoid or monstrous humanoid creature with at least mild levels of both corruption and depravity (referred to hereafter as the base creature).
+ A character who spends the night in a haunted location must make a DC 20 Will save or have his depravity score increase by 1.
+ It is most often applied to a creature that dies because its corruption score exceeds the maximum for severe corruption for a creature with its Constitution score
+Fear Aura (Su): Tainted minions are shrouded in a constant aura of terror and evil. Creatures within a 30-foot radius of a tainted minion must succeed on a Will save (DC 10 + 1/2 the tainted minion's level + its Cha modifi er) or become shaken.
+Change Shape (Su): A tainted minion can assume the form of any humanoid creature. See page 306 of the Monster Manual for details.
+Abilities: Increase from the base creature as follows: Str +4, Dex +2, Cha +4. As an undead creature, a tainted minion has no Constitution score.
+Taint: A tainted minion no longer acquires taint. For purposes of special abilities, its corruption and depravity scores are both considered to be equal to half its Charisma score +1.
+
+Sites strongly associated with the undead and with death often bestow corruption.
+For every 24 hours spent in a tainted place, a character must make another saving throw to avoid her appropriate taint score increasing by 1. The base DC is 10, +5 for every consecutive 24 hours of exposure.
+Any creature that dies in a tainted area animates in 1d4 hours as an undead creature, usually a zombie of the appropriate size. Burning a corpse protects it from this effect.
+Anyone who casts or is subject to a spell with the evil descriptor while within 50 feet of a clump of abyssal blackgrass must make a successful Fortitude save (DC 10 + spell level) or increase his corruption score by 1.
+As it turns out, a 1st-level Healer is terrifyingly effective at using abyssal blackgrass to increase multiple people's taint scores at once.
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_characterclass.name, target, area, range, duration, dnd_spell.name from dnd_spell inner join dnd_spellclasslevel on dnd_spell.id=dnd_spellclasslevel.spell_id inner join dnd_characterclass on character_class_id=dnd_characterclass.id inner join dnd_spell_descriptors on dnd_spell_descriptors.spell_id=dnd_spell.id inner join dnd_spelldescriptor on spelldescriptor_id=dnd_spelldescriptor.id where dnd_spelldescriptor.name like "%Evil%" and level=0;
+  Wizard|One living creature with a tongue||Close (25 ft. + 5 ft./2 levels)|1 round|Slash Tongue
+  Cleric|One living creature with a tongue||Close (25 ft. + 5 ft./2 levels)|1 round|Slash Tongue
+  Healer||Cone-shaped emanation|30 ft.|10 min./level|Deathwatch
+
+Touch of Taint (Ex): Anyone struck by a taint elemental, or who physically touches a taint elemental, must succeed on a Fortitude save or gain corruption points.
+A necromental taint elemental could have the Touch of Taint [Monstrous] feat to bestow depravity. Of course, even a small taint elemental has 2HD.
+
+It takes 42 corruption to kill a Con9--12 creature. More generally, 14*ceil(Con/4).
+If a character's corruption score ever exceeds the severe taint threshold, she dies, and 1d6 hours later she rises as a tainted minion --- a hideous, evil creature under the control of the DM.
+
+Mummified creature is an acquired template that can be added to any corporeal giant, humanoid, or monstrous humanoid
+(referred to hereafter as the base creature).
+A mummified creature speaks all the languages it spoke in life
+Speed: A mummified creature's land speed decreases by 10 feet (to a minimum of 10 feet). The speeds for other movement modes are unchanged.
+Abilities: A mummified creature's ability scores are modified as follows: Str +8, Int -4 (minimum 1), Wis +4, Cha +4. As an undead creature, a mummified creature has no Constitution score.
+The process of becoming a mummy is usually involuntary, but expressing the wish to become a mummy to the proper priests (and paying the proper fees) can convince them to bring you back to life as a mummy. The mummy retains all class abilities it had in life, provided that its new ability scores still allow it to use them (a wizard loses access to some spell levels, for instance). A loss of Intelligence does not retroactively remove skill points from a mummified creature.
+
+Can you get either a tainted minion or a mummified creature of less than one Hit Die, thus giving you an intelligent undead minion of less than one Hit Die? Why, it's our old friend the Muckdweller!
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_monster.name, intelligence, dnd_monstertype.name, constitution, land_speed, dnd_racesize.name, hit_dice, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monstertype.id=dnd_monster.type_id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Humanoid" or dnd_monstertype.name="Monstrous Humanoid" or dnd_monstertype.name="Giant") and hit_dice<1 order by hit_dice, dnd_monstertype.name;
+  Muckdweller|10|Monstrous Humanoid|10|20|Tiny|-4|Serpent Kingdoms
+
+Half-dragon is an inherited template that can be added to any living, corporeal creature.
+Abilities: Increase from the base creature as follows: Str +8, Con +2, Int +2, Cha +2.
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_monster.name, intelligence, dnd_monstertype.name, land_speed, dnd_racesize.name, hit_dice, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monstertype.id=dnd_monster.type_id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name!="Construct" and dnd_monstertype.name!="Undead") and intelligence is not null and hit_dice<-2 order by hit_dice, dnd_monstertype.name;
+  Moonrat|2|Magical Beast|15|Tiny|-4|Monster Manual II
+  Puppeteer|14|Magical Beast|5|Fine|-4|Expanded Psionics Handbook
+  Muckdweller|10|Monstrous Humanoid|20|Tiny|-4|Serpent Kingdoms
+
+Under the influence of lunar light, moonrats also gain the ability to organize, converse with one another, formulate complex plans, and operate complicated devices.
+
+Turn Resistance (Ex): A huecuva is treated as an undead with 2 more Hit Dice than it actually has for the purposes of turn, rebuke, command, or bolster attempts.
+Turn Resistance (Ex): A juju zombie has turn resistance +4.
+Turn Resistance (Ex): A greater mummy has +4 turn resistance.
+Turn Resistance (Ex): A swordwraith is treated as an undead with 2 more Hit Dice than it actually has for the purposes of turn, rebuke, command, or bolster attempts.
+Turn Resistance (Ex): A mumia has turn resistance +2.
+Turn Resistance (Ex): An umbral creature gains +2 turn resistance.
+Turn Resistance (Ex): A necropolitan has +2 turn resistance.
+Turn Resistance (Ex): A ghost brute has +2 turn resistance.
+Turn Resistance (Ex): A gravetouched ghoul has +2 turn resistance.
+Turn Resistance (Ex): A ghost has +4 turn resistance.
+Web Mummy: The base creature's Hit Dice increase by 3.
+Deadened Mind (Ex): A yellow musk zombie recalls nothing of its previous life, and it exists only to serve its parent plant. It cannot make use of class abilities, skills, or feats it previously knew. It also cannot use magic devices, although it can still wield weapons and use armor. Intelligence of 2
+
+
+
 
 
 

@@ -5,7 +5,11 @@ Type IV Complete Contents:<br />
 Price: 20 GP<br />
 Weight: 1#<br />
 (Savage Species p. 46)<br />
-This is one of the cheapest and deadliest poisons in the game, although not actually a poison so there's no check to see if you accidentally poison yourself. Thrown as a grenade-like weapon, so make a ranged touch attack to hit (no splash effect). If the creature fails a Fort save DC 19, it loses the ability to breathe air for 3 hours. A creature can hold it's breath for a number of rounds equal to twice its Constitution score, so it essentially has that many rounds to find someone who can cast <i>water breathing</i> or <i>air breathing</i>. <i>Delay poison</i> and <i>neutralize poison</i> won't help (it's not a poison), <i>dispel magic</i> won't help (it's non-magical), <i>deep breath</i> (Spell Compendium) won't work (it fills your lungs with air you still can't breathe), sticking your head in a bucket of water won't help (the mucus doesn't confer the ability to breathe water), and there may be a good argument that a <i>heal</i> spell won't work, either (unable to breathe isn't one of the conditions listed in the spell description). After failing a Con check, the creature starts to suffocate and falls unconscious, and two rounds later it dies. So while it may take a little longer than poison (2-3 minutes), getting hit with this is pretty much a death sentence for most creatures.<br />
+This is one of the cheapest and deadliest poisons in the game, although not actually a poison so there's no check to see if you accidentally poison yourself. Thrown as a grenade-like weapon, so make a ranged touch attack to hit (no splash effect). If the creature fails a Fort save DC 19, it loses the ability to breathe air for 3 hours. A creature can hold its breath for a number of rounds equal to twice its Constitution score, so it essentially has that many rounds to find someone who can cast <i>water breathing</i> or <i>air breathing</i>. <i>Delay poison</i> and <i>neutralize poison</i> won't help (it's not a poison), <i>dispel magic</i> won't help (it's non-magical), <i>deep breath</i> (Spell Compendium) won't work (it fills your lungs with air you still can't breathe), sticking your head in a bucket of water won't help (the mucus doesn't confer the ability to breathe water), and there may be a good argument that a <i>heal</i> spell won't work, either (unable to breathe isn't one of the conditions listed in the spell description). After failing a Con check, the creature starts to suffocate and falls unconscious, and two rounds later it dies. So while it may take a little longer than poison (2-3 minutes), getting hit with this is pretty much a death sentence for most creatures.<br />
+You know what does confer the ability to breathe air, though? The very next item on the page.
+Breathing Mask: This desmodu-made mask covers the user's whole face. It is fitted with goggles and a bag of an alchemical substance within that allows the wearer to breathe for up to 4 hours.
+It even enables the wearer to function underwater or in an airless environment. A slightly different version (with the same cost and weight) allows water-breathers to function out of water.
+The item consists of a masterwork leather mask with goggles (cost 50 gp) and the alchemical air supply, which costs 950 gp and can be manufactured with a successful Craft (alchemy) check (DC 20). A partially used air supply cannot be combined with another partially used one to get a fresh supply, but it can be discarded and replaced with a new supply.<br />
 <br />
 <b>Acidic Fire</b> (x2, 30 GP ea.)<br />
 Price: 60 GP<br />
@@ -125,7 +129,13 @@ Not quite a continuous <i>water breathing</i> item, but pretty close. <br />
 Price: 175 GP<br />
 Weight: 6#<br />
 (Savage Species p. 46)<br />
-100' winch that pulls with a Strength of 16 (lift 230 lbs, drag 1150 lbs). While the cable is too thin to climb up for anybody except a Desmodu, you can use it to descend up to 100' without taking any falling damage.<br />
+Monster Manual II page 64: 100' winch that pulls with a Strength of 16 (lift 230 lbs, drag 1150 lbs). While the cable is too thin to climb up for anybody except a Desmodu, you can use it to descend up to 100' without taking any falling damage.<br />
+Wear a harness that can clip and unclip from the cable. The cable has a snap ring at each end so that it can be quickly attached to or detached from a piton, spike, grappling hook, or other item without a Use Rope check. The cable has 10 hit points and hardness 5. It can be broken with a successful Strength check (DC 32). Its stiffness, however, imposes a -2 circumstance penalty on Use Rope checks.
+Harness: Desmodus cannot wear belts because of the flaps of skin attached to their flanks. Instead, they wear harnesses that loop over their shoulders and between their legs. Straps crisscross the front and back of the desmodu's body to keep the harness from slipping off. Each desmodu harness is fitted with rings, hooks, and ties for carrying weapons and equipment. A reinforced hook hangs near the waist for carrying a cablespool.
+If you need to lift more, use multiple cablespools (just don't count on them all lifting precisely evenly, since they're just machines not intelligent creatures).
+Similarly, if you have a vertical ascent of more than 100 feet, chain multiple cablespools in series.
+Cablespool: This gadget carries 100 feet of cable in an enclosed reel. The reel is spring-wound and can pull in all 100 feet of cable in 1 round (pulling with an effective Strength score of 16 [max load 230pounds]). It can be set to reel or unreel the cable automatically as the user climbs, or to act as a brake, allowing the user to jump down 100 feet without harm.
+Cost: 125 gp (175 with cable); Weight: 2 lb. (6 lb. with cable).
 <br />
 <b>Camouflage Paint</b><br />
 Price: 1500 GP<br />
@@ -169,6 +179,7 @@ Price: 2002 GP<br />
 Weight: 1#<br />
 (Stormwrack p. 128)<br />
 Wall of force in the shape of a dagger. Backup weapon for dealing with ethereal and incorporeal creatures. Note: add Rusting as a +1 enhancement (Shining South) to destroy any ferrous metal object with the equivalent of <i>rusting grasp</i> at will.<br />
+Rusting: A rusting weapon is never constructed of any iron parts, but must be built of wood, bone, stone, or other nonferrous materials. When it is employed, it can cause metal objects with which it comes into contact to quickly rust. A wearer of a ferrous armor or shield that is struck by a rusting weapon must make a DC 16 Fortitude saving throw or the item loses 1 point of armor bonus -- shield are struck first. Once an item loses its entire armor bonus, it falls to pieces, ruined. Bows, crossbows, and slings so crafted confer the rusting ability upon their ammunition. Moderate transmutation; CL 7th; Craft Magic Arms and Armor, rusting grasp; price +1 bonus.
 <br />
 <b>Decanter of Endless Water</b><br />
 Price: 9000 GP<br />
@@ -571,7 +582,11 @@ This stamp produces a magical wax seal that you can attach to any object up to 0
 Price: 20 GP<br />
 Weight: 1#<br />
 (Arms &amp; Equipment Guide p. 35)<br />
-Thrown as grenade-like weapon. Against stone objects/creatures, 5d10 damage over 2 rounds that ignores hardness. While Delver Slime (150 GP, Savage Species) may deal more damage per application, Stonebreaker Acid is a lot cheaper. Stone has 15 hit points per inch of thickness, so 740gp of Stonebreaker Acid (185d10 avg 1017dmg) with get through almost 68inches.<br />
+Thrown as grenade-like weapon. Against stone objects/creatures, 5d10 damage over 2 rounds that ignores hardness. While Delver Slime (150 GP, Savage Species) may deal more damage per application, Stonebreaker Acid is a lot cheaper. Stone has 15 hit points per inch of thickness, so 740gp of Stonebreaker Acid (185d10 avg 1017dmg) will get through almost 68inches. How wide the resulting passage will be is unknown.
+A 1-foot-thick masonry wall has 90 hit points Per 10-foot-by-10-foot section. A 3-foot-thick hewn stone wall has 540 hp Per 10-foot-by-10-foot section.
+A 4-inch-thick stone door has 60 hp. Some dungeons, like the Sunless Citadel, specifically have 2-inch-thick stone doors with only 30hp.
+Compare to 750gp Sculptor's Slime: Another product of dwarf dealings with delvers, this slimy liquid softens stone. One flask allows a Craft (stonemasonry) check (DC 10) to shape up to 25 cubic feet of stone, as stone shape cast by a 15th-level druid. Sculptor's slime requires a Craft (alchemy) check (DC 20) to create. Because it references the spell, it's technically not obvious that it can affect a small part of a larger stone rather than a single stone.
+<br />
 Craft (Alchemy) DC: 20<br />
 <br />
 <b>Sundark Goggles</b><br />
@@ -1064,6 +1079,14 @@ Side: 1d6 points Cha damage
 Overdose: second dose taken within one hour increases DC bonus to +3, but user takes 2d8 Cha damage. For additonal doses taken within the hour, the user takes additional Cha damage but do not increase DC further.
 Comments: Magical effect. Great way for Int-based casters to improve save DCs, and stacks well with Mushroom Powder and Haunspeir.
 Addiction: Low
+Kammarth
+Price: 80 GP
+(Lords of Darkness p. 183)
+Initial: expeditious retreat for 1d4+1 minutes
+Secondary: +2 alchemical bonus to Dexterity for the duration of the drug's effect
+Side: stimulant, boundless energy
+Overdose: If more than one dose is taken in an 8-hour period, the user suffers 1d4 points of damage and is paralyzed for 2d4 minutes.
+Addiction: Medium
 Terran Brandy
 Price: 500 GP
 (Book of Vile Darkness p. 43)
@@ -1086,5 +1109,14 @@ Addiction: none
 Darkeye (Sharn, City of Towers)
 50gp, Alchemy DC: 25. A toxic beverage: DC 12 ingested, paralysis/secondary damage 1 Con. However, if the victim fails his saving throw against the secondary damage, the paralysis continues and he must make another save after a minute has passed. This continues until the victim makes a successful saving throw.
 During the period of paralysis, the victim is poised on the brink of life and death. Some victims see visions of their past, while others hear the voices of departed friends and family. The experience sensitizes the victim to the emanations of the beyond. For an hour after consuming darkeye, the victim gains +1 effective caster level when casting any sort of necromantic spell
+
+
+Shining South Comfort: Armor with this property allows its wearer to ignore the eﬀects of intense natural heat or cold. The character can exist comfortably in conditions between -50 and 140 degrees Fahrenheit without having to make Fortitude saves (as described on pages 302 and 303 of the Dungeon Master's Guide). The character's other equipment is likewise protected. Faint abjuration; CL 5th; Craft Magic Arms and Armor, endure elements; Price +5,000 gp.
+
+Shining South Proof against Enchantments: A character wearing a suit of armor or a shield that possesses this property gains immunity to the first three enchantment spells that would otherwise affect him each day. Moderate abjuration; CL 9th; Craft Magic Arms and Armor, break enchantment; Price +50,000 gp.
+
+Shining South Rusting:
+ A rusting weapon is never constructed of any iron parts, but must be built of wood, bone, stone, or other nonferrous materials. When it is employed, it can cause metal objects with which it comes into contact to quickly rust. A wearer of a ferrous armor or shield that is struck by a rusting weapon must make a DC 16 Fortitude saving throw or the item loses 1 point of armor bonus --- shields are struck first. Once an item loses its entire armor bonus, it falls to pieces, ruined. Bows, crossbows, and slings so crafted confer the rusting ability upon their ammunition. Moderate transmutation; CL 7th; Craft Magic Arms and Armor, rusting grasp; Price +1 bonus.
+
 
 

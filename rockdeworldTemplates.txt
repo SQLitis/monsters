@@ -179,7 +179,7 @@ Fiendish Creature (MM 108) LA +2 -- any corporeal aberration, animal, dragon, fe
 Half-Vampire (LM 106) LA +2 --- any humanoid or monstrous humanoid TC: Unchanged<br />
 Lycanthrope, Natural (MM 170) LA +3 --- any humanoid or giant Type Changes: Unchanged; Add [Shapechanger]<br />
 Lycanthrope, Afflicted (MM 170) LA +2 --- any humanoid or giant Type Changes: Unchanged; Add [Shapechanger]<br />
-Phrenic Creature (XPH 205) LA +2 --- any nonmindless creature that does not already have the psionic subtype Type Changes: Unchanged; Animals become Magical Beast [augmented animl]; gain psionic subtype http://www.d20srd.org/srd/psionic/monsters/phrenicCreature.htm<br />
+Phrenic Creature (XPH 205) LA +2 --- any nonmindless creature that does not already have the psionic subtype Type Changes: Unchanged; Animals become Magical Beast [augmented animl]; gain psionic subtype<br />
 Reptilian Creature (SS 128) LA +2 --- Any humanoid, monstrous humanoid, or giant Type Changes: Unchanged; add reptilian subtype<br />
 Sanctified Creature (BoED 186) LA +2 --- any evil creature except for outsiders with the evil subtype Type Changes: Unchanged; Outsiders gain the Good subtype<br />
 Shadow Creature (LoM 167) LA +2 - any corporeal abberation, animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, plant, undead or vermin TC: Unchanged; animals or vermin become magical beasts<br />

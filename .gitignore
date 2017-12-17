@@ -1,0 +1,5 @@
+*.txt~
+*.rst~
+*.py~
+.gitignore~
+cProfile.txt
