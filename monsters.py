@@ -1946,8 +1946,12 @@ assert Template.changeOnlyTheseTypesRE.match(r"Unchanged; animals or vermin beco
 
 
 
-standardFamiliarREstring = r'\n(?P<name>[\w ,]+)\t\|<div style="text-align: center;">\t(?P<monsterRulebook>\w+) p(?P<monsterPage>\d+)\t</div>\|<div style="text-align: center;">\t(?P<asFamiliarRulebook>\w+) p(?P<asFamiliarPage>\d+)'
+standardFamiliarREstring = r'\n(?P<name>[\w ,]+)\t\|<div style="text-align: center;">\t(?P<monsterRulebook>[A-Za-z]+) p(?P<monsterPage>\d+)\t</div>\|<div style="text-align: center;">\t(?P<asFamiliarRulebook>\w+|#323|#341) p(?P<asFamiliarPage>\d+)\t</div>\|{1,2}<div style="text-align: center;">\t(?:(?P<spellcasterLevel>\d+)(?:st|nd|rd|th)|[A-Za-z ]+(?:\+\d)?[A-Za-z ]+)\t</div>\|(?P<restOfLine>.*)'
+realNameRE = re.compile(r'<div style="text-align: center;">\tStat: (?P<realName>[A-Za-z]+)')
 standardFamiliarRE = re.compile(standardFamiliarREstring)
+assert standardFamiliarRE.match('''
+Bat	|<div style="text-align: center;">	MMI p268	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +3 on Listen checks	</div>||<br />''')
+assert realNameRE.search('''<div style="text-align: center;">	Masters gains a +1 to AC when prone or behind cover	</div>|<div style="text-align: center;">	Stat: Hedgehog without poison quills	</div>|<br />''')
 def make_familiar_table(curs):
   curs.execute('''CREATE TABLE dnd_familiar (
   monster_id INTEGER NOT NULL
@@ -1980,6 +1984,8 @@ def make_familiar_table(curs):
     print(matchObj.group('name'), matchObj.group('monsterRulebook'), matchObj.group('monsterPage'))
     if givenName == 'Fish Owl':
       searchForName = 'Owl'
+    elif givenName == 'Great Horned Owl':
+      searchForName = 'Owl'
     elif givenName == 'Parrot':
       searchForName = 'Raven'
     elif givenName == 'Gyrfalcon':
@@ -1990,15 +1996,27 @@ def make_familiar_table(curs):
       searchForName = 'Owl'
     elif givenName == 'Puffin':
       searchForName = 'Raven'
+    elif givenName == 'King Cobra':
+      searchForName = 'Snake, Viper, Small'
     else:
       searchForName = name.ezkajii()
       givenName = None
+      
     monsterID = id_from_name(curs, 'dnd_monster', searchForName, additionalCriteria=(('rulebook_id', monsterRulebookID),))
+    if monsterID is None:
+      realNameMatch = realNameRE.search(matchObj.group('restOfLine'))
+      print('real name?', realNameMatch, matchObj.group('restOfLine'))
+      if realNameMatch is not None:
+        givenName = searchForName
+        searchForName = realNameMatch.group('realName')
+        monsterID = id_from_name(curs, 'dnd_monster', searchForName, additionalCriteria=(('rulebook_id', monsterRulebookID),))
     if monsterID is None:
       raise Exception(searchForName + ' not found in ' + matchObj.group('monsterRulebook'))
 
-    curs.execute('''INSERT INTO dnd_familiar (monster_id, alternate_name, rulebook_id, page) VALUES (?,?,?,?);''',
-                 (monsterID, givenName, asFamiliarRulebookID, int(matchObj.group('asFamiliarPage') ) ) )
+    level = int(matchObj.group('spellcasterLevel')) if matchObj.group('spellcasterLevel') else 0
+
+    curs.execute('''INSERT INTO dnd_familiar (monster_id, alternate_name, rulebook_id, page, prereq_spellcaster_level) VALUES (?,?,?,?,?);''',
+                 (monsterID, givenName, asFamiliarRulebookID, int(matchObj.group('asFamiliarPage') ), level) )
 
 
 
@@ -2192,7 +2210,7 @@ def migrate_rulebook_id(curs):
   curs.execute('''UPDATE dnd_characterclassvariant SET rulebook_id = (SELECT dnd_rulebook.id FROM dnd_rulebook INNER JOIN rulebooks_backup ON dnd_rulebook.name=rulebooks_backup.name WHERE rulebooks_backup.id=rulebook_id);''')
 
 def get_rulebook_id(curs, rulebook_abbrev):
-  if re.match(r'\d\d\d', rulebook_abbrev): rulebook_abbrev = r'\d\d\d'
+  if re.match(r'#?\d\d\d', rulebook_abbrev): rulebook_abbrev = r'\d\d\d'
   elif re.match(r'A\d\d', rulebook_abbrev): rulebook_abbrev = r'A\d\d'
   curs.execute('''SELECT rulebook_id FROM rulebook_abbrev WHERE abbr=?;''',
                    (rulebook_abbrev,) )
