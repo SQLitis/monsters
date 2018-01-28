@@ -369,6 +369,10 @@ What monsters have innate bardic music?
   Spectral Lyrist|Undead|6|Bardic music
 
 
+
+
+Miscellaneous trainable creature abilities:
+
 .. code-block:: bash
 
   sqlite> select distinct dnd_special_ability.name, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id left join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and (dnd_monstersubtype.name is null or dnd_monstersubtype.name!="Swarm") and dnd_special_ability.name not like "%resistan%" and dnd_special_ability.name not like "%saves vs. spells%" and dnd_special_ability.name not like "immun%" and dnd_special_ability.name not like "disease%" and dnd_special_ability.name not like "%powerful%" and dnd_special_ability.name not like "double damage %" and dnd_special_ability.name!="Augmented critical" and dnd_special_ability.name!="Evasion" and dnd_special_ability.name!="uncanny dodge" and dnd_special_ability.name not like "%trample%" and dnd_special_ability.name!="stampede" and dnd_special_ability.name not like "rake %" and dnd_special_ability.name not like "rend 2d%" and dnd_special_ability.name not like "constrict %" and dnd_special_ability.name not like "swallow whole" and dnd_special_ability.name not like "coil slam 1d%" and dnd_special_ability.name not like "%tail sweep%" and dnd_special_ability.name not like "%Frenzy" and dnd_special_ability.name not like "rage" and dnd_special_ability.name != "Ferocity" and dnd_special_ability.name!="Damage Reduction" and dnd_special_ability.name!="Low-Light Vision" and dnd_special_ability.name!="Darkvision" and dnd_special_ability.name!="light sensitivity" and dnd_special_ability.name not like "%scent" and dnd_special_ability.name not like "improved grab"and dnd_special_ability.name not like "trip" and dnd_special_ability.name not like "pounce" and dnd_special_ability.name not like "blinds%" and dnd_special_ability.name not like "tremorsense %" and dnd_special_ability.name not like "hold breath" and dnd_special_ability.name not like "poison%" and dnd_special_ability.name not like "venom%" and dnd_special_ability.name!="blood drain" order by hit_dice;
@@ -403,6 +407,58 @@ What monsters have innate bardic music?
   Plane shift|Gaspar|Planar Handbook|19
   Trill|Frost Worm|Monster Manual|19
 
+Technically, you can use Handle Animal on *any* creature with an intelligence of 1 or 2.
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_special_ability.name, dnd_monstertype.name, dnd_monster.name, dnd_rulebook.name, 15 + max(0,hit_dice) + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id left join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (intelligence=1 or intelligence=2) and (dnd_monstersubtype.name is null or dnd_monstersubtype.name!="Swarm") and dnd_special_ability.name not like "%resistan%" and dnd_special_ability.name not like "%saves vs. spells%" and dnd_special_ability.name not like "immun%" and dnd_special_ability.name not like "disease%" and dnd_special_ability.name not like "%powerful%" and dnd_special_ability.name not like "double damage %" and dnd_special_ability.name!="Augmented critical" and dnd_special_ability.name!="Evasion" and dnd_special_ability.name!="uncanny dodge" and dnd_special_ability.name not like "%trample%" and dnd_special_ability.name!="stampede" and dnd_special_ability.name not like "rake %" and dnd_special_ability.name not like "rend 2d%" and dnd_special_ability.name not like "constrict %" and dnd_special_ability.name not like "swallow whole" and dnd_special_ability.name not like "coil slam 1d%" and dnd_special_ability.name not like "%tail sweep%" and dnd_special_ability.name not like "%Frenzy" and dnd_special_ability.name not like "rage" and dnd_special_ability.name != "Ferocity" and dnd_special_ability.name!="Damage Reduction" and dnd_special_ability.name!="Low-Light Vision" and dnd_special_ability.name!="Darkvision" and dnd_special_ability.name!="light sensitivity" and dnd_special_ability.name not like "%scent" and dnd_special_ability.name not like "improved grab"and dnd_special_ability.name not like "trip" and dnd_special_ability.name not like "pounce" and dnd_special_ability.name not like "blinds%" and dnd_special_ability.name not like "tremorsense %" and dnd_special_ability.name not like "hold breath" and dnd_special_ability.name not like "poison%" and dnd_special_ability.name not like "venom%" and dnd_special_ability.name!="blood drain" and dnd_special_ability.name not like "Amphibious" and dnd_special_ability.name not like "Stench" and dnd_special_ability.name not like "Attach" and dnd_monster.name not like "%hydra, %" and DC<=25 order by -DC;
+  planar rip|Outsider|Ether Scarab|Monster Manual II|21
+  Greater invisibility|Plant|Phantom Fungus|Monster Manual v.3.5|22
+  Paralysis|Aberration|Carrion Crawler|Monster Manual v.3.5|23 Paralysis (Ex): Those hit by a carrion crawler's tentacle attack must succeed on a DC 13 Fortitude save or be paralyzed for 2d4 rounds. The save DC is Constitution-based. Full Attack: 8 tentacles +3 melee (paralysis). So while the DC and duration is unimpressive compared to a nifern or spider-eater, carrion crawlers sure do get a lot of chances.
+  walk corpse|Aberration|Gutpuppet|Web|24 http://archive.wizards.com/default.asp?x=dnd/mm/20011215a
+  charging form|Undead|Bonespur|Monster Manual V|24
+  Rust|Aberration|Rust Monster|Monster Manual v.3.5|25
+
+Upon encountering a humanoid or animal corpse, the Gutpuppet crawls into the lifeless chest through the victim's mouth and extends tendrils to deliver its horrible ichor. It takes over the victim's circulatory system and floods the body with its own fluids. This process happens quickly, usually taking no more than three or four minutes. The gutpuppet flushes out the corpse's fluids to make room for its own. This is a particularly violent and gory process: Witnesses report seeing the heaving chest of a dead body, a wet, ragged breathing-like sound coming from the mouth, then a sudden gout of blood bursting from every opening of the body accompanied by a violent, grotesque, lifelike twitching.
+However, the gutpuppet is keen to pick bodies that are intact. Any gross openings in the skin will allow too much of its fluid to leak out. Therefore, a gutpuppet is more likely to pick a body that has died from blunt trauma than from, say, being hacked to death. It prefers animals and people that have died from sickness. If it cannot find a corpse, it chooses some place to wait until it smells a corpse. (It can smell a dead body from up to a mile away.) It prefers moist hiding places; ideal locations include coastal caves, since they're dark and wet, and stagnant lakes.
+Once the gutpuppet is firmly attached inside the body, has flushed all the body's blood and other fluids out, and filled it with its own, it's ready to "walk the corpse." On its own, the gutpuppet is very slow, but it can walk a corpse easily -- sometimes moving faster than the original owner could.
+When a gutpuppet traveling inside a corpse encounters another dead body (nearly anything will do), it "spits" one of its spikes into the body. The spike injects fluid into the corpse, and the spike itself slowly burrows into the body, toward the heart, then grows. Within two days, a new gutpuppet fills the chest of the corpse, animates the body, and walks around searching for dead bodies on its own.
+To aid the appearance of being just an ordinary living creature, the gutpuppet washes itself in streams and steals fresh clothing when possible.
+Although it is no more intelligent than a particularly bright animal (and certainly cannot speak any language, so using the corpse's money to buy clothing is out of the question), the gutpuppet has a magpie-like attraction to clothing that is, obviously, to its advantage in hiding.
+Corpses under the control of a gutpuppet do not resemble zombies or most other undead. First, they do not smell as bad as other forms of undead, as the gutpuppet's fluid prevents flesh and connective tissue from decaying any more than it already has. Third, the corpse's flesh takes on a particularly strange pallor. It's not pale -- certainly not leathery by any means -- but is rather glassy. Such a complexion could be mistaken for a healthy one under the right circumstances, especially on nights with a bright moon. In addition, host bodies profusely sweat the toxin from every pore. This effect, more than anything, can lead someone to mistake a walking corpse for something living. (I, for one, have never encountered another form of undead that can sweat.) Combine this ability with the chest that never stops heaving (as the gutpuppet pushes fluid around the corpse) and the intermittent, ragged, breathing-like sounds coming from the mouth, and one can see how a humanoid corpse might make some distance into civilized areas before being discovered as something not really alive.
+A gutpuppet's shell body is easy to track, since every step it takes leaves behind a sweaty footprint. The fluid proves toxic to flesh, but has no effect on other organic material besides making it wet (and remaining toxic to flesh until it evaporates).
+Anyone coming into contact with it suffers 1d10 points of temporary Strength damage unless he or she makes a successful Fortitude save (DC 17). Note that a corpse with a gutpuppet inside it also sweats the poison, making contact with the corpse's skin dangerous. Standing fluid is also toxic; anyone touching it suffers 1d10 points of temporary Strength damage unless a successful Fortitude save (DC 17) is made. There is no secondary damage from touching standing gutpuppet fluid.
+Gutpuppets do not seek to kill living creatures and try to avoid them. However, they are drawn to blood and, like vultures, seek out living things they sense may die. If attacked, they won't hesitate to defend themselves, spitting spikes at opponents.
+The gutpuppet can sustain a corpse for up to a month. While its fluid prevents the decay of muscle and connective tissue, the gutpuppet must eat. The corpse itself is the most convenient source of food, so it nibbles slowly on the inner flesh. Once the body has ceased to be of use, the gutpuppet crawls out through the most accessible opening and inches away, looking for other bodies.
+
+If the carrion crawler isn't horrifying enough for you, and the gutpuppet still isn't horrifying enough for you...
+A skull lord’s creator skull can create a bonespur from nearby bones and bone shards. Undead created by this ability are automatically under the skull lord’s control. A skull lord can have a number of undead under the control of its creator skull equivalent to an EL 7 encounter. For example, a skull lord might have four bonespurs under its control.
+A spellcaster of 8th level or higher can create a bonespur using the create undead spell. Creating a bonespur requires skeletal remains equivalent to six Medium creatures.
+Alignment: These creatures have animal intelligence, but they are driven by utter loyalty to their creator and the corrupt energy that animates them. They are uniformly lawful evil.
+Bonespurs are simple creatures that have little use for trinkets or trophies. However, they sometimes collect wealth from slain opponents as an offering to their masters.
+Skull lords probably don't give much thought to what will happen to their bonespurs if the skull lord is destroyed. The most likely place to find a bonespur is near its master's former lair, surrounded by trinkets (some valuable, some valueless, the bonespur can't tell the difference) it's brought as gifts, whining piteously like an abandoned dog, wondering when its master is going to come home.
+Realistically, a disturbed bonespur will probably try to chase off anyone nosing around its master's lair, so magical assistance such as Command Undead will probably be necessary before you can begin to train it.
+
+Speed 10 ft. (2 squares), 40 ft. in charging form
+Boneshard Blast (Su) Once per day, as a free action immediately following a charge, a bonespur can explode in a shower of bone shards. The shards of the bonespur transform into its normal towering shape at the beginning of its next turn.
+Charging Form (Su) Once per day, as a swift action, a bonespur can transform from a column of bone into a rhinolike form. In this form, its speed increases to 40 feet.
+When charging, the bonespur transforms into a 12-foot-long rhino-like shape. A bonespur’s skeletal form weighs 400 pounds.
+When first encountered, a bonespur slashes its bone scythe menacingly before shifting into its charging form and racing at the nearest group of enemies. At the end of its charge, it uses its boneshard blast ability, reshaping into a column of bone on its next turn and attacking all that come within reach.
+Though a bonespur is of limited intelligence, it recognizes the advantage of pushing opponents into pits or off ledges, and it makes bull rush attacks whenever possible. At the same time, a bonespur has no sense of self-preservation, and these creatures have been known to follow opponents over the edge of cliffs in the zealousness of a bull rush attack.
+Though bonespurs serve at the side of the skull lord or spellcaster who created them, their errands of destruction sometimes see them sent far from their masters.
+
+Large with Strength 18 and a speed of 40feet, bonespurs are decidedly average mounts, except that as undead, they're tireless. They can run forever (at 160feet per round).
+
+Aside from the corpse-related creatures...well, the rust monster needs no introduction. "The touch can destroy
+up to a 10-foot cube of metal instantly." The Down (DC 15) trick is obviously the most important one there.
+A horse eats 10pounds of feed per day, costing 5cp. A rust monster probably doesn't eat ten pounds of iron per day, though. It just couldn't find that much in the wild. Pure iron is pretty hard to find for a creature without a burrow speed, and the thing about eating manufactured objects is that the owners tend to object...violently. In normal climates, Medium characters need at least a gallon of fluids and about a pound of decent food per day to avoid starvation. A pound of iron costs 1sp.
+There actually are stats for larval rust monsters, in Complete Scoundrel. 160gp will buy you a 2-pound 1-foot-long piece of glass tubing about 4 inches in diameter that contains about a dozen rust monster larvae. Little more than 1 inch long and bristling with underdeveloped armor and appendages. Uncapping the solid cover and running the tip across a metal surface allows the hungry young to slowly but effectively eat through metal objects or barriers. The rust monster larvae in a wand can "ruin" a Large weapon or suit of armor (or a metal object of similar size) in 1 minute, but it's not clear how long it takes to actually eat through a barrier, since rendering a weapon or suit of armor unusuable doesn't require consuming it.
+The larvae within a rust monster wand can survive for about 2 months if given air (by opening the outer layer of the end cap) and fed the equivalent of five coins of metal (or more) per day.
+If removed from the wand, individual larvae do not have the size or ability to do appreciable harm to metal equipment. One of these creatures by itself has 1 hit point and can be crushed as a standard action.
+
+
+
+Improved grabbers:
 
 .. code-block:: bash
 
@@ -417,7 +473,7 @@ What monsters have innate bardic music?
   Improved grab|51|Huge|42|Dinosaur, Battletitan|Monster Manual III|36
   improved grab|62|Colossal|46|Dinosaur, Liopleurodon|Dragon Magazine|38
 
-Interestingly, if we restrict to Large or smaller, there are no reversals; all Large are better grapplers than all Medium-size are better grapplers than all Small.
+Interestingly, if we restrict to Large or smaller, there are no reversals; all Large animals or magical beasts are better grapplers than all Medium-size, which are in turn better grapplers than all Small.
 
 .. code-block:: bash
 
@@ -483,7 +539,7 @@ Unfortunately, without a source of data on feats, we cannot know which animals h
   scent|3|Medium|Bat, Hunting|Monster Manual II|4 ironically does not have the Track feat
   scent|3|Small|Dinosaur, Swindlespitter|Monster Manual III|2 no Track feat
 
-Just for fun, remember that Moonrats are indistinguishable from normal rats except in moonlight. If someone did use a rat as a tracker underground, it might turn out that Handle Animal stops working when it gets under the open sky...
+Just for fun, remember that Moonrats are indistinguishable from normal rats except in moonlight. If someone did use a rat as a tracker underground, it might turn out that Handle Animal stops working when it gets under the open sky, due to unexpectedly increased Intelligence...
 
 .. code-block:: bash
 
@@ -556,7 +612,7 @@ Mounts?
   Large|20|60|Jackal, Dire|Sandstorm|4
   Large|21|60|Dinosaur, Megaraptor|Monster Manual|8 biped
   Large|22|60|Horse, Dire|Monster Manual II|8
-  Large|15|65|Axebeak|Arms & Equipment Guide|3 Axebeaks move five times their normal speed when running instead of four times the speed. Axebeak eggs are worth 20 gp on the open market. Note that axebeaks are bipeds, so cannot carry as much as the formula would indicate.
+  Large|15|65|Axebeak|Arms & Equipment Guide|3 Axebeaks move five times their normal speed when running instead of four times the speed. This is probably only noted as a special ability because animals didn't have feats in 3.0. Axebeak eggs are worth 20 gp on the open market. Note that axebeaks are bipeds, so cannot carry as much as the formula would indicate. An axebeak also cannot use a Tooth of Savnok after you can afford the 2,000gp, which allows other mounts to carry a medium or heavy load without slowing down. An axebeak is good for one thing and one thing only: outrunning pursuers by being just a *little bit faster* than a light horse, while not carrying much.
   Large|29|80|Horse, Legendary|Monster Manual II|18
 
 The warbeast template, found by searching for templates below, adds +10 to land speed (maybe other speeds, it's not clear) and +3 Strength at the cost of 1HD.
@@ -652,7 +708,7 @@ A burrowing ankheg usually does not make a usable tunnel, but can construct a tu
 
 
 Technically, Handle Animal can work on any creature with an Intelligence score of 1 or 2 (which are also vulnerable to Ray of Stupidity), which technically includes any creature that has been Feebleminded, but making a creature friendly enough to be willing to be trained is a sticking point.
-A druid can also use Wild Empathy to influence a magical beast with an Intelligence score of 1 or 2, but she takes a -4 penalty on the check. Wild animals are usually unfriendly, so it takes a DC15 check to make it indifferent, DC25 to make it friendly.
+A druid can also use Wild Empathy to influence a magical beast with an Intelligence score of 1 or 2, but she takes a -4 penalty on the check. Wild animals are usually unfriendly, so it takes a DC15 check to make it indifferent, DC25 to make it friendly. A druid can also use this ability to influence a magical beast with an Intelligence score of 1 or 2, but she takes a -4 penalty on the check.
 Trainable (Ex): A thrum worm is easier to train and handle than most other magical beasts. Handle Animal checks made to train or handle a thrum worm are not increased by 5. Gnomes receive a +2 circumstance bonus on all Handle Animal checks made to train or handle a thrum worm.
 
 .. code-block:: bash
@@ -688,7 +744,7 @@ A mineral warrior gains a burrow speed equal to one-half the base creature's hig
 Kord-blooded is an acquired template that can be added to any non-evil living creature that has a Strength score of 16 or higher.
 Kord's Athleticism (Su): Once per day, as a swift action, a Kord-blooded creature can call upon the blood invested in him to gain a tremendous surge of prowess. For the next minute, the Kord-blooded creature gains a +4 bonus on Strength and Dexterity checks, Strength- and Dexterity-based skill checks, and grapple checks.
 
-What about hirelings? Maybe what you really need is for someone to dangle a rope down into the chasm, and when you come running out of the dungeon in the "Get to the choppa!" moment, pull you up leaving your pursuers behind.
+What about hirelings? Maybe what you really need is for someone to dangle a rope down into the chasm, and when you come running out of the dungeon in the "Get to the choppa!" moment, pull you up leaving your pursuers behind. For that, animals just won't do.
 
 .. code-block:: bash
 
@@ -704,7 +760,7 @@ What about hirelings? Maybe what you really need is for someone to dangle a rope
   L|Monstrous Humanoid|Large|12|260|30|Naga, Shinomen, Chameleon|13|Oriental Adventures|1
   N|Humanoid|Large|13|300|30|Saurial, Hornhead|12|Serpent Kingdoms|1
 
-Honorable mention for portability goes to the psionic sinew, though it's not very mobile on its own so you'll need to do most of the work of setting it up to do its job.
+Honorable mention for portability goes to the psionic sinew, though it's not very mobile on its own so you'll need to do most of the work of setting it up to do its job. Something that small (yet strong) is easy to transport and hide.
 A psionic sinew is blind, but its entire body is a primitive sensory organ that can ascertain prey by scent and vibration. This ability enables it to discern objects and creatures within 60 feet.
 Share Spells (Su): Any spell the host creature casts on itself automatically also affects the symbiont. The host and symbiont can share spells even if the spells normally do not affect creatures of the host or symbiont's type. Spells targeted on the host by another spellcaster do not affect the symbiont, and vice versa.
 Unlike with familiars, the spell does not automatically end if the symbiont detaches from the host, so in theory a psionic sniew could be Enlarge Personed, but the duration is likely too short to be useful.
@@ -719,7 +775,7 @@ EL1 has an average of 0.05*25=1.25 platinum pieces, 0.52*90=46 gold pieces, 0.23
 EL1 has a 5% chance of 1 gem plus a 5% chance of 1 art, total 275/20 + 55 = 13.75 + 55 = 68.75gp.
 EL1 has a 0.24 probability of 1 mundane item plus a 5% chance of 1 minor magic item, total 0.24*350 + 1,000/20 = 84 + 50 = 134gp.
 The CR 1/3 mongrelfolk cuts all of those by a factor of 3 to start with (because three randomly-chosen mongrelfolk would be an EL1 encounter), and then cuts the coins and items in half again (for the coins that means half as many coins, for the items that means half the chance, per the Monster Manual).
-That leaves the mongrelfolk with 12.35gp in coins, 22.92gp in goods, and 22.33gp in items. And remember, that's an average. Some mongrelfolk have much less. They're cheap hires, is what I'm saying. This might have something to do with the fact that even the narrator seems prejudiced against them.
+That leaves the mongrelfolk with 12.35gp in coins, 22.92gp in goods, and 22.33gp in items. And remember, that's an average. Some mongrelfolk have much less. They're cheap hires, is what I'm saying. This might have something to do with the fact that even the Fiend Folio narrator seems prejudiced against them.
 
 Mongrelfolk speak Common and their own pidgin language.
 Mongrelfolk are extremely cowardly, and they avoid direct conflict as much as possible. If we're talking about first-level Commoners hired as porters for adventurers, cowardice and common sense are basically the same thing. They construct traps around their lairs rather than relying on combat to keep intruders away. I like these folks already.
@@ -727,7 +783,7 @@ Mongrelfolk are extremely cowardly, and they avoid direct conflict as much as po
 They have average strength but +4 Con, so you don't need to worry about their endurance; they'll outlast you.
 Speed: 20 ft. (hide armor); base 30 ft.
 
-A note of caution. Just because someone says he's a first-level Commoner doesn't mean he is. and "Often Lawful Neutral" doesn't mean the mongrelfolk in front of you is Lawful. A mongrelfolk's favored class is rogue. Mongrelfolk have a +8 racial bonus on Hide and Sleight of Hand checks. So, you know. Detect Law is your friend. Detect Evil wouldn't be a bad idea either.
+A note of caution. Just because someone says he's a first-level Commoner doesn't mean he *is* a first-level Commoner. And "Often Lawful Neutral" doesn't mean the mongrelfolk in front of you is Lawful. A mongrelfolk's favored class is rogue. Mongrelfolk have a +8 racial bonus on Hide and Sleight of Hand checks. So, you know. Detect Law is your friend. Detect Evil wouldn't be a bad idea either.
 
 Sound Imitation (Ex): A mongrelfolk can mimic any voice or sound it has heard. Listeners must succeed on a Will save (DC 16) to detect the ruse.
 
@@ -754,7 +810,7 @@ Automatic Languages: Draconic. Bonus Languages: Common, Elven, Sylvan, and Celes
 Hornhead base speed is 30 feet.
 This bipedal lizard is as big as an ogre and has a tail longer than its own body.
 
-Maybe you don't need somebody strong, though. Maybe you just need someone who's easy to carry, easy to hide, and can do basic tasks like trip the spring on a cablespool. The obvious answer is a small female halfling commoner.
+Maybe you don't need somebody strong, though. Maybe you just need someone who's easy to carry, easy to hide, and can do basic tasks like trip the spring on a cablespool. The obvious answer is a small female halfling commoner. Is there a better answer?
 
 .. code-block:: bash
 
@@ -790,6 +846,11 @@ Muckdwellers hibernate during the winter months in temperate or colder climes.
 Be warned, because of theor meed fpr warmth, they'll probably want to share your bedroll.
 
 A kobold is 2 to 2-1/2 feet tall and weighs 35 to 45 pounds. Kobolds don't offer much in the way of advantages over halflings.
+
+In the desert, elves follow nomadic lifestyles. They herd horses, cattle, and goats across the sands, sleeping during the day and working or traveling at night. Their wandering takes them many places and puts them in contact with many cultures. As a result, they are welcome everywhere for the news and exotic trade goods they carry. Though they don't carry much with their -2 Strength; they have animals carry for them.
++2 racial bonus on Handle Animal and Ride checks: Desert elves spend most of their lives riding and working with animals. Elves average 5 feet tall and typically weigh just over 100 pounds.
+Goblins have a +4 racial bonus on Move Silently and Ride checks, so a goblin can use its mount as cover with a DC15 Ride check, make leaps, and spur mounts. A goblin stands 3 to 3-1/2 feet tall and weighs 40 to 45 pounds.
+Halflings stand about 3 feet tall and usually weigh between 30 and 35 pounds. Female halflings can be as small as 2'8" and 27pounds.
 
 You don't hire a homunculus; you build one. A homunculus cannot be created until almost the level where you could have skeletons, but unlike skeletons, a homunculus is intelligent. Craft Construct (see page 303), arcane eye, mirror image, mending, caster must be at least 4th level; Price - (never sold); Cost 1,050 gp + 78 XP.
 The creator must be at least 7th level and possess the Craft Wondrous Item feat to make a bogun.
@@ -841,6 +902,7 @@ Telepathy (Su): Pseudodragons can communicate telepathically with creatures that
 
 If you have access to the Outer Planes, you have a lot of options. If you're confined to the Material Plane, you basically have the Coke-or-Pepsi choice of mind leech or puppeteer. Puppeteers can only charm humanoids, so there's that. Both Lawful Evil, both highly intelligent. If you successfully form an alliance --- good luck with that --- they probably won't outright betray you, but you'll be trusting a highly intelligent evil creature to tell you what people are saying and tell other people what *you* are saying. Oh, and in the case of the mind leech, you have to convince people to allow the mind leech into their brains before you can communicate with them.
 
+There is another way to "communicate".
 A commanded undead creature is under the mental control of the evil cleric. The cleric must take a standard action to give mental orders to a commanded undead.
 
 .. code-block:: bash

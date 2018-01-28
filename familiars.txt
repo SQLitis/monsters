@@ -1,0 +1,283 @@
+<b>Standard familiar</b><br />
+<div class="spoiler"><div align="left" class="spoiler-title"><b>Spoiler</b></div><div align="right" class="spoiler-select"  name="spoiler-select">
+<span onClick="spoiler(this)" /><span class="spoiler-button">Show</span></span>
+</div>
+<div class="spoiler-body" name="spoiler-body"><br />
+{table=head]<b>Familiar</b>	|	<b>Stat</b>	|	<b>Reference</b>	|	<b>Requirement</b>	|	<b>Granted bonus</b>	|	<b>Note</b><br />
+Bat	|<div style="text-align: center;">	MMI p268	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +3 on Listen checks	</div>||<br />
+Cat	|<div style="text-align: center;">	MMI p270	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +3 on Move silently checks	</div>||<br />
+Hawk	|<div style="text-align: center;">	MMI p273	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +3 on Spot checks in bright light	</div>||<br />
+Lizard	|<div style="text-align: center;">	MMI p275	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +3 on Climb checks	</div>||<br />
+Owl	|<div style="text-align: center;">	MMI p277	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +3 on Spot checks in shadow	</div>||<br />
+Rat	|<div style="text-align: center;">	MMI p278	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +2 on Fortitude saves	</div>||<br />
+Raven	|<div style="text-align: center;">	MMI p278	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +3 on Appraise checks	</div>||<br />
+Viper Snake (Tiny)	|<div style="text-align: center;">	MMI p279	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +3 on Bluff checks	</div>||<br />
+Toad	|<div style="text-align: center;">	MMI p282	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +3 hit points	</div>||<br />
+Weasel	|<div style="text-align: center;">	MMI p282	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +2 on Reflex saves	</div>||<br />
+Ferret	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Tiny or smaller size	</div>|<div style="text-align: center;">	Masters gains a +2 on Reflex saves	</div>||<br />
+Hedgehog	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Tiny or smaller size	</div>|<div style="text-align: center;">	Masters gains a +1 natural armor bonus	</div>||<br />
+Mouse	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Tiny or smaller size	</div>|<div style="text-align: center;">	Masters gains a +2 on Move silently checks	</div>||<br />
+Screech Owl	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Tiny or smaller size	</div>|<div style="text-align: center;">	Masters gains a +2 on Move silently checks	</div>||<br />
+Thrush	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Tiny or smaller size	</div>|||<br />
+Dire Rat	|<div style="text-align: center;">	MMI p64	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Huge or bigger size	</div>|<div style="text-align: center;">	Masters gains a +2 on Fortitude saves	</div>||<br />
+Leopard	|<div style="text-align: center;">	MMI p274	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Huge or bigger size	</div>|<div style="text-align: center;">	Masters gains a +2 on Move silently checks	</div>||<br />
+Monitor Lizard	|<div style="text-align: center;">	MMI p275	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Huge or bigger size	</div>|<div style="text-align: center;">	Masters gains a +3 hit points	</div>||<br />
+Owl (Medium)	|<div style="text-align: center;">	DMG p204	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Huge or bigger size	</div>|<div style="text-align: center;">	Masters gains a +2 on Move silently checks	</div>||<br />
+Raven (Small)	|<div style="text-align: center;">	DMG p204	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Huge or bigger size	</div>|||<br />
+Viper snake (Medium)	|<div style="text-align: center;">	MMI p279	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Huge or bigger size	</div>|||<br />
+Wolverine	|<div style="text-align: center;">	MMI p283	</div>|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	Huge or bigger size	</div>|<div style="text-align: center;">	Masters gains a +2 on Reflex saves	</div>||<br />
+Horned Lizard	|<div style="text-align: center;">	Sa p194	</div>|<div style="text-align: center;">	Sa p49	</div>||<div style="text-align: center;">	Masters gains a +2 on Will saves	</div>||<br />
+Albatross	|<div style="text-align: center;">	Sto p165	</div>|<div style="text-align: center;">	Sto p51	</div>||<div style="text-align: center;">	Masters gains a +1 on Spot checks	</div>||<br />
+Eel	|<div style="text-align: center;">	Sto p166	</div>|<div style="text-align: center;">	Sto p51	</div>||<div style="text-align: center;">	Masters gains a +3 on Escape artist checks	</div>||<br />
+Fish Owl	|<div style="text-align: center;">	MMI p277	</div>|<div style="text-align: center;">	Sto p51	</div>||<div style="text-align: center;">	Masters gains a +3 on Spot checks in shadow	</div>||<br />
+Octopus	|<div style="text-align: center;">	MMI p276	</div>|<div style="text-align: center;">	Sto p51	</div>||<div style="text-align: center;">	Masters gains a +3 on grapple checks	</div>||<br />
+Parrot	|<div style="text-align: center;">	MMI p278	</div>|<div style="text-align: center;">	Sto p51	</div>||<div style="text-align: center;">	Masters gains a +3 on Appraise checks	</div>||<br />
+Sea snake	|<div style="text-align: center;">	Sto p170	</div>|<div style="text-align: center;">	Sto p51	</div>||<div style="text-align: center;">	Masters gains a +3 on Bluff checks	</div>||<br />
+Arctic Fox	|<div style="text-align: center;">	Fro p165	</div>|<div style="text-align: center;">	Fro p45	</div>||<div style="text-align: center;">	Masters gains a +3 on Move silently checks	</div>||<br />
+Gyrfalcon	|<div style="text-align: center;">	MMI p273	</div>|<div style="text-align: center;">	Fro p45	</div>||<div style="text-align: center;">	Masters gains a +3 on Spot checks	</div>||<br />
+Lemming	|<div style="text-align: center;">	MMI p278	</div>|<div style="text-align: center;">	Fro p45	</div>||<div style="text-align: center;">	Masters gains a +2 on Listen and Spot checks	</div>||<br />
+Snowy owl	|<div style="text-align: center;">	MMI p277	</div>|<div style="text-align: center;">	Fro p45	</div>||<div style="text-align: center;">	Masters gains a +3 on Move silently checks	</div>||<br />
+Penguin	|<div style="text-align: center;">	Fro p166	</div>|<div style="text-align: center;">	Fro p45	</div>||<div style="text-align: center;">	Masters gains a +2 on Fortitude saves	</div>||<br />
+Puffin	|<div style="text-align: center;">	MMI p278	</div>|<div style="text-align: center;">	Fro p45	</div>||<div style="text-align: center;">	Masters gains a +3 on Survival checks	</div>||<br />
+Huitzil	|<div style="text-align: center;">	DM p115	</div>|<div style="text-align: center;">	DM p116	</div>||<div style="text-align: center;">	Masters gains a +3 on Sleight of hand checks	</div>||<br />
+Air elemental, Small	|<div style="text-align: center;">	MMI p95	</div>|<div style="text-align: center;">	RoW p162	</div>|<div style="text-align: center;">	Raptoran Sorcerer 1 ACF	</div>|||<br />
+Dung Snake	|<div style="text-align: center;">	SK p83	</div>|<div style="text-align: center;">	SK p140	</div>|<div style="text-align: center;">	Yuan-ti	</div>|<div style="text-align: center;">	Masters gains a +3 on Bluff checks	</div>||<br />
+Reed Snake	|<div style="text-align: center;">	SK p84	</div>|<div style="text-align: center;">	SK p140	</div>|<div style="text-align: center;">	Yuan-ti	</div>|<div style="text-align: center;">	Masters gains a +3 on Bluff checks	</div>||<br />
+Sewerm	|<div style="text-align: center;">	SK p85	</div>|<div style="text-align: center;">	SK p140	</div>|<div style="text-align: center;">	Yuan-ti	</div>|<div style="text-align: center;">	Masters gains a +3 on Bluff checks	</div>||<br />
+Hairy Spider	|<div style="text-align: center;">	MoF p79	</div>|<div style="text-align: center;">	MoF p80	</div>||||<br />
+Compsognathus	|<div style="text-align: center;">	#318 p64	</div>|<div style="text-align: center;">	#318 p69	</div>||<div style="text-align: center;">	Masters gains a +3 on Hide checks	</div>||<br />
+Rhamphorhynchus	|<div style="text-align: center;">	#318 p68	</div>|<div style="text-align: center;">	#318 p69	</div>||<div style="text-align: center;">	Masters gains a +3 on Initiative checks	</div>||<br />
+Critic lizard	|<div style="text-align: center;">	Du110 p87	</div>|<div style="text-align: center;">	#319 p36	</div>|<div style="text-align: center;">	Dark-sun	</div>|<div style="text-align: center;">	Masters gains a +2 on Reflex saves	</div>||<br />
+Floater	|<div style="text-align: center;">	Du110 p88	</div>|<div style="text-align: center;">	#319 p36	</div>|<div style="text-align: center;">	Dark-sun	</div>|<div style="text-align: center;">	Masters gains a +3 on Sense motives checks	</div>||<br />
+Hurrum, speckled	|<div style="text-align: center;">	Du110 p89	</div>|<div style="text-align: center;">	#319 p36	</div>|<div style="text-align: center;">	Dark-sun	</div>|<div style="text-align: center;">	Masters gains a +3 on Diplomacy checks	</div>||<br />
+Jankx	|<div style="text-align: center;">	Du110 p90	</div>|<div style="text-align: center;">	#319 p36	</div>|<div style="text-align: center;">	Dark-sun	</div>|<div style="text-align: center;">	Masters gains a +3 on Listen checks	</div>||<br />
+Kes’trekei	|<div style="text-align: center;">	Du110 p91	</div>|<div style="text-align: center;">	#319 p36	</div>|<div style="text-align: center;">	Dark-sun	</div>|<div style="text-align: center;">	Masters gains a +2 on Fortitude saves	</div>||<br />
+Mulworm	|<div style="text-align: center;">	Du110 p93	</div>|<div style="text-align: center;">	#319 p36	</div>|<div style="text-align: center;">	Dark-sun	</div>|<div style="text-align: center;">	Masters gains a +3 hit points	</div>||<br />
+Ramphor	|<div style="text-align: center;">	Du110 p94	</div>|<div style="text-align: center;">	#319 p36	</div>|<div style="text-align: center;">	Dark-sun	</div>|<div style="text-align: center;">	Masters gains a +3 on Spot checks	</div>||<br />
+Z’tal	|<div style="text-align: center;">	Du110 p98	</div>|<div style="text-align: center;">	#319 p36	</div>|<div style="text-align: center;">	Dark-sun	</div>|<div style="text-align: center;">	Masters gains a +3 on Intimidate checks	</div>||<br />
+Turtle	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	#323 p98	</div>|<div style="text-align: center;">	Might be restrict to Abjurers	</div>|<div style="text-align: center;">	Masters gains a +1 to AC when prone or behind cover	</div>|<div style="text-align: center;">	Stat: Hedgehog without poison quills	</div>|<br />
+Hummingbird	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	#323 p98	</div>|<div style="text-align: center;">	Might be restrict to Conjurers	</div>|<div style="text-align: center;">	Masters gains a +4 on Initiative checks	</div>|<div style="text-align: center;">	Stat: Thrush	</div>|<br />
+Fly	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	#323 p98	</div>|<div style="text-align: center;">	Might be restrict to Diviners	</div>|<div style="text-align: center;">	Masters gains a +3 on Gather information checks	</div>|<div style="text-align: center;">	Stat: Thrush but Fine size	</div>|<br />
+Mink	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	#323 p98	</div>|<div style="text-align: center;">	Might be restrict to Enchanters	</div>|<div style="text-align: center;">	Masters gains a +3 on Diplomacy checks	</div>|<div style="text-align: center;">	Stat: Ferret	</div>|<br />
+Spider	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	#323 p98	</div>|<div style="text-align: center;">	Might be restrict to Evokers	</div>|<div style="text-align: center;">	Masters gains a +3 on Sleight of hand checks	</div>|<div style="text-align: center;">	Stat: Mouse	</div>|<br />
+Fox	|<div style="text-align: center;">	MMI p270	</div>|<div style="text-align: center;">	#323 p98	</div>|<div style="text-align: center;">	Might be restrict to Illusionists	</div>|<div style="text-align: center;">	Masters gains a +2 on Will saves	</div>|<div style="text-align: center;">	Stat: Cat	</div>|<br />
+Vulture	|<div style="text-align: center;">	MMI p273	</div>|<div style="text-align: center;">	#323 p98	</div>|<div style="text-align: center;">	Might be restrict to Necromancers	</div>|<div style="text-align: center;">	Masters gains a +4 on Fortitude saves to resist disease	</div>|<div style="text-align: center;">	Stat: Hawk	</div>|<br />
+Caterpillars	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	#323 p98	</div>|<div style="text-align: center;">	Might be restrict to Transmuters	</div>|<div style="text-align: center;">	Masters gains a +3 on Disguise checks	</div>|<div style="text-align: center;">	Stat: Mouse	</div>|<br />
+Butterfly or Moth	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	#323 p98	</div>|<div style="text-align: center;">	Changed from Caterpillar at level 5th	</div>|<div style="text-align: center;">	Masters gains a +3 on Spellcraft checks	</div>|<div style="text-align: center;">	Stat: Thrush	</div>|<br />
+Chameleon	|<div style="text-align: center;">	MMI p275	</div>|<div style="text-align: center;">	#341 p88	</div>||<div style="text-align: center;">	Masters gains a +3 on Disguise checks	</div>|<div style="text-align: center;">	Stat: Lizard	</div>|<br />
+Crow	|<div style="text-align: center;">	MMI p278	</div>|<div style="text-align: center;">	#341 p88	</div>||<div style="text-align: center;">	Masters gains a +2 on Fortitude saves	</div>|<div style="text-align: center;">	Stat: Raven	</div>|<br />
+Dark Chanting Ghosthawk	|<div style="text-align: center;">	MMI p273	</div>|<div style="text-align: center;">	#341 p88	</div>||<div style="text-align: center;">	Masters gains a +2 on Will saves	</div>|<div style="text-align: center;">	Stat: Hawk	</div>|<br />
+Dog	|<div style="text-align: center;">	MMI p271	</div>|<div style="text-align: center;">	#341 p88	</div>||<div style="text-align: center;">	Masters gains a +3 on Sense motives checks	</div>||<br />
+Flying Fox	|<div style="text-align: center;">	MMI p278	</div>|<div style="text-align: center;">	#341 p88	</div>||<div style="text-align: center;">	Masters gains a +3 on Sleight of hand checks	</div>|<div style="text-align: center;">	Stat: Raven	</div>|<br />
+Iguana	|<div style="text-align: center;">	MMI p275	</div>|<div style="text-align: center;">	#341 p88	</div>||<div style="text-align: center;">	Masters gains a +3 on Climb checks	</div>|<div style="text-align: center;">	Stat: Lizard	</div>|<br />
+Monkey	|<div style="text-align: center;">	MMI p276	</div>|<div style="text-align: center;">	#341 p88	</div>||<div style="text-align: center;">	Masters gains a +3 on Tumble checks	</div>||<br />
+Night Lizard	|<div style="text-align: center;">	MMI p275	</div>|<div style="text-align: center;">	#341 p88	</div>||<div style="text-align: center;">	Masters gains a +3 on Hide checks	</div>|<div style="text-align: center;">	Stat: Lizard	</div>|<br />
+Platypus	|<div style="text-align: center;">	DMG p203	</div>|<div style="text-align: center;">	#341 p88	</div>||<div style="text-align: center;">	Masters gains a +3 on Swim checks	</div>|<div style="text-align: center;">	Stat: Hedgehog with poison claw instead of quills and bite	</div>|<br />
+Rabbit	|<div style="text-align: center;">	MMI p270	</div>|<div style="text-align: center;">	#341 p88	</div>||<div style="text-align: center;">	Masters gains a +3 on Listen checks	</div>|<div style="text-align: center;">	Stat: Cat	</div>|<br />
+Squirrel	|<div style="text-align: center;">	MMI p278	</div>|<div style="text-align: center;">	#341 p88	</div>||<div style="text-align: center;">	Masters gains a +3 on Jump checks	</div>|<div style="text-align: center;">	Stat: Rat	</div>|<br />
+Vampire Bat	|<div style="text-align: center;">	MMI p268	</div>|<div style="text-align: center;">	#341 p88	</div>|||<div style="text-align: center;">	Stat: Bat	</div>|<br />
+Badger	|<div style="text-align: center;">	MMI p268	</div>|<div style="text-align: center;">	#352 p26	</div>||<div style="text-align: center;">	Masters gains a +3 on Knowledge(arcana) checks	</div>||<br />
+Chipmunk	|<div style="text-align: center;">	#277 p65	</div>|<div style="text-align: center;">	#277 p65	</div>||<div style="text-align: center;">	Masters gains a +2 on Reflex saves	</div>|<div style="text-align: center;">	3.0	</div>|<br />
+Eagle	|<div style="text-align: center;">	MMI p272	</div>|<div style="text-align: center;">	#277 p65	</div>|||<div style="text-align: center;">	3.0	</div>|<br />
+Groundhog	|<div style="text-align: center;">	#277 p65	</div>|<div style="text-align: center;">	#277 p65	</div>||<div style="text-align: center;">	Masters gains a +2 on Fortitude saves	</div>|<div style="text-align: center;">	3.0	</div>|<br />
+Otter	|<div style="text-align: center;">	#277 p65	</div>|<div style="text-align: center;">	#277 p65	</div>||<div style="text-align: center;">	Masters gains a +2 on Swim checks	</div>|<div style="text-align: center;">	3.0	</div>|<br />
+Constrictor Snake (Small)	|<div style="text-align: center;">	#277 p65	</div>|<div style="text-align: center;">	#277 p65	</div>|||<div style="text-align: center;">	3.0	</div>|<br />
+Raccoon	|<div style="text-align: center;">	#280 p61	</div>|<div style="text-align: center;">	#280 p61	</div>||<div style="text-align: center;">	Masters gains a +2 on Pick Pockets checks	</div>|<div style="text-align: center;">	3.0	</div>|<br />
+Skunk	|<div style="text-align: center;">	#280 p61	</div>|<div style="text-align: center;">	#280 p61	</div>|||<div style="text-align: center;">	3.0	</div>|<br />
+Golden the Clockwork Cat	|<div style="text-align: center;">	#299 p64	</div>|<div style="text-align: center;">	#299 p64	</div>|<div style="text-align: center;">	Might need to be purchased or crafted	</div>|<div style="text-align: center;">	Unclear none or as Cat (+2 Move silently)	</div>|<div style="text-align: center;">	3.0	</div>|<br />
+[/table]</div>
+</div><br />
+Other option: Imbued Staff #338 p58<br />
+<br />
+<b>Improved Familiar</b><br />
+<div class="spoiler"><div align="left" class="spoiler-title"><b>Spoiler</b></div><div align="right" class="spoiler-select"  name="spoiler-select">
+<span onClick="spoiler(this)" /><span class="spoiler-button">Show</span></span>
+</div>
+<div class="spoiler-body" name="spoiler-body"><br />
+{table=head]<b>Familiar</b>	|	<b>Stat</b>	|	<b>Reference</b>	|	<b>Caster level</b>	|	<b>Alignement</b>	|	<b>Other requirement</b>	<br />
+Shocker lizard	|<div style="text-align: center;">	MMI p224	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	(optional: Electricity subtype)	</div>|<br />
+Stirge	|<div style="text-align: center;">	MMI p236	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Formian Worker	|<div style="text-align: center;">	MMI p108	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any Non Chaotic	</div>||<br />
+Imp	|<div style="text-align: center;">	MMI p56	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any Non Chaotic and Non Good	</div>||<br />
+Pseudodragon	|<div style="text-align: center;">	MMI p210	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any Non Evil	</div>||<br />
+Quasit	|<div style="text-align: center;">	MMI p46	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any Non Lawful or Good	</div>||<br />
+Celestial standard familiar	|<div style="text-align: center;">	MMI p31	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Good subtype	</div>|<br />
+Fiendish standard familiar	|<div style="text-align: center;">	MMI p107	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Evil subtype	</div>|<br />
+Air elemental, Small	|<div style="text-align: center;">	MMI p95	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Air subtype	</div>|<br />
+Earth elemental, Small	|<div style="text-align: center;">	MMI p97	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Earth subtype	</div>|<br />
+Fire elemental, Small	|<div style="text-align: center;">	MMI p98	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Fire subtype	</div>|<br />
+Water elemental, Small	|<div style="text-align: center;">	MMI p100	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Water subtype	</div>|<br />
+Homunculus	|<div style="text-align: center;">	MMI p154	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Undead type	</div>|<br />
+Ice Mephit	|<div style="text-align: center;">	MMI p182	</div>|<div style="text-align: center;">	DMG p200	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Ice subtype	</div>|<br />
+Krenshar	|<div style="text-align: center;">	MMI p163	</div>|<div style="text-align: center;">	CW p100	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	BaB +3	</div>|<br />
+Worg	|<div style="text-align: center;">	MMI p256	</div>|<div style="text-align: center;">	CW p100	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any Non Good	</div>|<div style="text-align: center;">	BaB +3	</div>|<br />
+Blink Dog	|<div style="text-align: center;">	MMI p28	</div>|<div style="text-align: center;">	CW p100	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Non Chaotic and Non Evil	</div>|<div style="text-align: center;">	BaB +5	</div>|<br />
+Hell Hound	|<div style="text-align: center;">	MMI p151	</div>|<div style="text-align: center;">	CW p100	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Non Chaotic and Non Good	</div>|<div style="text-align: center;">	BaB +5	</div>|<br />
+Hippogriff	|<div style="text-align: center;">	MMI p152	</div>|<div style="text-align: center;">	CW p100	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	BaB +7	</div>|<br />
+Howler	|<div style="text-align: center;">	MMI p154	</div>|<div style="text-align: center;">	CW p100	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any Non Lawful and Non Good	</div>|<div style="text-align: center;">	BaB +7	</div>|<br />
+Winter Wolf	|<div style="text-align: center;">	MMI p256	</div>|<div style="text-align: center;">	CW p100	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any Non Good	</div>|<div style="text-align: center;">	BaB +7	</div>|<br />
+Spark Guardian	|<div style="text-align: center;">	CW p119	</div>|<div style="text-align: center;">	CW p118	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Craft construct feat	</div>|<br />
+Gauntlet Guardian	|<div style="text-align: center;">	CW p120	</div>|<div style="text-align: center;">	CW p118	</div>|<div style="text-align: center;">	9th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Craft construct feat	</div>|<br />
+Blade Guardian	|<div style="text-align: center;">	CW p120	</div>|<div style="text-align: center;">	CW p118	</div>|<div style="text-align: center;">	11th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Craft construct feat	</div>|<br />
+Monstrous centipede, Small	|<div style="text-align: center;">	MMI p286	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	2nd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Badger	|<div style="text-align: center;">	MMI p268	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Monstrous scorpion, Small	|<div style="text-align: center;">	MMI p287	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Snake, Viper, Medium	|<div style="text-align: center;">	MMI p279	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Monstrous spider, Small	|<div style="text-align: center;">	MMI p288	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	4th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Vargouille	|<div style="text-align: center;">	MMI p254	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	6th	</div>|<div style="text-align: center;">	Any Non Good	</div>||<br />
+Air Mephit	|<div style="text-align: center;">	MMI p181	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Dust Mephit	|<div style="text-align: center;">	MMI p181	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Earth Mephit	|<div style="text-align: center;">	MMI p182	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Fire Mephit	|<div style="text-align: center;">	MMI p182	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Ice Mephit	|<div style="text-align: center;">	MMI p182	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Magma Mephit	|<div style="text-align: center;">	MMI p182	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Ooze Mephit	|<div style="text-align: center;">	MMI p182	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Salt Mephit	|<div style="text-align: center;">	MMI p183	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Steam Mephit	|<div style="text-align: center;">	MMI p183	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Water Mephit	|<div style="text-align: center;">	MMI p184	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Glass Mephit	|<div style="text-align: center;">	Sa p175	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Sulfur Mephit	|<div style="text-align: center;">	Sa p176	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Mirror Mephit	|<div style="text-align: center;">	EDP p208	</div>|<div style="text-align: center;">	CS p78	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Fire Bat	|<div style="text-align: center;">	MMII p102	</div>|<div style="text-align: center;">	MMII P103	</div>|<div style="text-align: center;">	15th 	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Fire subtype	</div>|<br />
+Clockwork Mender	|<div style="text-align: center;">	MMIV P31	</div>|<div style="text-align: center;">	MMIV P30	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Lawful	</div>||<br />
+Sailsnake	|<div style="text-align: center;">	MMIV p124	</div>|<div style="text-align: center;">	MMIV p125	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Gem Scarab, Emerald	|<div style="text-align: center;">	MMV p62	</div>|<div style="text-align: center;">	MMV p63	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Tirbana Eyewing	|<div style="text-align: center;">	MMV p172	</div>|<div style="text-align: center;">	MMV p172	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	LN or LE only	</div>||<br />
+Beholderkin, eyeball	|<div style="text-align: center;">	MoF p23	</div>|<div style="text-align: center;">	FRCS p35	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Non Good	</div>||<br />
+Night Hunter Bat	|<div style="text-align: center;">	MoF p18	</div>|<div style="text-align: center;">	FRCS p35	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Non Good	</div>||<br />
+Deathfang	|<div style="text-align: center;">	RoF p175	</div>|<div style="text-align: center;">	PGTF p39	</div>|<div style="text-align: center;">	9th	</div>|<div style="text-align: center;">	Any Non Good	</div>||<br />
+Flying Snake	|<div style="text-align: center;">	RoF p177	</div>|<div style="text-align: center;">	PGTF p39	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Lizard, spitting crawler	|<div style="text-align: center;">	FRCS p308	</div>|<div style="text-align: center;">	PGTF p39	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Lynx	|<div style="text-align: center;">	RoF p174	</div>|<div style="text-align: center;">	PGTF p39	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Osquip	|<div style="text-align: center;">	RoF p176	</div>|<div style="text-align: center;">	PGTF p39	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Non Good	</div>||<br />
+Tressym	|<div style="text-align: center;">	FRCS p309	</div>|<div style="text-align: center;">	PGTF p39	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Non Evil	</div>||<br />
+Jaculi	|<div style="text-align: center;">	SK p66	</div>|<div style="text-align: center;">	SK p146	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Non Lawful and Non Good	</div>||<br />
+Mlarraun	|<div style="text-align: center;">	SK p70	</div>|<div style="text-align: center;">	SK p146	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Muckdweller	|<div style="text-align: center;">	SK p71	</div>|<div style="text-align: center;">	SK p146	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Non Chaotic and Non Good	</div>||<br />
+Snake, Glacier	|<div style="text-align: center;">	SK p84	</div>|<div style="text-align: center;">	SK p146	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Snake, Tree python	|<div style="text-align: center;">	SK p86	</div>|<div style="text-align: center;">	SK p146	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Snake, whipsnake	|<div style="text-align: center;">	SK p87	</div>|<div style="text-align: center;">	SK p146	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any Non Lawful and Non Good	</div>||<br />
+Beguiler	|<div style="text-align: center;">	ShS p60	</div>|<div style="text-align: center;">	ShS p61	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Starsnake	|<div style="text-align: center;">	ShS p69	</div>|<div style="text-align: center;">	ShS p70	</div>|<div style="text-align: center;">	12th 	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Watchspider	|<div style="text-align: center;">	CoS:W p140	</div>|<div style="text-align: center;">	CoS:W p140	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Spider swarm	|<div style="text-align: center;">	MMI p239	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Bat swarm	|<div style="text-align: center;">	MMI p237	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Rat swarm	|<div style="text-align: center;">	MMI p239	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Locust swarm	|<div style="text-align: center;">	MMI p239	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Bone rat swarm	|<div style="text-align: center;">	LM p88	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	9th	</div>|<div style="text-align: center;">	Any Non Good	</div>||<br />
+Centipede swarm	|<div style="text-align: center;">	MMI p238	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	9th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Corpse rat swarm	|<div style="text-align: center;">	LM p92	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	11th	</div>|<div style="text-align: center;">	Any Non Good	</div>||<br />
+Emphemeral swarm	|<div style="text-align: center;">	MMIII p50	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	11th	</div>|<div style="text-align: center;">	Any Non Lawful and Non Good	</div>||<br />
+Swamp strider swarm	|<div style="text-align: center;">	MMIII p171	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	11th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Bloodmote swarm	|<div style="text-align: center;">	LM p88	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	13th 	</div>|<div style="text-align: center;">	Any Non Good	</div>||<br />
+Dread bloom swarm	|<div style="text-align: center;">	MMIII p45	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	13th 	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Needletooth swarm	|<div style="text-align: center;">	MMIII p109	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	13th 	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Hellwasp swarm	|<div style="text-align: center;">	MMI p238	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	16th 	</div>|<div style="text-align: center;">	Any Non Chaotic and Non Good	</div>||<br />
+Shimmerling swarm	|<div style="text-align: center;">	MMIII p152	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	16th 	</div>|<div style="text-align: center;">	Any Non Lawful	</div>||<br />
+Brood keeper larva swarm	|<div style="text-align: center;">	MMIII p21	</div>|<div style="text-align: center;">	#329 p98	</div>|<div style="text-align: center;">	19th 	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Choleric Imp	|<div style="text-align: center;">	#338 p33	</div>|<div style="text-align: center;">	#338 p33	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Neutral Evil only	</div>||<br />
+Melancholic Imp	|<div style="text-align: center;">	#338 p34	</div>|<div style="text-align: center;">	#338 p33	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Neutral Evil only	</div>||<br />
+Phlegmatic Imp	|<div style="text-align: center;">	#338 p34	</div>|<div style="text-align: center;">	#338 p33	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Neutral Evil only	</div>||<br />
+Sanguine Imp	|<div style="text-align: center;">	#338 p35	</div>|<div style="text-align: center;">	#338 p33	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Neutral Evil only	</div>||<br />
+Copper Asp	|<div style="text-align: center;">	#341 p35	</div>|<div style="text-align: center;">	#341 p35	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Craft construct feat	</div>|<br />
+Razor Hawk	|<div style="text-align: center;">	#341 p38	</div>|<div style="text-align: center;">	#341 p35	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Craft construct feat	</div>|<br />
+Crystal Cat	|<div style="text-align: center;">	#341 p36	</div>|<div style="text-align: center;">	#341 p35	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Craft construct feat	</div>|<br />
+Glass Dragonfly	|<div style="text-align: center;">	#341 p37	</div>|<div style="text-align: center;">	#341 p35	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Craft construct feat	</div>|<br />
+Salvage Rat	|<div style="text-align: center;">	#341 p38	</div>|<div style="text-align: center;">	#341 p35	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Craft construct feat	</div>|<br />
+Erudite Owl	|<div style="text-align: center;">	#341 p36	</div>|<div style="text-align: center;">	#341 p35	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Craft construct feat	</div>|<br />
+Mercurial Spider	|<div style="text-align: center;">	#341 p37	</div>|<div style="text-align: center;">	#341 p35	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Craft construct feat	</div>|<br />
+Great Horned Owl	|<div style="text-align: center;">	MMI p277	</div>|<div style="text-align: center;">	#341 p88	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+King Cobra	|<div style="text-align: center;">	MMI p280	</div>|<div style="text-align: center;">	#341 p88	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Ice Paraelementale, Small	|<div style="text-align: center;">	MoP p180	</div>|<div style="text-align: center;">	#347 p57	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Magma Paraelementale, Small	|<div style="text-align: center;">	MoP p182	</div>|<div style="text-align: center;">	#347 p57	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Ooze Paraelementale, Small	|<div style="text-align: center;">	MoP p182	</div>|<div style="text-align: center;">	#347 p57	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Smoke Paraelementale, Small	|<div style="text-align: center;">	MoP p184	</div>|<div style="text-align: center;">	#347 p57	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>||<br />
+Monodrone	|<div style="text-align: center;">	#354 p44	</div>|<div style="text-align: center;">	#354 p49	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Lawful	</div>||<br />
+Living spell	|<div style="text-align: center;">	ECS p293	</div>|<div style="text-align: center;">	#357 p76	</div>||<div style="text-align: center;">	Any	</div>|<div style="text-align: center;">	Spell sovereign Prc level 1	</div>|<br />
+Shadovig	|<div style="text-align: center;">	#299 p56	</div>|<div style="text-align: center;">	#299 p55	</div>||<div style="text-align: center;">	Unknown	</div>||<br />
+[/table]</div>
+</div>
+
+<b>Celestial familiar:</b> BOED p41<br />
+<div class="spoiler"><div align="left" class="spoiler-title"><b>Spoiler</b></div><div align="right" class="spoiler-select"  name="spoiler-select">
+<span onClick="spoiler(this)" /><span class="spoiler-button">Show</span></span>
+</div>
+<div class="spoiler-body" name="spoiler-body"><br />
+{table=head]<b>Familiar</b>	|	<b>Stat</b>	|	<b>Caster level</b>	|	<b>Alignement</b><br />
+Celestial standard familiar	|<div style="text-align: center;">	MMI p31	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any Good	</div>|<br />
+Coure Eladrin	|<div style="text-align: center;">	BOED p168	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Chaotic good	</div>|<br />
+Lantern Archon	|<div style="text-align: center;">	MMI p16	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Lawfull good	</div>|<br />
+Musteval Guardinal	|<div style="text-align: center;">	BOED p174	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Neutral good	</div>|<br />
+[/table]</div>
+</div><br />
+<br />
+<b>Planar familiar:</b> PlH p41<br />
+<div class="spoiler"><div align="left" class="spoiler-title"><b>Spoiler</b></div><div align="right" class="spoiler-select"  name="spoiler-select">
+<span onClick="spoiler(this)" /><span class="spoiler-button">Show</span></span>
+</div>
+<div class="spoiler-body" name="spoiler-body"><br />
+{table=head]<b>Familiar</b>	|	<b>Stat</b>	|	<b>Caster level</b>	|	<b>Alignement</b><br />
+Anarchic standard familiar	|<div style="text-align: center;">	PlH p108	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Chaotic	</div>|<br />
+Axiomatic standard familiar	|<div style="text-align: center;">	PlH p111	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any Lawful	</div>|<br />
+Celestial standard familiar	|<div style="text-align: center;">	MMI p31	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any Good	</div>|<br />
+Air elemental, Small	|<div style="text-align: center;">	MMI p95	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Earth elemental, Small	|<div style="text-align: center;">	MMI p97	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Fire elemental, Small	|<div style="text-align: center;">	MMI p98	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Water elemental, Small	|<div style="text-align: center;">	MMI p100	</div>|<div style="text-align: center;">	5th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Fiendish standard familiar	|<div style="text-align: center;">	MMI p107	</div>|<div style="text-align: center;">	3rd	</div>|<div style="text-align: center;">	Any Evil	</div>|<br />
+Imp	|<div style="text-align: center;">	MMI p56	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any Non Chaotic and Non Good	</div>|<br />
+Lantern Archon	|<div style="text-align: center;">	MMI p16	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any Non Chaotic and Non Evil	</div>|<br />
+Air Mephit	|<div style="text-align: center;">	MMI p181	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Dust Mephit	|<div style="text-align: center;">	MMI p181	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Earth Mephit	|<div style="text-align: center;">	MMI p182	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Fire Mephit	|<div style="text-align: center;">	MMI p182	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Ice Mephit	|<div style="text-align: center;">	MMI p182	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Magma Mephit	|<div style="text-align: center;">	MMI p182	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Ooze Mephit	|<div style="text-align: center;">	MMI p182	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Salt Mephit	|<div style="text-align: center;">	MMI p183	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Steam Mephit	|<div style="text-align: center;">	MMI p183	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Water Mephit	|<div style="text-align: center;">	MMI p184	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Glass Mephit	|<div style="text-align: center;">	Sa p175	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Sulphur Mephit	|<div style="text-align: center;">	Sa p176	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Mirror Mephit	|<div style="text-align: center;">	EPD p208	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Quasit	|<div style="text-align: center;">	MMI p46	</div>|<div style="text-align: center;">	7th	</div>|<div style="text-align: center;">	Any Non Lawful and Non Good	</div>|[/table]<br />
+</div>
+</div><br />
+<br />
+<b>Dragon familiar:</b> Dra p141<br />
+<div class="spoiler"><div align="left" class="spoiler-title"><b>Spoiler</b></div><div align="right" class="spoiler-select"  name="spoiler-select">
+<span onClick="spoiler(this)" /><span class="spoiler-button">Show</span></span>
+</div>
+<div class="spoiler-body" name="spoiler-body"><br />
+{table=head]<b>Familiar</b>	|	<b>Stat</b>	|	<b>Caster level</b>	|	<b>Alignement</b><br />
+White	|<div style="text-align: center;">	MMI p77	</div>|<div style="text-align: center;">	7th 	</div>|<div style="text-align: center;">	N, CN, CE	</div>|<br />
+Black	|<div style="text-align: center;">	MMI p70	</div>|<div style="text-align: center;">	8th 	</div>|<div style="text-align: center;">	N, NE, CE	</div>|<br />
+Brass	|<div style="text-align: center;">	MMI p79	</div>|<div style="text-align: center;">	9th 	</div>|<div style="text-align: center;">	NG, CG, CN	</div>|<br />
+Green	|<div style="text-align: center;">	MMI p74	</div>|<div style="text-align: center;">	9th 	</div>|<div style="text-align: center;">	N, LE, NE	</div>|<br />
+Copper	|<div style="text-align: center;">	MMI p82	</div>|<div style="text-align: center;">	10th 	</div>|<div style="text-align: center;">	CG, N, CN	</div>|<br />
+Blue	|<div style="text-align: center;">	MMI p72	</div>|<div style="text-align: center;">	10th 	</div>|<div style="text-align: center;">	LN, LE, NE	</div>|<br />
+Bronze	|<div style="text-align: center;">	MMI p80	</div>|<div style="text-align: center;">	11th 	</div>|<div style="text-align: center;">	LG, LN, N	</div>|<br />
+Red	|<div style="text-align: center;">	MMI p75	</div>|<div style="text-align: center;">	12th 	</div>|<div style="text-align: center;">	CN, CE, NE	</div>|<br />
+Silver	|<div style="text-align: center;">	MMI p86	</div>|<div style="text-align: center;">	12th 	</div>|<div style="text-align: center;">	LG, LN, N	</div>|<br />
+Gold	|<div style="text-align: center;">	MMI p84	</div>|<div style="text-align: center;">	14th 	</div>|<div style="text-align: center;">	LG, NG, LN	</div>|[/table]</div>
+</div><br />
+<br />
+<b>Darkness familiar:</b> #322 p67<br />
+<div class="spoiler"><div align="left" class="spoiler-title"><b>Spoiler</b></div><div align="right" class="spoiler-select"  name="spoiler-select">
+<span onClick="spoiler(this)" /><span class="spoiler-button">Show</span></span>
+</div>
+<div class="spoiler-body" name="spoiler-body"><br />
+{table=head]<b>Familiar</b>	|	<b>Stat</b>	|	<b>Caster level</b>	|	<b>Alignement</b><br />
+Cloaker	|<div style="text-align: center;">	MMI p36	</div>|<div style="text-align: center;">	14th 	</div>|<div style="text-align: center;">	Any Non Lawful	</div>|<br />
+Dark creeper	|<div style="text-align: center;">	FF p38	</div>|<div style="text-align: center;">	10th 	</div>|<div style="text-align: center;">	Any Non Lawful	</div>|<br />
+Darkenbeast	|<div style="text-align: center;">	MoF p30	</div>|<div style="text-align: center;">	12th 	</div>|<div style="text-align: center;">	Any Non Good	</div>|<br />
+Darkness pseudo-elemental, Small	|<div style="text-align: center;">	#322 p66	</div>|<div style="text-align: center;">	7th 	</div>|<div style="text-align: center;">	Any Non Good	</div>|<br />
+Night Hunter Bat	|<div style="text-align: center;">	MoF p18	</div>|<div style="text-align: center;">	5th 	</div>|<div style="text-align: center;">	Any Non Good	</div>|<br />
+Sinister Bat	|<div style="text-align: center;">	MoF p18	</div>|<div style="text-align: center;">	8th 	</div>|<div style="text-align: center;">	Any Non Chaotic	</div>|<br />
+Shadow	|<div style="text-align: center;">	MMI p221	</div>|<div style="text-align: center;">	9th 	</div>|<div style="text-align: center;">	Any Non Lawful and Non Good	</div>|<br />
+Shadow asp	|<div style="text-align: center;">	FF p152	</div>|<div style="text-align: center;">	6th 	</div>|<div style="text-align: center;">	Any	</div>|<br />
+Shadow mastiff	|<div style="text-align: center;">	MMI p222	</div>|<div style="text-align: center;">	14th 	</div>|<div style="text-align: center;">	Any Non Good	</div>|<br />
+Wraith	|<div style="text-align: center;">	MMI p257	</div>|<div style="text-align: center;">	14th 	</div>|<div style="text-align: center;">	Any Non Chaotic and Non Good	</div>|[/table]<br />
+</div>
+</div>
+

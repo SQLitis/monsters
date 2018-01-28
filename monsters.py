@@ -47,7 +47,7 @@ except ImportError:
 http_client.HTTPConnection.debuglevel = 1
 import pycurl
 
-rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MM':'Monster Manual v.3.5',
+rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MMI': 'Monster Manual v.3.5', 'MM':'Monster Manual v.3.5',
  'Planar':'Planar Handbook', 'PlH':'Planar Handbook',
  'ToHS':'Towers of High Sorcery',
  'CotSQ':'City of the Spider Queen', 'CSQ':'City of the Spider Queen',
@@ -59,19 +59,21 @@ rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MM':'Monster Manual v.3
  'ExRav': 'Expedition to Castle Ravenloft', 'ExGre': 'Expedition to the Ruins of Greyhawk',
  'ExUn':'Expedition to Undermountain',
  'Dunge':'Dungeonscape', 'Du':'Dungeonscape',
+ 'PHB': "Player's Handbook v.3.5",
  'DMG': "Dungeon Master's Guide v.3.5", 'DMG2': "Dungeon Master's Guide II",
  'Psi':'Psionics Handbook (Web Enhancement)',
  'SoS':'Spectre of Sorrows',
  'CoV':'Champions of Valor',
  'Loona':'Loona, Port of Intrigue',
  'ToH':'Tomb of Horror',
- #'MM2':'Monster Manual 2',
+ 'MMII': 'Monster Manual II', #'MM2':'Monster Manual 2',
  #'MM3':'Monster Manual 3',
- #'MM4':'Monster Manual 4',
- #'MM5':'Monster Manual 5',
+ 'MMIV': 'Monster Manual IV', #'MM4':'Monster Manual 4',
+ 'MMV': 'Monster Manual V', #'MM5':'Monster Manual 5',
  'FF':'Fiend Folio',
  'ElderE':'Elder Evils',
  'RoS':'Races of Stone', 'RotW':'Races of the Wild', 'RDr':'Races of the Dragon',
+ 'RoW': 'Races of the Wild',
  # Races of the Wild excerpt Chordevoc http://archive.wizards.com/default.asp?x=dnd/ex/20050204a&page=5
  'ELH':'Epic Level Handbook',
  'PoC':'Price of Courage',
@@ -87,12 +89,12 @@ rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MM':'Monster Manual v.3
  'LEoF':'Lost Empires of Faerun', 'LE':'Lost Empires of Faerun',
  'Kruk':'The Lost Tomb of Kruk-Ma-Kali', 'SD':'Stone Dead',
  'BoED':'Book of Exalted Deeds', 'FC1':'Fiendish Codex I', 'FC2': 'Fiendish Codex II',
- 'Storm':'Stormwrack', 'Sto':'Stormwrack',
  'SoCo':"Something's Cooking",
  'Draco':'Draconomicon',
  'MH':'Miniatures Handbook',
  'BoKr':'Bestiary of Krynn', 'DoK':'Dragons of Krynn',
  'MgoF':'Magic of Faerun', 'RoF':'Races of Faerun', 'MoF':'Monsters of Faerun',
+ 'PGTF': "Player's Guide to Faerun",
  # Magic of Faerun was updated in Player's Guide to Faerun: Crypt Spawn: Undead (augmented [previous type]); +8/+12 (for sample); LA +2. Do not recalculate attack bonus, saves, or skill points. Add darkvision 60 ft. to special qualities. Spectral Mage: Undead (augmented [previous type], incorporeal); +2/-; LA +6. Do not recalculate attack bonus, saves, or skill points; add darkvision 60 ft. to special qualities. Skills: A spectral mage gains a +8 racial bonus on Hide and Intimidate checks.
  # Monsters of Faerun was updated in Player's Guide to Faerun: Curst: Undead; +5/+8; 5 ft./5 ft.; LA +3. Revenant: Undead; +3/+5 (for sample); 5 ft./5 ft.; 5/magic; LA -. Add darkvision 60 ft. to special qualities. Replace regeneration with fast healing; add undead traits to special qualities. Fast Healing (Ex): A revenant regains lost hit points at the rate of 3 per round, except for damage dealt by fire, as long as it has at least 1 hit point. Fast healing does not restore hit points lost from starvation, thirst, or suffocation, and it does not allow the revenant to regrow or reattach lost body parts. Yuan-Ti, Tainted One: Monstrous humanoid; +3/+4 (for sample); LA +2. Use poison 1/day and polymorph 3/day; spell resistance changes to 12 + 1 per two levels; add darkvision 60 ft. to special qualities.
  'GotP':'Garden of the Plantmaster',
@@ -108,7 +110,6 @@ rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MM':'Monster Manual v.3
  'ToM': 'Tome of Magic', 'TM': 'Tome of Magic',
  'ShSo': 'Shining South',
  'GW': 'Ghostwalk', 'Gh': 'Ghostwalk',
- 'Frost': 'Frostburn',
  'SaD': 'Stand and Deliver', 'HoB': 'Heroes of Battle',
  'C.Ps': 'Complete Psionic', 'OA': 'Oriental Adventures', #'LM': 'Libris Mortis',
  'Under': 'Underdark', 'Und': 'Underdark',
@@ -120,11 +121,15 @@ rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MM':'Monster Manual v.3
  'MotP': 'Manual of the Planes', 'MP': 'Manual of the Planes',
  r'A\d\d': 'Dragon Magazine Annual 00/01',
  r'\d\d\d': 'Dragon Magazine',
- 'LoMys': 'Lands of Mystery', 'DrM': 'Dragon Magic',
+ 'LoMys': 'Lands of Mystery',
+ 'DrM': 'Dragon Magic', 'DM': 'Dragon Magic',
  'CoR': 'Champions of Ruin', 'CR': 'Champions of Ruin',
  'LoM': 'Lords of Madness', 'WndW': 'The Secret of the Windswept Wall',
  'Sand': 'Sandstorm', 'Sa': 'Sandstorm',
- 'C.War': 'Complete Warrior', 'C.Adv': 'Complete Adventurer', 'C.Sco': 'Complete Scoundrel', 'C.Mag': 'Complete Mage', 
+ 'Frost': 'Frostburn', 'Fro': 'Frostburn',
+ 'Storm':'Stormwrack', 'Sto':'Stormwrack',
+ 'C.War': 'Complete Warrior', 'C.Adv': 'Complete Adventurer', 'C.Sco': 'Complete Scoundrel', 'C.Mag': 'Complete Mage',
+ 'CW': 'Complete Warrior', 'CS': 'Complete Scoundrel',
  'SlvSk': 'The Silver Skeleton', 'RTEE': 'Return to the Temple of Elemental Evil',
  'HoH': 'Heroes of Horror', 'HH': 'Heroes of Horror',
  'TVoS': 'The Vessel of Stars',
@@ -263,6 +268,7 @@ def sensible_title(string):
   return ''.join( (word if word in MINOR_WORDS else word.capitalize() ) for word in words)
 
 def spell_name_to_id(curs, spellName, allowNoneResult=False):
+  # more specific than id_from_name
   if spellName == '':
     raise ValueError(spellName)
   curs.execute('''SELECT published,dnd_spell.id from dnd_spell INNER JOIN dnd_rulebook on dnd_spell.rulebook_id=dnd_rulebook.id WHERE dnd_spell.name = ? ORDER BY published;''', (sensible_title(spellName),) )
@@ -281,7 +287,7 @@ def spell_name_to_id(curs, spellName, allowNoneResult=False):
   return spell_id
 
 EDITION_PRIORITY = ('Core (3.5)', 'Supplementals (3.5)', 'Forgotten Realms (3.5)', 'Eberron (3.5)', 'Core (3.0)', 'Oriental Adventures (3.0)', 'Forgotten Realms (3.0)')
-def id_from_name(curs, tableName, name, allowExtraOnLeft=False, allowExtraOnRight=False, useEdition=False):
+def id_from_name(curs, tableName, name, allowExtraOnLeft=False, allowExtraOnRight=False, useEdition=False, additionalCriteria=tuple() ):
   """
   This function uses SQL's like instead of exact equality, to enable tricks like passing "Colossal%" to match Colossal+.
   """
@@ -304,7 +310,10 @@ def id_from_name(curs, tableName, name, allowExtraOnLeft=False, allowExtraOnRigh
     print('useEdition', SQLcmd.replace('?', name) )
     curs.execute(SQLcmd, (name,) )
   else:
-    curs.execute('''SELECT id from {} WHERE name {} ?;'''.format(tableName, operator), (name,) )
+    cmd = '''SELECT id from {} WHERE name {} ?'''.format(tableName, operator)
+    cmd += ''.join(' AND {}=?'.format(crit[0]) for crit in additionalCriteria)
+    cmd += ';'
+    curs.execute(cmd, (name,) + tuple(crit[1] for crit in additionalCriteria) )
   results = curs.fetchall()
   # rowcount does not work for SELECT statements because we cannot determine the number of rows a query produced until all rows were fetched.
   # Even after all rows have been fetched, rowcount is still -1.
@@ -1031,6 +1040,115 @@ appearInNamesMoreThanOnce = [collections.defaultdict(set) for i in range(4) ]
 allUnknownTerms = (set(), set(), set(), set() )
 
 
+class MonsterName(object):
+  def __init__(self, name):
+    if name[:16] == 'Elemental Primal':
+      name = 'Elemental, Primal' + self.name[16:]
+    # Lycanthrope, Drow Werebat
+    # Lycanthrope, Goblin Rat
+    if name == 'Lycanthrope, Goblin Rat, (human form)': name = 'Lycanthrope, Goblin Rat (human form)'
+    if name == 'Imp': name = 'Devil, Imp'
+    reducedName = name
+    delimiters = re.compile('[, ]')
+    if ',' in reducedName:
+      nameSegments = [segment.strip() for segment in delimiters.split(reducedName) if segment != '']
+    else:
+      nameSegments = [segment.strip() for segment in reducedName.split(' ')]
+    nameSegments = [sensible_title(segment) for segment in nameSegments]
+    # Screech Owl or Owl, Screech? DMG uses Screech Owl
+    if name == 'Screech Owl':
+      nameSegments = [name]
+    # nameSegments = [segment for segment in nameSegments if segment not in SIZE_NAMES and segment.lower() != 'medium-size'] # have size separately
+    #print('nameSegments =', nameSegments)
+    nameSegments[-1] = nameParentheticalRE.sub('', nameSegments[-1]).strip()
+    # Parentheticals that appear before the last comma are usually ones we want to keep, like Chromatic (Lost).
+    if len(nameSegments) > 5:
+      raise Exception(self.name)
+    self.orderedInBookBy = list()
+    if 'Dire' in nameSegments and 'Lycanthrope' not in nameSegments:
+      # Bear, Polar, Dire
+      # Dire Rat
+      self.orderedInBookBy.append('Dire')
+      nameSegments.remove('Dire')
+    elif 'Monstrous' in nameSegments:
+      nameSegments.remove('Monstrous')
+      startsWith = 'Monstrous'
+      if len(nameSegments) > 0:
+        startsWith += ' ' + nameSegments[0]
+        nameSegments = nameSegments[1:]
+      self.orderedInBookBy.append(startsWith)
+    elif 'Fox' in nameSegments: # and 'Dire' not in nameSegments
+      self.orderedInBookBy.append('Fox')
+      nameSegments.remove('Fox')
+    elif 'Spider' in nameSegments:
+      self.orderedInBookBy.append('Spider')
+      nameSegments.remove('Spider')
+    elif 'Snake' in nameSegments and 'Sea' not in nameSegments: # and 'Dire' not in nameSegments
+      self.orderedInBookBy.append('Snake')
+      nameSegments.remove('Snake')
+    elif 'Lizard' in nameSegments and 'Shocker' not in nameSegments:
+      self.orderedInBookBy.append('Lizard')
+      nameSegments.remove('Lizard')
+    elif 'Shocker' in nameSegments:
+      nameSegments.remove('Shocker')
+      startsWith = 'Shocker'
+      if len(nameSegments) > 0:
+        startsWith += ' ' + nameSegments[0]
+        nameSegments = nameSegments[1:]
+      self.orderedInBookBy.append(startsWith)
+    elif 'Blink' in nameSegments:
+      nameSegments.remove('Blink')
+      startsWith = 'Blink'
+      if len(nameSegments) > 0:
+        startsWith += ' ' + nameSegments[0]
+        nameSegments = nameSegments[1:]
+      self.orderedInBookBy.append(startsWith)
+    elif 'Gem' in nameSegments:
+      nameSegments.remove('Gem')
+      startsWith = 'Gem'
+      if len(nameSegments) > 0:
+        startsWith += ' ' + nameSegments[0]
+        nameSegments = nameSegments[1:]
+      self.orderedInBookBy.append(startsWith)
+    elif 'Hell' in nameSegments:
+      nameSegments.remove('Hell')
+      startsWith = 'Hell'
+      if len(nameSegments) > 0:
+        startsWith += ' ' + nameSegments[0]
+        nameSegments = nameSegments[1:]
+      self.orderedInBookBy.append(startsWith)
+    elif 'Winter' in nameSegments:
+      nameSegments.remove('Winter')
+      startsWith = 'Winter'
+      if len(nameSegments) > 0:
+        startsWith += ' ' + nameSegments[0]
+        nameSegments = nameSegments[1:]
+      self.orderedInBookBy.append(startsWith)
+    elif 'Elemental' in nameSegments and 'Demon' not in nameSegments:
+      self.orderedInBookBy.append('Elemental')
+      nameSegments.remove('Elemental')
+    elif 'Formian' in nameSegments:
+      self.orderedInBookBy.append('Formian')
+      nameSegments.remove('Formian')
+    elif 'Mephit' in nameSegments:
+      self.orderedInBookBy.append('Mephit')
+      nameSegments.remove('Mephit')
+    elif nameSegments[0] == 'Sewerm':
+      self.orderedInBookBy.append('Snake') # ordered under Snake in Serpent Kingdoms
+    self.orderedInBookBy.extend(nameSegments)
+  def ezkajii(self):
+    nameSegments = self.orderedInBookBy
+    if 'Dire' in nameSegments:
+      nameSegments.remove('Dire')
+      nameSegments.append('Dire')
+    # Sea Snake really is ordered in Stormwrack as Sea Snake, not under Snake, despite referencing Snake in MM
+    elif nameSegments[0] == 'Sea' and nameSegments [1] == 'Snake':
+      nameSegments[0:2] = ['Sea Snake']
+    elif len(nameSegments) >= 2 and nameSegments[-1] == 'Python' and nameSegments[-2] == 'Tree':
+      nameSegments[-2:] = ['Tree Python']
+    return ', '.join(nameSegments)
+
+
 class Monster(object):
   #allEnvs = set()
   @staticmethod
@@ -1252,6 +1370,7 @@ class Monster(object):
       self.challenge_rating += 10
 
     self.rulebook_abbrev = xls_row[30].value
+    if self.name == 'Demon, Alkilith': self.rulebook_abbrev = 'FF'
 
     self.specialAttacks = Monster.splitSpecialAbilities(xls_row[14].value)
     #print('self.specialAttacks =', self.specialAttacks)
@@ -1482,8 +1601,7 @@ class Monster(object):
         curs.execute('''INSERT INTO monster_has_spell_like_ability (monster_id, spell_id, caster_level, caster_level_scales_with_HD, uses_per_day, parenthetical) VALUES (?, ?, ?, ?, ?, ?)''', (monster_id, spell_id, self.HitDice, True, 127, 'listed as special ability, guessed to be SLA') )
   def insert_into(self, curs):
     #print('rulebook_abbrev =', self.rulebook_abbrev)
-    if self.name == 'Demon, Alkilith': self.rulebook_abbrev = 'FF'
-    rulebook_abbrevs = [s.strip() for s in self.rulebook_abbrev.split(',')]
+    rulebook_abbrevs = [s.strip() for s in self.rulebook_abbrev.split(',')] # comma-separated list of rulebooks
     if len(rulebook_abbrevs) > 1:
       #print(self.name, 'has multiple rulebooks:', rulebook_abbrevs)
       rulebook_abbrevs = [next(a for a in rulebook_priority if a in rulebook_abbrevs)]
@@ -1828,6 +1946,62 @@ assert Template.changeOnlyTheseTypesRE.match(r"Unchanged; animals or vermin beco
 
 
 
+standardFamiliarREstring = r'\n(?P<name>[\w ,]+)\t\|<div style="text-align: center;">\t(?P<monsterRulebook>\w+) p(?P<monsterPage>\d+)\t</div>\|<div style="text-align: center;">\t(?P<asFamiliarRulebook>\w+) p(?P<asFamiliarPage>\d+)'
+standardFamiliarRE = re.compile(standardFamiliarREstring)
+def make_familiar_table(curs):
+  curs.execute('''CREATE TABLE dnd_familiar (
+  monster_id INTEGER NOT NULL
+  ,alternate_name TEXT DEFAULT NULL
+  ,rulebook_id INTEGER NOT NULL
+  ,page unsigned smallint(3) NOT NULL
+  ,prereq_spellcaster_level unsigned tinyint(2) NOT NULL DEFAULT 0
+,FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
+,FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
+  );''')
+  for matchObj in standardFamiliarRE.finditer(open('familiars.txt', 'r').read()):
+    print(matchObj.group(0))
+    givenName = matchObj.group('name')
+    if (givenName == 'Celestial standard familiar' or givenName == 'Fiendish standard familiar' or
+        givenName == 'Hairy spider' or 'Guardian' in givenName or 'Monstrous spider' in givenName or
+        givenName == 'Night Hunter Bat' or givenName == 'Lizard, spitting crawler' or
+        givenName == 'Tressym'):
+      continue
+    if givenName == 'Sea snake':
+      givenName = 'Sea Snake, Tiny'
+
+    monsterRulebookID = get_rulebook_id(curs, matchObj.group('monsterRulebook'))
+    if monsterRulebookID is None:
+      raise Exception('Rulebook' + matchObj.group('monsterRulebook') + 'not found!')
+    asFamiliarRulebookID = get_rulebook_id(curs, matchObj.group('asFamiliarRulebook'))
+    if asFamiliarRulebookID is None:
+      raise Exception('Rulebook' + matchObj.group('asFamiliarRulebook') + 'not found!')
+
+    name = MonsterName(givenName)
+    print(matchObj.group('name'), matchObj.group('monsterRulebook'), matchObj.group('monsterPage'))
+    if givenName == 'Fish Owl':
+      searchForName = 'Owl'
+    elif givenName == 'Parrot':
+      searchForName = 'Raven'
+    elif givenName == 'Gyrfalcon':
+      searchForName = 'Hawk'
+    elif givenName == 'Lemming':
+      searchForName = 'Rat'
+    elif givenName == 'Snowy owl':
+      searchForName = 'Owl'
+    elif givenName == 'Puffin':
+      searchForName = 'Raven'
+    else:
+      searchForName = name.ezkajii()
+      givenName = None
+    monsterID = id_from_name(curs, 'dnd_monster', searchForName, additionalCriteria=(('rulebook_id', monsterRulebookID),))
+    if monsterID is None:
+      raise Exception(searchForName + ' not found in ' + matchObj.group('monsterRulebook'))
+
+    curs.execute('''INSERT INTO dnd_familiar (monster_id, alternate_name, rulebook_id, page) VALUES (?,?,?,?);''',
+                 (monsterID, givenName, asFamiliarRulebookID, int(matchObj.group('asFamiliarPage') ) ) )
+
+
+
 
 
 ShaxItemRE = re.compile(r'<b>(?P<name>[\w\s]+)</b>[\s\w\d\.\,\(\)]*?<br />\nPrice: (?P<price>\d+) (?P<coin>[CSG])P<br />\nWeight: (?P<weight>\d+\.?\d*|\-+)#?<br />\n\((?P<book>[\w\s]+) p\. (?P<page>\d+)\)<br />\n(?P<desc>.+)')
@@ -1874,6 +2048,7 @@ CREATE INDEX "dnd_item_dnd_item_6a812853" ON "dnd_item" ("property_id");
 CREATE INDEX "dnd_item_dnd_item_ed720ca8" ON "dnd_item" ("synergy_prerequisite_id");
 """
 def make_item_tables(curs):
+  # http://www.imarvintpa.com/dndlive/items.php?ID=2128
   curs.execute('''DROP TABLE dnd_itemslot;''')
   curs.execute('''CREATE TABLE dnd_itemslot (
   id INTEGER PRIMARY KEY NOT NULL
@@ -2013,6 +2188,20 @@ Weapons or offensive items	Evocation
 Bonus to ability score, on skill check, etc.	Transmutation
 """
 
+def migrate_rulebook_id(curs):
+  curs.execute('''UPDATE dnd_characterclassvariant SET rulebook_id = (SELECT dnd_rulebook.id FROM dnd_rulebook INNER JOIN rulebooks_backup ON dnd_rulebook.name=rulebooks_backup.name WHERE rulebooks_backup.id=rulebook_id);''')
+
+def get_rulebook_id(curs, rulebook_abbrev):
+  if re.match(r'\d\d\d', rulebook_abbrev): rulebook_abbrev = r'\d\d\d'
+  elif re.match(r'A\d\d', rulebook_abbrev): rulebook_abbrev = r'A\d\d'
+  curs.execute('''SELECT rulebook_id FROM rulebook_abbrev WHERE abbr=?;''',
+                   (rulebook_abbrev,) )
+  result = curs.fetchone()
+  if result is None:
+    raise Exception('no rulebook found:', rulebook_abbrev)
+  return result[0]
+
+
 
 
 
@@ -2094,18 +2283,20 @@ fortitude_divisors = {'Animal':2, # certain animals have different good saves
       }
 fortitude_additions = {key:(2 if d==2 else 0) for key,d in fortitude_divisors.items()}
 
-def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite',
-                    marvinCache=None):
-  '''The original dnd_monster has only 29 monsters and has such design flaws as the default for attack being greatsword, so start from scratch.
-  '''
-  monsterOnlyDB = 'dnd_monsters.sqlite'
+def recreate_db_file(DBpath='dnd.sqlite', monsterOnlyDB = 'dnd_monsters.sqlite'):
   if os.path.exists(monsterOnlyDB):
     os.remove(monsterOnlyDB)
   assert not os.path.exists(monsterOnlyDB)
   shutil.copyfile(DBpath, monsterOnlyDB)
   print('creating file', monsterOnlyDB)
-  
-  conn = sqlite3.connect(monsterOnlyDB)
+  return sqlite3.connect(monsterOnlyDB)
+
+def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite',
+                    marvinCache=None):
+  '''The original dnd_monster has only 29 monsters and has such design flaws as the default for attack being greatsword, so start from scratch.
+  '''
+  monsterOnlyDB = 'dnd_monsters.sqlite'
+  conn = recreate_db_file(DBpath, monsterOnlyDB)
   curs = conn.cursor()
 
   if marvinCache is not None:
@@ -2118,7 +2309,9 @@ def create_database(XLSfilepath="Monster Compendium.xls", DBpath='dnd.sqlite',
   #def seven(x): return 7
   #conn.create_function("seven", 1, seven) # not accessible from sqlite3
 
+  print('about to read_xls')
   alphabetical,ODE = read_xls(XLSfilepath)
+  print('done reading xls')
   #ipdb.set_trace()
   #print('maxlen among names =', max([str(row[0]) for row in alphabetical.get_rows()], key=len) )
 
@@ -2161,14 +2354,6 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
 
   rulebook_max_name_len = max(max(len(n) for n in rulebook_abbreviations.values() ), 128)
   rulebook_max_abbr_len = max(max(len(n) for n in rulebook_abbreviations.keys() ), 7)
-  # Before we shove the old table aside, we save the abbreviations from it.
-  # This means we have to preserve the id numbers, but we had to do that anyway due to those id numbers being referenced everywhere.
-  curs.execute('''CREATE TABLE rulebook_abbrev (
-  abbr CHAR({}),
-  rulebook_id INTEGER,
-UNIQUE(abbr),
-FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
-  );'''.format(rulebook_max_abbr_len) )
   # backup mirrors the schema of the original
   curs.execute('''CREATE TEMPORARY TABLE rulebooks_backup (id int, dnd_edition_id int, name varchar({}), abbr varchar({}), description longtext, year varchar(4), official_url varchar(255), slug varchar(128), image varchar(128), published date);'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
   curs.execute('''INSERT INTO rulebooks_backup SELECT id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM dnd_rulebook;''')
@@ -2187,15 +2372,25 @@ FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
   UNIQUE(name)
   );'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
   curs.execute('''INSERT INTO dnd_rulebook (dnd_edition_id, name, description, year, official_url, slug, image, published) SELECT dnd_edition_id, name, description, year, official_url, slug, image, published FROM rulebooks_backup;''')
+  # Save the abbreviations from the old rulebook table before dropping it.
+  curs.execute('''CREATE TABLE rulebook_abbrev (
+  abbr CHAR({}),
+  rulebook_id INTEGER,
+UNIQUE(abbr),
+FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
+  );'''.format(rulebook_max_abbr_len) )
   curs.execute('''INSERT INTO rulebook_abbrev (abbr, rulebook_id) SELECT abbr, dnd_rulebook.id FROM rulebooks_backup INNER JOIN dnd_rulebook ON dnd_rulebook.name=rulebooks_backup.name WHERE abbr!="EE" and abbr!="DD" and dnd_rulebook.name!="Monster Manual";''')
+  migrate_rulebook_id(curs)
   curs.execute('''DROP TABLE rulebooks_backup;''')
   # Many of the rulebooks in rulebook_abbreviations are not listed yet, so list them first.
   curs.executemany('''INSERT OR IGNORE INTO dnd_rulebook (name) VALUES (?);''', [(name,) for name in rulebook_abbreviations.values()] )
   # Now that the rulebooks are listed, we set up their abbreviations.
   curs.executemany('''INSERT OR REPLACE INTO rulebook_abbrev (abbr, rulebook_id) SELECT ?, dnd_rulebook.id FROM dnd_rulebook WHERE name=?;''', rulebook_abbreviations.items() )
   curs.execute('''CREATE INDEX index_dnd_rulebook_name ON dnd_rulebook(name);''')
+  curs.execute('''CREATE INDEX index_rulebook_abbrev ON rulebook_abbrev(abbr);''')
 
   make_item_tables(curs)
+  print('done making item tables')
 
   curs.execute('''CREATE TEMPORARY TABLE types_backup (id int, name varchar(32), slug varchar(32) );''')
   curs.execute('''INSERT INTO types_backup SELECT id, name, slug FROM dnd_monstertype;''')
@@ -2542,7 +2737,9 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
 FOREIGN KEY(spell_id) REFERENCES dnd_spell(id)
   );''')
   # It's rare, but some monsters do have SLAs of different caster levels.
+  print('about to insert psionic powers')
   insert_psionic_powers(curs)
+  print('done inserting psionic powers')
 
   curs.execute('''CREATE TABLE spell_brings_monster (
   spell_id INTEGER NOT NULL,
@@ -2577,6 +2774,7 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   # the MapTool Token link on each monster leads to XML
   # http://www.imarvintpa.com/dndlive/TokMonsters.php?ID=1
   
+  print('making template tables')
   curs.execute('''CREATE TABLE dnd_template (
   id INTEGER PRIMARY KEY NOT NULL,
   name varchar({}) NOT NULL,
@@ -2600,12 +2798,15 @@ FOREIGN KEY(template_id) REFERENCES dnd_template(id)
   #for template in Template.findall(open('rockdeworldTemplates.txt').read() ):
   for template in Template.read_file('rockdeworldTemplates.txt'):
     template.insert_into(curs)
+  print('done with templates')
 
   Monster.from_statblock("Ferret: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +2; Spd 15 ft., climb 15 ft.; AC 17, touch 16, flat-footed 15; Base Atk +0; Grp -16; Atk +6 melee (1d2-4, bite); Full Atk +6 melee (1d2-4, bite); Space/Reach 1 ft./0 ft.; SA attach; SQ scent; AL N; SV Fort +2, Ref +4, Will +1; Str 3, Dex 15, Con 10, Int 2, Wis 12, Cha 5. Skills and Feats: Balance +10, Climb +11, Hide +13, Move Silently +9, Spot +14; Weapon Finesse. Attach (Ex): On a hit with its bite attack, it automatically deals bite damage each round (AC 15 when attached).", 'DMG').insert_into(curs)
   Monster.from_statblock("Hedgehog: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +0; Spd 15 ft.; AC 17, touch 15, flat-footed 16; Base Atk +0; Grp -16; Atk +5 melee (1d3-4 bite); Full Atk +5 melee (1d3-4 bite); Space/Reach 1 ft./0 ft.; SA poison; SQ defensive ball; AL N; SV Fort +2, Ref +3, Will +1; Str 3, Dex 12, Con 10, Int 2, Wis 12, Cha 5. Skills and Feats: Hide +17, Listen +5, Spot +5; Weapon Finesse. Poison (Ex): When in a defensive ball (see below), spines poison foes touching the hedgehog; injury, Fortitude DC 10, initial and secondary damage 1d2 Dex. Defensive Ball (Ex): Rolls into a ball as a standard action, granting a +2 circumstance bonus on saves and AC. Unrolling is a free action.", 'DMG').insert_into(curs)
   Monster.from_statblock("Mouse: CR 1/10; Fine animal; HD 1/4d8; hp 1; Init +0; Spd 10 ft., climb 10 ft.; AC 19, touch 18, flat-footed 19; Base Atk +0; Grp -21; Atk -; Full Atk -; Space/Reach 1/2 ft./0 ft.; SA -; SQ scent; AL N; SV Fort +2, Ref +2, Will +1; Str 1, Dex 11, Con 10, Int 2, Wis 12, Cha 2. Skills and Feats: Balance +8, Climb +10, Hide +20, Move Silently +12; feat.", 'DMG').insert_into(curs)
   Monster.from_statblock("Screech Owl: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +3; Spd 10 ft., fly 30 ft. (average); AC 18, touch 17, flat-footed 15; Base Atk +0; Grp -15; Atk +7 melee (1d2-3, talons); Full Atk +7 melee (1d2-3, talons); Space/Reach 1 ft./0 ft.; SA -; SQ -; AL N; SV Fort +2, Ref +5, Will +2; Str 4, Dex 17, Con 10, Int 2, Wis 14, Cha 4. Skills and Feats: Listen +14, Move Silently +20, Spot +8; Weapon Finesse.", 'DMG').insert_into(curs)
   Monster.from_statblock("Thrush: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +2; Spd 10 ft., fly 40 ft. (average); AC 17, touch 16, flat-footed 15; Base Atk +0; Grp -17; Atk -; Full Atk -; Space/Reach 1 ft./0 ft.; SA -; SQ -; AL N; SV Fort +2, Ref +4, Will +2; Str 1, Dex 15, Con 10, Int 2, Wis 14, Cha 6. Skills and Feats: Listen +8, Spot +8; Alertness.", 'DMG').insert_into(curs)
+
+  print('about to start main monster loop')
   # I'm guessing dropwhile has no overhead after failing
   for i,row in itertools.dropwhile(lambda p: p[0]==0,
                enumerate(ODE.get_rows() ) ):
@@ -2614,6 +2815,8 @@ FOREIGN KEY(template_id) REFERENCES dnd_template(id)
     monster = Monster(row)
     monster.insert_into(curs)
     #if i > 8000: break
+  
+  make_familiar_table(curs)
 
   if False: parse_IMarvinTPA(curs, marvinCache)
   
