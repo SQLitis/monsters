@@ -53,6 +53,15 @@ We can immediately note that all types besides Humanoid give one of those automa
 
   sqlite> select dnd_monster.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id where dnd_monstertype.name="Humanoid" and not exists (select 1 from monster_special_ability inner join dnd_special_ability on monster_special_ability.special_ability_id=dnd_special_ability.id and monster_special_ability.monster_id=dnd_monster.id and (dnd_special_ability.name like "%darkvision%" or dnd_special_ability.name like "%low-light vision%") );
 
+In 3.5, skeletons and zombies were changed to be evil. Are there still any non-evil undead in 3.5?
+We don't have edition data in the rulebook table yet, but a spot-check reveals there definitely is one:
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_monster.name, intelligence, law_chaos, dnd_monstertype.name, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on dnd_racesize.id=size_id inner join monster_has_alignment on dnd_monster.id=monster_has_alignment.monster_id inner join dnd_rulebook on dnd_monster.rulebook_id=dnd_rulebook.id where dnd_monstertype.name="Undead" and good_evil!=-1 order by challenge_rating;
+  Haunt, Taunting|13|C|Undead|Monster Manual V
+
+
 
 Which humanoids have the fastest movement speeds?
 
@@ -268,64 +277,53 @@ For one adventure, I wanted to have a set of seven otherworldly "living wells".
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monster.name,challenge_rating from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id inner join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstertype.name="Outsider" or dnd_monstertype.name="Elemental") and (dnd_monstersubtype.name="Water" or dnd_monstersubtype.name="Aquatic") order by challenge_rating;
+  sqlite> select distinct challenge_rating, dnd_monster.name, dnd_monstertype.name || " (" || group_concat(distinct dnd_monstersubtype.name) || ")", max(CASE subtype2.name WHEN "Extraplanar" THEN "Extraplanar" ELSE NULL END), dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id inner join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id LEFT JOIN monster_has_subtype AS hasSubtype2 ON hasSubtype2.monster_id=dnd_monster.id LEFT JOIN dnd_monstersubtype AS subtype2 ON subtype2.id=hasSubtype2.subtype_id inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where (dnd_monstertype.name="Outsider" or dnd_monstertype.name="Elemental" or (subtype2.name="Extraplanar") ) and (dnd_monstersubtype.name="Water" or dnd_monstersubtype.name="Aquatic") GROUP BY dnd_monster.id ORDER BY challenge_rating;
   Gen, Water|-2
-  Paraelemental, Ooze, Small|1
-  Imp, Vapor|1
-  Elemental, Ectoplasm, Small|1
-  Elemental Grue, Vardigg|2
-  Elemental Steward, Arctine|2
-  Mephit, Ooze|3
-  Mephit, Water|3
+  2|Elemental Grue, Vardigg|Water|Elemental|Complete Arcane
+    Water Jet (Sp): As a standard action, a water grue can create a tremendously powerful 30-foot line of water. Any creature in the area of the line takes 2d6 points of damage (Refl ex DC 11 negates). A creature failing the saving throw must succeed on a Strength check or a Balance check (DC 5 + damage dealt) or be knocked prone by the force of the blast.
+  3|Mephit, Water|Water|Outsider|Monster Manual v.3.5
   Tojanida, Juvenile|3
-  Paraelemental, Ooze, Medium|3
-  Elemental, Ectoplasm, Medium|3
-  Demon, Skulvyn|4
-  Demon, Elemental, Water|4
+  4|Demon, Skulvyn|Aquatic|Outsider|Fiend Folio
+    Wounding (Ex): Wounds resulting from a skulvyn's tail lash attacks bleed for an additional 1 point of damage per round thereafter. Multiple wounds from such attacks result in cumulative bleeding loss
+    Slow Aura (Su): Living creatures that come within 30 feet of a skulvyn must make a Will save (DC 12) or become slowed for 4 rounds.
+  4|Demon, Elemental, Water|Water|Outsider|Dragon Compendium
+  4|Nereid|Fey (Aquatic)|Extraplanar|Stormwrack
+    Drown (Su): A nereid can make a special touch attack to try to fill an opponent's lungs with water.
   Tojanida, Adult|5
-  Paraelemental, Ooze, Large|5
-  Orlythys|5
-  Elemental Weird, Water, Lesser|5
-  Elemental, Ectoplasm, Large|5
-  Spawn of Juiblex, Lesser|6
-  Elemental Spawn, Acid|6
-  Elemental Spawn, Mist|6
-  Elemental Spawn, Mud|6
-  Paraelemental, Ooze, Huge|7
-  Elemental, Ectoplasm, Huge|7
-  Yugoloth, Echinoloth|8
+  5|Orlythys|Water|Outsider|Dragon Magazine
+  5|Elemental Weird, Water, Lesser|Water|Elemental|Dragon Magazine
+  8|Yugoloth, Echinoloth|Aquatic|Outsider|Stormwrack
+    Infernal Wound (Su): The damage an echinoloth deals as it rends with its terrible hooked tentacles causes persistent wounds. Any creature injured by the echinoloth's rend attack loses 1 additional hit point each round.
   Tojanida, Elder|9
-  Immoth|9
-  Aspect of Dagon|9
-  Genie, Marid|9
-  Paraelemental, Ooze, Greater|9
-  Caller from the Deeps|9
-  Elemental, Ectoplasm, Greater|9
-  Spawn of Juiblex, Greater|10
-  Paraelemental, Ooze, Elder|11
-  Elemental, Ectoplasm, Elder|11
-  Elemental Weird, Water|12
-  Aspect of Sekolah|13
-  Scyllan|13
-  Spawn of Juiblex, Elder|14
-  Omnimental|15
-  Avatar of Elemental Evil, Waterveiled Assassin|15
-  Elemental Weird, Ice|15
-  Tempest|16
-  Demon, Uzollru|16
-  Elemental, Water, Monolith|17
-  Demon, Wastrilith|17
-  Paraelemental, Ooze, Monolith|17
-  Demon, Myrmyxicus|21
-  Dagon (Prince of the Depths)|22
-  Olhydra (Princess of Evil Water Creatures, Princess of Watery Evil, Mistress of the Black Tide)|22
-  Ben-hadar (Prince of Good Water Creatures, Squallbringer, The Valorous Tempest)|22
-  Essence of Shothragot|22
-  Demogorgon (Prince of Demons)|23
+  9|Aspect of Dagon|Aquatic|Outsider|Fiendish Codex I
+    Form of Madness (Su) Anyone within 60 feet of an aspect of Dagon must make a Will save (DC 17). Failure indicates the creature develops an overwhelming fear of the ocean and its depths.
+  9|Genie, Marid|Water|Outsider|Manual of the Planes
+    Spell-Like Abilities: At will create water, detect evil, detect good, detect magic, invisibility, purify food and drink (water only), see invisibility; 5/day control water, gaseous form, solid fog, water breathing; 1/year limited wish (to nongenies only).
+  9|Caller from the Deeps|Water|Elemental|Stormwrack
+    Summon Watery Ally (Sp): Once per hour, a caller from the deeps can summon a Medium water elemental or a Large fiendish shark. This creature remains for 10 minutes or until slain.
+  12|Elemental Weird, Water|Water|Elemental|Monster Manual II
+     A water weird can cast arcane spells and divine spells from the Water and Healing domains as an 18th-level sorcerer.
+  13|Aspect of Sekolah|Aquatic|Outsider|Fiendish Codex II
+  13|Scyllan|Aquatic|Outsider|Stormwrack
+     Control Water (Sp): 1/hour, caster level 16th.
+  15|Avatar of Elemental Evil, Waterveiled Assassin|Water|Elemental|Monster Manual IV
+  17|Elemental, Water, Monolith|Water|Elemental|Complete Arcane
+  17|Demon, Wastrilith|Aquatic|Outsider|Fiend Folio
+     Breath Weapon (Su): Cone of boiling water, 3d10 points of damage, 60 feet, every 1d4 rounds; Reflex DC 21 half.
+     Break Summoning (Ex): If summoned via a summon monster spell, a wastrilith can make an opposed Wisdom check to break free of the summoning. If it succeeds, it then goes on a rampage, attacking the summoner.
+     Spell-Like Abilities: At will blasphemy, control water
+     Three times per day, a wastrilith can cast summon monster IX as a 17th-level wizard. It can only summon aquatic and water-based creatures, such as fiendish sharks or squids and water elementals. Wastriliths can be summoned using a summon monster IX spell.
+      Immunity to Water (Ex): Wastriliths are immune to attacks that are based on water.
+  21|Demon, Myrmyxicus|Aquatic|Outsider|Fiend Folio
+     3/day control water, control weather
+  22|Dagon (Prince of the Depths)|Aquatic|Outsider|Fiendish Codex I
+  22|Olhydra (Princess of Evil Water Creatures, Princess of Watery Evil, Mistress of the Black Tide)|Water|Elemental|Dragon Magazine
+  22|Ben-hadar (Prince of Good Water Creatures, Squallbringer, The Valorous Tempest)|Water|Elemental|Dragon Magazine
 
 Here we can see that a water gen is listed as CR -2...huh?
-To keep the size down, fractions of the form 1/x are stored as negative integers.
+To avoid dealing with floating-point numbers at all other times, fractions of the form 1/x are stored as negative integers.
 -2 means 1/2.
+
 
 
 Suppose we start thinking about what demons might use Extract Gift to keep tabs on a number of mortals.
@@ -432,17 +430,31 @@ Gutpuppets do not seek to kill living creatures and try to avoid them. However, 
 The gutpuppet can sustain a corpse for up to a month. While its fluid prevents the decay of muscle and connective tissue, the gutpuppet must eat. The corpse itself is the most convenient source of food, so it nibbles slowly on the inner flesh. Once the body has ceased to be of use, the gutpuppet crawls out through the most accessible opening and inches away, looking for other bodies.
 
 If the carrion crawler isn't horrifying enough for you, and the gutpuppet still isn't horrifying enough for you...
-A skull lord’s creator skull can create a bonespur from nearby bones and bone shards. Undead created by this ability are automatically under the skull lord’s control. A skull lord can have a number of undead under the control of its creator skull equivalent to an EL 7 encounter. For example, a skull lord might have four bonespurs under its control.
-A spellcaster of 8th level or higher can create a bonespur using the create undead spell. Creating a bonespur requires skeletal remains equivalent to six Medium creatures.
+A skull lord's creator skull can create a bonespur from nearby bones and bone shards. Undead created by this ability are automatically under the skull lord's control.
+ A skull lord can have a number of undead *under the control* of its creator skull equivalent to an EL 7 encounter. For example, a skull lord might have four bonespurs under its control.
+ There is no provision for the creator skull ever losing control of a creature, so this might mean that it cannot create undead in excess of this number.
+A spellcaster of 8th level or higher can create a bonespur using the create undead spell. Creating a bonespur requires skeletal remains equivalent to six Medium creatures. (These bonespurs are not automatically under anyone's control.)
+Spell-like abilities function like spells, but here we have the special requirement that the creator must be a spellcaster. That can be satisfied by the Fell Conspiracy [Ceremony] feat.
+sqlite> select distinct hit_dice, dnd_spell.name, uses_per_day, dnd_monster.name, dnd_monstertype.name, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_has_spell_like_ability on monster_has_spell_like_ability.monster_id=dnd_monster.id inner join dnd_spell on monster_has_spell_like_ability.spell_id=dnd_spell.id inner join dnd_rulebook on dnd_monster.rulebook_id=dnd_rulebook.id where dnd_spell.name="Create Undead" order by hit_dice;
+9|Create Undead|3|Atropal Scion|Undead|Libris Mortis: The Book of the Dead
+10|Create Undead|3|Avolakia|Aberration|Monster Manual II
+ Avolakias are experts at infiltrating humanoid societies for a variety of nefarious purposes.
+ Although they can digest dead or living flesh, avolakias find both disgusting and resort to such sustenance only under dire circumstances. They prefer to eat undead flesh; fresh off a zombie's flank is best.
+ They delight in creating and modifying undead of all sorts, which they use for both food and defense.
+ Change Shape (Su): An avolakia can assume the form of any Small or Medium humanoid.
+ Spell-Like Abilities: At will chill touch, cause fear, detect magic, disrupt undead, gentle repose, ghoul touch, halt undead, mage hand, read magic, spectral hand; 3/day animate dead, create undead, enervation, vampiric touch. Caster level 14th
+
+Some more powerful creatures can Create Undead at will, but it still takes an hour each, and a pit fiend is unlikely to spend much time on such things.
+
 Alignment: These creatures have animal intelligence, but they are driven by utter loyalty to their creator and the corrupt energy that animates them. They are uniformly lawful evil.
 Bonespurs are simple creatures that have little use for trinkets or trophies. However, they sometimes collect wealth from slain opponents as an offering to their masters.
-Skull lords probably don't give much thought to what will happen to their bonespurs if the skull lord is destroyed. The most likely place to find a bonespur is near its master's former lair, surrounded by trinkets (some valuable, some valueless, the bonespur can't tell the difference) it's brought as gifts, whining piteously like an abandoned dog, wondering when its master is going to come home.
+Skull lords probably don't give much thought to what will happen to their bonespurs if the skull lord is destroyed. The most likely place to find a bonespur is near its master's former lair, surrounded by trinkets (some valuable, some valueless, the bonespur can't tell the difference) it has brought as gifts, whining piteously like an abandoned dog, wondering when its master is going to come home.
 Realistically, a disturbed bonespur will probably try to chase off anyone nosing around its master's lair, so magical assistance such as Command Undead will probably be necessary before you can begin to train it.
 
 Speed 10 ft. (2 squares), 40 ft. in charging form
 Boneshard Blast (Su) Once per day, as a free action immediately following a charge, a bonespur can explode in a shower of bone shards. The shards of the bonespur transform into its normal towering shape at the beginning of its next turn.
 Charging Form (Su) Once per day, as a swift action, a bonespur can transform from a column of bone into a rhinolike form. In this form, its speed increases to 40 feet.
-When charging, the bonespur transforms into a 12-foot-long rhino-like shape. A bonespur’s skeletal form weighs 400 pounds.
+When charging, the bonespur transforms into a 12-foot-long rhino-like shape. A bonespur's skeletal form weighs 400 pounds.
 When first encountered, a bonespur slashes its bone scythe menacingly before shifting into its charging form and racing at the nearest group of enemies. At the end of its charge, it uses its boneshard blast ability, reshaping into a column of bone on its next turn and attacking all that come within reach.
 Though a bonespur is of limited intelligence, it recognizes the advantage of pushing opponents into pits or off ledges, and it makes bull rush attacks whenever possible. At the same time, a bonespur has no sense of self-preservation, and these creatures have been known to follow opponents over the edge of cliffs in the zealousness of a bull rush attack.
 Though bonespurs serve at the side of the skull lord or spellcaster who created them, their errands of destruction sometimes see them sent far from their masters.
@@ -663,9 +675,11 @@ We'll order by DC first, then carrying capacity, so that for any given level of 
   Animal|Large|1040|40|Boar, Dire|Monster Manual|22
 
 The surprise standouts are boars and dire boars. Just as willing to eat foliage as the bodies of your fallen foes, they're strong and not too slow.
+Raising a dire boar requires a total +12 if you take 10. A first-level human commoner with 4 ranks Handle Animal, +1 Charisma bonus, Skill Focus and Animal Affinity has +10, so they need Aid Another from an assistant. (The Uncivilized trait could give them a +1 bonus on Handle Animal checks, but that's not enough.)
 
 
 What about other movement modes? For example, a tiny climber might be able to get your grappling hook where you need it more silently than you can.
+Or maybe all you really want is a messenger eagle.
 
   sqlite> select distinct dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, abbrev, speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" order by abbrev, speed, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -hit_dice;
   Tiny|17|b|5|Lizard, Horned|Sandstorm|1
@@ -688,6 +702,9 @@ What about other movement modes? For example, a tiny climber might be able to ge
   Large|600|f|60|Drakkensteed|Dragon Magic|4
   Large|300|f|80|Dinosaur, Pteranadon|Serpent Kingdoms|3
   Gargantuan|11200|f|80|Roc|Monster Manual|18
+  Tiny|15|f|60|Hawk|Monster Manual v.3.5|1
+  Small|33|f|80|Eagle|Monster Manual v.3.5|1
+  Small|66|f|100|Eagle, Legendary|Monster Manual II|12
   Huge|1840|f|100|Dinosaur, Quetzelcoatlus|Monster Manual II|10
 
 Bats have good maneuverability.
@@ -708,7 +725,9 @@ A burrowing ankheg usually does not make a usable tunnel, but can construct a tu
 
 
 Technically, Handle Animal can work on any creature with an Intelligence score of 1 or 2 (which are also vulnerable to Ray of Stupidity), which technically includes any creature that has been Feebleminded, but making a creature friendly enough to be willing to be trained is a sticking point.
-A druid can also use Wild Empathy to influence a magical beast with an Intelligence score of 1 or 2, but she takes a -4 penalty on the check. Wild animals are usually unfriendly, so it takes a DC15 check to make it indifferent, DC25 to make it friendly. A druid can also use this ability to influence a magical beast with an Intelligence score of 1 or 2, but she takes a -4 penalty on the check.
+A druid can also use Wild Empathy to influence a magical beast with an Intelligence score of 1 or 2, but she takes a -4 penalty on the check.
+Wild animals are usually unfriendly, http://www.d20srd.org/srd/classes/druid.htm#wildEmpathy
+so it takes a DC15 check to make it indifferent, DC25 to make it friendly. A druid can also use this ability to influence a magical beast with an Intelligence score of 1 or 2, but she takes a -4 penalty on the check.
 Trainable (Ex): A thrum worm is easier to train and handle than most other magical beasts. Handle Animal checks made to train or handle a thrum worm are not increased by 5. Gnomes receive a +2 circumstance bonus on all Handle Animal checks made to train or handle a thrum worm.
 
 .. code-block:: bash
@@ -926,6 +945,11 @@ A commanded undead creature is under the mental control of the evil cleric. The 
   Necromental|Libris Mortis: The Book of the Dead|112
   Half-Dragon|Monster Manual v.3.5|146
 
+Bonesinger is a template that can be applied to any creature that has at least one level as a bard
+Cooperative Magic (Sp): A bonesinger can use a standard action to increase by 2 the save DC of a spell cast by an adjacent bonesinger. The bonesinger must ready an action to help in this manner; the trigger is the other bonesinger beginning to cast a spell.
+
+No template turns a non-elemental into an elemental, so the choices for a necromental are...limited.
+
 Tainted minion is an acquired template that can be added to any humanoid or monstrous humanoid creature with at least mild levels of both corruption and depravity (referred to hereafter as the base creature).
  A character who spends the night in a haunted location must make a DC 20 Will save or have his depravity score increase by 1.
  It is most often applied to a creature that dies because its corruption score exceeds the maximum for severe corruption for a creature with its Constitution score
@@ -939,6 +963,7 @@ For every 24 hours spent in a tainted place, a character must make another savin
 Any creature that dies in a tainted area animates in 1d4 hours as an undead creature, usually a zombie of the appropriate size. Burning a corpse protects it from this effect.
 Anyone who casts or is subject to a spell with the evil descriptor while within 50 feet of a clump of abyssal blackgrass must make a successful Fortitude save (DC 10 + spell level) or increase his corruption score by 1.
 As it turns out, a 1st-level Healer is terrifyingly effective at using abyssal blackgrass to increase multiple people's taint scores at once.
+Of course, a Healer cannot command undead.
 
 .. code-block:: bash
 
@@ -959,6 +984,7 @@ A mummified creature speaks all the languages it spoke in life
 Speed: A mummified creature's land speed decreases by 10 feet (to a minimum of 10 feet). The speeds for other movement modes are unchanged.
 Abilities: A mummified creature's ability scores are modified as follows: Str +8, Int -4 (minimum 1), Wis +4, Cha +4. As an undead creature, a mummified creature has no Constitution score.
 The process of becoming a mummy is usually involuntary, but expressing the wish to become a mummy to the proper priests (and paying the proper fees) can convince them to bring you back to life as a mummy. The mummy retains all class abilities it had in life, provided that its new ability scores still allow it to use them (a wizard loses access to some spell levels, for instance). A loss of Intelligence does not retroactively remove skill points from a mummified creature.
+Special Qualities: A mummified creature gains the special qualities described below...
 
 Can you get either a tainted minion or a mummified creature of less than one Hit Die, thus giving you an intelligent undead minion of less than one Hit Die? Why, it's our old friend the Muckdweller!
 
@@ -966,6 +992,24 @@ Can you get either a tainted minion or a mummified creature of less than one Hit
 
   sqlite> select distinct dnd_monster.name, intelligence, dnd_monstertype.name, constitution, land_speed, dnd_racesize.name, hit_dice, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monstertype.id=dnd_monster.type_id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Humanoid" or dnd_monstertype.name="Monstrous Humanoid" or dnd_monstertype.name="Giant") and hit_dice<1 order by hit_dice, dnd_monstertype.name;
   Muckdweller|10|Monstrous Humanoid|10|20|Tiny|-4|Serpent Kingdoms
+
+Alternatively, is there another template that can make unsuitable monsters suitable for tainted minion or mummified creature?
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_template.name, dnd_rulebook.name, page from dnd_template inner join template_type on dnd_template.id=template_id inner join dnd_monstertype on dnd_monstertype.id=output_type inner join (select id as input_id, name as input_name from dnd_monstertype) on input_id=base_type inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where (dnd_monstertype.name="Humanoid" or dnd_monstertype.name="Monstrous Humanoid" or  (dnd_monstertype.name="Giant" and input_name!="Giant") ) and input_name!="Humanoid" and input_name!="Monstrous Humanoid" order by dnd_rulebook.name;
+  Half-Troll|Fiend Folio|92
+  Tauric Creature|Monster Manual II|216
+  Incarnate Construct|Savage Species|120
+
+The Incarnate Construct spell is hard to come by.
+A tauric creature's type changes to monstrous humanoid. The template can be added to any Small or Medium-size corporeal humanoid (referred to hereafter as the base humanoid) and any Medium-size or Large corporeal animal, beast, or vermin with at least four legs (referred to hereafter as the base creature). Of course, you have to start with a humanoid, since this would be just if you wanted to mix in an animal or vermin. There are better ways to get animals to serve you, and most vermin abilities are Constitution-based.
+Half-troll is an inherited template that can be added to any animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, or outsider (referred to hereafter as the base creature). The creature's type becomes giant.
+Fast Healing (Ex): A half-troll heals 5 points of damage each round so long as it has at least 1 hit point. A mummified half-troll does not lose this special quality.
+Abilities: Adjust from the base creature as follows: Str +6, Dex +2, Con +6, Int -2, Cha -2.
+Alignment: Usually chaotic neutral or chaotic evil.
+If you can't rebuke dragons, you can cross-breed a puppeteer with a dragon (preferably one immune to fire or acid), then cross-breed the result with a troll, then mummify the grandchild, then rebuke and command the mummified half-troll quarter-dragon puppeteer.
+
 
 Half-dragon is an inherited template that can be added to any living, corporeal creature.
 Abilities: Increase from the base creature as follows: Str +8, Con +2, Int +2, Cha +2.
@@ -978,7 +1022,9 @@ Abilities: Increase from the base creature as follows: Str +8, Con +2, Int +2, C
   Muckdweller|10|Monstrous Humanoid|20|Tiny|-4|Serpent Kingdoms
 
 Under the influence of lunar light, moonrats also gain the ability to organize, converse with one another, formulate complex plans, and operate complicated devices.
+Protip: make it a male puppeteer and a female dragon. The reverse will not end well.
 
+Disappointments:
 Turn Resistance (Ex): A huecuva is treated as an undead with 2 more Hit Dice than it actually has for the purposes of turn, rebuke, command, or bolster attempts.
 Turn Resistance (Ex): A juju zombie has turn resistance +4.
 Turn Resistance (Ex): A greater mummy has +4 turn resistance.
@@ -995,6 +1041,38 @@ Deadened Mind (Ex): A yellow musk zombie recalls nothing of its previous life, a
 
 
 
+
+
+
+All half-fey have butterflylike wings unless the base creature has wings already.
+That would seem to restrict what fey can sire half-fey.
+sqlite> select dnd_racesize.name, dnd_monster.name,speed,dnd_rulebook.name from dnd_monster inner join dnd_monstertype on type_id=dnd_monstertype.id and dnd_monstertype.name="Fey" inner join monster_movement_mode on dnd_monster.id=monster_id and (abbrev='f') inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on rulebook_id=dnd_rulebook.id order by speed;
+http://archive.wizards.com/default.asp?x=dnd/fey/20031121a
+Forestfolk are born with a thin, wet membrane attached to their underarms and torso. As they grow from infancy to childhood, this membrane dries and lengthens, eventually allowing them to glide through the air for short periods of time.
+Forestfolk are not true flyers. A forestfolk always must dive at least 10 feet when using a move action to fly.
+Joystealers do not have wings.
+An usunag is a cloud of gas. http://archive.wizards.com/default.asp?x=dnd/psb/20070711a&page=4
+Storm riders do not have wings. http://archive.wizards.com/default.asp?x=dnd/fey/20040110a
+Grigs have cricket wings, which is close enough. Pixies have gossamer wings.
+Ruin chanters do not have wings.
+Hoarfrosters are incorporeal.
+http://archive.wizards.com/default.asp?x=dnd/fey/20040718a
+Sleeping blossom sprites tend to have pale skin, with red- or orange-tinted wings.
+Diminutive Fey (Swarm)
+Abilities: Str 4, Dex 17, Con 10, Int 8, Wis 9, Cha 21
+An individual shimmerling looks like a 4-inch tall elf with dragonfly wings.
+Dreamfanes are incorporeal.
+Petals have petallike wings.
+A frostwind virago does not have wings.
+Shaedlings have fine wings like those of a dragonfly.
+A gloura has gray mothlike wings.
+Rime sprites look like animated ice statues of beautiful or handsome elves with snow for hair. That sounds like they don't have wings. http://archive.wizards.com/default.asp?x=dnd/fw/20030223a
+Rimefire eidolons do not have wings.
+http://archive.wizards.com/default.asp?x=dnd/fw/20020817a
+A siabrie's wings are glimmering and crystalline, like stained glass. Close enough.
+
+It took some trawling through false positives, but now we probably have a complete list of possible fey parents: Tiny grig, Small pixie, Diminutive sleeping blossom sprite, Fine shimmerling, Tiny petal, Medium shaedling, Medium gloura, or Medium siabrie.
+The child's fly speed might be faster than the parent's because of hybrid vigor. (You could even justify using a Small forestfolk, if it's more thematically appropriate.) Or just because the child is quite likely to be physically larger. In the event you find yourself stuck with a Tiny female fey, the use of a proxy mother is strongly recommended.
 
 
 

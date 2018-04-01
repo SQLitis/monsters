@@ -342,9 +342,32 @@ def iterate_over_types(curs):
 
 
 darkvisionRE = re.compile(r"DV\d{2,3}")
-damageReductionRE = re.compile(r"DR \d{1,2}/[\w\s\-]+")
+damageReductionRE = re.compile(r"DR (\d{1,2})/((?:[\w\-\+]|\s(?!and [D\d]))+)(?: and (?:DR )?(\d{1,2})/([\w\s\-\+]+))?")
+# match a only with negative lookahead assertion that not followed by nd?
+# match \s only with negative lookahead assertion that not followed by and
 spellResistanceRE = re.compile(r"SR \d{1,2}")
 fastHealingRE = re.compile(r"FH\d{1,2}")
+
+def insert_damage_reduction_by_value(curs, monster_id, value, bypass):
+  value = int(value)
+  if bypass == '-':
+    bypass_id = None
+  else:
+    curs.execute('''INSERT OR IGNORE INTO damage_reduction (bypass) VALUES (?);''', (bypass,) )
+    #bypass_id = curs.lastrowid # does this return None if IGNORED?
+    curs.execute('''SELECT id FROM damage_reduction WHERE bypass=?;''', (bypass,) )
+    #bypass_id = id_from_name(curs, 'damage_reduction', bypass)
+    bypass_id = curs.fetchone()[0]
+  curs.execute('''INSERT INTO monster_has_damage_reduction (monster_id, reduction, bypass_id) VALUES (?,?,?);''', (monster_id, value, bypass_id) )
+def insert_damage_reduction(curs, monster_id, quality):
+  matchObj = damageReductionRE.match(quality)
+  if matchObj is None:
+    return None
+  insert_damage_reduction_by_value(curs, monster_id, matchObj.group(1), matchObj.group(2))
+  if matchObj.group(3) is not None:
+    assert matchObj.group(4) is not None
+    insert_damage_reduction_by_value(curs, monster_id, matchObj.group(3), matchObj.group(4))
+  return matchObj
 
 casterLevelValueREstring = '(?:(?:\d{1,2})|(?:HD)|(?:lvl))\s*(?:\([\w\s]+\d?\))?'
 casterLevelTagREstring = '(?:C|M|T)L=?\s?'
@@ -511,12 +534,16 @@ sqlite> select id,x from tbl;
     return curs.lastrowid
 
 
+
+def extract_material_components(curs):
+  pass
+
 def recreate_spell_table(curs):
   curs.execute('''CREATE TEMPORARY TABLE spell_backup (
   id INTEGER PRIMARY KEY NOT NULL,
   added datetime NOT NULL,
   rulebook_id int(11) NOT NULL,
-  page smallint(5)  DEFAULT NULL,
+  page smallint(5) DEFAULT NULL,
   name varchar(64) NOT NULL,
   slug varchar(64) NOT NULL,
   school_id int(11) NOT NULL,
@@ -551,7 +578,7 @@ def recreate_spell_table(curs):
   id INTEGER PRIMARY KEY NOT NULL,
   added datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   rulebook_id INTEGER NOT NULL,
-  page smallint(5)  DEFAULT NULL,
+  page smallint(5) DEFAULT NULL,
   name varchar(64) NOT NULL,
   slug varchar(64) NOT NULL,
   school_id int(11) NOT NULL,
@@ -1707,7 +1734,8 @@ class Monster(object):
       #if quality == '': continue
       if quality == "LLV": quality = "Low-Light Vision"
       elif darkvisionRE.match(quality): quality = "Darkvision"
-      elif damageReductionRE.match(quality): quality = "Damage Reduction"
+      elif insert_damage_reduction(curs, monster_id, quality):
+        quality = "Damage Reduction"
       elif spellResistanceRE.match(quality): quality = "Spell Resistance"
       elif fastHealingRE.match(quality): quality = "Fast Healing"
       #if 'sensitiv' in quality: print(self.name, quality)
@@ -1828,7 +1856,7 @@ class Template(object):
       outputTypeID = baseTypeID
     #print(self.name, 'outputTypeID =', outputTypeID)
     if outputTypeID is None:
-      raise Exception(self.name)
+      raise Exception(self.name, self.resultType)
     curs.execute('''INSERT INTO template_type (template_id, base_type, output_type) VALUES (?,?,?);''', (self.template_id, baseTypeID, outputTypeID) )
   def insert_into(self, curs):
     curs.execute('''SELECT rulebook_id from rulebook_abbrev where abbr=?;''',
@@ -1860,8 +1888,10 @@ class Template(object):
       self.resultType = None # ignore subtypes for now
     elif outputTypeID is None:
       outputTypeID = id_from_name(curs, 'dnd_monstertype', self.resultType)
+      # allow outputTypeID to be None for now
       #if outputTypeID is None:
-        #print('template', self.name, self.rulebook_abbrev, self.page, 'type not found:', self.resultType)
+      #  print('template', self.name, self.rulebook_abbrev, self.page, 'type not found:', self.resultType)
+      #  raise Exception(self.resultType)
 
     allTypeNames = set(pair[1] for pair in iterate_over_types(curs) )
     baseTypeNames = set()
@@ -1925,6 +1955,7 @@ class Template(object):
 
     if self.resultType == 'Outsider unless the base creature was undead':
       undeadID = id_from_name(curs, 'dnd_monstertype', 'Undead')
+      assert undeadID is not None
       self.insert_type_change(curs, undeadID, undeadID)
       for name in baseTypeNames.difference(['Undead']):
         self.insert_type_change(curs, id_from_name(curs, 'dnd_monstertype', name), id_from_name(curs, 'dnd_monstertype', 'Outsider') )
@@ -1953,6 +1984,7 @@ assert standardFamiliarRE.match('''
 Bat	|<div style="text-align: center;">	MMI p268	</div>|<div style="text-align: center;">	PHB p52	</div>||<div style="text-align: center;">	Masters gains a +3 on Listen checks	</div>||<br />''')
 assert realNameRE.search('''<div style="text-align: center;">	Masters gains a +1 to AC when prone or behind cover	</div>|<div style="text-align: center;">	Stat: Hedgehog without poison quills	</div>|<br />''')
 def make_familiar_table(curs):
+  print('make_familiar_table')
   curs.execute('''CREATE TABLE dnd_familiar (
   monster_id INTEGER NOT NULL
   ,alternate_name TEXT DEFAULT NULL
@@ -1963,7 +1995,7 @@ def make_familiar_table(curs):
 ,FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
   );''')
   for matchObj in standardFamiliarRE.finditer(open('familiars.txt', 'r').read()):
-    print(matchObj.group(0))
+    #print(matchObj.group(0))
     givenName = matchObj.group('name')
     if (givenName == 'Celestial standard familiar' or givenName == 'Fiendish standard familiar' or
         givenName == 'Hairy spider' or 'Guardian' in givenName or 'Monstrous spider' in givenName or
@@ -1981,7 +2013,7 @@ def make_familiar_table(curs):
       raise Exception('Rulebook' + matchObj.group('asFamiliarRulebook') + 'not found!')
 
     name = MonsterName(givenName)
-    print(matchObj.group('name'), matchObj.group('monsterRulebook'), matchObj.group('monsterPage'))
+    #print(matchObj.group('name'), matchObj.group('monsterRulebook'), matchObj.group('monsterPage'))
     if givenName == 'Fish Owl':
       searchForName = 'Owl'
     elif givenName == 'Great Horned Owl':
@@ -2005,7 +2037,7 @@ def make_familiar_table(curs):
     monsterID = id_from_name(curs, 'dnd_monster', searchForName, additionalCriteria=(('rulebook_id', monsterRulebookID),))
     if monsterID is None:
       realNameMatch = realNameRE.search(matchObj.group('restOfLine'))
-      print('real name?', realNameMatch, matchObj.group('restOfLine'))
+      #print('real name?', realNameMatch, matchObj.group('restOfLine'))
       if realNameMatch is not None:
         givenName = searchForName
         searchForName = realNameMatch.group('realName')
@@ -2017,6 +2049,7 @@ def make_familiar_table(curs):
 
     curs.execute('''INSERT INTO dnd_familiar (monster_id, alternate_name, rulebook_id, page, prereq_spellcaster_level) VALUES (?,?,?,?,?);''',
                  (monsterID, givenName, asFamiliarRulebookID, int(matchObj.group('asFamiliarPage') ), level) )
+  print('done make_familiar_table')
 
 
 
@@ -2417,11 +2450,20 @@ FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
   id INTEGER PRIMARY KEY NOT NULL,
   name varchar(32) NOT NULL,
   slug varchar(32) NOT NULL,
-UNIQUE(name)
+  hit_die tinyint(2) NOT NULL,
+  base_attack_per_4HD tinyint(1) NOT NULL,
+UNIQUE(name),
+UNIQUE(slug)
   );''') # add BAB as float, 1 or 0.75 or 0.5
-  curs.execute('''INSERT INTO dnd_monstertype SELECT id, name, slug FROM types_backup;''')
+  curs.execute('''CREATE TEMPORARY TABLE types_HD (name varchar(32), hit_die tinyint(2), base_attack_per_4HD tinyint(1) );''')
+  curs.execute('''INSERT INTO types_HD (name, hit_die, base_attack_per_4HD) VALUES
+                  ("Aberration", 8, 3), ("Animal", 8, 3), ("Construct", 10, 3), ("Dragon", 12, 4), ("Elemental", 8, 3),
+                  ("Fey", 6, 2), ("Giant", 8, 3), ("Humanoid", 8, 3), ("Magical Beast", 10, 4), ("Monstrous Humanoid", 8, 4),
+                  ("Ooze", 10, 3), ("Outsider", 8, 4), ("Plant", 8, 3), ("Undead", 12, 2), ("Vermin", 8, 3), ("Deathless", 8, 3);''')
+  curs.execute('''INSERT INTO dnd_monstertype SELECT id, types_backup.name, slug, hit_die, base_attack_per_4HD FROM types_backup INNER JOIN types_HD ON types_backup.name=types_HD.name;''')
   curs.execute('''DROP TABLE types_backup;''')
-  curs.execute('''INSERT INTO dnd_monstertype (name,slug) VALUES (?,?);''', ('Animal','animal') )
+  curs.execute('''DROP TABLE types_HD;''')
+  curs.execute('''INSERT INTO dnd_monstertype (name,slug,hit_die,base_attack_per_4HD) VALUES (?,?,?,?);''', ('Animal','animal',8,3) )
   curs.execute('''CREATE INDEX index_monstertype_name ON dnd_monstertype(name);''')
 
   curs.execute('''CREATE TEMPORARY TABLE subtypes_backup (id int, name varchar(32), slug varchar(32) );''')
@@ -2755,6 +2797,19 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
 FOREIGN KEY(spell_id) REFERENCES dnd_spell(id)
   );''')
   # It's rare, but some monsters do have SLAs of different caster levels.
+  curs.execute('''CREATE TABLE damage_reduction (
+  id INTEGER PRIMARY KEY,
+  bypass CHAR(64) NOT NULL,
+UNIQUE(bypass)
+  );''')
+  curs.execute('''CREATE INDEX index_damage_reduction ON damage_reduction(bypass);''')
+  curs.execute('''CREATE TABLE monster_has_damage_reduction (
+  monster_id INTEGER NOT NULL,
+  reduction tinyint(2) NOT NULL,
+  bypass_id INTEGER DEFAULT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
+FOREIGN KEY(bypass_id) REFERENCES damage_reduction(id)
+  );''')
   print('about to insert psionic powers')
   insert_psionic_powers(curs)
   print('done inserting psionic powers')

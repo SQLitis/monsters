@@ -86,7 +86,7 @@ Half-Farspawn (LoM 151) LA +4 - any corporeal aberration, animal, dragon, elemen
 Half-Fiend (MM 147)  LA +4 --- any living, corporeal creature with an Intelligence score of 4 or more and nongood alignment Type Changes: Outsider<br />
 Half-Troll (FF 92) LA +4 --- Any animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, or outsider Type Changes:  Giant; outsider as base also gains extraplanar subtype<br />
 Lich (MM 166) LA +4 --- any humanoid creature, provided it can create the required phylactery Type Changes: Undead<br />
-Mindflayer, Alhoon (LoM 157) LA +4 - lich template applied to Mindflayer TC: Undead; Augmented Abberation<br />
+Mindflayer, Alhoon (LoM 157) LA +4 - lich template applied to Mindflayer Abberation TC: Undead; Augmented Abberation<br />
 Mummified Creature (LM 110) LA +4 --- any corporeal giant, humanoid or monstrous humanoid TC: Undead; gain Augmented subtype<br />
 Mummified Creature (SS 126) LA +4 --- Any corporeal animal, giant, or humanoid Type Changes: Undead<br />
 Mummy, Greater (DD 159) LA +4 --- any humanoid creature; see text TC: Undead<br />

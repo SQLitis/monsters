@@ -54,7 +54,8 @@ Climbing mount you can summon 1/day for up to 1 minute. It can also fight if nee
 Price: 20 GP<br />
 Weight: --<br />
 (Book of Exalted Deeds p. 37)<br />
-Bunko's Bargain Basement recommends Liquid Sunlight (Complete Scoundrel p. 110) as a cheap everburning torch, but this item is even better: same price, shines like a torch, but as a spell component it can be drawn as a free action. <br />
+Bunko's Bargain Basement recommends Liquid Sunlight (Complete Scoundrel p. 110) as a cheap everburning torch, but this item is even better: same price, shines like a torch, but as a spell component it can be drawn as a free action.
+Angel Radiance: Captured in glass by a special process known only to angels themselves, the radiance of an angel is a potent component. Used as a component for a banishment or dismissal spell, or a dispel evil spell used to drive a fiend back to its home plane, a phial of angel radiance increases the saving throw DC by +1.<br />
 <br />
 <b>Animal Call</b><br />
 Price: 20 GP<br />
