@@ -379,7 +379,8 @@ Miscellaneous trainable creature abilities:
   Wounding|Bat, Guard|Monster Manual II|4
   Acid spit|Dragon Newt|Web|1 Spit (Ex): The dragon newt can spit acidic globules with a range increment of 10 feet. This is a ranged touch attack that deals 1d4 points of acid damage.
   Acidic bite|Titan Salamander|Web|4 Acidic Bite (Ex): The titan salamander's saliva is caustic and inflicts 1d6 points of additional acid damage on a successful bite attack. http://archive.wizards.com/default.asp?x=dnd/mm/20030920a
-  Blood squirt|Dinosaur, Bloodstriker|Monster Manual III|9
+  Blood squirt|Dinosaur, Bloodstriker|Monster Manual III|9 Blood Squirt (Ex): Every 1d4 rounds, a bloodstriker can
+project a 30-foot line of its acidic blood as a standard action. Anyone in the area takes 2d6 points of acid damage (Reflex DC 19 half).
 
 .. code-block:: bash
 
@@ -404,6 +405,14 @@ Miscellaneous trainable creature abilities:
   Reverse gravity|Gravorg|Monster Manual II|15
   Plane shift|Gaspar|Planar Handbook|19
   Trill|Frost Worm|Monster Manual|19
+  Breath weapon (petrification)|Magical Beast|Gorgon|Monster Manual v.3.5|28
+  Acid spray|Magical Beast|Digester|Monster Manual v.3.5|28
+  Null psionic exhalation|Magical Beast|Gray Glutton|Expanded Psionics Handbook|29
+  ice step|Magical Beast|Spawn of Tiamat, Whitespawn Iceskidder|Monster Manual IV|29
+   Ice Step (Ex) Whitespawn iceskidders ignore all movement penalties associated with snow or ice on the ground.
+  armor damage|Magical Beast|Rampager|Monster Manual II|34
+  vorpal tusks|Magical Beast|Razor Boar|Monster Manual II|35
+  Avalanche wave|Magical Beast|Malastor|Monster Manual V|40
 
 Technically, you can use Handle Animal on *any* creature with an intelligence of 1 or 2.
 
@@ -416,6 +425,18 @@ Technically, you can use Handle Animal on *any* creature with an intelligence of
   walk corpse|Aberration|Gutpuppet|Web|24 http://archive.wizards.com/default.asp?x=dnd/mm/20011215a
   charging form|Undead|Bonespur|Monster Manual V|24
   Rust|Aberration|Rust Monster|Monster Manual v.3.5|25
+  Burn|Elemental|Elementite Swarm, Fire|Planar Handbook|27
+  earth glide|Elemental|Elementite Swarm, Earth|Planar Handbook|27
+  Fear aura|Monstrous Humanoid|Buso, Tigbanua|Oriental Adventures|28
+  pass without trace|Undead|Skeletal Warbeast|Heroes of Battle|28
+  wing slash|Aberration|Slasrath|Fiend Folio|28
+  SLAs|Plant|Twilight Guardian|Dragon Magic|28
+   Transport Via Plants carries along two Medium-size willing creatures.
+  hive mind|Outsider|Demonhive Queen|Monster Manual IV|28
+  confusion|Construct|Rogue Eidolon|Monster Manual II|29
+  Magnetic attraction|Aberration|Lodestone Marauder|Monster Manual IV|31
+  Possess object|Undead|Golem Remnant|Web|36 http://archive.wizards.com/default.asp?x=dnd/fw/20041126a
+  Disintegration|Aberration|Annihilator|Underdark|40
 
 Upon encountering a humanoid or animal corpse, the Gutpuppet crawls into the lifeless chest through the victim's mouth and extends tendrils to deliver its horrible ichor. It takes over the victim's circulatory system and floods the body with its own fluids. This process happens quickly, usually taking no more than three or four minutes. The gutpuppet flushes out the corpse's fluids to make room for its own. This is a particularly violent and gory process: Witnesses report seeing the heaving chest of a dead body, a wet, ragged breathing-like sound coming from the mouth, then a sudden gout of blood bursting from every opening of the body accompanied by a violent, grotesque, lifelike twitching.
 However, the gutpuppet is keen to pick bodies that are intact. Any gross openings in the skin will allow too much of its fluid to leak out. Therefore, a gutpuppet is more likely to pick a body that has died from blunt trauma than from, say, being hacked to death. It prefers animals and people that have died from sickness. If it cannot find a corpse, it chooses some place to wait until it smells a corpse. (It can smell a dead body from up to a mile away.) It prefers moist hiding places; ideal locations include coastal caves, since they're dark and wet, and stagnant lakes.
@@ -460,6 +481,24 @@ Though a bonespur is of limited intelligence, it recognizes the advantage of pus
 Though bonespurs serve at the side of the skull lord or spellcaster who created them, their errands of destruction sometimes see them sent far from their masters.
 
 Large with Strength 18 and a speed of 40feet, bonespurs are decidedly average mounts, except that as undead, they're tireless. They can run forever (at 160feet per round).
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_monstertype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, land_speed, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where constitution is null and intelligence<3 order by land_speed, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -DC;
+  Undead|Large|400|50|Skeletal Warbeast|Heroes of Battle|28
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, abbrev, speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where intelligence<3 and constitution is null order by abbrev, speed, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -hit_dice;
+  Huge|1040|f|50|Skirr|Libris Mortis: The Book of the Dead|9
+
+Undead with tongues, such as ghouls and skirrs, actually retain their sense of taste.
+Most diet-dependent undead can go for 3d6 months before losing all mobility. But mostly they must be satiated every three days, or make a DC 15 Will save.
+A faint whirring sound and the stench of death precedes a great shape scudding through the air. The creature has a humanoid form with the skull of a long-toothed bull. Its upper arms are great wings, and its lower legs end in cruel, clawed talons. No skin or fur can be seen beneath the dingy gray funerary wrappings that cover the entire creature like a mummy.
+Skirrs are predators that hunt the edges of necropolises, great expanses of deadly swamps, deserts, or other places where victims might be found alone, hurt, and pressed by dangers from directions other than the sky. That’s when skirrs swoop in to attack.
+Skirrs measure, wingtip-to-wingtip, 50 feet or more, and weigh about 20,000 pounds.
+Skirrs know no languages.
+It's...not clear where skirrs come from. The don't seem to be created, or spontaneously arise (no single living creature that fits the description "Huge humanoid with bull head and wings and talons"), or reproduce by assembling themselves from bits and pieces like skin kites.
 
 Aside from the corpse-related creatures...well, the rust monster needs no introduction. "The touch can destroy
 up to a 10-foot cube of metal instantly." The Down (DC 15) trick is obviously the most important one there.
@@ -680,6 +719,8 @@ Raising a dire boar requires a total +12 if you take 10. A first-level human com
 
 What about other movement modes? For example, a tiny climber might be able to get your grappling hook where you need it more silently than you can.
 Or maybe all you really want is a messenger eagle.
+
+.. code-block:: bash
 
   sqlite> select distinct dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, abbrev, speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" order by abbrev, speed, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -hit_dice;
   Tiny|17|b|5|Lizard, Horned|Sandstorm|1

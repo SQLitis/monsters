@@ -238,13 +238,6 @@ Weight: --<br />
 (Magic Item Compendium p. 160)<br />
 While I'm offended by the rather suspicious definition of &quot;everfull&quot;, this mug can provide up to 36 ounces (half a six pack? That's &quot;everfull&quot;?) per day of alcoholic beverage, and is less weight than a bottle of wine. <br />
 <br />
-<b>Fast Torch</b> (x2, 5 GP ea.)<br />
-Price: 10 GP<br />
-Weight: 1#<br />
-(Complete Mage p. 134)<br />
-When you absolutely, positively must light something on fire with only a swift action. <br />
-Craft (Alchemy) DC: 20<br />
-<br />
 <b>Feather Fall Talisman</b><br />
 Price: 50 GP<br />
 Weight: --<br />
@@ -570,7 +563,9 @@ Craft (Alchemy) DC: 25<br />
 Price: 100 GP<br />
 Weight: 12#<br />
 (Sandstorm p. 102)<br />
-Through the exertion of your will (Wisdom check DC 16), you can create any mundane non-magical object out of sand that supposedly &quot;serves as a normal item of the same sort&quot;. (So... does that mean I can turn it into 12 lbs of acid or alchemist's fire? How about explosives or poisons? How about a masterwork gatling gun? Hmm...) It retains that shape as long as it stays within 100' of you, but you can also reshape it whenever you like by making another Wisdom check. While the question of acid/explosives/poisons will have to be settled by your DM, you have any tool you can possibly imagine at your fingertips. Need a hammer? Done. Don't need the hammer anymore, need a shovel? Done. It's particularly useful for tools that wear out after a certain number of uses, such as hacksaws and drills. How about exotic weapons or armor (Shapesand Fullplate = 500 GP, shapesand Mechanus Gear = 700 GP)? It can do that, too, although be aware, if an enemy recognizes you're using shapesand, he could try to reshape it under his control with a Wisdom check of his own.<br />
+Through the exertion of your will (Wisdom check DC 16), you can create any mundane non-magical object out of sand that supposedly serves as a normal item of the same sort.
+The amount of shapesand you can shape is specifically a cube, usally a 5-foot cube or a 2.5-foot cube. But Once control is established, the shape lasts as long as you remain within 100 feet of it. Thus, those with suffi cient patience and strong enough will can construct small fortresses out of shapesand, even if they must do so a few cubic feet at a time.
+(So... does that mean I can turn it into 12 lbs of acid or alchemist's fire? How about explosives or poisons? How about a masterwork gatling gun? Hmm...) It retains that shape as long as it stays within 100' of you, but you can also reshape it whenever you like by making another Wisdom check. While the question of acid/explosives/poisons will have to be settled by your DM, you have any tool you can possibly imagine at your fingertips. Need a hammer? Done. Don't need the hammer anymore, need a shovel? Done. It's particularly useful for tools that wear out after a certain number of uses, such as hacksaws and drills. How about exotic weapons or armor (Shapesand Fullplate = 500 GP, shapesand Mechanus Gear = 700 GP)? It can do that, too, although be aware, if an enemy recognizes you're using shapesand, he could try to reshape it under his control with a Wisdom check of his own.<br />
 Craft (Alchemy) DC: 25<br />
 <br />
 <b>Slippery Oil</b><br />
@@ -1068,6 +1063,7 @@ Anti-magic field, cloud released as a 10' spread, lasts for 2 minutes. Rendered 
 Price: 10 GP<br />
 Weight: 1#<br />
 (Complete Mage p. 134)<br />
+When you absolutely, positively must light something on fire with only a swift action.
 This item consists of a tube of waxed paper set into a short wooden handle. The end opposite the handle has a wax seal, and the whole item is about the size of a normal torch. An alchemical substance packed inside the tube ignites when exposed to air. Lighting the torch is as simple as removing the wax seal, which requires a swift action.
 Craft (Alchemy) DC: 20<br />
 <br />

@@ -62,7 +62,6 @@ rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MMI': 'Monster Manual v
  'PHB': "Player's Handbook v.3.5",
  'DMG': "Dungeon Master's Guide v.3.5", 'DMG2': "Dungeon Master's Guide II",
  'Psi':'Psionics Handbook (Web Enhancement)',
- 'SoS':'Spectre of Sorrows',
  'CoV':'Champions of Valor',
  'Loona':'Loona, Port of Intrigue',
  'ToH':'Tomb of Horror',
@@ -79,6 +78,8 @@ rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MMI': 'Monster Manual v
  'PoC':'Price of Courage',
  'MT':"Midnight's Terror", 'RTF':'Return to the Temple of the Frog',
  'ECS':'Eberron Campaign Setting', 'MoE': 'Magic of Eberron', 'EH': "Explorer's Handbook",
+ #'SoS':'Spectre of Sorrows',
+ 'SpcSor': 'Spectre of Sorrows',
  'Sarlo': 'Secrets of Sarlona', 'SoS': 'Secrets of Sarlona',
  "Xen'd":"Secrets of Xen'drik", 'SX':"Secrets of Xen'drik",
  'FoW':'The Forge of War', 'FW':'The Forge of War',
@@ -1274,6 +1275,7 @@ class Monster(object):
     else: self.subtypes = [fix_subtype(subtype) for subtype in xls_row[3].value.replace(' or ', ', ').replace('[alignment subtype]', 'Good, Evil, Lawful, Chaotic').split(',')]
     for subtype in self.subtypes: assert subtype != ''
     self.HitDice = fraction_to_negative(xls_row[4].value)
+
     self.landSpeed = None if xls_row[6].value == '' else int(xls_row[6].value)
     swimflyburrowcrawl = [] if xls_row[7].value == '' else xls_row[7].value.split(', ')
     self.movementModes = list()
@@ -1370,6 +1372,28 @@ class Monster(object):
     #  if listedFortitude != predictedFortitude and listedFortitude != predictedFortitude + 2:
     #    print(self.name, 'has a listed Fortitude of', listedFortitude, 'with Con', self.constitution, 'and', self.HitDice, 'HD, which would predict', predictedFortitude)
 
+    # Use values for hit points and Fortitude as error-checking.
+    # The redundant information is helpful here, since when HP and Fortitude outvote HD we can use them to correct HD.
+    averageHitPoints = int(xls_row[5].value)
+    if self.name == 'Ooze, Gray':
+      self.HitDice == 3
+      averageHitPoints = 31
+    if self.name == 'Ooze, Ochre Jelly':
+      self.constitution = 22
+    if (self.name.startswith('Ooze, ') and self.HitDice > averageHitPoints/(self.constitution//2 + 0.5)
+        and self.HitDice > 3*listedFortitude - 3*self.constitution//2 + 17):
+      # Oozes have d10 hit dice, so average (5.5 + Con) HP per Hit Die.
+      # HP = HD*(5.5 + constitution//2 - 5) = HD*(constitution//2 + 0.5)
+      # HD = HP/(constitution//2 + 0.5)
+      # Fort = HD//3 + constituion//2 - 5 = HD//2 + constituion//2 - 5
+      # HD//3 = Fort - constitution//2 + 5
+      # HD = 3*Fort - 3*constitution//2 + 15 + maybe 2
+      self.HitDice = int(math.ceil(averageHitPoints/(self.constitution//2 + 0.5) ) )
+      if abs(self.HitDice//3 + self.constitution//2 - 5 - listedFortitude) > 0 and self.name != 'Ooze, Flotsam':
+        raise Exception(self.name, self.HitDice, self.constitution, listedFortitude)
+        # n the case the the Flotsam Ooze, the error is in the Fiend Folio, so I don't know what the error is.
+    if self.name == 'Ooze, Ochre Jelly': assert self.HitDice == 6
+
     self.environment = xls_row[26].value
     #Monster.allEnvs.add(environment)
     #if environment == "Any":
@@ -1398,6 +1422,7 @@ class Monster(object):
 
     self.rulebook_abbrev = xls_row[30].value
     if self.name == 'Demon, Alkilith': self.rulebook_abbrev = 'FF'
+    elif self.name == 'Ogre, Yrasda': self.rulebook_abbrev = 'SpcSor'
 
     self.specialAttacks = Monster.splitSpecialAbilities(xls_row[14].value)
     #print('self.specialAttacks =', self.specialAttacks)
@@ -2166,6 +2191,7 @@ def make_item_tables(curs):
 ,FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
 ,FOREIGN KEY(body_slot_id) REFERENCES dnd_itemslot(id)
 ,FOREIGN KEY(activation_id) REFERENCES dnd_itemactivationtype(id)
+,UNIQUE(name, rulebook_id, market_price_copper_pieces)
   );''')
   # The Spellcraft DC to identify the aura can always be rederived: 15 + caster_level/2 as DC.
   # The aura strength can always be rederived from the caster level dnd_itemauratype table.
@@ -2178,10 +2204,10 @@ def make_item_tables(curs):
   ,slug varchar(64) DEFAULT NULL
   ,rulebook_id INTEGER
   ,page unsigned smallint(3) DEFAULT NULL
-  ,candidates_id INTEGER
+  ,candidates_id INTEGER NOT NULL
   ,price_in_gp unsigned int(6) DEFAULT NULL
   ,price_as_armorweapon_bonus unsigned tinyint(1) DEFAULT NULL
-  ,synergy_prereq INTEGER
+  ,synergy_prereq INTEGER DEFAULT NULL
   ,caster_level TINYINT(2) DEFAULT NULL
   ,activation_id, INTEGER DEFAULT NULL
   ,visual_description longtext DEFAULT NULL
@@ -2200,6 +2226,7 @@ def make_item_tables(curs):
       if curs.fetchone() is None:
         raise Exception(item)
   items = set(items)
+  #print([pair[0] for pair in collections.Counter([item[0] for item in items]).items() if pair[1] != 1])
   curs.executemany('''INSERT INTO dnd_item (name, market_price_copper_pieces, weight, description, page, rulebook_id) SELECT ?, ?*10, ?, ?, ?, dnd_rulebook.id FROM dnd_rulebook WHERE dnd_rulebook.name=?;''', items)
 """
 I changed the dnd_itemslot table because separating weapons from gauntlets doesn't work for spiked gauntlets.
@@ -2460,11 +2487,33 @@ UNIQUE(slug)
                   ("Aberration", 8, 3), ("Animal", 8, 3), ("Construct", 10, 3), ("Dragon", 12, 4), ("Elemental", 8, 3),
                   ("Fey", 6, 2), ("Giant", 8, 3), ("Humanoid", 8, 3), ("Magical Beast", 10, 4), ("Monstrous Humanoid", 8, 4),
                   ("Ooze", 10, 3), ("Outsider", 8, 4), ("Plant", 8, 3), ("Undead", 12, 2), ("Vermin", 8, 3), ("Deathless", 8, 3);''')
-  curs.execute('''INSERT INTO dnd_monstertype SELECT id, types_backup.name, slug, hit_die, base_attack_per_4HD FROM types_backup INNER JOIN types_HD ON types_backup.name=types_HD.name;''')
+  curs.execute('''INSERT INTO dnd_monstertype (name, slug, hit_die, base_attack_per_4HD) SELECT types_backup.name, slug, hit_die, base_attack_per_4HD FROM types_backup INNER JOIN types_HD ON types_backup.name=types_HD.name;''')
   curs.execute('''DROP TABLE types_backup;''')
   curs.execute('''DROP TABLE types_HD;''')
   curs.execute('''INSERT INTO dnd_monstertype (name,slug,hit_die,base_attack_per_4HD) VALUES (?,?,?,?);''', ('Animal','animal',8,3) )
   curs.execute('''CREATE INDEX index_monstertype_name ON dnd_monstertype(name);''')
+
+  curs.execute('''CREATE TABLE monstertype_save_bonus (
+  type_id INTEGER NOT NULL,
+  fortitude_per_6HD tinyint(1) NOT NULL,
+  reflex_per_6HD tinyint(1) NOT NULL,
+  will_per_6HD tinyint(1) NOT NULL,
+FOREIGN KEY(type_id) REFERENCES dnd_monstertype(id)
+  );''')
+  curs.execute('''CREATE TEMPORARY TABLE typename_save_bonus (
+  type_name varchar(32) NOT NULL,
+  fortitude_per_6HD tinyint(1) NOT NULL,
+  reflex_per_6HD tinyint(1) NOT NULL,
+  will_per_6HD tinyint(1) NOT NULL
+  );''')
+  curs.execute('''INSERT INTO typename_save_bonus (type_name, fortitude_per_6HD, reflex_per_6HD, will_per_6HD) VALUES
+                  ("Aberration", 2, 2, 3), ("Animal", 3, 3, 2), ("Animal", 3, 3, 3), ("Construct", 2, 2, 2),
+                  ("Dragon", 3, 3, 3), ("Elemental", 3, 2, 2), ("Elemental", 2, 3, 2), ("Fey", 2, 3, 3),
+                  ("Giant", 3, 2, 2), ("Humanoid", 3, 2, 2), ("Humanoid", 2, 3, 2), ("Humanoid", 2, 2, 3),
+                  ("Magical Beast", 3, 3, 2), ("Ooze", 2, 2, 2), ("Outsider", 3, 3, 3), ("Plant", 3, 2, 2),
+                  ("Undead", 2, 2, 3), ("Vermin", 3, 2, 2), ("Deathless", 2, 2, 2);''')
+  curs.execute('''INSERT INTO monstertype_save_bonus (type_id, fortitude_per_6HD, reflex_per_6HD, will_per_6HD) SELECT id, fortitude_per_6HD, reflex_per_6HD, will_per_6HD FROM dnd_monstertype INNER JOIN typename_save_bonus ON dnd_monstertype.name=typename_save_bonus.type_name;''')
+  curs.execute('''DROP TABLE typename_save_bonus;''')
 
   curs.execute('''CREATE TEMPORARY TABLE subtypes_backup (id int, name varchar(32), slug varchar(32) );''')
   curs.execute('''INSERT INTO subtypes_backup SELECT id, name, slug FROM dnd_monstersubtype;''')
