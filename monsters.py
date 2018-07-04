@@ -107,6 +107,7 @@ rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MMI': 'Monster Manual v
  'KoD': 'Key of Destiny', 'BoVD': 'Book of Vile Darkness', #'ToB': 'Tome of Battle',
  'EPH': 'Expanded Psionics Handbook', # many available http://www.d20srd.org/indexes/psionicMonsters.htm but SRD does not appear in their lists
  #'Web': 'Web content',
+ 'TME': "The Mind's Eye",
  'ItDL': "Into the Dragon's Lair", 'FoN': 'Force of Nature', 'AoM': 'Age of Mortals',
  'ToM': 'Tome of Magic', 'TM': 'Tome of Magic',
  'ShSo': 'Shining South',
@@ -2019,7 +2020,7 @@ def make_familiar_table(curs):
 ,FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
 ,FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
   );''')
-  for matchObj in standardFamiliarRE.finditer(open('familiars.txt', 'r').read()):
+  for matchObj in standardFamiliarRE.finditer(open('familiars_daremetoidareyo.txt', 'r').read()):
     #print(matchObj.group(0))
     givenName = matchObj.group('name')
     if (givenName == 'Celestial standard familiar' or givenName == 'Fiendish standard familiar' or
@@ -2134,7 +2135,20 @@ def make_item_tables(curs):
   ,affinities VARCHAR(128) DEFAULT NULL
 ,UNIQUE(name)
   );''')
-  curs.execute('''INSERT INTO dnd_itemslot (name, abbrev, examples, affinities) VALUES ("held", "-h", "weapons, shields, tools", NULL), ("Shield", "-s", "augment crystals", NULL), ("Armor", "-a", "augment crystals", NULL), ("ArmorOrShield", "-as", "augment crystals", NULL), ("Weapom", "-w", "augment crystals", NULL), ("Arms", "A", "armbands, bracelets, bracers", "Combat, Allies"), ("Body", "B", "armor, robes", "Multiple effects"), ("Face", "Fa", "goggles, lenses, masks, spectacles, third eyes", "Vision"), ("Feet", "Ft", "boots, sandals, shoes, slippers", "Movement"), ("Hands", "Ha", "gauntlets, gloves", "Quickness, Destructive power"), ("Head", "Hd", "circlets, crowns, hats, headbands, helmets, phylacteries", "Mental improvement, ranged attacks, Interaction, Morale, alignment"), ("Rings", "R", "rings", NULL), ("Shoulders", "S", "capes, cloaks, mantles, shawls", "Transformation, protection"), ("Throat", "Th", "amulets, badges, brooches, collars, medals, medallions, necklaces, pendants, periapts, scarabs, scarfs, torcs", "Protection, discernment"), ("Torso", "To", "shirts, tunics, vests, vestments", "Physical improvement, Class ability improvement"), ("Waist", "W", "belts, girdles, sashes", "Physical improvement");''')
+  curs.execute('''INSERT INTO dnd_itemslot (name, abbrev, examples, affinities) VALUES
+    ("held", "-h", "weapons, shields, tools", NULL),
+    ("Shield", "-s", "augment crystals", NULL), ("Armor", "-a", "augment crystals", NULL), ("ArmorOrShield", "-as", "augment crystals", NULL), ("Weapom", "-w", "augment crystals", NULL),
+    ("Arms", "A", "armbands, bracelets, bracers", "Combat, Allies"),
+    ("Body", "B", "armor, robes", "Multiple effects"),
+    ("Face", "Fa", "goggles, lenses, masks, spectacles, third eyes", "Vision"),
+    ("Feet", "Ft", "boots, sandals, shoes, slippers", "Movement"),
+    ("Hands", "Ha", "gauntlets, gloves", "Quickness, Destructive power"),
+    ("Head", "Hd", "circlets, crowns, hats, headbands, helmets, phylacteries", "Mental improvement, ranged attacks, Interaction, Morale, alignment"),
+    ("Rings", "R", "rings", NULL),
+    ("Shoulders", "S", "capes, cloaks, mantles, shawls", "Transformation, protection"),
+    ("Throat", "Th", "amulets, badges, brooches, collars, medals, medallions, necklaces, pendants, periapts, scarabs, scarfs, torcs", "Protection, discernment"),
+    ("Torso", "To", "shirts, tunics, vests, vestments", "Physical improvement, Class ability improvement"),
+    ("Waist", "W", "belts, girdles, sashes", "Physical improvement");''')
   curs.execute('''CREATE INDEX index_dnd_itemslot_name ON dnd_itemslot(name);''')
   curs.execute('''CREATE TABLE armorweapon_property_type (
   id INTEGER PRIMARY KEY NOT NULL
@@ -2266,8 +2280,47 @@ Weapons or offensive items	Evocation
 Bonus to ability score, on skill check, etc.	Transmutation
 """
 
+def create_rulebook_table(curs):
+  rulebook_max_name_len = max(max(len(n) for n in rulebook_abbreviations.values() ), 128)
+  rulebook_max_abbr_len = max(max(len(n) for n in rulebook_abbreviations.keys() ), 7)
+  # backup mirrors the schema of the original
+  curs.execute('''CREATE TEMPORARY TABLE rulebooks_backup (id int, dnd_edition_id int, name varchar({}), abbr varchar({}), description longtext, year varchar(4), official_url varchar(255), slug varchar(128), image varchar(128), published date);'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
+  curs.execute('''INSERT INTO rulebooks_backup SELECT id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM dnd_rulebook;''')
+  curs.execute('''DROP TABLE dnd_rulebook;''')
+  curs.execute('''CREATE TABLE dnd_rulebook (
+  id INTEGER PRIMARY KEY NOT NULL,
+  dnd_edition_id INTEGER DEFAULT NULL,
+  name varchar({}) NOT NULL,
+  description longtext DEFAULT NULL,
+  official_url varchar(255) DEFAULT NULL,
+  slug varchar(128) DEFAULT NULL,
+  image varchar(100) DEFAULT NULL,
+  published date DEFAULT NULL,
+  year smallint(2) DEFAULT NULL,
+  FOREIGN KEY(dnd_edition_id) REFERENCES dnd_dndedition(id),
+  UNIQUE(name)
+  );'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
+  curs.execute('''INSERT INTO dnd_rulebook (dnd_edition_id, name, description, year, official_url, slug, image, published) SELECT dnd_edition_id, name, description, year, official_url, slug, image, published FROM rulebooks_backup;''')
+  # Save the abbreviations from the old rulebook table before dropping it.
+  curs.execute('''CREATE TABLE rulebook_abbrev (
+  abbr CHAR({}),
+  rulebook_id INTEGER,
+UNIQUE(abbr),
+FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
+  );'''.format(rulebook_max_abbr_len) )
+  curs.execute('''INSERT INTO rulebook_abbrev (abbr, rulebook_id) SELECT abbr, dnd_rulebook.id FROM rulebooks_backup INNER JOIN dnd_rulebook ON dnd_rulebook.name=rulebooks_backup.name WHERE abbr!="EE" and abbr!="DD" and dnd_rulebook.name!="Monster Manual";''')
+  migrate_rulebook_id(curs)
+  curs.execute('''DROP TABLE rulebooks_backup;''')
+  # Many of the rulebooks in rulebook_abbreviations are not listed yet, so list them first.
+  curs.executemany('''INSERT OR IGNORE INTO dnd_rulebook (name) VALUES (?);''', [(name,) for name in rulebook_abbreviations.values()] )
+  # Now that the rulebooks are listed, we set up their abbreviations.
+  curs.executemany('''INSERT OR REPLACE INTO rulebook_abbrev (abbr, rulebook_id) SELECT ?, dnd_rulebook.id FROM dnd_rulebook WHERE name=?;''', rulebook_abbreviations.items() )
+  curs.execute('''CREATE INDEX index_dnd_rulebook_name ON dnd_rulebook(name);''')
+  curs.execute('''CREATE INDEX index_rulebook_abbrev ON rulebook_abbrev(abbr);''')
+
 def migrate_rulebook_id(curs):
   curs.execute('''UPDATE dnd_characterclassvariant SET rulebook_id = (SELECT dnd_rulebook.id FROM dnd_rulebook INNER JOIN rulebooks_backup ON dnd_rulebook.name=rulebooks_backup.name WHERE rulebooks_backup.id=rulebook_id);''')
+  curs.execute('''UPDATE dnd_spell SET rulebook_id = (SELECT dnd_rulebook.id FROM dnd_rulebook INNER JOIN rulebooks_backup ON dnd_rulebook.name=rulebooks_backup.name WHERE rulebooks_backup.id=rulebook_id);''')
 
 def get_rulebook_id(curs, rulebook_abbrev):
   if re.match(r'#?\d\d\d', rulebook_abbrev): rulebook_abbrev = r'\d\d\d'
@@ -2430,42 +2483,7 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
 FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
   );''')
 
-  rulebook_max_name_len = max(max(len(n) for n in rulebook_abbreviations.values() ), 128)
-  rulebook_max_abbr_len = max(max(len(n) for n in rulebook_abbreviations.keys() ), 7)
-  # backup mirrors the schema of the original
-  curs.execute('''CREATE TEMPORARY TABLE rulebooks_backup (id int, dnd_edition_id int, name varchar({}), abbr varchar({}), description longtext, year varchar(4), official_url varchar(255), slug varchar(128), image varchar(128), published date);'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
-  curs.execute('''INSERT INTO rulebooks_backup SELECT id, dnd_edition_id, name, abbr, description, year, official_url, slug, image, published FROM dnd_rulebook;''')
-  curs.execute('''DROP TABLE dnd_rulebook;''')
-  curs.execute('''CREATE TABLE dnd_rulebook (
-  id INTEGER PRIMARY KEY NOT NULL,
-  dnd_edition_id INTEGER DEFAULT NULL,
-  name varchar({}) NOT NULL,
-  description longtext DEFAULT NULL,
-  official_url varchar(255) DEFAULT NULL,
-  slug varchar(128) DEFAULT NULL,
-  image varchar(100) DEFAULT NULL,
-  published date DEFAULT NULL,
-  year smallint(2) DEFAULT NULL,
-  FOREIGN KEY(dnd_edition_id) REFERENCES dnd_dndedition(id),
-  UNIQUE(name)
-  );'''.format(rulebook_max_name_len, rulebook_max_abbr_len) )
-  curs.execute('''INSERT INTO dnd_rulebook (dnd_edition_id, name, description, year, official_url, slug, image, published) SELECT dnd_edition_id, name, description, year, official_url, slug, image, published FROM rulebooks_backup;''')
-  # Save the abbreviations from the old rulebook table before dropping it.
-  curs.execute('''CREATE TABLE rulebook_abbrev (
-  abbr CHAR({}),
-  rulebook_id INTEGER,
-UNIQUE(abbr),
-FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
-  );'''.format(rulebook_max_abbr_len) )
-  curs.execute('''INSERT INTO rulebook_abbrev (abbr, rulebook_id) SELECT abbr, dnd_rulebook.id FROM rulebooks_backup INNER JOIN dnd_rulebook ON dnd_rulebook.name=rulebooks_backup.name WHERE abbr!="EE" and abbr!="DD" and dnd_rulebook.name!="Monster Manual";''')
-  migrate_rulebook_id(curs)
-  curs.execute('''DROP TABLE rulebooks_backup;''')
-  # Many of the rulebooks in rulebook_abbreviations are not listed yet, so list them first.
-  curs.executemany('''INSERT OR IGNORE INTO dnd_rulebook (name) VALUES (?);''', [(name,) for name in rulebook_abbreviations.values()] )
-  # Now that the rulebooks are listed, we set up their abbreviations.
-  curs.executemany('''INSERT OR REPLACE INTO rulebook_abbrev (abbr, rulebook_id) SELECT ?, dnd_rulebook.id FROM dnd_rulebook WHERE name=?;''', rulebook_abbreviations.items() )
-  curs.execute('''CREATE INDEX index_dnd_rulebook_name ON dnd_rulebook(name);''')
-  curs.execute('''CREATE INDEX index_rulebook_abbrev ON rulebook_abbrev(abbr);''')
+  create_rulebook_table(curs)
 
   make_item_tables(curs)
   print('done making item tables')
@@ -2509,7 +2527,7 @@ FOREIGN KEY(type_id) REFERENCES dnd_monstertype(id)
   curs.execute('''INSERT INTO typename_save_bonus (type_name, fortitude_per_6HD, reflex_per_6HD, will_per_6HD) VALUES
                   ("Aberration", 2, 2, 3), ("Animal", 3, 3, 2), ("Animal", 3, 3, 3), ("Construct", 2, 2, 2),
                   ("Dragon", 3, 3, 3), ("Elemental", 3, 2, 2), ("Elemental", 2, 3, 2), ("Fey", 2, 3, 3),
-                  ("Giant", 3, 2, 2), ("Humanoid", 3, 2, 2), ("Humanoid", 2, 3, 2), ("Humanoid", 2, 2, 3),
+                  ("Giant", 3, 2, 2), ("Humanoid", 3, 2, 2), ("Humanoid", 2, 3, 2), ("Humanoid", 2, 2, 3), ("Monstrous Humanoid", 2, 3, 3),
                   ("Magical Beast", 3, 3, 2), ("Ooze", 2, 2, 2), ("Outsider", 3, 3, 3), ("Plant", 3, 2, 2),
                   ("Undead", 2, 2, 3), ("Vermin", 3, 2, 2), ("Deathless", 2, 2, 2);''')
   curs.execute('''INSERT INTO monstertype_save_bonus (type_id, fortitude_per_6HD, reflex_per_6HD, will_per_6HD) SELECT id, fortitude_per_6HD, reflex_per_6HD, will_per_6HD FROM dnd_monstertype INNER JOIN typename_save_bonus ON dnd_monstertype.name=typename_save_bonus.type_name;''')
@@ -2951,8 +2969,7 @@ FOREIGN KEY(template_id) REFERENCES dnd_template(id)
     print('\n'.join(str(blah) + str(s) for blah,s in counter.items() if len(s) > 1), file=open('counts' + str(i) + '.txt', 'w') )
 
 
-
-if __name__ == "__main__":
+def command_line_usage():
   parser = argparse.ArgumentParser(description='Incorporate an XLS file of monster data into a SQLite database.')
   parser.add_argument('XLSpath', metavar='XLS table',
                       nargs='?', default="Monster Compendium.xls",
@@ -2975,5 +2992,8 @@ if __name__ == "__main__":
       stats = pstats.Stats(profile, stream=statsFile)
       stats.strip_dirs().sort_stats('cumtime').print_stats()
   #print(Monster.allEnvs)
+
+if __name__ == "__main__":
+  command_line_usage()
   
 

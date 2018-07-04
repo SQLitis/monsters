@@ -51,7 +51,28 @@ We can immediately note that all types besides Humanoid give one of those automa
 
 .. code-block:: bash
 
-  sqlite> select dnd_monster.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id where dnd_monstertype.name="Humanoid" and not exists (select 1 from monster_special_ability inner join dnd_special_ability on monster_special_ability.special_ability_id=dnd_special_ability.id and monster_special_ability.monster_id=dnd_monster.id and (dnd_special_ability.name like "%darkvision%" or dnd_special_ability.name like "%low-light vision%") );
+  sqlite> select dnd_monster.name, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where dnd_monstertype.name="Humanoid" and not exists (select 1 from monster_has_special_ability inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id and monster_has_special_ability.monster_id=dnd_monster.id and (dnd_special_ability.name like "%darkvision%" or dnd_special_ability.name like "%low-light vision%") );
+  Lizardfolk|Monster Manual v.3.5
+  Locathah|Monster Manual v.3.5
+  Changeling|Monster Manual III
+  Maenad|Expanded Psionics Handbook
+  Mongrelfolk|Fiend Folio
+  Selkie (humanoid form)|Fiend Folio
+  Skulk|Fiend Folio
+  Neanderthal|Frostburn
+  Azurin|Magic of Incarnum
+  Rilkan|Magic of Incarnum
+  Skarn|Magic of Incarnum
+  Asherati|Sandstorm
+  Bhuka|Sandstorm
+  Aventi|Stormwrack
+  Darfellan|Stormwrack
+  Hadozee|Stormwrack
+  Karsite|Tome of Magic
+  Phaerlock|Underdark
+  Dabus|Expedition to the Demonweb Pits
+  Hai Nu|Oriental Adventures
+
 
 In 3.5, skeletons and zombies were changed to be evil. Are there still any non-evil undead in 3.5?
 We don't have edition data in the rulebook table yet, but a spot-check reveals there definitely is one:
@@ -495,7 +516,7 @@ Large with Strength 18 and a speed of 40feet, bonespurs are decidedly average mo
 Undead with tongues, such as ghouls and skirrs, actually retain their sense of taste.
 Most diet-dependent undead can go for 3d6 months before losing all mobility. But mostly they must be satiated every three days, or make a DC 15 Will save.
 A faint whirring sound and the stench of death precedes a great shape scudding through the air. The creature has a humanoid form with the skull of a long-toothed bull. Its upper arms are great wings, and its lower legs end in cruel, clawed talons. No skin or fur can be seen beneath the dingy gray funerary wrappings that cover the entire creature like a mummy.
-Skirrs are predators that hunt the edges of necropolises, great expanses of deadly swamps, deserts, or other places where victims might be found alone, hurt, and pressed by dangers from directions other than the sky. That’s when skirrs swoop in to attack.
+Skirrs are predators that hunt the edges of necropolises, great expanses of deadly swamps, deserts, or other places where victims might be found alone, hurt, and pressed by dangers from directions other than the sky. That's when skirrs swoop in to attack.
 Skirrs measure, wingtip-to-wingtip, 50 feet or more, and weigh about 20,000 pounds.
 Skirrs know no languages.
 It's...not clear where skirrs come from. The don't seem to be created, or spontaneously arise (no single living creature that fits the description "Huge humanoid with bull head and wings and talons"), or reproduce by assembling themselves from bits and pieces like skin kites.
@@ -716,6 +737,8 @@ We'll order by DC first, then carrying capacity, so that for any given level of 
 The surprise standouts are boars and dire boars. Just as willing to eat foliage as the bodies of your fallen foes, they're strong and not too slow.
 Raising a dire boar requires a total +12 if you take 10. A first-level human commoner with 4 ranks Handle Animal, +1 Charisma bonus, Skill Focus and Animal Affinity has +10, so they need Aid Another from an assistant. (The Uncivilized trait could give them a +1 bonus on Handle Animal checks, but that's not enough.)
 
+10gp Animal Training Pole: This hollow pole has a strong, thin cord threaded through it and twisted into a loop at the end. When looped around an animal's neck, it provides an easy way to direct the animal while preventing the animal from moving any closer than the pole's length. An animal training pole provides a +2 circumstance bonus on attempts to teach an animal a task.
+
 
 What about other movement modes? For example, a tiny climber might be able to get your grappling hook where you need it more silently than you can.
 Or maybe all you really want is a messenger eagle.
@@ -911,6 +934,7 @@ In the desert, elves follow nomadic lifestyles. They herd horses, cattle, and go
 +2 racial bonus on Handle Animal and Ride checks: Desert elves spend most of their lives riding and working with animals. Elves average 5 feet tall and typically weigh just over 100 pounds.
 Goblins have a +4 racial bonus on Move Silently and Ride checks, so a goblin can use its mount as cover with a DC15 Ride check, make leaps, and spur mounts. A goblin stands 3 to 3-1/2 feet tall and weighs 40 to 45 pounds.
 Halflings stand about 3 feet tall and usually weigh between 30 and 35 pounds. Female halflings can be as small as 2'8" and 27pounds.
+Forest gnomes average 2 to 2-1/2 feet in height; gnomes' weight generally goes up or down by 1 pound per inch of height; so a 2-foot female forest gnome might weigh only 25pounds.
 
 You don't hire a homunculus; you build one. A homunculus cannot be created until almost the level where you could have skeletons, but unlike skeletons, a homunculus is intelligent. Craft Construct (see page 303), arcane eye, mirror image, mending, caster must be at least 4th level; Price - (never sold); Cost 1,050 gp + 78 XP.
 The creator must be at least 7th level and possess the Craft Wondrous Item feat to make a bogun.

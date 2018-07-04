@@ -716,7 +716,7 @@ Craft (Alchemy) DC: 22<br />
 Price: 4000 GP<br />
 Weight: 10#<br />
 (Complete Scoundrel p. 113)<br />
-There are several magic items that allow communication between party members at a distance, but they usually have a limited number of uses per day (Sending Stones, Linked armor/shield property) or a limit on the distance (Rings of Communication). The Aspect Mirror beats them all hands-down, because it allows unlimited visual and verbal communication between linked mirrors anywhere on the same plane. <br />
+There are several magic items that allow communication between party members at a distance, but they usually have a limited number of uses per day (Sending Stones 1400gp for 1/day sending in either direction, SRD Linked armor/shield property 6,000 gp, If you want an extended conversation, add in Whispering Flame candles (Five Nations pg 155), and when you receive a message through the stones, you can then light the candles for a conference.) or a limit on the distance (Rings of Communication one mile range is: Faint divination; CL 5th; Forge Ring, detect thoughts; Price 2,000 gp.) (A 460gp Eternal Wand of Dancing Lights or 375gp regular wand can signal in a pinch --- you must have line of effect to the creation point, but after that they can move around corners at 100feet per round as long as they're always within 110feet of you through wall. Since they're not physical objects, they might be able to just go through walls.). The Aspect Mirror beats them all hands-down, because it allows unlimited visual and verbal communication between linked mirrors anywhere on the same plane. <br />
 <br />
 <b>Babbling Wheel</b><br />
 Price: 2000 GP<br />
