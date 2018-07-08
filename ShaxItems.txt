@@ -608,6 +608,7 @@ A 1-foot-thick masonry wall has 90 hit points Per 10-foot-by-10-foot section. A 
 A 4-inch-thick stone door has 60 hp. Some dungeons, like the Sunless Citadel, specifically have 2-inch-thick stone doors with only 30hp.
 Compare to 750gp Sculptor's Slime: Another product of dwarf dealings with delvers, this slimy liquid softens stone. One flask allows a Craft (stonemasonry) check (DC 10) to shape up to 25 cubic feet of stone, as stone shape cast by a 15th-level druid. Sculptor's slime requires a Craft (alchemy) check (DC 20) to create. Because it references the spell, it's technically not obvious that it can affect a small part of a larger stone rather than a single stone.
 Compare to 100gp Rust Cube: Made of rusty iron, rust cubes are sometimes disguised as dice. A rust cube can be thrown as a ranged attack with a range increment of 5 feet. Alternatively, it can be loaded into a sling and used as a sling stone. When it strikes a hard surface, the cube shatters into a fine powder of rusted iron. An object or creature made of metal that is hit by the rust cube immediately takes 1d6 points of damage (ignoring hardness), plus an additional 1d6 points of damage each round for the next 2 rounds. A creature can wipe the dust off with a move action. A rust cube is useful against locks and pretty much nothing else.
+Against wood or metal, green slime deals 2d6 points of damage per round, ignoring metal's hardness but not that of wood. It does not harm stone.
 <br />
 Craft (Alchemy) DC: 20<br />
 <br />

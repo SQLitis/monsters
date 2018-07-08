@@ -299,15 +299,17 @@ For one adventure, I wanted to have a set of seven otherworldly "living wells".
 .. code-block:: bash
 
   sqlite> select distinct challenge_rating, dnd_monster.name, dnd_monstertype.name || " (" || group_concat(distinct dnd_monstersubtype.name) || ")", max(CASE subtype2.name WHEN "Extraplanar" THEN "Extraplanar" ELSE NULL END), dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id inner join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id LEFT JOIN monster_has_subtype AS hasSubtype2 ON hasSubtype2.monster_id=dnd_monster.id LEFT JOIN dnd_monstersubtype AS subtype2 ON subtype2.id=hasSubtype2.subtype_id inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where (dnd_monstertype.name="Outsider" or dnd_monstertype.name="Elemental" or (subtype2.name="Extraplanar") ) and (dnd_monstersubtype.name="Water" or dnd_monstersubtype.name="Aquatic") GROUP BY dnd_monster.id ORDER BY challenge_rating;
-  Gen, Water|-2
+  -2|Gen, Water|Outsider (Aquatic,Water)|Extraplanar|Dragon Magazine
+    Elemental Travel (Sp): A gen can plane shift at will to any of the Elemental Planes or from any elemental plane to the Material Plane. This ability transports the gen only. It is otherwise identical to the plane shift spell (caster level 13th).
   2|Elemental Grue, Vardigg|Water|Elemental|Complete Arcane
-    Water Jet (Sp): As a standard action, a water grue can create a tremendously powerful 30-foot line of water. Any creature in the area of the line takes 2d6 points of damage (Refl ex DC 11 negates). A creature failing the saving throw must succeed on a Strength check or a Balance check (DC 5 + damage dealt) or be knocked prone by the force of the blast.
+    Water Jet (Sp): As a standard action, a water grue can create a tremendously powerful 30-foot line of water. Any creature in the area of the line takes 2d6 points of damage (Reflex DC 11 negates). A creature failing the saving throw must succeed on a Strength check or a Balance check (DC 5 + damage dealt) or be knocked prone by the force of the blast.
   3|Mephit, Water|Water|Outsider|Monster Manual v.3.5
   Tojanida, Juvenile|3
   4|Demon, Skulvyn|Aquatic|Outsider|Fiend Folio
     Wounding (Ex): Wounds resulting from a skulvyn's tail lash attacks bleed for an additional 1 point of damage per round thereafter. Multiple wounds from such attacks result in cumulative bleeding loss
     Slow Aura (Su): Living creatures that come within 30 feet of a skulvyn must make a Will save (DC 12) or become slowed for 4 rounds.
   4|Demon, Elemental, Water|Water|Outsider|Dragon Compendium
+    Waters of Fire (Su): A swimming water demon can open the vents along its torso and forcefully expel gouts of superheated steam that cause the water in a 30-foot radius to boil.
   4|Nereid|Fey (Aquatic)|Extraplanar|Stormwrack
     Drown (Su): A nereid can make a special touch attack to try to fill an opponent's lungs with water.
   Tojanida, Adult|5
@@ -637,7 +639,7 @@ Just for fun, remember that Moonrats are indistinguishable from normal rats exce
   poison|8|Diminutive|15|Hedgehog|Dungeon Master's Guide v.3.5|-4 Dexterity
   Poison|8|Tiny|10|Sea Snake, Tiny|Stormwrack|-4
   Poison|10|Small|10|Sea Snake, Small|Stormwrack|1 Constitution Poison (Ex): A sea snake's poison is extraordinarily virulent. It has a +2 racial bonus on the poison's save DC.
-  Poison|10|Small||Stingray|Stormwrack|1 Poison (Ex): Injury, Fortitude DC 12, nauseated 1d4 hours/1d3 Dex. The save DC is Constitution-based and includes a +2 racial bonus. A creature that makes its saving throw against the poison's initial damage is instead sickened for 1d6 rounds. Blood Web (Ex) A bloodsilk spider can throw a blood-red web eight times per day. An entangled creature can escape with a DC 11 Escape Artist check or burst the web with a DC 15 Strength check. Both are standard actions.
+  Poison|10|Small||Stingray|Stormwrack|1 Poison (Ex): Injury, Fortitude DC 12, nauseated 1d4 hours/1d3 Dex. The save DC is Constitution-based and includes a +2 racial bonus. A creature that makes its saving throw against the poison's initial damage is instead sickened for 1d6 rounds. Blood Web (Ex) A bloodsilk spider can throw a blood-red web eight times per day. An entangled creature can escape with a DC 11 Escape Artist check or burst the web with a DC 15 Strength check. Both are standard actions and thus cannot be taken while nauseated.
   poison|10|Small|20|Dragon Newt|Web|1 Strength http://archive.wizards.com/default.asp?x=dnd/mm/20030920a
   Poison spray|12|Small|30|Dinosaur, Swindlespitter|Monster Manual III|2 Poison Spray (Ex): When threatened, a swindlespitter sprays a corrosive poison in a 15-foot cone from its mouth. Contact; Fort DC 12; initial damage blindness for 2d4 minutes; secondary damage 1d4 Con. The swindlespitter can spray this poison once every 1d4 rounds. Swindlespitters flee from blinded opponents if possible.
   Venom spray|13|Medium|20|Sailsnake|Monster Manual IV|3 Venom Spray (Ex) 20-ft. cone, once every 6 rounds, blind for 1d4 rounds, Fortitude DC 13 half.
@@ -650,7 +652,7 @@ Just for fun, remember that Moonrats are indistinguishable from normal rats exce
   poison|25|Large|30|Snake, Legendary|Monster Manual II|16 Constitution
 
   poison|17|Magical Beast|Large|30|Spider Eater|Monster Manual|9 Poison (Ex): Injury, Fortitude DC 17, initial damage none, secondary damage paralysis for 1d8+5 weeks. The save DC is Constitution-based.
-  Mlarraun Poison (Ex): spit, contact, Fortitude DC11, initial damage blindness 2d6hours, secondary damage blindness 4d6hours and 1d4 points of damage. The poison need not touch the eyes to cause blindness.
+  Mlarraun Serpent Kingdoms Poison (Ex): spit, contact, Fortitude DC11, initial damage blindness 2d6hours, secondary damage blindness 4d6hours and 1d4 points of damage. The poison need not touch the eyes to cause blindness.
 
 
 Mounts?
@@ -1018,8 +1020,11 @@ No template turns a non-elemental into an elemental, so the choices for a necrom
 Tainted minion is an acquired template that can be added to any humanoid or monstrous humanoid creature with at least mild levels of both corruption and depravity (referred to hereafter as the base creature).
  A character who spends the night in a haunted location must make a DC 20 Will save or have his depravity score increase by 1.
  It is most often applied to a creature that dies because its corruption score exceeds the maximum for severe corruption for a creature with its Constitution score
-Fear Aura (Su): Tainted minions are shrouded in a constant aura of terror and evil. Creatures within a 30-foot radius of a tainted minion must succeed on a Will save (DC 10 + 1/2 the tainted minion's level + its Cha modifi er) or become shaken.
-Change Shape (Su): A tainted minion can assume the form of any humanoid creature. See page 306 of the Monster Manual for details.
+Fear Aura (Su): Tainted minions are shrouded in a constant aura of terror and evil. Creatures within a 30-foot radius of a tainted minion must succeed on a Will save (DC 10 + 1/2 the tainted minion's level + its Cha modifier) or become shaken. (No duration specified...but it's fear, so presumably for the rest of the encounter.)
+ http://www.d20srd.org/srd/specialAbilities.htm#fearAura
+ The use of this ability is a free action.
+ But since the tainted minion's aura is specifically *constant*, they cannot suppress it (though the source of the supernatural fear might not be obvious).
+Change Shape (Su): A tainted minion can assume the form of any humanoid creature. See page 306 of the Monster Manual for details. Note that a tainted minion loses no Intelligence and can speak normally.
 Abilities: Increase from the base creature as follows: Str +4, Dex +2, Cha +4. As an undead creature, a tainted minion has no Constitution score.
 Taint: A tainted minion no longer acquires taint. For purposes of special abilities, its corruption and depravity scores are both considered to be equal to half its Charisma score +1.
 

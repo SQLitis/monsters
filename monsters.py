@@ -1615,7 +1615,9 @@ class Monster(object):
         #onlyOneRow = [spell.replace('"(', '(').replace(')"', ')') for spell in onlyOneRow]
         #print('onlyOneRow=', onlyOneRow)
   
-  statblockRE = re.compile(r"([\w ]+): CR (\d|\d/\d{1,2}); (Fine|Diminutive|Tiny|Small|Medium-size|Large|Huge|Gargantuan|Colossal) ([\w ]+); HD (\d|\d/\d)d\d(?:(?:\-|\+)\d{1,2})?; hp \d; Init \+\d; Spd (\d\d) ft\.(?:\, (?:burrow|climb|fly|swim) \d\d ft\.(?: \((?:clumsy|poor|average|good|perfect)\))?)*; AC \d\d, touch \d\d, flat-footed \d\d; Base Atk \+\d; Grp (?:\-|\+)\d{1,2}; Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)); Full Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)); Space/Reach (?:\d|\d/\d) ft\./\d ft\.; SA ([\w\-]+); SQ ([\w \,\-]+); AL (\w{1,2}); SV Fort \+\d, Ref \+\d, Will \+\d; Str (\d{1,2})\, Dex (\d{1,2})\, Con (\d{1,2})\, Int (\d{1,2})\, Wis (\d{1,2})\, Cha (\d{1,2})\.\s+Skills and Feats: [\w \+\-\d\,]+; [\w \,]+\.")
+  statblockRE = re.compile(r"([\w\, ]+): CR (\d|\d/\d{1,2}); (Fine|Diminutive|Tiny|Small|Medium|Large|Huge|Gargantuan|Colossal) ([\w ]+); HD (\d|\d/\d)d\d(?:(?:\-|\+)\d{1,2})?; hp \d{1,3}; Init \+\d; Spd (\d\d) ft\.(?:\, (?:burrow|climb|fly|swim) \d\d ft\.(?: \((?:clumsy|poor|average|good|perfect)\))?)*; AC \d\d, touch \d\d, flat-footed \d\d; Base Atk \+\d; Grp (?:\-|\+)\d{1,2}; Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)); Full Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)(?: and \+\d melee \([\d\-\+\, \w]+\))?); Space/Reach (?:\d|\d/\d) ft\./\d ft\.; SA ([\w\-]+); SQ ([\w \,\-]+); AL (\w{1,2}); SV Fort \+\d, Ref \+\d, Will \+\d; Str (\d{1,2})\, Dex (\d{1,2})\, Con (\d{1,2})\, Int (\d{1,2})\, Wis (\d{1,2})\, Cha (\d{1,2})\.\s+Skills and Feats: [\w \+\-\d\,]+; [\w \,]+\.")
+  assert statblockRE.match("Owl, Medium: CR 1; Medium animal; HD 2d8; hp 13; Init +1; Spd 10 ft., fly 60 ft. (average); AC 14, touch 11, flat-footed 13; Base Atk +1; Grp +3; Atk +2 melee (1d4+2, talons); Full Atk +2 melee (1d4+2, talons) and +0 melee (1d6+1, bite); Space/Reach 5 ft./5 ft.; SA -; SQ -; AL N; SV Fort +4, Ref +4, Will +2; Str 14, Dex 13, Con 12, Int 2, Wis 14, Cha 4. Skills and Feats: Listen +14, Move Silently +19, Spot +14; Multiattack.") is not None
+  assert statblockRE.match("Raven, Small: CR 1/2; Small animal; HD 1d8; hp 5; Init +1; Spd 10 ft., fly 40 ft. (average); AC 13, touch 12, flat-footed 12; Base Atk +0; Grp -7; Atk +2 melee (1d3-3, talons); Full Atk +2 melee (1d3-3, talons); Space/Reach 5 ft./5 ft.; SA -; SQ -; AL N; SV Fort +3, Ref +3, Will +2; Str 5, Dex 13, Con 12, Int 2, Wis 14, Cha 6. Skills and Feats: Listen +6, Spot +6; Weapon Finesse.") is not None
   @staticmethod
   def from_statblock(statblock, rulebook_abbrev):
     matchObj = Monster.statblockRE.match(statblock)
@@ -1745,6 +1747,12 @@ class Monster(object):
         plane_id = id_from_name(curs, 'dnd_plane', self.environment, True)
         if plane_id is not None:
           curs.execute('''INSERT INTO monster_on_plane (monster_id, plane_id) VALUES (?,?);''', (monster_id, plane_id) )
+    if 'Cold' in self.environment or 'cold' in self.environment:
+      curs.execute('''INSERT INTO monster_in_climate (monster_id, climate) VALUES (?,-1);''', (monster_id,) )
+    elif 'Temperate' in self.environment or 'temperate' in self.environment:
+      curs.execute('''INSERT INTO monster_in_climate (monster_id, climate) VALUES (?,0);''', (monster_id,) )
+    elif 'Warm' in self.environment or 'warm' in self.environment:
+      curs.execute('''INSERT INTO monster_in_climate (monster_id, climate) VALUES (?,1);''', (monster_id,) )
 
     for attack in self.specialAttacks:
       #if attack == '-': continue
@@ -2792,6 +2800,11 @@ FOREIGN KEY(plane_id) REFERENCES dnd_plane(id)
 FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
 FOREIGN KEY(terrain_id) REFERENCES dnd_terrain(id)
   );''')
+  curs.execute('''CREATE TABLE monster_in_climate (
+  monster_id INTEGER NOT NULL,
+  climate tinyint(1) NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
+  );''')
 
   # could create dnd_bloodline table with feat_id...but monster table doesn't have feats
   # dnd_monsterhasfeat has been garbled by destroying and recreating dnd_monster: sqlite> select dnd_monster.name,dnd_feat.name from dnd_monsterhasfeat inner join dnd_monster on monster_id=dnd_monster.id inner join dnd_feat on feat_id=dnd_feat.id;
@@ -2814,6 +2827,7 @@ FOREIGN KEY(terrain_id) REFERENCES dnd_terrain(id)
   maxNameLen = len('Olhydra (Princess of Evil Water Creatures, Princess of Watery Evil, Mistress of the Black Tide)')
   #curs.execute('''DROP TABLE dnd_monsters;''')
   curs.execute('''DROP TABLE dnd_monster;''')
+  # the monster table could have some page numbers from http://archive.wizards.com/default.asp?x=dnd/arch/lists
   curs.execute('''CREATE TABLE dnd_monster (
   id INTEGER PRIMARY KEY NOT NULL,
   rulebook_id INTEGER DEFAULT NULL,
@@ -2945,6 +2959,8 @@ FOREIGN KEY(template_id) REFERENCES dnd_template(id)
   Monster.from_statblock("Mouse: CR 1/10; Fine animal; HD 1/4d8; hp 1; Init +0; Spd 10 ft., climb 10 ft.; AC 19, touch 18, flat-footed 19; Base Atk +0; Grp -21; Atk -; Full Atk -; Space/Reach 1/2 ft./0 ft.; SA -; SQ scent; AL N; SV Fort +2, Ref +2, Will +1; Str 1, Dex 11, Con 10, Int 2, Wis 12, Cha 2. Skills and Feats: Balance +8, Climb +10, Hide +20, Move Silently +12; feat.", 'DMG').insert_into(curs)
   Monster.from_statblock("Screech Owl: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +3; Spd 10 ft., fly 30 ft. (average); AC 18, touch 17, flat-footed 15; Base Atk +0; Grp -15; Atk +7 melee (1d2-3, talons); Full Atk +7 melee (1d2-3, talons); Space/Reach 1 ft./0 ft.; SA -; SQ -; AL N; SV Fort +2, Ref +5, Will +2; Str 4, Dex 17, Con 10, Int 2, Wis 14, Cha 4. Skills and Feats: Listen +14, Move Silently +20, Spot +8; Weapon Finesse.", 'DMG').insert_into(curs)
   Monster.from_statblock("Thrush: CR 1/10; Diminutive animal; HD 1/4d8; hp 1; Init +2; Spd 10 ft., fly 40 ft. (average); AC 17, touch 16, flat-footed 15; Base Atk +0; Grp -17; Atk -; Full Atk -; Space/Reach 1 ft./0 ft.; SA -; SQ -; AL N; SV Fort +2, Ref +4, Will +2; Str 1, Dex 15, Con 10, Int 2, Wis 14, Cha 6. Skills and Feats: Listen +8, Spot +8; Alertness.", 'DMG').insert_into(curs)
+  Monster.from_statblock("Owl, Medium: CR 1; Medium animal; HD 2d8; hp 13; Init +1; Spd 10 ft., fly 60 ft. (average); AC 14, touch 11, flat-footed 13; Base Atk +1; Grp +3; Atk +2 melee (1d4+2, talons); Full Atk +2 melee (1d4+2, talons) and +0 melee (1d6+1, bite); Space/Reach 5 ft./5 ft.; SA -; SQ -; AL N; SV Fort +4, Ref +4, Will +2; Str 14, Dex 13, Con 12, Int 2, Wis 14, Cha 4. Skills and Feats: Listen +14, Move Silently +19, Spot +14; Multiattack.", 'DMG').insert_into(curs)
+  Monster.from_statblock("Raven, Small: CR 1/2; Small animal; HD 1d8; hp 5; Init +1; Spd 10 ft., fly 40 ft. (average); AC 13, touch 12, flat-footed 12; Base Atk +0; Grp -7; Atk +2 melee (1d3-3, talons); Full Atk +2 melee (1d3-3, talons); Space/Reach 5 ft./5 ft.; SA -; SQ -; AL N; SV Fort +3, Ref +3, Will +2; Str 5, Dex 13, Con 12, Int 2, Wis 14, Cha 6. Skills and Feats: Listen +6, Spot +6; Weapon Finesse.", 'DMG').insert_into(curs)
 
   print('about to start main monster loop')
   # I'm guessing dropwhile has no overhead after failing
