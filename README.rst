@@ -461,6 +461,8 @@ Technically, you can use Handle Animal on *any* creature with an intelligence of
   Possess object|Undead|Golem Remnant|Web|36 http://archive.wizards.com/default.asp?x=dnd/fw/20041126a
   Disintegration|Aberration|Annihilator|Underdark|40
 
+Animals can be trained for a very specific function, like old-timey turnspit dogs.
+
 Upon encountering a humanoid or animal corpse, the Gutpuppet crawls into the lifeless chest through the victim's mouth and extends tendrils to deliver its horrible ichor. It takes over the victim's circulatory system and floods the body with its own fluids. This process happens quickly, usually taking no more than three or four minutes. The gutpuppet flushes out the corpse's fluids to make room for its own. This is a particularly violent and gory process: Witnesses report seeing the heaving chest of a dead body, a wet, ragged breathing-like sound coming from the mouth, then a sudden gout of blood bursting from every opening of the body accompanied by a violent, grotesque, lifelike twitching.
 However, the gutpuppet is keen to pick bodies that are intact. Any gross openings in the skin will allow too much of its fluid to leak out. Therefore, a gutpuppet is more likely to pick a body that has died from blunt trauma than from, say, being hacked to death. It prefers animals and people that have died from sickness. If it cannot find a corpse, it chooses some place to wait until it smells a corpse. (It can smell a dead body from up to a mile away.) It prefers moist hiding places; ideal locations include coastal caves, since they're dark and wet, and stagnant lakes.
 Once the gutpuppet is firmly attached inside the body, has flushed all the body's blood and other fluids out, and filled it with its own, it's ready to "walk the corpse." On its own, the gutpuppet is very slow, but it can walk a corpse easily -- sometimes moving faster than the original owner could.
@@ -563,35 +565,72 @@ Interestingly, if we restrict to Large or smaller, there are no reversals; all L
   Improved grab|18|Large|27|Bear, Polar|Monster Manual|8
   Improved grab|23|Large|31|Bear, Dire|Monster Manual|12
 
-Of course, an animal could in theory be trained to grapple even if it doesn't naturally do so. This isn't terribly important, but can fill in a few gaps.
+Of course, an animal could in theory be trained to grapple even if it doesn't naturally do so. Sometimes, indeed, you don't actually want or need to damage the target in grappling them.
+If it is Huge or bigger, the Snatch feat grants Improved Grab for a claw or bite attack.
+It's worth noting that some of the best grapplers already have Improved Grab anyway, such as the giant crocodile.
+
+Advancement is unfortunately not in the database yet.
+Since advancing from Medium to Large is worth +8 Strength for a total of +8 to grapple and trip checks, particularly large specimens might be more effective than species that are more commonly so large.
+Advancement is usually not worthwhile for trippers, but for grapplers they get both the boost from size and strength and a boost from the hit dice.
 
 .. code-block:: bash
 
-  sqlite> select distinct (hit_dice*3/4 + (strength - 10)/2 + (size_id - 5)*4), dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" order by (hit_dice*3/4 + strength/2 + size_id*4), -hit_dice;
-  2|Medium|14|Phynxkin|Dragon Magic|1
-  11|Large|18|Horse, Warhorse, Heavy|Monster Manual|4
-  12|Large|21|Ape|Monster Manual|4
-  13|Large|23|Drakkensteed|Dragon Magic|4
+  sqlite> select distinct (hit_dice*3/4 + (strength - 10)/2 + (size_id - 5)*4) as grapple, dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" order by DC, -grapple;
+  2|Medium|15|Baboon|Monster Manual v.3.5|16
+  2|Medium|14|Phynxkin|Dragon Magic|16
+  4|Medium|16|Nifern|Serpent Kingdoms|17
+    Advancement: +3=5HD Large
+  3|Medium|14|Owl, Medium|Dungeon Master's Guide v.3.5|17
+  3|Medium|15|Dog, Riding|Monster Manual v.3.5|17
+  10|Large|18|Dinosaur, Cryptoclidus|Monster Manual II|18
+  10|Large|18|Camel|Monster Manual v.3.5|18
+  10|Large|18|Dinosaur, Pteranadon|Serpent Kingdoms|18
+  13|Large|23|Drakkensteed|Dragon Magic|19
+  12|Large|21|Ape|Monster Manual v.3.5|19
+  12|Large|20|Jackal, Dire|Sandstorm|19
+     Advancement +6=10HD Huge
+  11|Large|18|Horse, Warhorse, Heavy|Monster Manual v.3.5|19
+  11|Large|19|Lizard, Giant, Quicksilver|Drow of the Underdark|19
+  11|Large|18|Camel, War|Sandstorm|19
+  11|Large|19|Titan Salamander|Web|19
+  14|Large|24|Advanced Nifern|Serpent Kingdoms|20
+  14|Large|25|Lizard, Giant, Footpad|Drow of the Underdark|20
+     Advancement +6=11HD Huge
+  13|Large|22|Ape, Dire|Monster Manual v.3.5|20
+  13|Large|22|Wolverine, Dire|Monster Manual v.3.5|20
+  13|Large|22|Bison|Monster Manual v.3.5|20
+  16|Large|27|Bear, Brown|Monster Manual v.3.5|21
+  21|Huge|27|Crocodile, Giant|Monster Manual v.3.5|22  Improved grab
+  20|Huge|24|Snake, Dire|Monster Manual II|22  Improved grab
+     Advancement +6=13HD Gargantuan
+  22|Huge|26|Dragonhawk|Five Nations|23
+  24|Huge|28|Lizard, Giant Banded|Sandstorm|25
   19|Medium|30|Ape, Legendary|Monster Manual II|13
   55|Colossal|40|Dinosaur, Seismosaurus|Monster Manual II|32
 
-Bigger animals are better at tripping...it helps to think of it not in terms of the word trip, but in terms of knocking someone prone.
+Bigger animals are better at tripping...it helps to think of it not in terms of the word trip, but in terms of knocking someone prone ala the Awesome Blow feat.
+For a given number of HD, the best trippers are exactly the best grapplers.
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_special_ability.name, ( (strength - 10)/2 + (size_id - 5)*4), dnd_monstertype.name, dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) and dnd_special_ability.name like "%trip%" order by (strength/2 + size_id*4), -DC, -size_id;
+  sqlite> select distinct dnd_special_ability.name, ( (strength - 10)/2 + (size_id - 5)*4) as trip, dnd_monstertype.name, dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) and dnd_special_ability.name like "%trip%" order by trip, -DC, -size_id;
   Trip|2|Medium|15|Bat, Hunting|Monster Manual II|4
   Trip|2|Medium|14|Hyena|Monster Manual|2
   Trip|3|Medium|16|Cheetah|Monster Manual|3
   Trip|3|Medium|17|War Mastiff|Heroes of Battle|3
   Trip|7|Medium|25|Wolf, Legendary|Monster Manual II|14
   Trip|9|Large|20|Jackal, Dire|Sandstorm|4
+  An advanced wolf can equal a dire jackal, being Large with 4HD and Str21.
   Trip|11|Large|25|Wolf, Dire|Monster Manual|6
   Knockback|Brixashulty|Races of the Wild|2
   Knockback (Ex): A gore attack from a brixashulty can literally drive back a foe. When a brixa hits with its gore attack, it can immediately attempt a bull rush without entering the foe's space or provoking an attack of opportunity. The brixa makes a Strength check with a +7 bonus, which includes a +4 racial bonus. If the bull rush succeeds, the foe is driven back 5 feet and must make a DC 12 Reflex save or fall down. If being driven back would force the opponent into a barrier or into a square where it cannot stop (such as a wall or a square that already contains another creature), the foe falls down in its square instead.
   A brixashulty kid is worth 30 gp and is ready for training by age two. It can live for up to 50 years.
 
-  sqlite> select distinct ( (strength - 10)/2 + (size_id - 5)*4), dnd_monstertype.name, dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and land_speed is not null order by (strength/2 + size_id*4), -hit_dice;
+And of course an animal can trip without a special ability.
+
+.. code-block:: bash
+
+  sqlite> select distinct ( (strength - 10)/2 + (size_id - 5)*4) as trip, dnd_monstertype.name, dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" and land_speed is not null order by DC, -trip;
   4|Medium|19|Bear, Black|Monster Manual|3
   4|Medium|19|Crocodile|Monster Manual|3
   8|Large|18|Camel|Monster Manual|3
@@ -613,6 +652,11 @@ Unfortunately, without a source of data on feats, we cannot know which animals h
   scent|3|Medium|Bat, Hunting|Monster Manual II|4 ironically does not have the Track feat
   scent|3|Small|Dinosaur, Swindlespitter|Monster Manual III|2 no Track feat
 
+complete adventurer p.100 Hunt (Handle Animal DC 15): The animal attempts to hunt and forage for food for you using its Survival skill. While any animal automatically knows how to hunt and forage for its own needs, this trick causes it to return with food rather than simply eating its fill of what it finds.
+A deinonychus has a +8 racial bonus on Hide, Jump, Listen, Spot, and Survival checks.
+A nashrou has no racial bonus, but does put max ranks in Survival by default.
+Move up to one-half your overland speed while hunting and foraging (no food or water supplies needed). You can provide food and water for one other person for every 2 points by which your check result exceeds 10.
+
 Just for fun, remember that Moonrats are indistinguishable from normal rats except in moonlight. If someone did use a rat as a tracker underground, it might turn out that Handle Animal stops working when it gets under the open sky, due to unexpectedly increased Intelligence...
 
 .. code-block:: bash
@@ -630,6 +674,22 @@ Just for fun, remember that Moonrats are indistinguishable from normal rats exce
   tremorsense 1200ft|5|Magical Beast|Gargantuan|50|Malastor|Monster Manual V|25
   tremorsense 60ft|1|Magical Beast|Medium|20|Thrum Worm|Races of Stone|7
   tremorsense 60ft|1|Magical Beast|Large|30|Ankheg|Monster Manual|8
+
+Hmm, I've always wondered, what is the intended use-case of the `Hover <http://www.d20srd.org/srd/monsterFeats.htm#hover>`_ feat?
+
+.. code-block:: bash
+
+  sqlite> select distinct challenge_rating, dnd_special_ability.name, dnd_monstertype.name, dnd_racesize.name, dnd_monster.name, dnd_rulebook.name, speed from dnd_monster inner join monster_movement_mode on monster_movement_mode.monster_id=dnd_monster.id inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where abbrev='f' and size_id>5 and (dnd_special_ability.name like "%sense%" or dnd_special_ability.name like "%sight%") order by challenge_rating, dnd_special_ability.name;
+  2|Blindsense 40ft|Animal|Large|Bat, Dire|Monster Manual v.3.5|40
+
+In theory a Medium-size creature could advance to Large size, but if you actually look at the blindsensers of Medium size who can fly, none of them fly with wings.
+Of course since Hover doesn't obstruct sight at melee range, it doesn't really need blindsense...but the dire bat still pops up first anyway. (Though a 9HD Large cloaked ape CR 3 is also a possibility. There's also a 6HD Large sailsnake CR3, 9HD Large dire hawk CR3.)
+A half-fiend Ur'Epona (probably spawned by an armanite) is CR 2 and a fairly serious threat in melee with its 1d6+5 claws and 1d8+2 bite and 1d6+2 hooves, plus DR 5/magic and SR13.
+
+.. code-block:: bash
+
+  sqlite> select distinct challenge_rating, dnd_monstertype.name, dnd_racesize.name, dnd_monster.name, dnd_rulebook.name, speed from dnd_monster inner join monster_movement_mode on monster_movement_mode.monster_id=dnd_monster.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where abbrev='f' and intelligence is not null and size_id>5 and challenge_rating<6 order by challenge_rating;
+  2|Animal|Large|Bat, Dire|Monster Manual v.3.5|40
 
 `Chordevoc <http://archive.wizards.com/default.asp?x=dnd/ex/20050204a&page=5>`_
 
@@ -698,7 +758,7 @@ We'll order by DC first, then carrying capacity, so that for any given level of 
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monstertype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, land_speed, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) and fine_biped_max_load_ounces*quadruped_carry_factor/3/16 > 33 and size_id<6 order by DC, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, land_speed;
+  sqlite> select distinct dnd_monstertype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16 as light_load, land_speed, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) and light_load > 33 and size_id<6 order by DC, light_load, land_speed;
   Animal|Medium|87|40|Phynxkin|Dragon Magic|16
   Animal|Medium|100|40|Baboon|Monster Manual|16
   Animal|Medium|115|40|Nifern|Serpent Kingdoms|17
@@ -734,12 +794,21 @@ We'll order by DC first, then carrying capacity, so that for any given level of 
   Animal|Large|800|30|Lizard, Giant, Footpad|Drow of the Underdark|20
   Animal|Large|400|40|Megaloceros|Frostburn|21
   Animal|Large|1040|40|Bear, Brown|Monster Manual|21
+  Animal|Large|800|50|Wolf, Dire|Monster Manual v.3.5|21
+  Animal|Huge|2080|20|Crocodile, Giant|Monster Manual v.3.5|22
   Animal|Large|1040|40|Boar, Dire|Monster Manual|22
+  Animal|Huge|2800|20|Dinosaur, Ankylosaurus|Monster Manual II|24
+  Animal|Huge|3200|40|Elephant|Monster Manual v.3.5|26
 
 The surprise standouts are boars and dire boars. Just as willing to eat foliage as the bodies of your fallen foes, they're strong and not too slow.
-Raising a dire boar requires a total +12 if you take 10. A first-level human commoner with 4 ranks Handle Animal, +1 Charisma bonus, Skill Focus and Animal Affinity has +10, so they need Aid Another from an assistant. (The Uncivilized trait could give them a +1 bonus on Handle Animal checks, but that's not enough.)
+Raising a dire boar requires a total +12 if you take 10. A first-level human commoner with 4 ranks Handle Animal, +1 Charisma bonus, Skill Focus and Animal Affinity has +10, so they need Aid Another from an assistant *or* a 10gp Animal Training Pole. (The Uncivilized trait could give them a +1 bonus on Handle Animal checks, but that's not enough.)
 
 10gp Animal Training Pole: This hollow pole has a strong, thin cord threaded through it and twisted into a loop at the end. When looped around an animal's neck, it provides an easy way to direct the animal while preventing the animal from moving any closer than the pole's length. An animal training pole provides a +2 circumstance bonus on attempts to teach an animal a task.
+
+You may have heard of the Team Rush teamwork benefit from the Player's Handbook II; that's the reason why, if you hitch an advanced 5HD shadow mastiff to a sled with a pack of regular dogs, they're inspired to move at the shadow mastiff's speed (50feet).
+With the same teamwork training, an 8HD megaraptor can get a team of giant crocodiles or anklyosaurs to move at a speed of 60feet. Of course, if you can do that, you're close to getting elephants anyway.
+More immediately, a 5HD advanced deinonychus can lead a team of Large giant footpad lizards at a speed of 60feet. (If you're restricted to Medium-size, then the heaviest-load-carrier up to DC20 *is* the deinonychus, so there's no point.)
+Of course, drakkensteeds can haul almost as much as giant footpad lizards and move almost as fast as deinonychus, but drakkensteeds are expensive (15,000gp) and rare (thought to be a myth), whereas giant footpad lizards are known to be commonly used as mounts and dray animals. "Dwarves most often employ footpad lizards as mounts while they search new lodes of iron, mithral, and adamantine. These skilled climbers are best able to negotiate treacherous terrain."
 
 
 What about other movement modes? For example, a tiny climber might be able to get your grappling hook where you need it more silently than you can.
@@ -776,6 +845,10 @@ Or maybe all you really want is a messenger eagle.
 Bats have good maneuverability.
 
 Unfortunately the database does not yet include skill ranks, so we cannot sort by the kinds of walls an animal can climb.
+
+Hmm, the A&EG Riding Lizard seems to be missing from the database. But if it were actually in the database, it would be an example of something not caught by looking for a climb speed, because it does not have a listed climb speed of 20 feet, although it is given a climb speed of 20 feet by its spell-like ability.
+Sticky Pads (Sp): A riding lizard has large, circular pads on its toes that exude adhesive. At will, a riding lizard can stick to any vertical or inverted surface as spider climb cast by a 20th-level sorcerer.
+Large magical beast; HD 2d10+6; hp 17; Spd 40 ft.; Str 18, Dex 13, Con 17, Int 2, Wis 13, Cha 6.
 
 Baboons can carry up to a hundred pounds, three hundred pounds if they accept moving slower.
 Baboons have a +10 Climb modifier and can always take 10, so it can climb An uneven surface with some narrow handholds and footholds, such as a typical wall in a dungeon or ruins, but cannot climb a DC25 wall such as a natural rock wall or a brick wall.
@@ -816,18 +889,28 @@ We can also search for templates with a final (not initial) type of animal:
   Voidmind Creature|Monster Manual III|187
   Woodling|Monster Manual III|197
 
+(There are no templates that turn something into an Animal that wasn't an Animal before.)
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_template.name, dnd_rulebook.name, page from dnd_template inner join template_type on dnd_template.id=template_id inner join dnd_monstertype as output on output.id=output_type inner join dnd_monstertype as input on input.id=base_type inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where output.name="Animal" and input.name!="Animal" order by dnd_rulebook.name;
+
+
 A chameleon creature has a climb speed equal to one-half its highest nonflying speed.
 Of course, it's not likely to be a better climber than an ape or a forest sloth. And very high speeds tend to be swim speeds anyway, and those animals tend to be Aquatic, which means they won't really get to use that climb speed unless they're amphibious.
 The chameleon template does, however, allow an animal that has only a swim speed (yet can breathe air) to function on land.
-A mineral warrior gains a burrow speed equal to one-half the base creature's highest speed.
 
 .. code-block:: bash
 
   sqlite> select distinct dnd_monstersubtype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/16 as maxLoad, abbrev, speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_movement_mode.monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id left join monster_has_subtype on monster_has_subtype.monster_id=dnd_monster.id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id left join monster_has_special_ability on monster_has_special_ability.monster_id=dnd_monster.id left join dnd_special_ability on special_ability_id=dnd_special_ability.id where dnd_monstertype.name="Animal" and abbrev="s" and (dnd_monstersubtype.name is null or dnd_monstersubtype.name!="Aquatic" or dnd_special_ability.name like "%Amphibious%") order by speed, maxLoad, -hit_dice;
   Medium|57|s|80|Porpoise|Monster Manual|2
 
+Similarly, a mineral warrior gains a burrow speed equal to one-half the base creature's highest speed.
+Of course, mineral warriors are rare and expensive to create.
+
 Kord-blooded is an acquired template that can be added to any non-evil living creature that has a Strength score of 16 or higher.
 Kord's Athleticism (Su): Once per day, as a swift action, a Kord-blooded creature can call upon the blood invested in him to gain a tremendous surge of prowess. For the next minute, the Kord-blooded creature gains a +4 bonus on Strength and Dexterity checks, Strength- and Dexterity-based skill checks, and grapple checks.
+
 
 What about hirelings? Maybe what you really need is for someone to dangle a rope down into the chasm, and when you come running out of the dungeon in the "Get to the choppa!" moment, pull you up leaving your pursuers behind. For that, animals just won't do.
 
@@ -1074,11 +1157,43 @@ Alternatively, is there another template that can make unsuitable monsters suita
 
 The Incarnate Construct spell is hard to come by.
 A tauric creature's type changes to monstrous humanoid. The template can be added to any Small or Medium-size corporeal humanoid (referred to hereafter as the base humanoid) and any Medium-size or Large corporeal animal, beast, or vermin with at least four legs (referred to hereafter as the base creature). Of course, you have to start with a humanoid, since this would be just if you wanted to mix in an animal or vermin. There are better ways to get animals to serve you, and most vermin abilities are Constitution-based.
+
 Half-troll is an inherited template that can be added to any animal, dragon, fey, giant, humanoid, magical beast, monstrous humanoid, or outsider (referred to hereafter as the base creature). The creature's type becomes giant.
 Fast Healing (Ex): A half-troll heals 5 points of damage each round so long as it has at least 1 hit point. A mummified half-troll does not lose this special quality.
 Abilities: Adjust from the base creature as follows: Str +6, Dex +2, Con +6, Int -2, Cha -2.
 Alignment: Usually chaotic neutral or chaotic evil.
 If you can't rebuke dragons, you can cross-breed a puppeteer with a dragon (preferably one immune to fire or acid), then cross-breed the result with a troll, then mummify the grandchild, then rebuke and command the mummified half-troll quarter-dragon puppeteer.
+
+
+You know, Imcarnate Construct makes me wonder. What templates can convert a non-living creature into a living creature?
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_template.name, dnd_rulebook.name, page from dnd_template inner join template_type on dnd_template.id=template_id inner join dnd_monstertype as output on output.id=output_type inner join dnd_monstertype as input on input.id=base_type inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where output.name!="Construct" and output.name!="Undead" and (input.name="Construct" or input.name="Undead") order by dnd_rulebook.name;
+  Corrupted Creature|Book of Vile Darkness|186
+  Corrupted by the Abyss|Expedition to the Demonweb Pits|190
+  Pseudonatural Creature|Lords of Madness|161
+  Pseudonatural Creature|Manual of the Planes|212
+  Pseudonatural Creature|Complete Arcane|160
+  Pseudonatural Creature|Epic Level Handbook|212
+  Worm That Walks|Epic Level Handbook|228
+  Half-Elemental|Manual of the Planes|188
+  Half-Elemental|Return to the Temple of Elemental Evil|160
+  Half-Illithid|Underdark|89
+  Incarnate Construct|Savage Species|120
+
+There are a couple of ways, most connected to the Abyss or the Far Realm, which makes sense.
+Kaortis, however, can only apply the pseudonatural template to living creatures.
+
+Half-elemental is a template that can be added to any corporeal creature with an Intelligence score of 4 or more. Because the half-elemental is still mostly flesh, it cannot be of the elemental type. Instead, the creature's type changes to outsider.
+Much rarer than half-celestials or fiends, half-elementals are the result of unions between elementals and mortal creatures or are created by some magical infusion of elemental power into a mortal at birth (usually through strange and often distasteful rites). Such creatures are normally left among their mortal kin, never again thought of by their otherworldly sires.
+There's probably a limited-lifespan undead or construct somewhere. (Though they might not be "mortal", as they're still immune to death effects...) So a half-elemental undead could probably be created via strange and often distasteful rites, but we don't know what those rites might be.
+
+Half-illithids are the progeny of mind flayers and various other creatures. Most often, such progeny are formed through magical tampering with the reproductive process of the host creature, rather than through direct mating.
+Half-illithid is an inherited template that can be added to any corporeal creature that is not a construct.
+
+Corrupted by the Abyss is an inherited or acquired template that can be added to any corporeal creature. The creature's type changes to aberration.
+Creatures corrupted by the Abyss are sometimes native to the Infinite Layers of the Abyss. In most cases, however, they originate on other planes but become tainted by the Abyss through long-term residence there.
 
 
 Half-dragon is an inherited template that can be added to any living, corporeal creature.

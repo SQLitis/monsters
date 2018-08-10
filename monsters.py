@@ -47,6 +47,8 @@ except ImportError:
 http_client.HTTPConnection.debuglevel = 1
 import pycurl
 
+#import docx
+
 rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MMI': 'Monster Manual v.3.5', 'MM':'Monster Manual v.3.5',
  'Planar':'Planar Handbook', 'PlH':'Planar Handbook',
  'ToHS':'Towers of High Sorcery',
@@ -83,7 +85,7 @@ rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MMI': 'Monster Manual v
  'Sarlo': 'Secrets of Sarlona', 'SoS': 'Secrets of Sarlona',
  "Xen'd":"Secrets of Xen'drik", 'SX':"Secrets of Xen'drik",
  'FoW':'The Forge of War', 'FW':'The Forge of War',
- 'FN': 'Five Nations',
+ 'FN': 'Five Nations', '5Nat': 'Five Nations',
  'SotAC':'Secrets of the Alubelok Coast', 'Sheep':"Sheep's Clothing",
  'A&EG':'Arms & Equipment Guide',
  'SvgSp':'Savage Species (Web Enhancement)', 'SS':'Savage Species',
@@ -1753,6 +1755,9 @@ class Monster(object):
       curs.execute('''INSERT INTO monster_in_climate (monster_id, climate) VALUES (?,0);''', (monster_id,) )
     elif 'Warm' in self.environment or 'warm' in self.environment:
       curs.execute('''INSERT INTO monster_in_climate (monster_id, climate) VALUES (?,1);''', (monster_id,) )
+    for name in ('desert', 'forest', 'hill', 'mountain', 'plain', 'marsh'):
+      if name in self.environment:
+        curs.execute('''INSERT INTO monster_on_terrain (monster_id, terrain_id) VALUES (?,?);''', (monster_id, id_from_name(curs, 'dnd_terrain', name) ) )
 
     for attack in self.specialAttacks:
       #if attack == '-': continue
@@ -2122,6 +2127,26 @@ def readShax(filepath='ShaxItems.txt'):
   print('done readShax')
   return items
 
+parenthesizedReferenceRE = re.compile(r'\((\w{1,5})\sp(\d{1,3})\)')
+def readCrystalKeepItems(filepath='IndexMagicItems.docx'):
+  # You can open any Word 2007 or later file this way (.doc files from Word 2003 and earlier won’t work).
+  fileObj = open(filepath, 'rb')
+  wordDoc = docx.Document(filepath)
+  personalItems = wordDoc.tables[0]
+  for row in personalItems.rows:
+    parenthesizedReferenceRE.match(row.cells[1].text)
+  #for table in wordDoc.tables:
+  #  for row in table.rows:
+  #      for cell in row.cells:
+  #          print(cell.text)
+  # https://stackoverflow.com/questions/10366596/how-to-read-contents-of-an-table-in-ms-word-file-using-python
+  # blog Reading Table Contents Using Python by etienne
+  # The format of a docx file is described at Open Office XML.
+  # with zipfile.ZipFile('<path to docx file>') as docx:
+  #  tree = xml.etree.ElementTree.XML(docx.read('word/document.xml'))
+  # http://etienned.github.io/posts/extract-text-from-word-docx-simply/
+  # .docx's are basically zip files with several folders and files within them. 'word' is one of the folders and 'document.xml' is one of the files within that folder, which contains most of the document itself
+
 """
 CREATE INDEX "dnd_item_slug" ON "dnd_item" ("slug");
 CREATE INDEX "dnd_item_dnd_item_52094d6e" ON "dnd_item" ("name");
@@ -2242,6 +2267,7 @@ def make_item_tables(curs):
 ,FOREIGN KEY(activation_id) REFERENCES dnd_itemactivationtype(id)
   );''')
   items = readShax()
+  #readCrystalKeepItems()
   if False:
     for item in items:
       curs.execute('''SELECT dnd_rulebook.id FROM dnd_rulebook WHERE dnd_rulebook.name=?;''', item[-1:] )
@@ -2505,18 +2531,19 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
   slug varchar(32) NOT NULL,
   hit_die tinyint(2) NOT NULL,
   base_attack_per_4HD tinyint(1) NOT NULL,
+  CR_per_12HD tinyint(1) NOT NULL,
 UNIQUE(name),
 UNIQUE(slug)
   );''') # add BAB as float, 1 or 0.75 or 0.5
-  curs.execute('''CREATE TEMPORARY TABLE types_HD (name varchar(32), hit_die tinyint(2), base_attack_per_4HD tinyint(1) );''')
-  curs.execute('''INSERT INTO types_HD (name, hit_die, base_attack_per_4HD) VALUES
-                  ("Aberration", 8, 3), ("Animal", 8, 3), ("Construct", 10, 3), ("Dragon", 12, 4), ("Elemental", 8, 3),
-                  ("Fey", 6, 2), ("Giant", 8, 3), ("Humanoid", 8, 3), ("Magical Beast", 10, 4), ("Monstrous Humanoid", 8, 4),
-                  ("Ooze", 10, 3), ("Outsider", 8, 4), ("Plant", 8, 3), ("Undead", 12, 2), ("Vermin", 8, 3), ("Deathless", 8, 3);''')
-  curs.execute('''INSERT INTO dnd_monstertype (name, slug, hit_die, base_attack_per_4HD) SELECT types_backup.name, slug, hit_die, base_attack_per_4HD FROM types_backup INNER JOIN types_HD ON types_backup.name=types_HD.name;''')
+  curs.execute('''CREATE TEMPORARY TABLE types_HD (name varchar(32), hit_die tinyint(2), base_attack_per_4HD tinyint(1), CR_per_12HD tinyint(1) );''')
+  curs.execute('''INSERT INTO types_HD (name, hit_die, base_attack_per_4HD, CR_per_12HD) VALUES
+                  ("Aberration", 8, 3, 3), ("Animal", 8, 3, 4), ("Construct", 10, 3, 3), ("Dragon", 12, 4, 6), ("Elemental", 8, 3, 3),
+                  ("Fey", 6, 2, 3), ("Giant", 8, 3, 3), ("Humanoid", 8, 3, 3), ("Magical Beast", 10, 4, 4), ("Monstrous Humanoid", 8, 4, 4),
+                  ("Ooze", 10, 3, 3), ("Outsider", 8, 4, 6), ("Plant", 8, 3, 3), ("Undead", 12, 2, 3), ("Vermin", 8, 3, 3), ("Deathless", 8, 3, 3);''')
+  curs.execute('''INSERT INTO dnd_monstertype (name, slug, hit_die, base_attack_per_4HD, CR_per_12HD) SELECT types_backup.name, slug, hit_die, base_attack_per_4HD, CR_per_12HD FROM types_backup INNER JOIN types_HD ON types_backup.name=types_HD.name;''')
   curs.execute('''DROP TABLE types_backup;''')
   curs.execute('''DROP TABLE types_HD;''')
-  curs.execute('''INSERT INTO dnd_monstertype (name,slug,hit_die,base_attack_per_4HD) VALUES (?,?,?,?);''', ('Animal','animal',8,3) )
+  curs.execute('''INSERT INTO dnd_monstertype (name,slug,hit_die,base_attack_per_4HD,CR_per_12HD) VALUES (?,?,?,?,?);''', ('Animal','animal',8,3,3) )
   curs.execute('''CREATE INDEX index_monstertype_name ON dnd_monstertype(name);''')
 
   curs.execute('''CREATE TABLE monstertype_save_bonus (
