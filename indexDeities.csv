@@ -1,0 +1,1498 @@
+,Name,Reference,Pantheon,Align,Rank,Nicknames / Portfolio,Domains,Weapon,Symbol
+0,Aegir ,(D&D p170),Asgard,NE,I,"“God of the Oceans”
+Sea, Storms","Death, Destruction, Evil, Strength, Water",Greatclub,Rough Ocean Waves
+1,Balder ,(D&D p171),Asgard,NG,I,"“God of Beauty”
+Beauty, Light, Music, Poetry, Rebirth","Good, Healing, Knowledge",Greatsword,Gem-Encrusted Silver Chalice
+2,Forseti ,(D&D p173),Asgard,N,I,"“God of Justice, Peacemaker”
+Justice, Law","Knowledge, Protection, Strength",Longsword,Head of a Bearded Man
+3,Frey ,(D&D p174),Asgard,NG,G,"“God of Sunlight and the Elves”
+Agriculture, Fertility, Harvest, Sun","Air, Good, Plant, Sun",Greatsword,Ice-Blue Greatsword
+4,Freya ,(D&D p176),Asgard,NG,I,"“Goddess of Love and Fertility”
+Fertility, Love, Magic, Vanity","Air, Charm, Good, Magic",Longsword,Falcon
+5,Frigga ,(D&D p177),Asgard,N,G,"“Goddess of the Atmosphere”, “Queen of the Gods”
+Birth, Fertility, Love","Air, Animal, Community, Knowledge",Natural Weapon,Large Cat
+6,Heimdall ,(D&D p179),Asgard,LG,I,"“The Bright God”, “Guardian of Bifrost”
+Watchfulness, Sight, Hearing, Loyalty","Good, Law, War",Longsword,Gjallahorn
+7,Hel ,(D&D p180),Asgard,NE,I,"“Goddess of Death and the Underworld”
+Death, Underworld","Death, Destruction, Evil",Longsword,Her Face
+8,Hermod ,(D&D p182),Asgard,CN,D,"“Messenger of the Gods”
+Luck, Communication, Freedom","Chaos Luck, Travel",Rapier,Winged Scroll
+9,Loki ,(D&D p183),Asgard,CE,G,"“God of Mischief, Strike, and Fire”
+Thieves, Trickery, Murder","Chaos, Destruction, Evil, Trickery",Dagger,Flame
+10,Njord ,(D&D p184),Asgard,NG,I,"“God of the Sea and Winds”
+Commerce, sea, Wind","Air, Good, Water",Longspear,Gold Coin
+11,Odin ,(D&D p167),Asgard,NG,G,"“All-Father, Father of the Slain”, “God of the Hanged”
+Knowledge, Magic, Supreme War","Air, Knowledge, Magic, Travel, Trickery, War",Shortspear,Watching Blue Eye
+12,Odur ,(D&D p186),Asgard,CG,D,"“God of the Sun”
+Light, Sun, Travel","Chaos, Fire, Sun",Bastard Sword,Sun Disk
+13,Sif ,(D&D p187),Asgard,CG,L,"“Goddess of Excellence and Skill in Battle”
+War, Dueling","Chaos, Good, War",Longsword,Upraised Sword
+14,Skadi ,(D&D p190),Asgard,N,L,"“Goddess of Mountains”
+Earth, Mountains","Destruction, Earth, Strength",Greataxe,Mountain Peak
+15,Surtur ,(D&D p190),Asgard,LE,I,"“Lord of the Fire Giants”
+Fire, War","Evil, Fire, Law, Strength, War",Longsword,Flaming Sword
+16,Thor ,(D&D p192),Asgard,CG,G,"“God of Thunder”
+Storms, Thunder, War","Chaos, Good, Protection, Strength, War, Weather",Warhammer,Hammer
+17,Tyr ,(D&D p195),Asgard,LN,I,"“God of Courage and Strategy”
+Courage, Trust, Strategy, Tactics, Writing","Law, Protection, War",Longsword,Sword
+18,Uller ,(D&D p197),Asgard,CN,L,"“God of Hunting, Archery, and Winter”
+Archers, Hunting, Winter","Chaos, Protection, Travel",Longbow,Longbow
+19,Chalchihuitlicue ,(DR354 p090),Aztec,NG,L,"“She of the Skirt of Jade”
+Water, Beauty, Youth","Good, Healing, Luck, Water",Trident,
+20,Cihuacoatl ,(DR356 p091),Aztec,N,I,"“Snake Woman”, “The Hungry Woman”
+Earth, Birth, Death","Animal, Death, Earth, Plant",Pick,Snake-Headed Woman with a Skirt of Snakes
+21,Huitzilopochtlli ,(DR356 p091),Aztec,LE,L,"“Hummingbird of the South”
+War, Conquest, Aztecs","Evil. Law, Strength, War","Macahuitl
+(stone-edged longsword)",
+22,Quetzalcoatl ,(DR352 p097),Aztec,LG,G,"“The Feathered Serpent”
+Air, Civilization","Air, Good, Law, Protection, Travel",Mace,Snake with Feathers
+23,Tezcatlipoca ,(DR352 p097),Aztec,CE,G,"“The Smokey Mirror”
+Night, Mischief","Chaos, Evil, Knowledge, Magic, Trickery",Dagger,Mirror of Polished Obsidian
+24,Tlaloc ,(DR354 p091),Aztec,LE,I,Rain,"Air, Law, Plant, Water",Sickle,
+25,Tonatiuh ,(DR358 p089),Aztec,NE,I,"“Nanhuatl, the God of Misfortune”
+Sun, Misfortune","Destruction, Evil, Sun, War",Shortbow,Face blazing like the Sun
+26,Xipetotec ,(DR358 p089),Aztec,LN,I,"“The Flayed Lord”
+Agriculture, Sacrifice","Earth, Law, Luck, Plant",Flail,
+27,Anshar ,(Sand p47),Babylonian,NE,,,"Evil, Magic, Trickery",Dagger,
+28,Dahak ,(Sand p47),Babylonian,CE,,,"Chaos, Death, Evil",Scimitar,
+29,Druaga ,(Sand p47),Babylonian,LE,,,"Evil, Law, Trickery",Mace,
+30,Gilgamesh ,(Sand p47),Babylonian,NG,,,"Good, Strength, Travel, War",Mace,
+31,Girru ,(Sand p47),Babylonian,LG,,,"Fire, Good, Law, Magic",Morningstar,
+32,Ki ,(Sand p47),Babylonian,N,,,"Animal, Luck, Plant",Quarterstaff,
+33,Nanna-Sin ,(Sand p47),Babylonian,CG,,,"Chaos, Luck, Good",Battleaxe,
+34,Utu ,(Sand p47),Babylonian,CG,,,"Chaos, Fire, Good, Sun",Scimitar,
+35,Anu ,"(Sand p47)
+(DR329 p036)","Combo
+Babylonian
+Mesopo-tamian",LN,G,"“Sky Father”
+Sky","Air, Knowledge, Law, Magic, Protection, Travel",Mace,Star
+36,Auril ,"(F&P p091)
+(Frost p42) 
+(DR323 p65)+","Combo
+Forgotten Realms
+Frostfell",NE,L,"“Frostmaiden”, “Icedawn”, “Cold Goddess”
+Cold, Winter","Air, Cold, Evil, Storm, Water, Winter, Wrath","Battle Axe –or– Ice Axe
+“Icemaiden’s Caress”",White Snowflake on a Gray Diamond
+37,Bahamut ,"(CDiv p108)
+(D&D p058)
+(Dcn p032) 
+(DR323 p65)+ 
+(DR355 p26)+","Combo
+Core
+Dragon",LG,L,"“The Platinum Dragon”, “King of the Good Dragons”, “Lord of the North Wind”
+Good Dragons, Wind","Air, Cold, Dragon, Good, Luck, Nobility, Patience, Pride, Protection, Storms","Pick, Heavy –or– Bite",Star above a Milky Nebula
+38,Blibdoolpoolp ,"(CDiv p124) 
+(F&P p221)
+(Storm p49)
+(DR342 p74)+","Combo
+Monster
+The Waters",NE,I,Kua-Toa,"Blackwater, Destruction, Evil, Water, Watery Death",Pincer Staff,Lobster’s Head and a Black Pearl
+39,Boccob ,"(PH p106)
+(CDiv p110)
+(D&D p060)
+(LLG p167) 
+(DR338 p38)+","Combo
+Core
+Greyhawk",N,G,"“The Uncaring”, “Archmage of the Deities”
+Magic, Arcane Knowledge, Foresight, Balance","Knowledge, Magic, Mind, Oracle, Trickery","Quarterstaff
+“Staff of Boccob”",Pentagram with an Eye in the Middle
+40,Clangeddin Truesilver ,"(F&P p116) (DR323 p65)+ 
+(DR355 p26)+","Combo
+Forgotten Realms
+Dwarf",LG,I,"“Father of Battle”, “Lord of the Twin Axes”, “The Rock of Battle”
+Battle, War, Valor, Bravery, Honor in Battle","Dwarf, Good, Law, Strength, Temperance, War, Wrath","Battleaxe
+“Giantbane”",Two Crossed Battleaxes
+41,Corellon Larethian ,"(PH p106)
+(CDiv p110)
+(D&D p062)
+(F&P p125)
+(RotW p20) 
+(DR323 p65)+ 
+(DR355 p26)+","Combo
+Elf
+Core",CG,G,"“Creator of the Elves”, “First of the Seldarine”, “Coronal of Arvandar”
+Elves (especially Sun Elves), Magic, Music, Arts, Poetry, Bards","Chaos, Community, Elf, Good, Magic, Pride, Protection, War, Zeal","Longsword
+“Sahandrian”",Crescent Moon
+42,Deep Duerra ,(F&P p117),"Combo
+Forgotten Realms
+Dwarf",LE,D,"“Queen of the Invisible Art”, “Axe Princess of Conquest”
+Psionics, Conquest, Expansion","Dwarf, Evil, Law, Mentalism, War","Battleaxe
+“Mindshatter”",Broken Illithid Skull
+43,Deep Sashelas ,"(CDiv p124)
+ (F&P p125) (RotW p21)
+(Storm p49)","Combo
+Elf
+Forgotten Realms
+The Waters",CG,I,"“Lord of Undersea”, “The Dolphin Prince”
+Aquatic Elves, Oceans, Creation, Knowledge","Chaos, Elf, Good, Knowledge, Ocean, Protection, Water","Trident
+“Trifork of the Deeps”",Dolphin
+44,Devourer ,"(Eb p69)
+(FoE p49) 
+(Storm p49) 
+ (PGE p33)+ 
+(DR323 p65)+ 
+(FoE p38)+","Combo
+Eberron – D6
+The Waters",NE,,"“Sovereign of Wave & Whelm”, “Lord of Maelstroms”, “Shurkaan”
+Devistation, Hunger, Nautical Travel, Storms, Water","Cold, Destruction, Evil, Gluttony, Pestilence, Ocean, Storm, Water, Weather",Trident,Bundle of Five Sharpened Bones
+45,Dugmaren Brightmantle ,"(F&P p117) 
+(DR355 p26)+","Combo
+Forgotten Realms
+Dwarf",CG,L,"“The Gleam in the Eye”, “The Errant Explorer”
+Scholarship, Invention, Discovery","Chaos, Craft, Dwarf, Good, Knowledge, Patience, Rune","Shortsword
+“Sharptack”",Open Book
+46,Dumathion ,"(F&P p118) 
+(DR323 p65)+","Combo
+Forgotten Realms
+Dwarf",N,I,"“Keeper of Secrets under the Mountain”, “The Silent Keeper”
+Buried Wealth, Ore, Gems, Mining, Exploration, Shield Dwarves","Cavern, Craft, Dwarf, Earth, Greed, Knowledge, Metal, Pride, Protection","Maul
+“Magmahammer”",Faceted Gem inside a Mountain
+47,Ea ,"(Sand p47)
+(DR329 p037)","Combo
+Babylonian
+Mesopo-tamian","LG
+(LN)",I,"“Enki”
+Fresh Water, Wisdom","Earth, Good, Knowledge, Law, Magic, Water",Trident –or– Mace,Ram-headed Fish
+48,Eadro ,"(CDiv p124)
+ (Storm p49)","Combo
+The Waters
+Monster",N,I,"Locathah, Merfolk, Tritons","Animal, Protection, Seafolk, Water",Longspear,Spiral –or– Whirlpool
+49,Ehlonna ,"(PH p107)
+(CDiv p110)
+ (D&D p064)
+(LLG p169) 
+(DR342 p89)+ 
+(DR355 p26)+","Combo
+Core
+Greyhawk",NG,I,"“Ehlonna of the Forest”
+Forests, Flora, Fauna, Fertility","Animal, Celerity, Good, Hunt, Plant, Sun, Temperance","Longbow
+“Jenevier”",Unicorn
+50,Eilistraee ,"(F&P p023) 
+(DR323 p65)+
+(DR342 p89)+","Combo
+Forgotten Realms
+Drow",CG,L,"“The Dark Maiden”, “Lady of the Dance”
+Song, Beauty, Dance, Swordwork, Hunting, Moonlight","Chaos, Charm, Drow, Elf, Good, Hunt, Lust, Moon, Night, Portal’","Bastard Sword
+“The Moonsword”",Nude Long-Haired Female Drow Dancing with a Sword in front of a Full Mon
+51,Enlil ,"(Sand p47)
+(DR329 p038)","Combo
+Babylonian
+Mesopo-tamian","LN
+(NG)",I,"Atmosphere, Law, Order","Air, Animal, Good, Law, Luck, Protection, War",Pick,Circlet
+52,Erythnul ,"(PH p107) 
+(CDiv p111)
+ (D&D p066)
+ (LLG p170)
+(DR323 p65)+","Combo
+Core
+Greyhawk","CE
+(CN)",I,"“The Many”
+Slaughter, Panic, Malice","Chaos, Evil, Gluttony, Madness, Trickery, War, Wrath","Morningstar
+“Agony”",Asymmetric Monstrous Face
+53,Fharlanghn ,"(PH p107)
+(CDiv p111)
+ (D&D p067)
+ (LLG p170) 
+(DR355 p26)+","Combo
+Core
+Greyhawk","N
+(NG)",I,"“The Dweller on the Horizon”
+Roads, Travel, Distance","Balance, Celerity, Generosity, Luck, Portal, Protection, Travel, Weather","Quarterstaff
+“Traveler’s Friend”",Disk with a Horizon line & a Sliver of Moon over it
+54,Garl Glittergold ,"(PH p107)
+(CDiv p112)
+ (D&D p069)
+ (F&P p135)
+(RoS p43)
+(DR323 p65)+","Combo
+Gnome
+Core",NG / LG,G,"“The Joker”, “The Priceless Gem”
+Gnomes, Humor, Wit, Illusion, Gem-Cutting, Jewelry-Making","Community, Craft, Creation, Envy, Gnome, Good, Greed, Law, Protection, Trickery","Battleaxe
+“Arumdina”",Gold Nugget
+55,Geshtai ,"(CDiv p122)
+ (LGG p171)
+(Storm p49)","Combo
+Greyhawk
+The Waters",N,L,"“Daughter of the Oasis”
+Lakes, Rivers, Wells, Streams","Plant, Travel, Water, Weather",Shortspear,Waterspout
+56,Ghaunadaur ,"(F&P p111)
+(LoM p177)","Combo
+Forgotten Realms
+Drow",CE,L,"“That Which Lurks”, “The Elder Eye”
+Oozes, Slimes, Jellies, Outcasts, Ropers, Rebels","Cavern, Chaos, Corruption, Drow, Evil, Hatred, Slime","Warhammer
+(amorphous tentacle)","Purplish Eye on Purple, Violet, & Black Circles"
+57,Gorm Gulthyn ,(F&P p118),"Combo
+Forgotten Realms
+Dwarf",LG,L,"“Fire Eyes”, “Lord of the Bronze Mask”, “The Eternally Vigilant”
+Guardian of All Dwarves, Defense, Watchfulness","Dwarf, Good, Law, Protection, War","Battleaxe
+“Axeguard”",Shining Bronze Mask with Eyeholes of Flame
+58,Gruumsh ,"(PH p107)
+(CDiv p112)
+ (D&D p071)
+ (F&P p148) 
+(DR323 p65)+","Combo
+Orc
+Core",CE,G,"“One-Eye”,“He Who Never Sleeps”
+Orcs, Conquest, Strength","Cavern, Chaos, Domination, Evil, Hatred, Lust, Orc, Strength, War, Wrath","Spear
+“The Bloodspear”",Unwinking Eye
+59,Haela Brightaxe ,"(F&P p119) 
+(DR355 p26)+","Combo
+Forgotten Realms
+Dwarf",CG,D,"“Lady of the Fray”, “Luckmaiden”
+Luck in Battle, Joy of Battle, Dwarven Fighters","Chaos, Destiny, Dwarf, Good, Luck, War, Zeal","Greatsword
+“Flamebolt”",Unsheathed Sword wrapped in a spiral of flame
+60,Hathor ,"(D&D p145)
+(F&P p142) 
+(Sand p47)
+ (DR323 p65)+","Combo
+Pharaonic
+Mulhorandi",NG,L,"“Goddess of Music, Dance, Art, & Inspiration”, “Nurturing Mother”
+Love, Music, Dance, Moon, Fate, Motherhood","Community, Family, Fate, Good, Luck, Lust, Moon, Protection, Sloth",Longsword –or– Shortsword,Horned Cow’s Head with a Lunar Disk
+61,Heironeous ,"(PH p107) 
+(CDiv p112)
+ (D&D p072)
+ (LGG p171)
+(DR323 p65)+ 
+(DR355 p26)+","Combo
+Core
+Greyhawk",LG,I,"“The Invincible”, “Arch-Paladin”
+Justice, Valor, Chivalry, Honor","Destiny, Glory, Good, Inquinistion, Law, Pride, Temperance, War, Wrath, Zeal","Longsword
+“Justice Bringer”",Silver Lightning Bolt held in a Fist
+62,Hextor ,"(PH p107) 
+(CDiv p113)
+ (D&D p075)
+ (LGG p172)
+(DR323 p65)+ 
+(DR355 p26)+","Combo
+Core
+Greyhawk",LE,I,"“Herald of Hell”, “Scourge of Battle”
+War, Conflict, Destruction, Tyrrany, Fitness","Destruction, Domination, Evil, Law, Pride, War, Wrath, Zeal","Flail
+“Executioner”",Gauntlet holding Arrows
+63,Ishtar ,"(Sand p47)
+(DR329 p040)","Combo
+Babylonian
+Mesopo-tamian","CN
+(N)",I,"Love, War","Animal, Chaos, Magic, Strength, Summer, Trickery, War",Shortsword –or– Light Flail,Spear (?)
+64,Ishtishia ,"(F&P p098)
+(Storm p49)","Combo
+Forgotten Realms
+The Waters",N,G,"“The Water Lord”, “King of the Water Elementals”
+Elemental Water, Purification","Destruction, Ocean, Storm, Travel, Water","Warhammer
+(a wave)",Cresting Wave
+65,Isis ,"(D&D p148)
+(F&P p144) 
+(DR323 p65)+","Combo
+Pharaonic
+Mulhorandi",NG,G,"“Goddess of Magic & Fertility”, “Lady of Rivers”
+Fertility, Magic, Marriage, Rivers, Weather, Love","Family, Good, Lust, Magic, Protection, Storm, Water",Quarterstaff –or– Punching Dagger,Ahnk and Star on a Lunar Disk
+66,Joramy ,"(CDiv p122)
+ (LGG p173)
+(Sand p46) 
+(DR323 p65)+","Combo
+Greyhawk
+The Waste","N
+(NG)",L,"“The Shrew”
+Fire, Volcanoes, Wrath, Anger, Quarrels","Competition, Destruction, Fire, Water, War, Wrath",Quarterstaff,Volcano
+67,Kiaransalee ,"(F&P p112) 
+(DR322 p88)+
+(DR323 p65)+","Combo
+Forgotten Realms
+Drow",CE,D,"“Lady of the Dead”, “The Revenancer”, “The Vengeful Banshee”
+Undead, Vengeance","Chaos, Drow, Envy, Evil, Pride, Retribution, Undeath","Dagger
+“Cold Heart”",Female Drow Hand wearing Silver Rings
+68,Kikanuti ,(Sand p46),"Combo
+The Waste
+Monster",NG,,"Bhukas, Fertility","Earth, Good, Magic, Protection, Plant, Summer","Mace
+(clay pot)",Tall Clay Pot pained with a stylized Bird
+69,Kord ,"(PH p107) 
+(CDiv p113)
+ (D&D p077)
+ (LGG p174)
+(DR323 p65)+ 
+(DR355 p26)+","Combo
+Core
+Greyhawk",CG,I,"“The Brawler”
+Athletics, Sports, Courage, Strength, Courage","Chaos, Chastity, Competition, Good, Luck, Strength, Wrath, Zeal","Greatsword
+“Kelmar”",Star composed of Spears & Maces
+70,Kurtulmak ,"(CDiv p113) 
+(F&P p221)
+ (RotD p48)
+(D&D p079)
+ (wRotD2)+ 
+(DR323 p65)+","Combo
+Core
+Monster",LE,I,"“Horned Sorcerer”, “Steelscale”, “Stingtail”, “The Watcher”
+Kobolds, Trapmaking, Mining, War","Earth, Envy, Evil, Hatred, Kobold, Law, Luck, Scalykind, Trickery, War","Spear
+“Foe Stinger”",Gnome Skull
+71,Laduguer ,"(CDiv p124) 
+(F&P p120)
+(MM p91)
+(RoS p18)
+(DR325 p66)","Combo
+Forgotten Realms
+Dwarf",LE,I,"“The Exile”, “Gray Protector”
+Druergar, Magic Weapons, Artisans, Magic","Craft, Domination, Dwarf, Earth, Evil, Law, Magic, Metal, Protection, War","Warhammer
+“Grimhammer”",Broken Crossbow Bolt
+72,Levistus ,"(Tot9H p28)
+(Frost p42)
+(BoVD p154)","Combo
+Devil
+Frostfell",LE,,"“Lord of the Fifth Layer of Hell”
+Vengeance, Betrayal","Cold, Diabolic, Evil, Trickery, War",Rapier,Thin Sword thrust into a Block of Ice –or– an Iron Cauldron
+73,Lolth ,"(CDiv p114)
+ (F&P p040)
+(D&D p081)
+ (RotW p22)+ (DR323 p65)+
+(Drow p19)+","Combo
+Core
+Forgotten Realms
+Drow",CE,I,"“Queen of the Demonweb Pits”, “Queen of Spiders”
+Assassins, Chaos, Darkness, Drow, Evil, Spiders","Chaos, Destruction, Drow, Envy, Evil, Darkness, Destruction, Lust, Portal’, Pride, Spider, Trickery, Wrath",Dagger –or– Whip,Black Spider with Female Drow Head hanging from a Spider Web
+74,Marduk ,"(Sand p47)
+(DR329 p042)","Combo
+Babylonian
+Mesopo-tamian","LG
+(LN)",L,Defense against Evil,"Air, Fire, Law, Luck, Protection, War",Net,Dragon
+75,Marthammor Duin ,(F&P p120),"Combo
+Forgotten Realms
+Dwarf",NG,L,"“Finder-of-Trails”, “Watcher over Wanderers”, “The Watchful Eye”
+Guides, Explorers, Expatriates, Travelers, Lightning","Dwarf, Good, Protection, Travel","Mace, Heavy
+“Glowhammer”",Upright Mace in front of a Fur-Trimmed Leather Boot
+76,Moradin ,"(PH p107)
+(CDiv p115)
+ (D&D p082)
+ (F&P p120)
+(RoS p17) 
+(DR323 p65)+","Combo
+Core
+Dwarf
+Forgotten Realms",LG,G,"“Soul Forger”, “Dwarf-Father”
+Dwarves, Creation, Smithing, Engineering, War","Craft, Creation, Dwarf, Earth, Good, Greed, Law, Portal, Pride, Protection, Wrath","Warhammer
+“Soulhammer”",Hammer & Anvil
+77,Nephthys ,"(D&D p149)
+(F&P p145)
+(Sand p47)","Combo
+Pharaonic
+Mulhorandi",CG,I,"“Protector of the Dead”, “Avenging Mother”
+Dead, Grief, Wealth, Trade","Chaos, Good, Greed, Protection, Repose, Trade",Mace –or– Whip,Horns around a Lunar Disk –or– Gold Offering Bowl topped with an Anhk
+78,Nergal ,"(Sand p47)
+(DR329 p040)","Combo
+Babylonian
+Mesopo-tamian","CE
+(NE)",L,"Death, Destruction, Plagues","Chaos, Death, Destruction, Earth, Evil",Mace –or– Longsword,Lion-headed Mace
+79,Nerull ,"(PH p108)
+(CDiv p116)
+ (D&D p084)
+ (LGG p177)
+(LM p17)+ 
+(DR323 p65)+","Combo
+Core
+Greyhawk",NE,G,"“The Reaper”, The Foe of All Good”, “Hater of Life”
+Death, Darkness, Murder, Underworld","Death, Envy, Evil, Pestilence, Trickery","Scythe
+“Life Cutter”",Skull & Scythe
+80,Obad-Hai ,"(PH p108)
+(CDiv p116)
+ (D&D p087)
+ (LGG p178) 
+(DR342 p89)","Combo
+Core
+Greyhawk",N,I,"“The Shalm”
+Nature, Wilderness, Hunting, Freedon","Air, Animal, Balance, Earth, Fire, Hunt, Plant, Water, Weather","Quarterstaff
+“Shalmstaff / Storm’s Touch”",Leaves & Acorns forming a Face
+81,Olidammara ,"(PH p108) 
+(CDiv p116)
+ (D&D p089)
+ (LGG p178)
+(DR323 p65)+","Combo
+Core
+Greyhawk",CN,I,"“Laughing Rogue”
+Music, Revels, Wine, Humor, Rogues, Tricks","Celerity, Chaos, City, Greed, Luck, Lust, Mind, Sloth, Trickery","Rapier
+“Swiftstrike”",Asymmetric Black & White Mask
+82,Orcus ,"(HotA p073)
+(F&P p221)
+(LM p018)","Combo
+Demon
+Undead",CE,L,"“Demon Prince of Undeath”, “Tenebrous”
+Undeath, Revenge","Chaos, Darkness, Death, Demonic, Evil, Undeath",Mace,Skull-headed Rod
+83,Osiris ,"(D&D p151)
+(F&P p146) 
+(Sand p47)
+(DR323 p65)+","Combo
+Pharaonic
+Mulhorandi",LG,G / I,"“God of Life and Death”, “Judge of the Dead”
+Harvest, Nature, Underworld, Justice, The Dead","Air, Earth, Good, Law, Plant, Pride, Repose, Retribution","Flail
+“Just Reward”",White Crown over a Crook and Flail
+84,Pelor ,"(PH p108) 
+(CDiv p117)
+ (D&D p090)
+ (LGG p178) 
+(DR321 p68)+
+(DR323 p65)+ 
+(DR355 p26)+","Combo
+Core
+Greyhawk",NG,G,"“Sun Father”, “The Shining One”
+Sun, Light, Strength, Healing","Charity, Destiny, Glory, Good, Healing, Pride, Portal, Radiance, Strength, Sun","Mace
+“Sun Scepter”",Face in the Sun
+85,Procan ,"(CDiv p123)
+ (LGG p180)
+(Storm p49)
+(DU106 p41) 
+(DR323 p65)+","Combo
+Greyhawk
+The Waters",CN,I,"“The Storm Lord”, “Sailor of Sea and Sky”
+Seas, Sea Life, Salt, Sea Weather, Navigation","Animal, Chaos, Storm, Travel, Water, Weather, Wrath",Trident –or– Longspear,Crashing Wave –or– Trident Piercing a Cresting Wave
+86,Sehanine Moonbow ,"(F&P p129)
+(RotW p23)
+(LGG p183)","Combo
+Elf
+Greyhawk",CG,I,"“Daughter of the Night Sky”
+Mysticism, Dreams, Death, Journeys, Transcendence, The Moon, The Stars, The Heavens","Chaos, Elf, Good, Illusion, Knowledge, Travel, Trickery","Quarterstaff
+“Moonshaft”",Crescent Moon over a Full Moon
+87,Sekolah ,"(CDiv p124) 
+ (Storm p49)","Combo
+Monster
+The Waters",LE,L,Sahuagin,"Blackwater, Evil, Law, Strength, War",Trident,Shark’s Dorsal Fin cutting the Water
+88,Selvetarm ,"(F&P p113)
+(DR323 p65)+","Combo
+Forgotten Realms
+Drow",CE,D,"“Champion of Lloth”, “The Spider that Waits”
+Drow Warriors","Chaos, Drow, Evil, Spider, War, Wrath","Mace, Heavy
+“Venomace”",Spider on a Crossed Sword & Mace
+89,Set ,"(D&D p154)
+(F&P p147)
+(Sand p46) 
+(DR323 p65)+","Combo
+Pharaonic
+The Waste
+Mulhorandi",CE / LE,G / I,"“Defiler of the Dead”, “Father of Jackals”, “Lord of Carrion”
+Darkness, Evil, Desert Storms, Drought, Snakes, Murder","Air, Chaos, Darkness, Destruction, Envy, Evil, Hatred, Law, Magic, Pride, Scalykind, Strength, Wrath","Shortspear –or– Halfspear
+“Spear of Darkness”",Coiled Cobra
+90,Sharindlar ,"(F&P p122) 
+(DR323 p65)+ 
+(DR355 p26)+","Combo
+Forgotten Realms
+Dwarf",CG,I,"“Lady of Life and Mercy”, “The Shining Dancer”
+Healing, Mercy, Romantic Live, Fertility, Dancing, Courtship, The Moon","Charity, Chaos, Chastity, Charm, Dwarf, Good, Healing, Lust, Moon, Sloth","Whip
+“Fleebite”",Flame Ring rising from a Steel Needle
+91,St. Cuthbert ,"(PH p108) 
+(CDiv p117)
+ (D&D p091)
+ (LGG p182)
+(DR323 p65)+ 
+(DR355 p26)+","Combo
+Core
+Greyhawk",LN,I,"“St. Cuthbert of the Cudgel”
+Common Sense, Truth, Discipline, Retribution, Zeal","Destiny, Destruction, Domination, Humility, Law, Portal, Protection, Strength, Wrath, Zeal","Mace
+“The Mace of Cuthbert”",Two Concentric Circles quartered by Lines
+92,Telchur ,"(CDiv p123)
+ (LGG p184) 
+(Frost p42)","Combo
+Greyhawk
+Frostfell",CN,L,"“Icebrother”
+Winter, Cold, North Wind","Air, Chaos, Cold, Strength, Winter",Shortspear –or– Shortbow,Leafless Tree in a  Field of Snow
+93,Thard Harr ,"(F&P p122) 
+(DR323 p65)+","Combo
+Forgotten Realms
+Dwarf",CG,L,"“Lord of the Jungle Deeps”
+Wild Dwarves, Jungle Survival, Hunting","Animal, Chaos, Dwarf, Good, Plant, Wrath","Spiked Gauntlet
+(clawed gauntlet)",Two crossed Scaly Clawed Gauntlets of Silvery-Blue Metal
+94,Thoth ,"(D&D p156)
+(F&P p147)
+(Sand p47) 
+(DR355 p26)+","Combo
+Pharaonic
+Mulhorandi",N,I,"“Scribe of the Gods”, “Keeper of Knowledge”
+Knowledge, Wisdom, Learning ","Craft, Humility, Knowledge, Magic, Rune, Spell","Quarterstaff
+“Knowledge Keeper”",Ankh above an Ibis Head
+95,Thrym ,"(CDiv p124) 
+ (D&D p194)
+(Frost p42)","Combo
+Asgard
+Frostfell
+Monster",CE,I,"“Lord of Frost Giants”
+War, Cold, Frost Giants","Chaos, Cold, Destruction, Earth, Evil, Strength, War",Greataxe,White Double-Bladed Axe
+96,Tiamat ,"(CDiv p117)
+ (D&D p093)
+(Dcn p035)
+ (MM4 p128)
+(F&P p108)
+(DR323 p65)+","Combo
+Core
+Forgotten Realms
+Dragon",LE,L,"“The Dragon Queen”, “Nemesis of the Gods”, “The Dark Lady”
+Evil Dragon, Evil Reptiles, Greed, Chessenta","Destruction, Dragon, Evil, Greed, Hatred, Law, Pride, Scalykind, Trickery, Tyranny, Wrath","Pick, Heavy –or– Bite",Five-Headed Dragon
+97,Ulutiu ,"(F&P p109)
+(Frost p42)","Combo
+Forgotten Realms
+Frostfell",LN,D,"“The Lord in the Ice”, “The Eternal Sleeper”, “Father of the Giants’ Kin”
+Glaciers, Polar Environments, Arctic Dwellers","Animal, Law, Ocean, Protection, Strength",Longspear –or– Shortspear,Necklace of Blue & White Crystals
+98,Valkur ,"(F&P p110)
+(Storm p49) 
+(DR323 p65)+","Combo
+Forgotten Realms
+The Waters",CG,D,"“The Mighty”, “Captain of the Waves”
+Sailors, Ships, Favorable Winds, Naval Combat","Air, Chaos, Good, Ocean, Protection, Wrath","Cutlass
+“The Captain’s Cutlass”",Shield with a Cloud & Three Lighting Bolts
+99,Vatun ,"(LGG p185) 
+(Frost p52)","Combo
+Greyhawk
+Frostfell",CN,L,"“The North God”
+Northern Barbarians, Cold, Winter, Arctic Beasts","Air, Animal, Chaos, Snow, Strength",Battleaxe,Setting Sun on a Snowy Landscape
+100,Vecna ,"(PH p108) 
+(CDiv p118)
+ (D&D p094)
+ (LGG p186) 
+(DR323 p65)+","Combo
+Core
+Greyhawk",NE,L,"“The Maimed Lord”, “The Whispered One”
+Secrets, Intrigue","Destiny, Evil, Knowledge, Madness, Magic, Portal, Pride","Dagger
+“Afterthought”",Left Hand holding an Eye
+101,Vergadain ,"(F&P p123) 
+(DR323 p65)+","Combo
+Forgotten Realms
+Dwarf",N,I,"“Merchant King”, “The Short Father”, “The Laughing Dwarf”
+Wealth, Luck, Chance, Non-Evil Thieves, Suspicion, Trickery, Negotiation, Sly Cleverness","Dwarf, Greed, Gluttony, Luck, Sloth, Trade, Trickery","Longsword
+“Goldseeker”",Gold Piece
+102,Vhaeraun ,"(F&P p113)
+(DR323 p65)+","Combo
+Forgotten Realms
+Drow",CE,L,"“The Masked Lord”, “The Masked God of Night”
+Thievery, Drow Males, Evil activity on the Surface","Chaos, Drow, Envy, Evil, Greed, Pride, Travel, Trickery","Shortsword
+“Shadowflash”",Pair of Black Glass Lenses that form a Mask
+103,Wee Jas ,"(PH p108) 
+(CDiv p119)
+ (D&D p096)
+ (LGG p187) 
+(DR323 p65)+ 
+(DR355 p26)+","Combo
+Core
+Greyhawk",LN,I,"“Witch Goddess”, “Ruby Sorceress”, “Death’s Guardian”
+Death, Magic, Vanity","Death, Domination, Law, Magic, Mind, Patience, Portal, Pride","Dagger
+“Discretion”",Red Skull in front of a Fireball
+104,Yondalla ,"(CDiv p119)
+ (D&D p097)
+ (F&P p141)
+(RotW p52) 
+(DR323 p65)+ 
+(DR355 p26)+","Combo
+Halfling
+Core",LG,G,"“The Protector and Provider”, “The Blessed One”
+Halflings, Explorers, Family","Community, Creation, Family, Generosity, Gluttony, Good, Halfling, Law, Protection","Shortsword
+“Hornblade”",Cornucopia on a Shield
+105,Gorm’ ,(DR315 p090),Cynidicea,LN,,"Storms, Justice, War","Air, Law, War",Longsword,Blue Lightning Bolt
+106,Madarua ,(DR315 p091),Cynidicea,N,,"Birth, Death, Changing Seasons, Warrior Maidens","Death, Healing, Protection",Longspear,Sickle
+107,Usamigaras ,(DR315 p090),Cynidicea,CN,,"Healing, Messengers, Thieves, Magic","Healing, Magic, Trickery",Dagger,Five-pointed Silver Star
+108,Zargon ,(DR315 p090),Cynidicea,LE,,"Control, Tyranny, Oppression","Destruction, Evil, Law","Flail, Light",Gold Mask of a Face with One Horn and 4 Tentacles on the Chin
+109,Andropinus ,(DR319 p034),Dark Sun,,,,"Evil, Law, Travel, War",,
+110,Atzetuk ,(DR319 p034),Dark Sun,,,,"Destruction, Evil, Magic, Sun",,
+111,Dregoth ,(DR319 p034),Dark Sun,,,,"Chaos, Death, Evil, Knowledge",,
+112,Hamanu ,(DR319 p034),Dark Sun,,,,"Evil, Law, Protection, Strength",,
+113,Lalali-Puy ,(DR319 p034),Dark Sun,,,,"Evil, Healing, Paw, Plant",,
+114,Shadow King ,(DR319 p034),Dark Sun,,,,"Chaos, Evil, Trickery, War",,
+115,Baphomet ,"(HotA p058)
+(DR341 p025)+",Demon,CE,,"“Demon Prince of Beasts”
+Minotaur","Bestial, Chaos, Evil, Fury, Strength",Glaive –or– Battleaxe,Twisted Circular Maze awash in Blood
+116,Dagon ,(HotA p059),Demon,CE,,“Demon Prince of the Depths”,"Chaos, Entropy, Evil, Water",,Six Spiraling Tentacles around a Fanged Mouth
+117,Demogorgon ,(HotA p061),Demon,CE,,“Demon Prince of Demons”,"Chaos, Corruption, Demonic, Evil",,Forked Tail
+118,Fraz-Urb’luu ,"(HotA p063)
+(DR330 p25)+",Demon,CE,,“Demon Prince of Deception”,"Chaos, Demonic, Evil, Trickery",,Staff topped with a Humanoid Skull
+119,Graz’zt ,(HotA p065),Demon,CE,,“The Dark Prince”,"Chaos, Demonic, Evil, Temptation",,Black Hand with Six Fingers
+120,Juiblex ,(HotA p066),Demon,CE,,“The Faceless Lord”,"Chaos, Corruption, Evil, Ooze",,Pseudopod Dripping Slime
+121,Kostchtchie ,"(HotA p068)
+(DR345 p022)+",Demon,CE,,“Demon Prince of Wrath”,"Chaos, Evil, Fury, Winter",Maul,Hammer rimed in Bloody Ice
+122,Malcanthet ,(HotA p069),Demon,CE,,“Demon Queen of the Succubi”,"Chaos, Evil, Temptation, Trickery",,Feminine Lips bleeding on a Thorn
+123,Obox-Ob ,(HotA p071),Demon,CE,,“Demon Prince of Vermin”,"Chaos, Destruction, Entropy, Evil",,Jawless Skull with a Scorpion hanging from it
+124,Pale Night ,(HotA p074),Demon,CE,,“The Mother of Demons”,"Chaos, Corruption, Evil, Knowledge",,Billowing Sheet draped over a Starry Field
+125,Pazuzu ,(HotA p076),Demon,CE,,“Demon Prince of the Lower Aerial Kingdoms”,"Air, Chaos, Evil, Temptation",,Twisted Bird Talon
+126,Yeeoghu ,(HotA p078),Demon,CE,,"“Demon Prince of Gnolls”
+Gnolls","Chaos, Demonic, Evil, Fury",,Triple-Headed Flail
+127,Zuggtmoy ,"(HotA p079)
+(DR337 p42)+",Demon,CE,,“Demon Queen of Fungi”,"Chaos, Corruption, Demonic, Evil, Ooze, Plant",Scythe,Skull without a Jaw & a Mushroom on top
+128,Adramalech ,(DR361),Devil,LE,,“Chancellor of Hell”,"Evil, Knowledge, Law",,
+129,Asmodeus , (Tot9H p26),Devil,LE,,"“Lord of the Ninth Layer of Hell”
+Might, Oppression, Devils","Diabolic, Evil, Law","Mace, Heavy",Clawed Fist holding a Claw –or– Ruby-tipped Rod
+130,Baalzebul , (Tot9H p27),Devil,LE,,"“Lord of the Seventh Layer of Hell”, “Lord of Lies”
+Strength, Guile","Diabolic, Strength, Trickery",Morningstar,Fly’s Head –or– Web dangling with Flies –or– Enthroned Slug
+131,Bel , (Tot9H p28),Devil,LE,,"“Lord of the First Layer of Hell”
+Treachery","Destruction, Strength, War",,
+132,Belial , (Tot9H p27),Devil,LE,,"“Co-Lord of the Fourth Layer of Hell”
+Secrets, Domination, Seduction","Evil, Knowledge, Trickery",Ranseur,Pair of Red Eyes over a Ranseur surounded by a Barbed Tail
+133,Dispater , (Tot9H p27),Devil,LE,,"“Lord of the Second Layer of Hell”, “Iron Duke of Dis”
+War, Intrigue","Destruction, Evil, War","Mace, Heavy",Fortress Embossed on a Shield
+134,Fierna , (Tot9H p27),Devil,LE,,"“Co-Lord of the Fourth Layer of Hell”
+Fire, Pain","Evil, Fire, Trickery",Scimitar,Pair of Red Eyes over a Ranseur surounded by a Barbed Tail
+135,Glasya , (Tot9H p28),Devil,LE,,"“Lord of the Sixth Layer of Hell”, “Daughter of Asmodeus”
+Corruption, Growth, Agony","Diabolic, Domination, Evil, Trickery",Scourge,Copper-colored Scourge
+136,Lilith ,(DR361),Devil,LE,,“2nd Consort to the Lord of the Eighth Layer of Hell”,"Charm, Evil, Law",Whip,
+137,Mammon , (Tot9H p26),Devil,LE,,"“Lord of the Third Layer of Hell”
+Greed, Lust","Diabolic, Evil, Trickery",Shortspear,Coin with Mammon’s Image on it
+138,Mephistopheles , (Tot9H p28),Devil,LE,,"“Lord of the Eighth Layer of Hell”
+Fire, Magic","Diabolic, Evil, Fire",Ranseur,Copper & Gold Flame
+139,Moloch ,(DR360),Devil,LE,,“Exiled Lord of the Sixth Layer of Hell”,"Evil, Fire, Law",Scourge,
+140,Aasterinian ,(Dcn p031),Dragon,CN,D," “Messenger of Io”, “Goddess of Invention”
+Learning, Invention, Pleasure","Charm, Chaos, Dragon, Oillusion, Luck, Trade, Trickery",Scimitar –or– Claw,Grinning Dragon’s Head
+141,Astilabor ,(Dcn p032),Dragon,N,L," “Hoardmistress”, “The Acquisitor”
+Acquistiveness, Status, Wealth","Cavern, Dragon, Metal, Protection, Wealth",Scimitar –or– Claw,Twelve-Faceted Gem
+142,Chronepsis ,(Dcn p033),Dragon,N,L,"“The Silent”, “The Watcher”
+Fate, Death, Judgement","Death, Dragon, Fate, Knowledge, Planning, Time",Scythe –or– Claw,Unblinking Draconic Eye
+143,Falazure ,(Dcn p033),Dragon,NE,L,"“The Night Dragon”
+Decay, Undeath, Exhaustion","Darkness, Death, Dragon, Evil, Undeath",Scimitar –or– Claw,Draconic Skull
+144,Garyx ,(Dcn p033),Dragon,CE,L,"“Firelord”, “All-Destroyer”, “Cleanser of Worlds”
+Fire, Destruction, Renewal","Chaos, Destruction, Dragon, Evil, Fire, Renewal",Sickle –or– Claw,Reptilian Eyes superimposed over a Flame
+145,Hlal ,"(Dcn p034) 
+(F&P p221)",Dragon,CG,L,"“The Jester”, “The Keeper of Tales”
+Humor, Story-Tellig, Inspiration","Chaos, Dragon, Good, Rune, Scalykind, Trickery",Shortsword –or– Claw,Open Book –or– a Single Flame
+146,Io ,(Dcn p034),Dragon,N,I,"“The Concordant Dragon”, “Swallower of Shades”, 
+“The Ninefold Dragon”, “Creator of Dragonkind”
+Dragonkind","Dragon, Knowledge, Magic, Spell, Strength, Travel, Wealth",Scimitar –or– Claw,Multi-Colored Disk
+147,Lendys ,(Dcn p035),Dragon,LN,L,"“Scale of Justice”, “The Balancer”, “Weigher of Lives”
+Balance, Justice","Destruction, Dragon, Law, Protection, Retribution",Longsword –or– Claw,Sword balanced on a Needle’s Point
+148,Null ,(F&P p221),Dragon,LN,G,"Fate, Death, Judgement","Death, Fate, Knowledge, Law, Scalykind",Unarmed Strike,Circle divided into White & Black
+149,Tamara ,(Dcn p035),Dragon,NG,L,"“Her Beneficence”, “Her Mercy”
+Life, Light, Mercy","Dragon, Family, Good, Healing, Strength, Sun",Scimitar –or– Claw,Seven-pointed Star on a field of Black
+150,Abbathor ,"(F&P p115)
+(DR323 p65)+",Dwarf,NE,I,"“Great Master of Greed”, “Trove Lord”, “Wyrm of Avarice”
+Greed","Dwarf, Evil, Greed, Luck, Trade, Trickery","Dagger
+“Heart of Avarice”",Jeweled Dagger
+151,Berronar Truesilver ,(F&P p115),Dwarf,LG,I,"“The Revered Mother”, “Mother of Safety”
+Safety, Honesty, Home, Healing, “The Dwarven Family, Record, Marriage, Faithfulness, Oaths","Dwarf, Family, Good, Healing, Law, Protection",,
+152,Hanseath ,(RoS p17),Dwarf,CN,L,"“The Bearded One”
+War, Carousing, Alcohol","Chaos, Strength, Travel, War",Greataxe,Golden Mug
+153,Mya ,(RoS p18),Dwarf,NG,G,"“Mother of Wisdom”
+Clan, Family, Wisdom","Good, Healing, Knowledge",Morningstar,Stylized Mother & Children
+154,Roknar ,(RoS p19),Dwarf,NE,L,"“The Tempter”
+Greed, Intrigue, Lies, Earth","Destruction, Earth, Evil, Trickery",Dagger,Hands
+155,Tharmekhûl ,(RoS p19),Dwarf,N,D,"“The Tender of the Forge”
+Moradin’s assistant","Destruction, Fire, War",Warhammer,Flaming Warhammer
+156,Thautam ,(RoS p20),Dwarf,N,I,"Magic, Darkness","Earth, Luck, Magic","Pick, Heavy",3 Stones on a Circle
+157,Valkauna ,(RoS p21),Dwarf,LN,I,"“The Runecarver”
+Oaths, Death, Birth","Death, Law, Water","Flail, Heavy",Shaking Hands
+158,Dark Six ,(FoE p49),Eberron – D6,NE,,"Passion, Destruction, Individuality, Fear, Vengeance",<any two Domains from Dark Six deities>,Kama,Hexagram
+159,Fury ,"(Eb p69) 
+(FoE p50) 
+ (PGE p33)+ 
+(DR323 p65)+ 
+(FoE p38)+",Eberron – D6,NE,,"“Sovereign of Rage & Ruin”, “Lady of Madness & Passion”, “Szorawai”
+Anger, Extremism, Insanity, Passion, Revenge","Evil, Liberation, Hatred, Madness, Passion, Wrath",Rapier,Red & Black Winged Wyrm with a Woman’s Head
+160,Keeper ,"(Eb p69) 
+(FoE p50) 
+ (PGE p33)+ 
+(DR323 p65)+
+(DR342 p89)+ 
+(FoE p38)+",Eberron – D6,NE,,"“Sovereign of Death & Decay”, “Lord of Death & Decay”, “Kol Turrant”
+Death, Entropy, Greed, Hunger, Time","Death, Decay, Envy, Evil, Gluttony, Greed, Hunger, Night, Pact",Scythe,Khyber Dragonshard in the shape of a Fang
+161,Mockery ,"(Eb p70)
+(FoE p50) 
+ (DR323 p65)+ 
+(FoE p38)+",Eberron – D6,NE,,"“Sovereign of Betrayal & Blood”, “Master of Treachery”, “Dol Azur”
+Combat, Dishonor, Murder, Terror, Treachery","Destruction, Domination, Envy, Evil, Illusion, Pride, Trickery, War",Kama,"Five Blood-Spattered Tools, layed out in the shape of an Octogram"
+162,Shadow ,"(Eb p70) 
+(FoE p51) 
+ (PGE p33)+
+(DR342 p89)+",Eberron – D6,CE,,"“Sovereign of Magic & Mayhem”, “Master of Treachery”
+Arcane Magic, Consequence, Corruption, Darkness, Duality","Chaos, Darkness, Evil, Magic, Mind, Night, Shadow",Quarterstaff,Block of Obsidian in the Sahpe of a Tower
+163,Traveler ,"(Eb p70) 
+(FoE p51) 
+ (PGE p33)+",Eberron – D6,CN,,"“Sovereign of Chaos & Change”, “Lord of Planning & Deception”
+Chaos, Deception, Evolution, Invention, Transformation","Artifice, Celerity, Chaos, Charm, Creation, Liberation, Travel, Trickery",Scimitar,Eight-pointed Configuration of Four Crossed & Rune-Inscribed Bones
+164,Arawai ,"(Eb p68)
+(FoE p28) 
+(PGE p138)+ 
+(DR355 p26)+",Eberron – Host,NG,,"“Sovereign of Life & Love”, “Goddess of Agriculture”
+Fertility, Plants, Abundance","Charity, Creation, Generosity, Good, Humility, Life, Plant, Weather",Morningstar,Stalk of Wheat –or– Octogram colored Bronze & Green
+165,Aureon ,"(Eb p68)
+(FoE p29) 
+(PGE p138)+",Eberron – Host,LN,,"“Sovereign of Law & Lore”, “God of Law and Knowledge”
+Arcane Casters, Sages, Scribes","Force, Knowledge, Law, Magic, Mind, Oracle, Spell",Quarterstaff,Open Book –or– Octogram colored Black & White
+166,Balinor ,"(Eb p68) 
+(FoE p29) 
+ (PGE p138)+ 
+(DR323 p65)+
+(DR342 p89)+ 
+(DR355 p26)+",Eberron – Host,N,,"“Sovereign of Horn & Hunt”, “Goddess of Beasts and Hunt”
+Hunting, Animals","Air, Animal, Celerity, Earth, Hunt, Patience, Retribution, Wrath",Battleaxe,Pair of Antlers –or– Octogram colored Brown & Red
+167,Boldrei ,"(Eb p69)
+(FoE p29) 
+ (RoD p162)+ 
+(DR355 p26)+",Eberron – Host,LG,,"“Sovereign of Hall & Hearth”, “Goddess of Community & Hearth”
+Protector of Villages","City, Community, Family, Good, Law, Protection, Temperance",Spear,Hearth –or– Octogram colored Orange & Grey
+168,Dol Arrah ,"(Eb p69) 
+(FoE p30) 
+ (PGE p138)+ 
+(DR323 p65)+ 
+(DR355 p26)+",Eberron – Host,LG,,"“Sovereign of Sun & Sacrifice”, “God of Honor and Sacrifice”
+Honorable Combat, Self-Sacrifice","Charity, Chastity, Glory, Good, Law, Pride, Sun, War, Zeal",Halberd,"Rising Sun –or– 
+Octogram colored Yellow & White"
+169,Dol Dorn ,"(Eb p69) 
+(FoE p30) 
+ (PGE p139)+ 
+(DR355 p26)+",Eberron – Host,CG,,"“Sovereign of Strength & Steel”, “God of Strength at Arms”
+Physical Perfection, Athletes, Monks","Chaos, Competition, Good, Liberation, Strength, War, Zeal",Longsword,"Longsword –or– 
+Octogram colored 
+Red & Silver"
+170,Kol Korran ,"(Eb p69) 
+(FoE p30) 
+ (PGE p139)+ 
+(DR323 p65)+",Eberron – Host,N,,"“Sovereign of World & Wealth”, “God of Trade and Wealth”
+Finances, Trade","Charm, Commerce, Greed, Pact, Trade, Travel, Wealth",Mace,"Gold Coin –or– 
+Octogram colored Gold & Silver"
+171,Olladra ,"(Eb p69) 
+(FoE p30) 
+ (PGE p139)+ 
+(DR323 p65)+",Eberron – Host,NG,,"“Sovereign of Feast & Fortune”, “Goddess of Feast & Fortune”
+Luck, Innkeepers, Gamblers","Feast, Generosity, Gluttony, Good, Healing, Luck, Lust, Pride, Sloth",Sickle,"Domino –or– 
+Octogram colored White & Grey"
+172,Onatar ,"(Eb p69) 
+(FoE p31) 
+ (PGE p139)+ 
+(DR355 p26)+",Eberron – Host,NG,,"“Sovereign of Fire & Forge”, “God of Artifice & the Forge”
+Artisans, Smiths","Artifice, Creation, Envy, Fire, Good, Metal, Pride, Temperance, Warforged",Warhammer,"Hammer & Tong –or– 
+Octogram colored 
+Red & Orange"
+173,Sovereign Host ,(FoE p28),Eberron – Host,NG,,"Civilization, Craft, Growth, Plenty, Community, Justice",<any two Domains from Sovereign Host deities>,Longsword,Octogram
+174,Blood of Vol ,"(Eb p70) 
+(FoE p77)",Eberron – Misc,LE,,"Undeath, Immortality, Blood, Destiny, Obedience","Death, Deathbound, Evil, Law, Necromancer",Dagger,Monstrous Mask around a Drop of Blood
+175,Dragon Below ,"(Eb p70) 
+(FoE p127) 
+ (PGE p87)+",Eberron – Misc,NE,,"Glory, Insanity, Conquest, Darkness, Aberrations","Cavern, Corruption, Darkness, 
+Dragon Below, Earth, Evil, Greed, Madness, Pact, 
+Pain, Pestilence, Summoner","Pick, Heavy",Stylyzed Dragon Head made from Dark Lines
+176,Dreaming Dark ,(PGE p131),Eberron – Misc,LE,,,"Law, Evil, Shadow",Mindblade,
+177,Lord of Blades , (FoE p111),Eberron – Misc,LE,,"Battle, Racial Pride, Rulership, Vengeance","Artifice, Evil, Law, War, Warforged",Greatsword,Metal Hand with Blades
+178,Path of Inspiration (aka “Riedra”)  ,"(FoE p122)
+(PGE p131)",Eberron – Misc,LN,,"Civilization, Discipline, Duty","Community, Law, Meditation",Flail,Dragonshard inside a Seed
+179,Path of Light (aka “Il-Yannah”) ,"(Eb p71)
+(FoE p127) 
+(DR321 p68)+
+(DR323 p65)+",Eberron – Misc,LN,,"Light, Compassion, Discipline, Psionics, Righteous Action","Balance, Law, Meditation, Mentalism, Pride, Protection, Radiance",Unarmed Strike,Brilliant Crystal
+180,Spirits of the Past , (FoE p142),Eberron – Misc,N,,"Glory, Battle, Bravery, Honor","Destruction, Elf, Protection, Revered Ancestor, War",Double Scimitar,
+181,The Becoming God ," (FoE p116) 
+(DR355 p26)+",Eberron – Misc,N,,"Life, Discovery, Growth, Self-Sufficiency","Artifice, Meditation, Patience, Strength, Warforged",Slam –or– Gauntlet,Rune on a Stone
+182,Undying Court ,"(Eb p71) 
+(FoE p140) 
+ (RoD p162)+ 
+(DR355 p26)+",Eberron – Misc,NG,,"Glory, History, Patience, Revelation, Obedience","Deathless, Destiny, Fate, Good, Humility, Patience, Planning, Protection",Scimitar,<none> –or– Aereni Death Mask
+183,Silver Flame ,"(Eb p67)
+(FoE p60) 
+(DR355 p26)+",Eberron – Silver Flame,LG,,"Purity, Light, Redemption, Self-Sacrifice, Just War","Chastity, Exorcism, Good, Inquisition, Law, Protection, Purification, Zeal",Longbow,Silver Flame
+184,Silver Flame – Binding Flame (aka Kalok Shash) ,(PGE p036),Eberron – Silver Flame,LG,,Fights the evils of the Demon Wastes,"Exorcism, Good, Protection, War",Longsword,Silver Flame
+185,Silver Flame – Knights Militant ,(PGE p029),Eberron – Silver Flame,LG,,Valor & Self-Sacrifice in battles vs. Evil,"Endurance, Exorcism, Good, Wrath, War",Longbow,Silver Flame
+186,Silver Flame – Puritan Sect ,(PGE p029),Eberron – Silver Flame,LG,,Want to remake Eberron in the image of Thrane / the Silver Flame,"Inquisition, Law, Purification",Longbow,Silver Flame
+187,Silver Flame –Radiant Flame ,(PGE p029),Eberron – Silver Flame,LG,,Union with the Silver Flame’s ideals in life (instead of waiting for death),"Glory, Good, Mysticism, Protection",Longbow,Silver Flame
+188,Aerdrie Faenya ,(F&P p123),Elf,CG,I,"“The Winged Mother”, “Queen of the Avariel”
+Air, Weather, Avians, Rain, Fertility, Avariels","Air, Animal, Chaos, Elf, Good, Storm","Quarterstaff
+“Thunderbolt”",Cloud with a Bird Silhouette
+189,Alobal Lorfiril ,(RotW p20),Elf,CG,D,"“Reveler”, “Merry Magician”
+Hedonism, Mirth, Magic Revelry","Chaos, Good, Magic, Trickery",Dagger,Glass of Wine
+190,Angharradh ,"(F&P p125) 
+(DR355 p26)+",Elf,CG,G,"“The Triune Goddess”, “Queen of Arvandor”
+Spring, Fertility, Planting, Birth, Defense, Wisdom","Chaos, Elf, Good, Knowledge, Plant, Protection, Renewal, Zeal","Longspear –or– Shortspear
+“Duskshaft”",Three Interconnecting Rings on a Downward Pointing Triangle
+191,Elebrin Liothiel ,(RotW p21),Elf,CG,I,"“Celestial Gardener”
+Nature, Gardens, Orchards, Harvest","Chaos, Good, Plant, Sun",Quarterstaff,Acorn
+192,Erevan Ilesere ,"(F&P p127)
+(DR323 p65)+",Elf,CN,I,"“The Chameleon”, “The Green Changeling”, “The Fey Jester”
+Mischief, Change, Rogues","Chaos, Elf, Luck, Sloth, Trickery","Shortsword
+“Quickstrike”",Starburst with Asymmetrical Rays
+193,Fenmarel Mestarine ,(F&P p127),Elf,CN,I,"“The Lone Wolf”
+Feral Elves, Outcasts, Scapegoats, Isolation","Animal, Chaos, Elf, Plant, Travel","Dagger
+“Thornbite”",Pair of Elven Eyes in the Darkness
+194,Hanali Celanil ,"(F&P p128)
+(RotW p22) 
+(DR323 p65)+ 
+(DR355 p26)+",Elf,CG,I,"“Heart of Gold”, “Lady Goldheart”
+Love, Romance, Beauty, Enchantments, Magic Item Artistry, Fine Arts, Artists","Chaos, Charm, Elf, Good, Lust, Magic, Protection, Zeal",Dagger,Gold Heart
+195,Labelas Enoreth ,"(F&P p128) 
+(DR355 p26)+",Elf,CG,I,"“The Lifegiver”, “Lord of the Continuum”, “Sage at Sunset”
+The Moment of Choice, Time, Longevity, History","Chaos, Elf, Good, Knowledge, Patience, Time","Quarterstaff
+“The Timestaff”",Setting Sun
+196,Rillifane Rallathil ,(F&P p129),Elf,CG,I,"“The Leaflord”
+Wild Elves, Woodlands, Nature, Druids","Chaos, Elf, Good, Plant, Protection","Quarterstaff
+“The Oakstaff”",Oak Tree
+197,Shevarash ,(F&P p130) (DR323 p65)+,Elf,CN,I,"“Black Archer”, “Night Hunter”
+Hatred of Drow, Vengeance, Loss","Chaos, Elf, Pride, Retribution, War, Wrath","Longbow
+“The Black Bow”",Broken Arrow above a Teardrop
+198,Solonor Thelandira ,(F&P p131),Elf,CG,I,"“Keen-Eye”, “The Great Archer”
+Archery, Hunting, Wilderness","Chaos, Elf, Good, Plant, War","Longbow
+“Longshot”",Silver Arrow with Green Fletchings
+199,Vandria Gilmadrith ,(RotW p23),Elf,LN,I,"War, Guardianship, Justice, Grief, Vigilance, Decisions","Law, Protection, War",Longbow,Crying Eye
+200,Ayailla ,(BoED p24),Exalted,NG,,"“Bright Eagle”, “Brilliant Mistress”","Glory, Good, Sun",Spear,Phoenix
+201,Chaav ,(BoED p24),Exalted,CG,,"“Laughing Rogue”, “Smiling God”","Chaos, Good, Joy, Trickery",Quarterstaff,Wild Flowers
+202,Estanna ,(BoED p25),Exalted,NG,,"“Hearth Tender”, “The Virgin”","Community, Good, Protection",Dagger,Hearth
+203,Lastai ,(BoED p25),Exalted,CG,,"“Goddess of Pleasure, Love, & Passion”","Chaos, Good, Pleasure",Grappling Pole,Peach
+204,Phieran ,(BoED p26),Exalted,LG,,“Tortured God”,"Endurance, Good, Law, Protection",Unarmed Strike,"Broken Chain, Shattered Rack"
+205,Valarian ,(BoED p26),Exalted,NG,,“Dusk Unicorn”,"Animal, Fey, Good",Unicorn Horn,Silhouette of a Unicorn Rampant
+206,Akadi ,(F&P p090),Forgotten Realms,N,G,"“Queen of the Air”
+Elemental Air, Movement, Speed, Flying Creatures","Air, Illusion, Travel, Trickery","Flail, Heavy
+(whirlwind)",White Cloud on a Blue Background
+207,Azuth ,(F&P p012),Forgotten Realms,LN,L,"“The High One”, “Patron of Mages”
+Wizards, Spellcasters in general, Monk (Shining Hand)","Illusion, Knowledge, Magic, Law, Spell","Quarterstaff
+“The Old Staff”",Left Hand pointing upward outlined in Blue Fire
+208,Bane ,"(F&P p014) 
+(DR323 p65)+",Forgotten Realms,LE,G,"“The Black Lord”, “The Black Hand”, “Lord of Darkness”
+Strike, Hatred, Tyranny, Fear","Envy, Evil, Destruction, Hatred, Law, Pride, Tyranny, Wrath","Morningstar
+“The Black Hand of Bane”",Black Fist squeezing out Green Rays
+209,Beshaba ,"(F&P p091) 
+(DU113 p043) 
+ (DR323 p65)+",Forgotten Realms,CE,I,"“The Maid of Misfortune”
+Random Mischief, Misfortune, Bad Luck, Accidents","Chaos, Envy, Evil, Fate, Luck, Lust, Trickery, Wrath ","Scourge
+“Ill Fortune”",Black Antlers on a Red Field
+210,Bhaal ,"(F&P p005) 
+(DR322 p94)+",Forgotten Realms,LE,I,"“Lord of Murder”
+Death (especially violent or ritual), Assassins","Death, Destruction, Evil, Hatred, Law","Dagger
+“Bone Blade”",Skull surrounded by a counter-clockwise orbit of Blood Drops
+211,Brandobaris ,(DR323 p065)+,Forgotten Realms,,,,"Greed, Sloth",,
+212,Chauntea ,"(F&P p017) 
+(DR355 p26)+",Forgotten Realms,NG,G,"“The Great Mother”, “The Grain Goddess”, “Earthmother”
+Agriculture, Cultivated Plants, Farmers, Gardeners, Summer","Animal, Earth, Generosity, Good, Plant, Protection, Renewal",Scythe,Blooming Rose on a Sunburst Wreath of Golden Grain
+213,Cyric ,"(F&P p020) 
+(DR323 p65)+",Forgotten Realms,CE,G,"“Prince of Lies”, “The Dark Sun”, “The Black Sun”
+Murder, Lies, Intrigue, Deception, Illusions","Chaos, Destruction, Envy, Evil, Greed, Illusion, Pride, Trickery","Longsword
+“Razor’s Edge”",White Jawless Skull on Purple Sunburst
+214,Deneir ,"(F&P p092) 
+(DR355 p26)+",Forgotten Realms,NG,L,"“Lord of All Glyphs and Images”, “Scribe of Ogma”
+Glyphs, Images, Literature, Scribes, Cartography","Good, Knowledge, Patience, Protection, Rune","Dagger
+(whirling glyph)",Lit Candle above a Purple Eye
+215,Eldath ,"(F&P p093) 
+(DR355 p26)+",Forgotten Realms,NG,L,"“Goddess of Singing Waters”
+Quiet Places, Springs, Pools, Peace, Waterfalls","Charity, Family, Good, Plant, Protection, Water",Net,Waterfall Plunging into a Still Pool
+216,Finder Wyvernspur ,"(F&P p093)
+(DR323 p65)+",Forgotten Realms,CN,D,"“The Nameless Bard”
+Cycle of Life, Transformation of Art, Saurials","Chaos, Charm, Greed, Pride, Renewal, Scalykind, Sloth","Bastard Sword
+“Sword of Songs”",White  Harp on Gray Circle
+217,Garagos ,"(F&P p094)
+(DR323 p65)+",Forgotten Realms,CN,D,"“The Reaver”, “Lord of War”
+War, Skill-at-Arms, Destruction, Plunder","Chaos, Destruction, Gluttony, Strength, War, Wrath","Longsword
+“Tentacus”",Pinwheel of 4 Snaky Arms clutching Swords
+218,Gargauth ,"(F&P p094)
+(DR323 p65)+",Forgotten Realms,LE,D,"“The Tenth Lord of Nine”, “The Lost Lord of the Pit”, “The Hidden Lord”
+Betrayal, Cruelty, Political Corruption, Powerbrokers","Charm, Envy, Evil, Greed, Law, Pride, Sloth, Trickery","Dagger –or– Throwing Dagger
+“Corruptor”",Broken Animal Horn
+219,Gond ,"(F&P p025)
+(RoD p162)+
+(DR323 p65)+",Forgotten Realms,N,I,"“Wonderbringer”, “Lord of All Smiths”
+Artifice, Craft, Construction, Smithwork","City, Craft, Earth, Fire, Knowledge, Metal, Planning, Pride","Warhammer
+“Craftmaster”",Toothed Cog with Four Spokes
+220,Grumbar ,(F&P p096),Forgotten Realms,N,G,"“Earthlord”, “King of the Land Below the Roots”
+Elemental Earth, Solidity, Changelessness, Oaths","Balance, Cavern, Earth, Metal, Time","Warhammer
+(a stony fist)",Mountains on Purple Background
+221,Gwaeron Windstorm ,(F&P p096),Forgotten Realms,NG,D,"“Master of Tracking”, “The 
+Tracker who Never Goes Astray”
+Tracking, Rangers of the North","Animal, Good, Knowledge, Plant, Travel","Greatsword
+“Flameheart”",White Star and Brown Paw Print
+222,Helm ,"(F&P p028) 
+(DR323 p65)+ 
+(DR355 p26)+",Forgotten Realms,LN,I,"“The Watcher”, “The Vigilant One”
+Guardians, Protectors, Protection","Humility, Law, Planning, Protection, Pride, Strength","Bastard Sword
+“Ever Watchful",Staring Eye with a Blue Pupil on an Upright War Gauntlet
+223,Hoar ,"(F&P p097)
+(DR323 p65)+",Forgotten Realms,LN,D,"“The Doombringer”, “Lord of Three Thunders”
+Revenge, Retribution, Poetic Justice","Envy, Fate, Greed, Law, Retribution, Travel, Wrath","Javelin
+“Retribution’s Sting”",Black-Gloved Hand holding a Coin with a Two-Faced Head
+224,Ilmater ,"(F&P p030) 
+(DR355 p26)+",Forgotten Realms,LG,I,"“The Broken God”
+Endurance, Suffering, Martyrdom, Perseverance","Charity, Good, Healing, Humility, Law, Strength, Suffering, Temperance",Unarmed Strike,Pair of Hands bound at the wrist with a Red Cord
+225,Jergal ,(F&P p098),Forgotten Realms,LN,D,"“Lord of the End of Everything”, “Scribe of the Doomed”
+Fatalism, Proper Burial, Guardian of Tombs","Fate, Law, Repose, Rune, Suffering",Scythe,Jawless Skull and Writing Quite on a Scroll
+226,Kelemvor ,(F&P p033),Forgotten Realms,LN,G,"“Lord of the Dead”, “Judge of the Damned”
+Death, The Dead","Fate, Law, Protection, Repose, Travel","Bastard Sword
+“Fatal Touch’",Upright Skeletal Arm holding Scales
+227,Kossuth ,"(F&P p035) 
+(DR323 p65)+",Forgotten Realms,N,G,"“Lord of Flames”, “The Firelord”
+Elemental Fire, Purification through Fire","Destruction, Fire, Renewal, Suffering, Wrath","Spiked Chain
+(tendril of flame)",Twining Red Flame
+228,Lathander ,"(F&P p037) 
+(DR321 p68)+ 
+(DR355 p26)+",Forgotten Realms,NG,G,"“The Morninglord”
+Athletics, Birth, Creativity, Dawn, Renewal, Spring, Vitality, Youth","Chastity, Good, Nobility, Protection, Radiance, Renewal, Strength, Sun, Zeal","Mace, Light –or– Mace, Heavy
+“Dawnspeaker”","Sunrise made of Rose, Red, & Yellow Gems"
+229,Lliira ,"(F&P p099) 
+(DR321 p68)+
+(DR323 p65)+",Forgotten Realms,CG,L,"“Our Lady of Joy”, “Joybringer”, “Mistress of the Revels”
+Joy, Happiness, Dance, Festivals, Freedom, Liberty","Chaos, Charm, Family, Good, Lust, Radiance, Sloth, Travel","Shuriken
+“Sparkle”",Triangle of three six-pointed Stars
+230,Loviatar ,"(F&P p100)
+(DR323 p065)+",Forgotten Realms,LE,L,"“Maiden of Pain”, “The Willing Whip”
+Pain, Hurt, Agony, Torment, Suffering, Torture","Evil, Law, Lust, Retribution, Strength, Suffering, Wrath","Scourge
+“Painbringer”",Nine-tailed Barbed Scourge
+231,Lurue ,"(F&P p101) 
+(DR355 p26)+",Forgotten Realms,CG,D,"“The Unicorn Queen”, “Queen of the Talking Beasts”
+Wizards, Spellcasters in General, Monks (Shining Hand)","Illusion, Knowledge, Magic, Law, Spell, Zeal","Shortspear
+(a unicorn’s horn)",Unicorn head in front of the Moon
+232,Malar ,"(F&P p043) 
+(DR323 p65)+
+(DR342 p89)+",Forgotten Realms,CE,L,"“The Beastlord”, “The Black-Blooded Pard”
+Bloodlust, Evil Lycantropes, Hunters, Marauding Beasts and Monsters, Stalking","Animal, Chaos, Evil, Gluttony, Hunt, Moon, Strength, Wrath","Claw Bracer
+(beast claws)",Bestial Claw with Fur and Bloody Talons
+233,Mask ,"(F&P p045)
+(RoD p162)+ 
+(DR323 p65)+",Forgotten Realms,NE,L,"“Master of All Thieves”, “Lord of Shadows”
+Assassins, Beggars, Criminals, Rogues, Shades, Shadowdancers","City, Darkness, Evil, Greed, Luck, Sloth, Trickery","Longsword
+“Stealthwhisper”",Black Velvet Mask tinged with Red
+234,Mielikki ,(F&P p048),Forgotten Realms,NG,I,"“Our Lady of the Forest”, “The Forest Queen”
+Autumn, Dryads, Forest Creatures, Forests, Rangers","Animal, Good, Plant, Travel","Scimitar
+“The Hornblade”",Gold-Horned Blue-Eyed Unicorn’s Head facing Left
+235,Milil ,"(F&P p102) 
+(DR323 p65)+",Forgotten Realms,CG,L,"“Lord of Song”, “The One True Hand of All-Wise Oghma”
+Poetry, Song, Eloquence","Charm, Good, Knowledge, Nobility, Sloth","Rapier
+“Sharptongue”",Five-stringed Harp made of Silver Leaves
+236,Mystra ,(F&P p050),Forgotten Realms,NG,G,"“The Lady of Mysteries”, “The Mother of All Magic”
+Magic, Spells, The Weave","Good, Illusion, Knowledge, Magic, Rune, Spell","Shuriken
+(seven whirling stars)",Circle of seven blue-white Stars with Red Mist flowing from the Center
+237,Nobanion ,"(F&P p102) 
+(DR323 p65)+",Forgotten Realms,LG,D,"“Lord Firemane”, “King of the Beasts”
+Royalty, Lions & Feline Beasts, Good Beasts","Animal, Good, Law, Nobility, Pride","Pick, Heavy
+(a lion’s head)",Male Lion’s Head on a Green Shield
+238,Oghma ,"(F&P p052) 
+(DR323 p65)+",Forgotten Realms,N,G,"“The Lord of Knowledge”, “Binder of What is Known”
+Bards, Inspiration, Invention, Knowledge","Charm, Balance, Knowledge, Luck, Pride, Travel, Trickery","Longsword
+“Mortal Strike”",Blank Scroll
+239,Red Knight ,"(F&P p103)
+(DR317 p83) 
+(DR355 p26)+",Forgotten Realms,LN,D,"“Lady of Strategy”, “Grandmaster of the Lanceboard”
+Strategy, Planning, Tactics","Law, Nobility, Planning, Temperance, War","Longsword
+“Checkmate”",Red Knight Chess Piece with Stars for Eyes
+240,Savras ,(F&P p104),Forgotten Realms,LN,D,"“The All-Seeing”, “He of the Third Eye”, “Lord of Divination” 
+Divination, Fate, Truth","Destiny, Fate, Knowledge, Law, Magic, Spell","Dagger
+“The Eyes of Savras”",Crystal Ball containing many kinds of Eyes
+241,Selûne ,"(F&P p055)
+(DR342 p89)+ 
+(DR355 p26)+",Forgotten Realms,CG,I,"“The Lady of Silver”, “The Moonmaiden”
+Good & Neutral Lycantropes, Moon, Navigation, Stars","Chaos, Chastity, Good, Moon, Night, Protection, Travel","Mace, Heavy
+“Rod of Four Moons”",Pair of Female Eyes surrounded by Seven Silver Stars
+242,Shar ,"(F&P p058) 
+(DR323 p65)+
+(DR342 p89)+",Forgotten Realms,NE,G,"“Mistress of the Night”, “Lady of Loss”, “Dark Goddess”
+Caverns, Dark, Dungeons, Forgetfulness, Loss, Night, Secrets of the Underdark","Cavern, Darkness, Envy, Evil, Knowledge, Night, Pride","Chakram
+“Disk of Night”",Black Disk with Deep Purple Border
+243,Sharess ,"(F&P p105)
+(DR323 p65)+",Forgotten Realms,CG,D,"“The Dancing Lady”, “The Mother of Cats”
+Hedonism, Sensual Fulfillment, Feasthalls, Cats","Chaos, Charm, Envy, Good, Lust, Sloth, Travel, Trickery","Claw Bracer
+(a great cat’s paw”",Feminine Lips
+244,Shaundakul ,(F&P p060),Forgotten Realms,CN,L,"“Rider of the Winds”, “The Helping Hand”
+Travel, Exploration, Portals, Miners, Caverns","Air, Chaos, Portal’, Protection, Trade, Travel","Greatsword
+“Sword of Shadows”",Wind-Walking Bearded Man in Travel’s Cape and Boots
+245,Shiallia ,(F&P p105),Forgotten Realms,NG,D,"“Dancer in the Glades”, “Daughter of the High Forest”
+Woodland Glades, Woodland Fertility, The High Forest, Neverwinter Wood","Animal, Good, Plant, Renewal","Quarterstaff
+“Forest’s Friend”",Golden Acorn
+246,Siamophe ,"(F&P p106) 
+(DR323 p65)+",Forgotten Realms,LN,D,"“The Divine Right”
+Nobles, Rightful Rule of Nobility, Human Royalty","Knowledge, Law, Nobility, Planning, Pride","Mace, Light
+(scepter)
+“Noble Might”",Silver Chalice with a Golden Sun on the Side
+247,Silvanus ,(F&P p063),Forgotten Realms,N,G,"“Oak Father”, “The Forest Father”
+Wild Nature, Druids","Animal, Plant, Protection, Renewal, Water","Maul
+“Great Mallet of Silvanus”",Green Living Oak Leaf
+248,Sune ,"(F&P p065) 
+(DR323 p65)+",Forgotten Realms,CG,G,"“Lady Firehair”
+Beauty, Passion, Love","Chaos, Charm, Good, Lust, Pride, Protection","Whip
+(silken sash)",Face of Red-Haired Woman
+249,Talona ,"(F&P p107)
+(DR323 p65)+",Forgotten Realms,CE,L,"“Lady of Poison”, “Mistress of Disease”, “Mother of All Plagues”
+Disease, Poison","Chaos, Destruction, Envy, Evil, Suffering","Unarmed Strike
+(scabrous hand)",Three Amber Teardrops on a Purple Triangle
+250,Talos ,"(F&P p068) 
+(DR323 p65)+",Forgotten Realms,CE,G,"“The Destroyer”, “The Storm Lord”
+Storms, Destruction, Rebellion, Conflagration, Earthquakes, Vortices","Chaos, Destruction, Evil, Fire, Storm, Wrath","Longspear, Shortspear, –or–Halfspear
+(lightning bolt)",Explosive Lightning Strike
+251,Tempus ,"(F&P p071) 
+(DR323 p65)+",Forgotten Realms,CN,G,"“Lord of Battle”, “Foehammer”
+War, Battle, Warriors","Chaos, Pride, Protection, Strength, War, Wrath","Battleaxe
+“Battle Prowess”",Sword on a Blood-Red Shield
+252,Torm ,"(F&P p074) 
+(DR323 p65)+ 
+(DR355 p26)+",Forgotten Realms,LG,L,"“The True”, “The True Deity”, “The Loyal Fury”
+Duty, Loyalty, Obedience, Paladins","Good, Healing, Law, Pride, Protection, Strength, Zeal","Greatsword
+“Duty’s Bond”",Right-Hand Gauntlet Upright with Palm Forward
+253,Tymora ,"(F&P p077) 
+(DR323 p65)+ 
+(DR355 p26)+",Forgotten Realms,CG,I,"“Lady Luck”, “The Lady who Smiles”, “Our Smiling Lady”
+Good Fortune, Skill, Victory, Adventurers","Chaos, Generosity, Good, Luck, Protection, Sloth, Travel","Shuriken
+(spinning coin)",Silver coin featuring Tymora’s Face surrounded by Shamrocks
+254,Tyr’ ,"(F&P p079) 
+(DR323 p65)+ 
+(DR355 p26)+",Forgotten Realms,LG,G,"“The Even-Handed”, “The Maimed God”, “The Just God”
+Justice","Good, Knowledge, Law, Patience, Pride, Retribution, Temperance, War","Longsword
+“Justicar”",Balanced Scales resting on a Warhammer
+255,Ubtao ,(F&P p108) (DR323 p65)+,Forgotten Realms,N,G,"“Creator of Chult”, “Founder of Mezra”, “Father of Dinosaurs”
+Creation, Jungles, Chult, The Chultans, Dinosaurs","Balance, Planning, Plant, Pride, Protection, Scalykind","Pick, Heavy
+(tyrannosaurus head)",Maze
+256,Umberlee ,"(F&P p082)
+(Storm p49) 
+(DR323 p65)+",Forgotten Realms,CE,I,"“The Bitch Queen”, “Queen of the Depths”
+Oceans, Currents, Waves, Sea Winds","Chaos, Destruction, Envy, Evil, Gluttony, Ocean, Pride, Storm, Watery Death, Water, Wrath",Trident,Blue-Green Wave Curling Left & Right
+257,Uthgar ,"(F&P p084) 
+(DR323 p65)+",Forgotten Realms,CN,L,"“Father of the Uthgards”, “Battle Father”
+Uthgardt Barbarian Tribes, Physical Strength","Animal, Chaos, Retribution, Strength, War, Wrath",Battleaxe,Image of Beast Totem Spirit
+258,Velsharoon ,"(F&P p110)
+(DR323 p65)+",Forgotten Realms,NE,D,"“The Vaunted”, “Archmage of Necromancy”, “Lord of the Forsaken Crypt”
+Necromancy, Necromancers, Evil Liches, Undeath","Death, Envy, Evil, Greed, Magic, Pride, Undeath","Quarterstaff
+“Skull Staff of the Necromancer”",Crowned Laughing Lich Skull on a Black  Hexagon
+259,Waukeen ,"(F&P p087)
+(RoD p162)+ 
+(DR323 p65)+",Forgotten Realms,N,L,"“Merchant’s Friend”
+Trade, Money, Wealth","Balance, City, Greed, Knowledge, Pride, Protection, Sloth, Travel, Trade","Nunchaku
+(cloud of coins)",Gold Coin with Waukeen’s profile facing Left
+260,Waukeen – Harlot’s Coin Heresy ,(DR355 p72),Forgotten Realms,CE,L,Heresy – Waukeen’s divinity has been traded to Graz’zt,"Demonic, Knowledge, Temptation, Trade",Bastard Sword,Gold Coin with Waukeen’s profile facing Left
+261,Aengrist ,(Frost p42),Frostfell,LG,,,"Law, Protection, War, Winter",Bastard Sword,Keep with 2 Towers on a Gray Glacier
+262,Hleid ,(Frost p42),Frostfell,NG,,,"Animal, Good, Healing, Winter",Trident,Jagged Triangle surrounding a Vortex of Blue Fire
+263,Iborighu ,(Frost p41),Frostfell,CE,,“Frozen King”,"Chaos, Cold, Death, War",Scythe,Icy Scythe rising from a Blood-Stained Snowdrift
+264,Baervan Wildwanderer ,(F&P p132),Gnome,NG,I,"“The Masked Leaf”
+Forest Gnomes, Travel, Nature","Animal, Gnome, Good, Plant, Travel","Halfspear
+“Whisperleaf”",Raccoon’s Face
+265,Baravar Cloakshadow ,(F&P p133),Gnome,NG,L,"“The Sly One”, “Master of Illusion”, “Lord of Disguise”
+Illusions, Deception, Traps","Gnome, Good, Illusion, Protection, Trickery","Dagger
+“Nightmare”",Cloak and Dagger
+266,Callarduran Smoothhands ,"(CDiv p124)
+ (F&P p133)
+(MM p131)
+(RoS p43)",Gnome,N,I,"“Deep Brother”, “Master of Stone”, “Lord of Deepearth”
+Svirfneblin, Secrecy","Cavern, Craft, Earth, Gnome, Good, Healing, Protection","Battleaxe
+“Spiderbane”",6-pointed Star on a Stone –or– Gold Ring with a Star Symbol
+267,Flandal Steelskin ,(F&P p134),Gnome,NG,I,"“Master of Metal”, “The Great Steelsmith”
+Mining, Smithing, Physical Fitness","Craft, Gnome, Good, Metal","Warhammer
+“Rhondang”",Flaming Hammer
+268,Gaerdal Ironhand ,(F&P p135),Gnome,LG,L,"“The Stern”, “Shield of the Golden Hills”
+Vigilance, Combat, Martial Defense","Gnome, Good, Law, Protection, War","Warhammer
+“Hammersong”",Iron Band
+269,Gelf Darkearth ,(RoS p43),Gnome,CN,I,"Brother & rival of Garl Glittergold
+Entropy, Revenge","Chaos, Destruction, War",Warhammer,Broken Anvil
+270,"Glutton, The ",(RoS p44),Gnome,CE,L,"Disaster, Greed","Chaos, Destruction, Evil, Strength","Mace, Heavy",Tooth-Filled Mouth
+271,Rill Cleverthrush ,(RoS p45),Gnome,LN,L,"Invention, Creation, Sky","Air, Knowledge, Magic, Travel",Longsword,Ruby
+272,Segojan Earthcaller ,(F&P p136),Gnome,NG,I,"“Earthfriend”, “Lord of the Burrow”
+Earth, Nature, The Dead","Cavern, Earth, Gnome, Good","Mace, Heavy
+“Earthcaller”",Glowing Gemstone
+273,Sheyanna Flaxenstrand ,(RoS p45),Gnome,CG,I,"Love, Beauty, Passion","Chaos, Fire, Good, Healing","Flail, Heavy",Crown & 2 Goblets
+274,Urdlen ,"(F&P p137)
+(DR323 p65)+",Gnome,CE,I,"“The Crawler Below”
+Spriggans, Greed, Bloodlust, Hate","Chaos, Earth, Envy, Evil, Gluttony, Gnome, Hatred",Claw Bracer,White Mole
+275,Kavaki ,(RoS p65),Goliath,N,G,"“The Ram-Lord”
+Goliaths, Competition","Protection, Strength, Travel, War",Greatclub,2 Ram Horns
+276,Kuliak ,(RoS p66),Goliath,N,D,"“The Dead Goddess”
+The Dead, Exiles","Death, Magic, Travel, Water",Morningstar,Black Ram Horn
+277,Manethak ,(RoS p66),Goliath,N,I,"“The Wise Hunter”
+Hunting, Lore","Animal, Knowledge, Luck",Spear,Deer Tracks
+278,Naki-Uthai ,(RoS p67),Goliath,N,L,"“The Brave Climber”
+Mountains, Climbing, Bravery","Earth, Strength, Sun","Pick, Heavy",Double Fish-Hook
+279,Theleya ,(RoS p68),Goliath,N,I,"“The Fertile One”
+Fertility, Growth","Healing, Magic, Plant",Sickle,Strawberries
+280,Vanua ,(RoS p68),Goliath,N,L,"“The Harbinger of Woe”
+Natural Disasters, Misfortune","Destruction, Fire, Trickery","Flail, Heavy",Mountain with Fire
+281,Al’Akbar ,(LLG p164),Greyhawk,LG,D,"“Restorer of Righteousness”, “High Cleric”
+Guardianship, Faithfulness, Dignity, Duty","Good, Healing, Law, Protection",Falchion,Cup & Talisman
+282,Allitur ,"(LLG p165) 
+(DU117 p35)",Greyhawk,LN,L,"Ethics, Propriety","Good, Knowledge, Law",Shortspear,Pair of Clasped Hands
+283,Atroa ,(LLG p165),Greyhawk,NG,L,"“The Sad Maiden”
+Spring, East Wind, Renewal","Air, Good, Plant, Sun","Sling
+“Wingstorm”",Heart with an Air Glyph
+284,Beltar ,"(CDiv p121)
+(LLG p166) 
+(DR323 p65)+",Greyhawk,CE (CN),L,"Malice, Caves, Pits","Chaos, Earth, Envy, Evil, Pride, War, Wrath",Unarmed Strike –or– Spiked Gauntlet,Fangs Closing to Bite
+285,Beory ,(LLG p166),Greyhawk,"N
+(NG)",G,"“Oerth Mother”
+Oerth, Nature, Rain","Animal, Earth, Plant, Water",Club –or– Druid Weapons,Green Disk –or– a Rotund Woman
+286,Berei ,(LLG p167),Greyhawk,NG,L,"“Hearth Mother”
+Home, Family, Agriculture","Good, Plant, Protection",Sickle,Sheaf of Wheat Stalks
+287,Bleredd ,(LLG p167),Greyhawk,N,L,"“The Iron Mule”
+Metal, Mines, Smiths","Earth, Fire, Strength","Warhammer
+“Fury”",Iron Mule
+288,Bralm ,"(CDiv p121)
+ (LLG p168) 
+(DR355 p26)+",Greyhawk,"N
+(LN)",L,"“The Flying Queen”, “The Five Goddess”, “The Toiling Lady”
+Insects, Industry","Animal, Community, Generosity, Law, Pact, Strength",Quarterstaff,Giant Wasp in front of an Insect Swarm
+289,Celestian ,"(CDiv p121)
+ (LLG p168) (DR342 p89)",Greyhawk,"N
+(NG)",I,"“The Far Wanderer”
+Stars, Astronomy, Wanderers","Knowledge, Oracle, Night, Protection, Travel",Shortspear,Jewelry with assorted Gemstones
+290,Cyndor ,"(CDiv p121)
+ (LLG p168) 
+(DR355 p26)+",Greyhawk,LN,L,"“Keeper of Infinity”, “The Illimitable One”
+Time, Infinity, Continuity","Humility, Law, Oracle, Protection, Travel",Sling,Rounded Hourglass of Black & White on its Side / Infinity Symbol
+291,Dalt ,(LLG p169),Greyhawk,CG,L,"Portals, Doors, Locks, Keys","Chaos, Good, Protection, Travel, Trickery",Dagger,Locked Door with a Skeleton Key
+292,Delleb ,"(CDiv p122)
+ (LLG p169) 
+(DR355 p26)+",Greyhawk,LG,L,"“The Scholar”, “The Scribe”
+Reason, Intellect, Study, Written Lore","Good, Humility, Knowledge, Law, Magic",Dart,White Book
+293,Fortubo ,(LLG p171),Greyhawk,"LG
+(LN)",L,"Stone, Metals, Mountains, Guardianship","Earth, Good, Law, Protection","Warhammer
+“Golbi”",Hammer with a Glowing  Head
+294,Incabulos ,"(CDiv p122)
+ (LGG p172)
+ (DU105 p47) 
+(DR323 p65)+",Greyhawk,NE,G,"“The Black Rider”
+Plagues, Famine, Drought, Disaster","Death, Destruction, Evil, Pestilence, Wrath",Quarterstaff,Stylized Eye
+295,Istus ,"(CDiv p122)
+(LGG p172)",Greyhawk,N,G,"“Lady of Our Fate”, “The Colorless and All-Colored”
+Fate, Destiny, Divination, Future","Chaos, Destiny, Knowledge, Law, Luck",n/a,Gold Spindle
+296,Iuz ,"(CDiv p122)
+ (LGG p173)
+(DR323 p65)+
+(DR358 p030)+",Greyhawk,CE,D,"“The Evil”, “The Old One”
+Deceit, Pain, Oppression, Evil","Chaos, Evil, Pride, Suffering, Trickery",Greatsword,Grinning Skull
+297,Jascar ,(LGG p173),Greyhawk,LG,L,"Hills, Mountains","Earth, Good, Law, Protection",Warhammer,Snow-Caped Mountain Peak
+298,Kurell ,(LGG p174),Greyhawk,CN,L,"“The Bitter Hand”, “The Scorned Heart”, “The Vengeful Knave”
+Jealousy, Revenge, Theft","Chaos, Luck, Trickery",Shortsword,Grasping Hand holding a Broken Coin
+299,Lendor ,(LGG p174),Greyhawk,LN,I,"“Prince of Time”, “Master of Tedium”
+Time, Patience, Study","Knowledge, Law, Protection","Greatsword
+“Afterglow”",Crescent Moon in a field of Stars
+300,Lirr ,"(CDiv p122)
+ (LGG p175)",Greyhawk,CG,L,"“Lady Poet”, “The Lorekeeper”
+Poetry, Prose, Literature, Art","Chaos, Good, Knowledge, Magic, Travel",Shortspear –or– Rapier,Illustrated Book
+301,Llerg ,"(CDiv p122)
+ (LGG p175)
+(DR342 p89) 
+(DR323 p65)+",Greyhawk,CN,L,"“Great Bear”, “Animal Fang”
+Beasts, Strength","Animal, Chaos, Competition, Hunt, Strength Wrath",Battle Axe –or– Longsword,Bear –or– Snake –or– Alligator
+302,Lydia ,(LGG p175),Greyhawk,NG,L,"Music, Knowledge, Daylight","Good, Knowledge, Sun, Travel",Shortspear,Spray of Colors from an Open Hand
+303,Mayaheine ,"(LGG p175) 
+(DU117 p35)
+(DR346 p27)+",Greyhawk,LG,D,"“The Shield Maiden”
+Protection, Justice, Valor","Good, Law, Protection, War","Bastard Sword, Mace, –or– Longbow",Decorated Shield
+304,Merikka ,(LGG p176),Greyhawk,LG,D,"“Lady of the Calendar”
+Farming, Agriculture, Home","Good, Law, Plant, Protection",Sickle,Basket of Grain with a Long Scroll
+305,Mouqol ,"(CDiv p122)
+ (LGG p176) (DR323 p65)+",Greyhawk,N,L,"“The Merchant”
+Trade, Negotiation, Appraisal","Greed, Knowledge, Pact, Travel, Trickery",Dagger –or– Light Crossbow,
+306,Myhriss ,(LGG p177),Greyhawk,NG,L,"“The Thrice-Kissed”, “Maid of Light and Dark”
+Love, Romance, Beauty","Good, Healing, Protection",Shortbow –or– Whip,
+307,Norebo ,(LGG p177),Greyhawk,CN,L,"“God of Gambles”
+Luck, Gambling, Risks","Chaos, Luck, Trickery",Dagger,Pair of Eight-Sided Dice
+308,Osprem ,"(CDiv p122)
+ (LGG p178)",Greyhawk,LN,L,"Sea Voyages, Ships, Sailors","Law, Protection, Travel, Water",Longspear –or– Trident,Barracuda –or– Whale
+309,Phaulkon ,(LGG p179),Greyhawk,CG,L,"Air, Wind, Clouds, Birds, Archery","Air, Animal, Chaos, Good, War",Longbow,Winged Human Silhouette
+310,Pholtus ,"(CDiv p122)
+ (LGG p178) 
+(DR323 p65)+",Greyhawk,"LG
+(LN)",I,"“Pholtus of the Blinding Light”
+Light, Resolution, Law, Order, Sun","Good, Inquisition, Knowledge, Law, Pride, Sun","Quarterstaff
+“Staff of the Silvery Sun”",Full Moon partially eclipsed by a Crescent Moon
+311,Phyton ,(LGG p179),Greyhawk,CG,L,"“The Woodshaper”
+Nature, Beauty, Farming","Chaos, Good, Plant, Sun, Water",Scimitar,Scimitar in front of an Oak Tree
+312,Pyremius ,"(CDiv p123)
+ (LGG p181) 
+(DR323 p65)+",Greyhawk,NE,L,"“The Blazing Killer”, “Demon of Venom”, “Hideous Assassin”
+Fire, Poison, Murder, Assassins, Fire","Destruction, Evil, Fire, Wrath","Longsword –or– Whip
+“Red Light” –or– “Viper”",Demonic Face with Bat Wing Ears
+313,Ralishaz ,(LGG p181),Greyhawk,"CN
+(CE)",I,"“The Unlooked For”
+Chance, Ill Luck, Misfortune, Insanity","Chaos, Destruction, Luck",Quarterstaff,Three Bone Sticks
+314,Rao ,"(CDiv p123)
+ (LGG p181) 
+(DR355 p26)+",Greyhawk,LG,G,"“The Mediator”, “The Calm God”
+Peace, Reason, Serenity","Charity, Chastity, Community, Law, Good, Knowledge, Purification, Temperance","Mace, Light",White Heart –or– a Mask with a Calm Expression
+315,Raxivort ,(LGG p182),Greyhawk,CE,L,"“Lord of Xvartkind”, “Master of Rats”, “Night Flutterer”
+Xvarts, Rats, Wererats, Bats","Animal, Chaos, Evil, Trickery","Falchion –or– Dagger
+“Azure Razor”",Blue Flaming Hand
+316,Rudd ,"(LGG p182) 
+(DR342 p39)+",Greyhawk,"CN
+(CG)",D,"“The Charm”, “The Duelist”
+Chance, Luck, Skill","Chaos, Good, Luck",Rapier –or– Shortbow,Bull’s-Eye
+317,Sotillion ,(LGG p183),Greyhawk,"CG
+(CN)",L,"“The Summer Queen”
+Summer, South Wind, Ease, Comfort","Air, Chaos, Good, Healing, Plant",Net,Winged Orange Tiger
+318,Syrul ,(LGG p183),Greyhawk,NE,L,"“The Forked Tongue”, “Oathbreaker”
+Lies, Deceit, Treachery, False Promises","Evil, Knowledge, Trickery","Dagger
+“Small Lie”",Forked Tongue
+319,Tharizdûn ,"(CDiv p123)
+ (LoM p177)
+(MM4 p007)
+(LGG p184) 
+(DR323 p65)+",Greyhawk,NE,I,"“The Dark God”, “He of Eternal Darkness”
+Ruin, Elemental Power, Vengeance, Decay, Entropy, Insanity","Air, Chaos, Destruction, Earth, Envy, Evil, Fire, Force, Greed, Knowledge, Madness, Water",Dagger,Dark Spiral –or– an Inverted Pyramid
+320,Trithereon ,"(CDiv p123)
+ (LGG p185)",Greyhawk,CG,I,"“The Summoner”
+Liberty, Self-Defense, Retribution","Chaos, Good, Liberation, Protection, Strength, Summoner",Shortspear –or– Longsword –or– Greatclub,Rune meaning ‘Pursuit’
+321,Ulaa ,"(LGG p185) 
+(DU117 p35)",Greyhawk,LG,I,"“The Stonewife”
+Hills, Mountains, Gemstones","Earth, Good, Law",Warhammer,Mountain with Ruby Heart
+322,Velnius ,(LGG p186),Greyhawk,"N
+(NG)",L,"“The Rainshroud”, “The Elder Breeze”
+Sky, Weather","Air, Travel, Water",Shortspear,Bird Perched on a Cloud
+323,Wastri ,"(CDiv p123)
+ (LGG p187) 
+(DR323 p65)+",Greyhawk,"LN
+(LE)",D,"“The Hopping Prophet”, “Hammer of False Humans”
+Amphibians, Bigotry, Self-Deception","Animal, Law, Pride, Purification, War","Glaive –or– Guisarme
+“Skewer of the Impure”",Gray Toad
+324,Wenta ,(LGG p187),Greyhawk,CG,L,"“The Alewife”, “Harvest Daughter”
+Autumn, West Wind, Harvest, Brewing","Air, Chaos, Good, Plant",Club,Large Mug of Bear
+325,Xan Yae ,"(CDiv p123)
+ (LGG p188) 
+(DR323 p65)+ 
+(DR355 p26)+",Greyhawk,N,L,"“Lady of Perfection”
+Twilight, Shadows, Stealth, Mental Power","Celerity, Knowledge, Patience, Trickery, War",Falchion –or– Monk Weapons,
+326,Xerbo ,(LGG p188),Greyhawk,N,L,"“The Sea Dragon”
+Sea, Sailing, Money, Business","Animal, Knowledge, Water",Trident –or– Longspear,Dragon Turtle
+327,Ye’Cind ,(LGG p188),Greyhawk,CG,D,"“The Bard”
+Music, Magical Songs","Chaos, Good, Knowledge, Magic",Longsword,Recorder
+328,Zagyg ,"(LGG p189) 
+(DR338 p45)",Greyhawk,"CN
+(CG)",D,"“The Mad Arch-Mage”
+Humor, Eccentricity, Occult Lore, Unpredictability","Chaos, Knowledge, Magic",Dagger –or– Club,Rune meaning ‘Insanity’
+329,Zilchus ,(LGG p189) (DU117 p35),Greyhawk,LN,I,"“The Great Guildmaster”, “The Money Counter”
+Power, Prestige, Money, Business","Knowledge, Law, Trickery",Dagger,Hands Clutching a Bag of Gold
+330,Zodal ,(LGG p189),Greyhawk,NG,L,"“The Gray Son”, “The Gentle Hand”
+Mercy, Hope, Benevolence","Good, Healing, Protection",Unarmed Strike,Hand partially wrapped in Gray Cloth
+331,Zuoken ,"(CDiv p123) (CDiv p123)
+ (LGG p190) 
+(DR355 p26)+",Greyhawk,N,D,"“Master of Da’Shon and Edel”
+Physical and Mental Mastery, Monks","Celerity, Chastity, Knowledge, Patience, Strength, War",Unarmed Strike –or– Monk Weapons,Striking Fist
+332,Arvoreen ,"(F&P p137)
+(RotW p53)
+(DR321 p76)+",Halfling,LG,I,"“The Defender”,“The Wary Sword”
+Defense, War, Vigilance, Halfling Warriors, Duty","Good, Halfling, Law, Protection, War","Shortsword
+“Aegis Heart”",Two Crossed Shortswords
+333,Bandobaris ,"(F&P p138)
+(RotW p53)",Halfling,N,L,"“The Irrepressible Scamp”
+Stealth, Thievery, Adventuring, Halfling Rogues","Halfling, Luck, Travel, Trickery","Dagger
+“Escape”",Halfling’s Footprint
+334,Cyrollalee ,"(F&P p139)
+(RotW p53)
+(DR323 p65)+",Halfling,LG,I,"“The Hand of Fellowship”, “The Hearthkeeper”
+Friendship, Trust, The Hearth, Hospitality, Crafts","Family, Generosity, Gluttony, Good, Halfling, Law, Sloth","Quarterstaff
+“Camaradestave”",Open Door
+335,Dallah Thuan ,(RotW p52),Halfling,CN,I,"“The Lady of Mystery”
+Halflings, Secrets, Guile, Thieves & Rogues, Acquisition of Wealth, Death","Chaos, Knowledge, Luck, Trickery",Dagger,Purse of Coins being Emptied
+336,Sheela Peryrolyl ,"(F&P p139)
+(RotW p53) 
+(DR323 p65)+",Halfling,N,I,"“Green Sister”, “Watchful Mother”
+Nature, Agriculture, Weather, Dance, Beauty, Romantic Love","Air, Charm, Halfling, Lust, Plant, Sloth","Sickle
+“Oak Thorn”",Daisy
+337,Urogalan ,"(F&P p140)
+(RotW p53) 
+(DR355 p26)+",Halfling,LN,D,"“He Who Must Be”, “Lord of the Earth”, “The Black Hound”
+Earth, Death, Protection of the Dead","Earth, Halfling, Law, Protection, Repose, Temperance","Flail
+“Doom Thresher”",Silhouette of a Dog’s Head
+338,Urbanus ,(RoD p18),Human,NG,L,"Cities, Growth, Improvement","City, Good, Knowledge, Protection","Mace, Heavy",Helmet shaped as a Domed Spire
+339,Zarus ,(RoD p19),Human,LE,G,"Humanity, Domination, Perfection","Destiny, Evil, Law, Strength, War",Greatsword,Handsome Face
+340,Aulasha ,(RoD p74),Illumian,LG,D,"“The Librarian”
+Learning, Books, Grief","Good, Knowledge, Law",Warhammer,Book
+341,Glautru ,(RoD p75),Illumian,N,D,"“The Seer”
+Prophecy, Fate, Life and Death","Death, Destiny, Fire, Healing",Longsword,Brazier
+342,Soorinek ,(RoD p75),Illumian,LE,D,"“The Doubter”
+Intrigue, Secrets, Betrayal","Evil, Luck, Trickery",Scimitar,Star with Watching Eyes
+343,Syeret ,(RoD p76),Illumian,CG,D,"“The Lightbringer”
+Inspiration, Light, Creativity","Chaos, Sun, Travel",Mace,Setting Sun
+344,Tarmuid ,(RoD p73),Illumian,LN,D,"“The First”
+Illumians, Magic, Languages","Magic, Protection, Law",Quarterstaff,Star in a Bisected Square
+345,Wathaku ,(RoD p77),Illumian,NE,D,"“The Silent”
+Entropy, Wrath, Endings","Destruction, Evil, Strength",Morningstar,Page with a Spear through it
+346,Adad ,(DR329 p034),Mesopo-tamian,CN,I,"“The Thunderer”, “The Violent”
+Rain, Storms, Strength","Air, Chaos, Strength, Water",Warhammer,Lightning
+347,Belet-ili ,(DR329 p037),Mesopo-tamian,NG,G,"“Earth Mother”
+Earth ","Animal, Earth, Good, Healing, Plant",Quarterstaff,Gem
+348,Ereshkigal ,(DR329 p040),Mesopo-tamian,LE,I,"Netherworld, the Dead","Death, Evil, Knowledge, Law",Flail,Bird Talon
+349,Ninurta ,(DR329 p044),Mesopo-tamian,NG,L,"“Lord Plough”
+Agriculture, Athletes, Youth","Good, Plants, Strength, Travel",Shortbow,Four Wings in a Circle
+350,Shamash ,(DR329 p045),Mesopo-tamian,LG,I,"Justice, Sun, Travelers","Good, Knowledge, Law, Sun, Travel",Scimitar,Rising Sun
+351,Sin ,(DR329 p046),Mesopo-tamian,N,I,"Fertility, Moon, Time","Animal, Knowledge, Plant, Protection",Spear,Crescent Moon
+352,Erebus ,(DR322 p062),Misc.,NE,L,"“Devourer of Light”, “King of Shadows”, “Lord of Darkness”, “The Void Between the Stars”
+Darkness, Lies, Night, Shadows, Assassins, Liars, Shadar-Kai, Thieves, Undead","Darkness, Evil, Trickery","Whip
+“Shadow Lash”",Horned Arch
+353,Erivatius ,(DU123 p079),Misc.,LE,D,"“The Final Guest”, “Lord of Inertia”","Death, Knowledge, Law",Unarmed Strike,Barbed Triangle
+354,Eternal Light ,(DR340 p045),Misc.,LN,G,"Life, Reason, Knowledge, Order, Hope, Leadership","Hope, Knowledge, Law, Plant, Sun",Spear,Sun
+355,Ezra ,(DR359 p120),Misc.,LN,D,"Protection, Healing, Order","Good, Healing, Law, Protection",,Black Sword on a White Shield
+356,Guardian of the Dead Gods ,(DR359 p120),Misc.,LN,L,Dead Gods,"Death, Knowledge, Protection, Repose",,Shattered Statue –or– Broken Holy Symbol
+357,Kanchelsis ,(DR359 p121),Misc.,CE,I,"Blood, Debauchery, Seduction, Vampirism","Charm, Darkness, Death, Evil",,Bat with Glowing Red Eyes
+358,Kelanen ,(DU117 p035),Misc.,N,,“The Prince of Swords”,"Travel, War",any Sword,9 Swords in a Star
+359,Kyuss ,(DR336 p063),Misc.,NE,D,"Creation & Control of the Undead, Decay, Worms","Corruption, Death, Destruction, Evil",Club,Skull with Green Worms coming out of its Eyes & Mouth
+360,Lunara ,(DR340 p054),Misc.,N,L,"Feminity, Emotions, The Senses, Divination, Transformation, Cycle of Life, Magic","Emotion, Knowledge, Magic, Trickery",Dagger,Moon
+361,Master of the Hunt ,(DR342 p089),Misc.,N,L,"Hunting, Beasts, Night","Animal, Hunt, Strength, Night",Bow –or– Spear,
+362,Mellifleur ,(DR359 p121),Misc.,NE,L,"Lichdom, Magic","Death, Evil, Luck, Magic",,Skeletal Hand holding a Crystal Vial
+363,Taiia – Creator Aspect ,(D&D p203),Misc.,N,G,"“The Watcher”, “The Maker”, “The Dancer”
+Creation, Mortal Life and Death","Air, Chaos, Earth, Good, Healing, Knowledge, Law, Luck, Magic, Protection, Sun, Travel",Trident,Solar Disk with Three Eyes
+364,Taiia – Destroyer Aspect ,(D&D p203),Misc.,N,G,"“The Devourer”
+Destruction, Mortal Life and Death","Chaos, Death, Destruction, Evil, Fire, Law, Strength, Trickery, War, Water",Battleaxe,Solar Disk with Three Eyes
+365,The Oversoul ,(DR350 p088),Misc.,N,,"Psionics, Self-Improvement, Meditation","Knowledge, Luck, Mind, Strength",n/a,Concentric Circles
+366,Turaglas ,(DR312 p072),Misc.,CE,,"“The Ebon Maw”, “The Insatiable”, “The Hunger Eternal”, “The Devourer”","Chaos, Destruction, War, Hunger","Flail, Heavy",Black Circle with Teeth Pointing inwards along the Circumference
+367,Annam ,"(CDiv p124)
+(F&P p221)",Monster,N,G,"Giants, Creation, Learning, Philosphy, Fertility","Knowledge, Magic, Plant, Rune, Sun",Slam –or– Shortspear ,Two Hands with Wrists together and Fingers pointing Down
+368,Cegilune ,(DR345 p066),Monster,NE,L,"Hags, Larvae, The Moon","Evil, Knowledge, Moon",Quarterstaff,Overflowing Black Cauldron
+369,Diirinka ,"(CDiv p124)
+(F&P p221)",Monster,CE,I,"Derro, Magic, Knowledge, Cruelty","Chaos, Destruction, Dream, Dwarf, Evil, Magic, Suffering, Trickery",Dagger,"Spiral of Gray, Black, & White"
+370,Grolantor ,"(CDiv p124)
+(F&P p221)",Monster,CE,I,"Hill Giants, Ettins, Ogres","Chaos, Death, Earth, Evil, Hatred, Strength",Club –or– Javelin,Spiked Club
+371,Hiatea ,"(CDiv p124) 
+(F&P p221)
+(DR355 p26)+",Monster,NG,G,Female Giants,"Animal, Charity, Good, Family, Moon, Plant, Sun",Spear,Flaming Spear
+372,Hruggek ,"(CDiv p124) 
+(F&P p221)",Monster,CE,I,"Bugbears, Violence, Combat, Ambushes","Chaos, Evil, Knowledge, Law, Magic, War",Morningstar,Morningstar
+373,Iallanis ,"(CDiv p124) 
+(F&P p221)
+ (DR342 p074)+",Monster,NG,L,"Cloud Giants, Storm Giants, Stone Giants, Lover, Mercy","Good, Healing, Strength, Sun",Battleaxe –or– Slam,Garland of Flowers
+374,Ilsensine ,"(CDiv p124) 
+(F&P p221)
+ (LoM p177)
+(DR342 p74)+",Monster,LE,G,"Mind Flayers, Mental Dominion, Magic","Evil, Knowledge, Law, Magic, Mentalism, Mind, Slime, Tyranny",Unarmed Strike –or– Tentacle,"Green Stylized 
+Illithid Face"
+375,Ka ,(DR318 p072),Monster,LG,G,"“The Preserver”
+Lizardfolk, Dinosaurs, Preserving  Dying Races & Cultures","Good, Knowledge, Law, Scalykind",,Dinosaur Claw Holding a Book
+376,Kaelthiere ,(CDiv p124),Monster,NE,I,"Salamanders, Efreet, Azer","Destruction, Evil, Fire, War",Spear,
+377,Laogzed ,"(CDiv p124) 
+(F&P p221) 
+ (DR342 p074)+",Monster,CE,D,"Troglodytes, Hunger, Destruction","Chaos, Death, Destruction, Evil, Slime",Javelin,Oozing Toad-Lizard
+378,Maglubiyet ,"(CDiv p124) 
+(F&P p221) ",Monster,NE,G,"Goblins, Hobgoblins, Leadership, War","Chaos, Destruction, Evil, Planning, Trickery",Battleaxe,Bloody Axe
+379,Mak Thuum Ngatha,(LoM p177),Monster,NE,,Psurlons,"Destruction, Knowledge, Madness, Travel",Morningstar,Fan-shaped Glyph of Nine Squiggly Lines
+380,Memnor ,"(CDiv p124) 
+(F&P p221) ",Monster,NE,I,"Evil Cloud Giants, Pride, Mental Prowess, Control","Death, Evil, Knowledge, Mentalism, Rune, Trickery",Morningstar,Thin Black Obelisk
+381,Merrshaulk ,(CDiv p124) ,Monster,CE,I,Yuan-ti,"Chaos, Destruction, Evil, Plant",Longsword,
+382,Moongods ,(DR340 p061),Monster,NE,D,"Mooncalves, Astrology, Disasters, Hidden Knowledge","Darkness, Evil, Knowledge, Travel",,Moon obscured by a Shadow
+383,Nomog-Geaya ,(DR315 p103),Monster,LN,,Hobgoblins,"Fire, Law, War",Longsword and Hand Axe,
+384,Panzuriel ,"(CDiv p124) 
+ (DR324 p063)",Monster,NE,I,"Merrow, Scrags, Krakens, Confusion, Murder, Subversion","Corruption, Darkness, Destruction, Evil, War, Water",Whip –or– Net –or– Quarterstaff,Kraken Head –or– Eye with Tentacles
+385,Queen of Air and Darkness ,(DR359 p121),Monster,CE,I,"Evil Fey, Darkness, Magic, Murder","Air, Chaos, Darkness, Trickery",,Black Diamond
+386,Ravanna ,(DR326 p068),Monster,LE,L,"Rakshasa, Deception, Intrigue, Lies, Tyranny","Destruction, Evil, Trickery",Javelin,
+387,Raxivort ,(DR359 p121),Monster,CE,L,"Xvarts, Bats, Wererats, Rats","Animal, Chaos, Evil, Trickery",,"Blue, Flaming Hand"
+388,Semuanya ,"(CDiv p124) 
+ (DR335 p054)",Monster,N,L,"Lizardfolk, Swamps, The Hunt, Fertility","Animal, Plant, Water",Greatclub,Reptile Egg
+389,Shekinester ,(CDiv p124) ,Monster,N,G,Nagas,"Destruction, Knowledge, Magic, Protection",Bite –or– Dagger,
+390,Sixin ,(CDiv p124) ,Monster,LE,L,Xills,"Evil, Law, Strength, Travel",Short Sword,
+391,Skerrit ,(CDiv p124) ,Monster,NG,L,Centaurs,"Animal, Healing, Plant, Sun",Spear,
+392,Skoraeus Stonebones ,"(CDiv p124) 
+(DR355 p26)+",Monster,N,I,Stone Giants,"Earth, Healing, Knowledge, Protection, Temperance",Warhammer,
+393,Stronmaus ,(CDiv p124) ,Monster,CG,G,"Storm Giants, Cloud Giants","Chaos, Good, Protection, War, Weather",Warhammer,
+394,Surtr ,(CDiv p124) ,Monster,LE,L,Fire Giants,"Evil, Fire, Law, Strength, War",Greatsword,
+395,The Great Mother,"(CDiv p124)
+(F&P p221)
+ (LoM p177)",Monster,LE,G,"Beholders, Magic, Fertility, Tyrrany","Chaos, Death, Evil, Hatred, Law, Strength",Bite –or– Greataxe,Eye in an Egg
+396,The Patient One,(LoM p177),Monster,NE,,"Aboleths, Cloakers, Chuuls, Avolakias, other Aberrations","Corruption, Evil, Vile Darkness","Flail, Light",Mouth surrounded by Dark-Colored Eyes
+397,Vaprak ,(CDiv p124) ,Monster,CE,D,"Ogres, Trolls","Chaos, Destruction, Evil, Strength",Greatclub,
+398,Anhur ,"(F&P p141)
+(DR323 p65)+",Mulhorandi,CG,L,"“General of the Gods”, “Falcon of War”
+War, Conflict, Physical Prowess, Thunder, Rain","Chaos, Good, Strength, Storm, War, Wrath","Falchion
+“Warhawk”",Hawk-headed Falchion bound with a Cord
+399,Geb ,"(F&P p142)
+(DR323 p65)+",Mulhorandi,N,L,"“King of the Riches Under the Earth”, “Father Under the Skies and Sand”
+The Earth, Miners, Minerals","Cavern, Craft, Earth, Greed, Protection","Quarterstaff
+“Stonemantle”",A Mountain
+400,Horus-Re ,"(F&P p143) 
+(DR321 p68)+
+(DR323 p65)+",Mulhorandi,LG,G,"“Lord of the Sun”, “Master of Vengeance”, “Pharaoh of the Gods”
+The Sun, Vengeance, Kings, Life","Destiny, Good, Law, Nobility, Pride, Radiance, Retribution, Sun, Wrath",Khopesh,Hawk’s Head in a Pharaoh’s Crown surrounded by a Solar Disk
+401,Sebek ,"(F&P p146)
+(DR323 p65)+",Mulhorandi,NE,D,"“The Smiling Death”, “Lord of Crocodiles”
+River  Hazards, Crocodiles, Werecrocodiles, Wetlands","Animal, Evil, Gluttony, Scalykind, Water","Spear
+“The Sorrowful Spear”",Crocodile Head wearing a Horned & Plumed Headdress
+402,Aphrodite ,(D&D p103),Olympian,CG,I,"Love, Beauty","Chaos, Charm, Good",Dagger,Seashell
+403,Apollo ,(D&D p105),Olympian,CG,I,"“Musician of the Gods”, 
+“The Farshooter”
+Light, Prophecy Music, Healing","Good, Healing, Knowledge, Magic, Sun",Longbow,Lyre
+404,Artemis ,(D&D p108),Olympian,NG,I,"“Friend of Youth”, “The Huntress”
+Hunting, Wild Beasts, Childbirth, Dance","Animal, Good, Plant, Sun",Shortsword,Bow and Arrow on a Lunar Disc
+405,Athena ,(D&D p110),Olympian,LG,G,"Wisdom, Crafts, Civilization, War","Artifice, Community, Good, Knowledge, Law, War",Shortspear,Owl
+406,Demeter ,(D&D p112),Olympian,N,L,"“The Gift-Giver”
+Agriculture","Earth, Plant, Protection",Shortspear –or– Halfspear,Mare’s Head
+407,Dionysus ,(D&D p114),Olympian,CN,I,"Mirth, Madness, Win, Fertility, Theater","Chaos, Destruction, Madness",Quarterstaff,"Thrysus, a staff tipped with a pine cone and twisted with a Vine"
+408,Hades ,(D&D p115),Olympian,NE,G,"Death, Underworld, Earth, Wealth","Death, Earth, Evil",Longsword,Black Ram
+409,Hecate ,(D&D p117),Olympian,NE,I,"“Goddess of the Dark of the Moon”
+Moon, Magic, Abundance, Undead","Creation, Evil, Knowledge, Magic",Dagger,Setting Moon
+410,Hephaestus ,(D&D p119),Olympian,NG,I,"“God of the Forge”
+Smithing, Crafts","Artifice, Community, Earth, Fire, Good",Warhammer,Hammer and Anvil
+411,Hera ,(D&D p120),Olympian,N,G,"Marriage, Women, Intrigue","Community, Nobility, Protection, Trickery","Mace, Light",Fan of Peacock Feathers
+412,Hercules ,(D&D p122),Olympian,CG,D,"Strength, Adventure","Chaos, Luck, Strength",Greatclub,Lion’s Head
+413,Hermes ,(D&D p123),Olympian,CG,I,"“Messenger of the Gods”
+Travel, Trade, Theft, Gambling, Running","Chaos, Good, Luck, Travel, Trickery",Quarterstaff,"Caduceus (i.e., a winged staff with two entwining serpents)"
+414,Hestia ,(D&D p125),Olympian,NG,L,"Home, Hearth, Family","Community, Good, Protection",Dagger,Hearth
+415,Nike ,(D&D p126),Olympian,LN,D,"“Goddess of Victory”
+Victory","Law, Nobility, War","Mace, Light",Winged Woman
+416,Pan ,(D&D p127),Olympian,CN,L,"Nature, Passion, Shepherds, Mountains","Animal, Chaos, Plant",Unarmed Strike,"Syrinx (i.e., Pan Pipes)"
+417,Poseidon ,(D&D p129),Olympian,CN,G,"“Earth-Shaker”, “Savior of Ships”
+Sea, River, Earthquakes","Chaos, Earth, Water",Trident,Trident
+418,The Academy ,(D&D p133),Olympian,NG,—,Philosophy of Learning,"Good, Knowledge",Quarterstaff,Scroll
+419,Tyche ,(D&D p130),Olympian,N,L,Luck,"Luck, Protection, Travel",Shortsword,Red Pentagram
+420,Zeus ,(D&D p101),Olympian,CG,G,"“Father of Dogs and Mortals”, “Averter of Ills”
+Sky, Air, Storms, Fate, Nobility","Air, Chaos, Good, Nobility, Strength, Weather",Shortspear –or– Halfspear,Fist filled with Lightning Bolts
+421,Bahgtru ,"(F&P p149) 
+(DR323 p065)+",Orc,CE,,"“The Strong”, “The Son of Gruumsh”
+Loyalty, Stupidity, Brute Strength","Chaos, Evil, Orc, Strength, Wrath","Spiked Gauntlet
+“Crush”",Broken Thighbone
+422,Ilneval ,(F&P p149),Orc,NE,,"“The Horde Leader”, “Lieutenant of Gruumsh”
+War, Combat, Overwhelming Numbers, Strategy","Destruction, Evil, Orc, Planning, War","Longsword
+“Foe Smasher”",Blodied Longsword
+423,Luthic ,"(F&P p150)
+(DR323 p65)+ (DR342 p74)+",Orc,NE,L,"“The Cave Mother”, “The Blood Moon Witch”
+Orcs, Caves, Fertility, Healing","Cavern, Earth, Evil, Family, Healing, Lust, Orc, Sloth",Claw Bracer,Orc Rune for Home
+424,Shargaas ,"(F&P p150)
+(DR323 p65)+",Orc,CE,L,"“The Night Lord”, “The Blade in the Darkness”, “Stalker Below”
+Night, Thieves, Stealth, ","Chaos, Darkness, Envy, Evil, Greed, Orc, Trickery","Shortsword
+“Nightblade”",Skull on a Red Crescent Moon
+425,Yurtrus ,"(F&P p151)
+(DR323 p65)+",Orc,NE,L,"“White Hands”, “Rotting One”, “Lord of Maggots”
+Death, Disease","Death, Destruction, Evil, Orc, Suffering, Wrath",Unarmed Strike,White Hands
+426,Anubis ,"(D&D p140)
+(Sand p47)",Pharaonic,LN,L,"“Judge of the Dead”
+Judgment, Dead","Law, Magic, Repose",Mace,Black Jackal
+427,Apep ,"(D&D p141)
+(Sand p47)",Pharaonic,NE,D,"“Living Embodiment of Evil”
+Evil, Fire, Serpents","Evil, Fire, Sand, Scalykind","Pick, Heavy",Flaming Snake
+428,Bast ,"(D&D p143)
+(Sand p47)",Pharaonic,NG,L,"“The Wild Deity
+Cats, Vengeance, Protection, Punishment","Chaos, Destruction, Protection, Strength, War","Spiked Gauntlet
+(aka Tiger Claws)",Cat
+429,Bes ,(D&D p144),Pharaonic,CN,L,"“God of Luck”, “Protector of Women in Childbirth”
+Luck, Music, Protection","Luck, Protection, Trickery",Shortsword,Image of Bes
+430,Imhotep ,"(D&D p146)
+(Sand p47)",Pharaonic,NG,D,"“Advisor to Kings”, “Builder of Pyramids”
+Crafts, Medicine","Artifice, Earth, Healing, Knowledge, Rune",Quarterstaff,A Step Pyramid
+431,Ptah ,"(D&D p152)
+(Sand p47)",Pharaonic,LN,I,"“Mysterious Creator”
+Crafts, Knowledge, Secrets, Travel","Creation, Knowledge, Law, Travel",Mace,Bull
+432,Re-Horakhty ,"(D&D p138)
+(Sand p47)",Pharaonic,LG,G,"“God of Kings”
+Nobility, Sun, Supreme, Vengeance","Glory, Good, Law, Nobility, Sun, War",Khopesh,Solar Disk encircled by a Serpent
+433,Sobek ,(D&D p155),Pharaonic,LE,D,"“The Misshapen”
+Water, River Hazards, Crocodiles, Wetlands","Animal, Evil, Water",Shortspear,Crocodile Head with Horned and Plumed Headdress
+434,Duthila ,(RotW p77),Raptoran,N,L,"“Lady of Abundance”
+Autumn, Hunting, Abundance","Animal, Plant, Sky, Travel",Scythe,Ripe Apples
+435,Kithin ,(RotW p78),Raptoran,N,L,"“Father of Snows”
+Winter, The Dead and Dying, Barrenness, Paucity","Animal, Death, Fire, Plant",Spear,Snowflake
+436,Lliendil ,(RotW p78),Raptoran,CN,I,"“Stormfather”
+Weather, Rain, Storms, Sun, Wind, Change, Trickery","Air, Destruction, Sky, Trickery, Water","Flail, Heavy",Silhouette of a Flying Raptoran back by a Storm Cloud
+437,Nilthina ,(RotW p79),Raptoran,N,L,"“Lord of Warm Winds”
+Summer, Abundance, Warmth, Growth, Lore","Air, Animal, Plant, Sun",Scimitar,Handful of Berries
+438,Tuilviel Glithien ,(RotW p77),Raptoran,CG,G,"“Queen of Air and Night”
+Raptorans, Night Birds, Stars, Moon","Air, Chaos, Good, Protection, Sky",Foot Spikes,Owl
+439,Ventila ,(RotW p79),Raptoran,N,L,"“Lady of Spring”
+Spring, Fertility, Growth, Love","Animal, Healing, Plant, Water",Quarterstaff,Egg
+440,Al-Ishtus ,(Sand p45),The Waste,NE,,Desert Raiders,"Animal, Death, Destruction, Evil, War",Whip,Scorpion with its Tail Raised to Strike
+441,Aurifar ,(Sand p45),The Waste,N,,“Caliph of the Sky”,"Fire, Luck, Summer, Sun, Travel",Heavy Spiked Shield,Golden Disk polished to a Mirror-like Sheen
+442,Azul ,(Sand p45),The Waste,LE,,"Rain, Desert Nomads","Evil, Law, Plant, Thirst, Water",Whip,Jagged Red Line enclosing drops of Water
+443,Haku ,(Sand p45),The Waste,CG,,"“Master of the Desert Wind”
+Waste Nomads","Air, Chaos, Good, Protection, Travel",Scimitar,Stylized Gust of Wind
+444,Solanil ,(Sand p46),The Waste,NG,,“Goddess of Oases”,"Animal, Good, Healing, Protection, Summer, Travel, Water",Quarterstaff,Pool of Water at the base of a Date Tree
+445,Tem-Et-Nu ,(Sand p46),The Waste,LN,,"“Bringer of Life”, “Provider of Wealth”, “Deity of Rivers”","Knowledge, Magic, Nobility, Travel, War",Kama,
+446,Zoser ,(Sand p46),The Waste,CN,,Desert Whirlwinds,"Air, Chaos, Destruction, Sand, Summer",Spiked Chain,Stylized Drawing of a Tornado
+447,Aventernus ,(Storm p49),The Waters,LG,,"“Stern God of Justice”
+Aventi","Good, Law, Ocean, Seafolk, Strength",Spear,White Spear striking and parting Water
+448,Whale Mother ,(Storm p49),The Waters,LG,,Darfellan,"Animal, Good, Law, Ocean, Seafolk","Greatclub
+(a paddle)",Leaping Whale
+449,Yeathan ,(Storm p49),The Waters,NG,,"“Lord of Deep Darkness Blow”
+Malevolents of the Sea","Blackwater, Destruction, Evil",Trident,Dark Blue-Green Spiral with a Black Center
+450,Brother Shell ,(DR315 p073),Tortle,,,"“The Warrior”
+Tortle","Destruction, Fire, War",,
+451,Father Earth ,(DR315 p073),Tortle,,,"“The Life-Bringer”
+Tortle","Animal, Earth, Good, Strength",,
+452,Mother Ocean ,(DR315 p073),Tortle,,,"“The Protector”
+Tortle","Good, Healing, Protection, Water",,
+453,Sister Grain ,(DR315 p073),Tortle,,,"“Patron of Farmers and Fertility”
+Tortle","Air, Plant, Sun",,
+454,Afflux ,(LM p16),Undead,NE,L,"“Bloodfather”, “The Bloodspiller” “The Unsatisfied Questioner”
+Inquiry, Necromancy, Death","Knowledge, Evil, Deathbound, Undeath",Shortsword,Drop of Blood
+455,Dorsain ,(LM p16),Undead,CE,D,"“King of the Ghouls”
+Necromancy, Ghouls","Chaos, Evil, Hunger",Scimitar,Rotting Skull with Bones Behind It
+456,Evening Glory ,(LM p17),Undead,N,L,"“The Deathless Beauty”, 
+“The Eternal Lover”
+Love, Beauty, Immortality Through Undeath","Charm, Magic, Protection",Dagger,Open Hand with a Heart-Shaped Hole
+457,Altua ,(CWar p148),Warrior,LG,,"Honor, Nobility","Good, Law, Nobility, War",Longsword,Scroll
+458,Halmyr ,(CWar p148),Warrior,LN,,"Strategy, Skill","Law, Planning, War",Rapier,Full Helm
+459,Konkresh ,(CWar p148),Warrior,CN,,Brute Force,"Chaos, Destruction, Strength",Greatclub,Broken Shield
+460,Lyris ,"(CWar p148)
+(RoD p162)+",Warrior,N,,"Victory, Fate","Destiny, Fate, Luck, War",Warhammer,Dagger Balance on a Finger
+461,Nadirech ,(CWar p149),Warrior,CE,,"Cowardice, Trickery","Chaos, Evil, Luck, Trickery",Shortsword,Jeweled Ring
+462,Sulerain ,(CWar p149),Warrior,NE,,Slaughter,"Death, Destruction, Evil",Greataxe,Eye Crying Blood
+463,Syreth ,(CWar p148),Warrior,NG,,"“The Guardian”
+Protection, Community","Good, Healing, Protection","Mace, Heavy",Triangular Shield
+464,Typhos ,(CWar p148),Warrior,LE,,Tyranny,"Evil, Law, Tyranny, War",Greatsword,Hand Wielding Whip
+465,Valkar ,(CWar p148),Warrior,CG,,Courage,"Chaos, Courage, Good, Strength",Battleaxe,Sword in a Mailed Hand

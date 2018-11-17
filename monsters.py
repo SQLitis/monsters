@@ -350,7 +350,7 @@ damageReductionRE = re.compile(r"DR (\d{1,2})/((?:[\w\-\+]|\s(?!and [D\d]))+)(?:
 # match a only with negative lookahead assertion that not followed by nd?
 # match \s only with negative lookahead assertion that not followed by and
 spellResistanceRE = re.compile(r"SR \d{1,2}")
-fastHealingRE = re.compile(r"FH\d{1,2}")
+fastHealingRE = re.compile(r"FH(\d{1,2})")
 
 def insert_damage_reduction_by_value(curs, monster_id, value, bypass):
   value = int(value)
@@ -371,6 +371,14 @@ def insert_damage_reduction(curs, monster_id, quality):
   if matchObj.group(3) is not None:
     assert matchObj.group(4) is not None
     insert_damage_reduction_by_value(curs, monster_id, matchObj.group(3), matchObj.group(4))
+  return matchObj
+
+def insert_fast_healing(curs, monster_id, quality):
+  matchObj = fastHealingRE.match(quality)
+  if matchObj is None:
+    return None
+  assert matchObj.group(1) is not None
+  curs.execute('''INSERT INTO monster_has_fast_healing (monster_id, healing) VALUES (?,?);''', (monster_id, int(matchObj.group(1))) )
   return matchObj
 
 casterLevelValueREstring = '(?:(?:\d{1,2})|(?:HD)|(?:lvl))\s*(?:\([\w\s]+\d?\))?'
@@ -1306,8 +1314,13 @@ class Monster(object):
               raise ValueError(self.name, mode, self.maneuverability)
           except IndexError:
             raise Exception(self.name)
-    #touchAC = int(xls_row[9])
-    #flatfootedAC = int(xls_row[10])
+    AC = int(xls_row[8].value)
+    touchAC = int(xls_row[9].value)
+    self.armorPlusShieldPlusNaturalArmor = AC - touchAC
+    if self.name == 'Minotaur':
+      flatfootedAC = AC
+    else:
+      flatfootedAC = int(xls_row[10].value)
     # http://stackoverflow.com/questions/2415398/can-i-set-a-formula-for-a-particular-column-in-sql
     
     attacks = xls_row[12].value
@@ -1364,6 +1377,9 @@ class Monster(object):
 
     self.strength = integer_or_non(xls_row[20].value)
     self.dexterity = integer_or_non(xls_row[21].value)
+    #if self.dexterity is not None and AC - flatfootedAC != max(0, self.dexterity//2 - 5):
+    #  print(self.name)
+      # Girallon Armor Class: 16 (-1 size, +3 Dex, +4 natural), touch 12, flat-footed 15 wut?
     self.constitution = integer_or_non(xls_row[22].value)
     self.intelligence = integer_or_non(xls_row[23].value)
     self.wisdom = int(xls_row[24].value)
@@ -1634,6 +1650,7 @@ class Monster(object):
     ret.landSpeed = int(matchObj.group(6) )
     ret.movementModes = []
     ret.maneuverability = None
+    ret.armorPlusShieldPlusNaturalArmor = None
     ret.specialAttacks = Monster.splitSpecialAbilities(matchObj.group(7) )
     ret.specialQualities = Monster.splitSpecialAbilities(matchObj.group(8) )
     ret.set_default_alignment(matchObj.group(9) )
@@ -1685,9 +1702,9 @@ class Monster(object):
     type_id = id_from_name(curs, 'dnd_monstertype', self.type_name)
     assert type_id is not None
     curs.execute('''INSERT INTO dnd_monster
-                 (name, rulebook_id, size_id, type_id, hit_dice, land_speed, strength, dexterity, constitution, intelligence, wisdom, charisma, challenge_rating)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                 (self.name, rulebook_id, size_id, type_id, self.HitDice, self.landSpeed, self.strength, self.dexterity, self.constitution, self.intelligence, self.wisdom, self.charisma, self.challenge_rating) )
+                 (name, rulebook_id, size_id, type_id, hit_dice, land_speed, strength, dexterity, constitution, intelligence, wisdom, charisma, natural_armor_bonus, challenge_rating)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                 (self.name, rulebook_id, size_id, type_id, self.HitDice, self.landSpeed, self.strength, self.dexterity, self.constitution, self.intelligence, self.wisdom, self.charisma, self.armorPlusShieldPlusNaturalArmor, self.challenge_rating) )
     monster_id = curs.lastrowid
 
     for subtype in self.subtypes:
@@ -1776,7 +1793,7 @@ class Monster(object):
       elif insert_damage_reduction(curs, monster_id, quality):
         quality = "Damage Reduction"
       elif spellResistanceRE.match(quality): quality = "Spell Resistance"
-      elif fastHealingRE.match(quality): quality = "Fast Healing"
+      elif insert_fast_healing(curs, monster_id, quality): quality = "Fast Healing"
       #if 'sensitiv' in quality: print(self.name, quality)
       ability_id = insert_if_needed(curs, 'dnd_special_ability', quality, special_attack=0)
       curs.execute('''INSERT INTO monster_has_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
@@ -2147,6 +2164,28 @@ def readCrystalKeepItems(filepath='IndexMagicItems.docx'):
   # http://etienned.github.io/posts/extract-text-from-word-docx-simply/
   # .docx's are basically zip files with several folders and files within them. 'word' is one of the folders and 'document.xml' is one of the files within that folder, which contains most of the document itself
 
+def deitiesDocToCSV(filepath='indexDeities.docx'):
+  import docx
+  import pandas
+  wordDoc = docx.Document(filepath)
+  allDeities = wordDoc.tables[0]
+  columnNames = [cell.text for cell in allDeities.rows[0].cells]
+  df = pandas.DataFrame.from_records([[cell.text for cell in row.cells] for row in allDeities.rows[1:]], columns=columnNames)
+  df.to_csv('indexDeities.csv')
+  return df
+
+def readDeities(filepath='indexDeities.docx'):
+  '''
+  file created by opening the original .doc and Save A Copy as .docx
+  '''
+  import docx
+  import pandas
+  if os.path.exists('indexDeities.csv'):
+    df = pandas.read_csv('indexDeities.csv')
+  else:
+    df = deitiesDocToCSV(filepath)
+  return df
+
 """
 CREATE INDEX "dnd_item_slug" ON "dnd_item" ("slug");
 CREATE INDEX "dnd_item_dnd_item_52094d6e" ON "dnd_item" ("name");
@@ -2266,8 +2305,86 @@ def make_item_tables(curs):
 ,FOREIGN KEY(synergy_prereq) REFERENCES dnd_armorweapon_property(id)
 ,FOREIGN KEY(activation_id) REFERENCES dnd_itemactivationtype(id)
   );''')
-  items = readShax()
   #readCrystalKeepItems()
+  deities = readDeities()
+  curs.execute('''CREATE TEMPORARY TABLE deities_backup (
+  "id" int(11) NOT NULL ,
+  "name" varchar(64) NOT NULL,
+  "slug" varchar(64) NOT NULL,
+  "description" longtext NOT NULL,
+  "description_html" longtext NOT NULL,
+  "alignment" varchar(2) NOT NULL,
+  "favored_weapon_id" int(11) DEFAULT NULL,
+  PRIMARY KEY ("id")
+  CONSTRAINT "favored_weapon_id_refs_id_b09a3eba" FOREIGN KEY ("favored_weapon_id") REFERENCES "dnd_item" ("id")
+  );''')
+  curs.execute('''INSERT INTO deities_backup SELECT * FROM dnd_deity;''')
+  curs.execute('''DROP TABLE dnd_deity;''')
+  curs.execute('''CREATE TABLE dnd_deity (
+  id INTEGER PRIMARY KEY NOT NULL
+  ,name varchar(64) NOT NULL
+  ,slug varchar(64) DEFAULT NULL
+  ,description longtext DEFAULT NULL
+  ,description_html longtext DEFAULT NULL
+  ,portfolio longtext DEFAULT NULL
+  ,law_chaos char(1) NOT NULL
+  ,good_evil tinyint(1) NOT NULL
+  ,favored_weapon_id INTEGER DEFAULT NULL
+  ,rulebook_id INTEGER DEFAULT NULL
+  ,page unsigned smallint(3) DEFAULT NULL
+  ,rank char(1) DEFAULT NULL
+,UNIQUE(rulebook_id, name)
+,FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
+,FOREIGN KEY(favored_weapon_id) REFERENCES dnd_item(id)
+  );''')
+  curs.execute('''INSERT INTO dnd_deity (name, slug, description, description_html, good_evil, law_chaos, favored_weapon_id, rulebook_id, page, rank) SELECT name, slug, description, description_html, CASE substr(alignment, length(alignment), 1) WHEN 'G' THEN 1 WHEN 'N' THEN 0 WHEN 'E' THEN -1 ELSE 0 END, substr(alignment, 1, 1), favored_weapon_id, null, 0, 'D' FROM deities_backup;''')
+  curs.execute('''CREATE TEMPORARY TABLE domains_backup (
+  "id" int(11) NOT NULL ,
+  "name" varchar(64) NOT NULL,
+  "slug" varchar(64) NOT NULL,
+  PRIMARY KEY ("id")
+  );''')
+  curs.execute('''INSERT INTO domains_backup SELECT * from dnd_domain;''')
+  curs.execute('''DROP TABLE dnd_domain;''')
+  curs.execute('''CREATE TABLE dnd_domain (
+  id INTEGER PRIMARY KEY NOT NULL
+  ,name varchar(64) NOT NULL
+  ,slug varchar(64) NOT NULL
+  );''')
+  curs.execute('''INSERT INTO dnd_domain (id, name, slug) SELECT id, name, slug FROM domains_backup;''')
+  curs.execute('''CREATE TABLE deity_has_domain (
+  deity_id INTEGER
+  ,domain_id INTEGER
+,FOREIGN KEY(deity_id) REFERENCES dnd_deity(id)
+,FOREIGN KEY(domain_id) REFERENCES dnd_domain(id)
+  );''')
+  deities.dropna(inplace=True)
+  for deityTuple in deities.itertuples():
+    deityAlignment = deityTuple.Align
+    portfolioMaybePrecededByEpithets = deityTuple[7].split('\n')
+    #print(deityTuple[0], deityTuple[1], deityTuple[2], deityTuple[3], deityTuple[4], deityTuple[5], deityTuple[6], deityTuple[7], deityTuple[8])
+    if len(portfolioMaybePrecededByEpithets) == 1:
+      portfolio = portfolioMaybePrecededByEpithets[0]
+    elif len(portfolioMaybePrecededByEpithets) == 2:
+      epithets, portfolio = portfolioMaybePrecededByEpithets
+    else:
+      indexOfLastCloseQuote = max(index for index, line in enumerate(portfolioMaybePrecededByEpithets) if '”' in line)
+      epithets = ''.join(portfolioMaybePrecededByEpithets[:indexOfLastCloseQuote+1])
+      portfolio = ''.join(portfolioMaybePrecededByEpithets[indexOfLastCloseQuote+1:])
+    #print(type(portfolio), portfolio)
+    curs.execute('''INSERT INTO dnd_deity (name, description, good_evil, law_chaos, portfolio) VALUES (?, ?, ?, ?, ?)''', (deityTuple.Name.strip(), deityTuple[7] + deityTuple.Symbol, 1 if 'G' in deityAlignment else -1 if 'E' in deityAlignment else 0, deityAlignment[0], portfolio) )
+    deity_id = curs.lastrowid
+    domains = deityTuple.Domains.replace('Strength Wrath', 'Strength, Wrath').replace('Chaos Luck', 'Chaos, Luck').split(', ')
+    for domain in domains:
+      if domain == 'Oillusion':
+        domain = 'Illusion'
+      elif domain == 'Inquinistion':
+        domain = 'Inquisition'
+      elif domain == 'Portal’':
+        domain = 'Portal'
+      domain_id = insert_if_needed(curs, 'dnd_domain', domain, slug=domain.lower())
+      curs.execute('''INSERT INTO deity_has_domain (deity_id, domain_id) VALUES (?, ?);''', (deity_id, domain_id) )
+  items = readShax()
   if False:
     for item in items:
       curs.execute('''SELECT dnd_rulebook.id FROM dnd_rulebook WHERE dnd_rulebook.name=?;''', item[-1:] )
@@ -2917,6 +3034,11 @@ UNIQUE(bypass)
   bypass_id INTEGER DEFAULT NULL,
 FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
 FOREIGN KEY(bypass_id) REFERENCES damage_reduction(id)
+  );''')
+  curs.execute('''CREATE TABLE monster_has_fast_healing (
+  monster_id INTEGER NOT NULL,
+  healing tinyint(2) NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   );''')
   print('about to insert psionic powers')
   insert_psionic_powers(curs)

@@ -418,7 +418,7 @@ project a 30-foot line of its acidic blood as a standard action. Anyone in the a
   Magic missile|Phase Wasp|Monster Manual II|7
   stunning shock|Shocker Lizard|Monster Manual|7
   quills|Quillflinger|Web|8 http://archive.wizards.com/default.asp?x=dnd/mm/20020215a
-  PLAs|Chekryan|Sandstorm|8 Dimension Door can take along one Medium creature
+  PLAs|Chekryan|Sandstorm|8 Dimension Door 1/day can take along one Medium creature
   silence|Rothé, Ghost|Forgotten Realms Campaign Setting|9
   Breath weapon 3d6 fire every 1d4 rounds|Horned Beast|Tome of Magic|9
   Growth|Blood Ape|Monster Manual II|9 the ability to return to Large size means that blood apes require substantially less food than Huge creatures would.
@@ -437,6 +437,12 @@ project a 30-foot line of its acidic blood as a standard action. Anyone in the a
   vorpal tusks|Magical Beast|Razor Boar|Monster Manual II|35
   Avalanche wave|Magical Beast|Malastor|Monster Manual V|40
 
+Controlling Sting (Su) As the dominate monster spell; 3/day; Fort DC 19 negates; caster level 10th.
+A quanlos's puny intellect prevents it from exercising a fine level of control over its thralls. The creature lacks the sophistication to order a group of dwarf artisans to build a castle for it, or to command an elf wizard to use a specific spell to protect it. Instead, it relies on a limited set of general commands: attack, defend, gather food, and so forth.
+A quanlos can control a number of creatures equal to its total Hit Dice at one time. If it takes control of a creature beyond this limit, it must choose one of its thralls to release from service.
+
+Reverse Gravity (Sp): At will, a gravorg can produce an effect like that of a reverse gravity spell (caster level 10th; Reflex save DC 18), except that the range is 200 feet and it affects an area of up to five 10-foot cubes.
+
 Technically, you can use Handle Animal on *any* creature with an intelligence of 1 or 2.
 
 .. code-block:: bash
@@ -452,9 +458,9 @@ Technically, you can use Handle Animal on *any* creature with an intelligence of
   earth glide|Elemental|Elementite Swarm, Earth|Planar Handbook|27
   Fear aura|Monstrous Humanoid|Buso, Tigbanua|Oriental Adventures|28
   pass without trace|Undead|Skeletal Warbeast|Heroes of Battle|28
-  wing slash|Aberration|Slasrath|Fiend Folio|28
+  wing slash|Aberration|Slasrath|Fiend Folio|28  If a slasrath charges, it can end the charge with a wing slash attack. The slasrath makes a +9 melee attack against each creature it threatens at the end of its charge. Each creature hit takes 3d6+10 points of damage. [Presumably it can take a -4 penalty to deal nonlethal damage, as normal.] Additionally, if an armor wearing creature takes damage from this attack, the creature must make a Reflex saving throw (DC 19) or the armor is shredded away instantly.
   SLAs|Plant|Twilight Guardian|Dragon Magic|28
-   Transport Via Plants carries along two Medium-size willing creatures.
+   at-will Transport Via Plants carries along two Medium-size willing creatures (or one Large) and gear an unlimited distance.
   hive mind|Outsider|Demonhive Queen|Monster Manual IV|28
   confusion|Construct|Rogue Eidolon|Monster Manual II|29
   Magnetic attraction|Aberration|Lodestone Marauder|Monster Manual IV|31
@@ -538,16 +544,30 @@ Improved grabbers:
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_special_ability.name, (hit_dice*3/4 + (strength - 10)/2 + (size_id - 5)*4), dnd_monstertype.name, dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) and dnd_special_ability.name like "%improved grab%" order by (hit_dice*3/4 + strength/2 + size_id*4), -DC, -size_id;
-  improved grab|24|Large|27|Snake, Legendary|Monster Manual II|16
-  Improved grab|30|Huge|34|Woolly Mammoth|Frostburn|14
-  Improved grab|34|Large|33|Tiger, Legendary|Monster Manual II|26
-  Improved grab|35|Huge|39|Bear, Polar, Dire|Frostburn|18
-  Improved grab|36|Gargantuan|34|Dinosaur, Plesiosaur|Stormwrack|16
-  improved grab|40|Gargantuan|36|Dinosaur, Spinosaurus|Monster Manual II|20
-  Improved grab|43|Gargantuan|37|Toad, Titanic Mutant|Return to the Temple of the Frog|25
-  Improved grab|51|Huge|42|Dinosaur, Battletitan|Monster Manual III|36
-  improved grab|62|Colossal|46|Dinosaur, Liopleurodon|Dragon Magazine|38
+  sqlite> select distinct dnd_special_ability.name, (hit_dice*base_attack_per_4HD/4 + (strength - 10)/2 + (size_id - 5)*4) as grapple, dnd_monstertype.name, dnd_racesize.name, land_speed, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) and dnd_special_ability.name like "%improved grab%" order by DC, -grapple, size_id;
+  Improved grab|6|Animal|Medium|20|Crocodile|Monster Manual v.3.5|18
+  Improved grab|5|Animal|Medium|40|Leopard|Monster Manual v.3.5|18
+  improved grab|5|Animal|Medium|20|Snake, Constrictor|Monster Manual v.3.5|18
+  improved grab|5|Animal|Medium|20|Snake, Dung|Serpent Kingdoms|18
+  improved grab|5|Animal|Medium|20|Snake, Whipsnake|Serpent Kingdoms|18
+  Improved grab|7|Animal|Medium|30|Thudhunter|Arms & Equipment Guide|19
+  Improved grab|14|Animal|Large|30|Lizard, Giant, Footpad|Drow of the Underdark|20
+  Improved grab|16|Animal|Large|40|Bear, Brown|Monster Manual v.3.5|21
+  Improved grab|21|Animal|Huge|20|Crocodile, Giant|Monster Manual v.3.5|22
+  Improved grab|18|Animal|Large|40|Bear, Polar|Monster Manual v.3.5|23
+  Improved grab|24|Animal|Huge|20|Lizard, Giant Banded|Sandstorm|25
+  Improved grab|23|Animal|Large|40|Bear, Dire|Monster Manual v.3.5|27
+  Improved grab|25|Animal|Huge|40|Megatherium|Fiend Folio|28
+  Improved grab|30|Animal|Huge|40|Woolly Mammoth|Frostburn|29
+  Improved grab|24|Animal|Large|40|Tiger, Dire|Monster Manual v.3.5|31
+  improved grab|24|Animal|Large|30|Snake, Legendary|Monster Manual II|31
+  Improved grab|35|Animal|Huge|50|Bear, Polar, Dire|Frostburn|33
+  improved grab|40|Animal|Gargantuan|40|Dinosaur, Spinosaurus|Monster Manual II|35
+  Improved grab|32|Animal|Large|50|Bear, Legendary|Monster Manual II|35
+  Improved grab|34|Animal|Large|50|Tiger, Legendary|Monster Manual II|41
+  improved grab|46|Magical Beast|Gargantuan|40|Lucent Worm|Fiend Folio|42
+  Improved grab|51|Animal|Huge|40|Dinosaur, Battletitan|Monster Manual III|51
+
 
 Interestingly, if we restrict to Large or smaller, there are no reversals; all Large animals or magical beasts are better grapplers than all Medium-size, which are in turn better grapplers than all Small.
 
@@ -564,6 +584,9 @@ Interestingly, if we restrict to Large or smaller, there are no reversals; all L
   Improved grab|16|Large|27|Bear, Brown|Monster Manual|6
   Improved grab|18|Large|27|Bear, Polar|Monster Manual|8
   Improved grab|23|Large|31|Bear, Dire|Monster Manual|12
+
+...*except* for the Serpent Kingdoms sewerm.
+This just goes to show that the database doesn't yet include racial bonuses. A sewerm has a +16 racial bonus on grapple checks, so although it's Small, with 2HD and Str 17 it has total +16 to grapple checks. Also, anesthetic poison.
 
 Of course, an animal could in theory be trained to grapple even if it doesn't naturally do so. Sometimes, indeed, you don't actually want or need to damage the target in grappling them.
 If it is Huge or bigger, the Snatch feat grants Improved Grab for a claw or bite attack.
@@ -661,7 +684,7 @@ Just for fun, remember that Moonrats are indistinguishable from normal rats exce
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_special_ability.name, (wisdom - 10)/2, dnd_monstertype.name, dnd_racesize.name, land_speed, dnd_monster.name, dnd_rulebook.name, hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) and (dnd_special_ability.name like "%sense%" or dnd_special_ability.name like "%sight%") order by dnd_special_ability.name, wisdom/2, -DC;
+  sqlite> select distinct dnd_special_ability.name, (wisdom - 10)/2, dnd_monstertype.name, dnd_racesize.name, land_speed, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) and (dnd_special_ability.name like "%sense%" or dnd_special_ability.name like "%sight%") order by dnd_special_ability.name, wisdom/2, -DC;
   Blindsight 100ft|2|Huge|20|Sea Tiger|Monster Manual III|10
   Blindsight 60ft|2|Medium|40|Nifern|Serpent Kingdoms|2
   Blindsense 120ft|3|Medium|20|Bat, Hunting|Monster Manual II|4
@@ -671,9 +694,26 @@ Just for fun, remember that Moonrats are indistinguishable from normal rats exce
   Blindsight 1200ft|5|Magical Beast|Gargantuan|50|Malastor|Monster Manual V|25
   Blindsight 120ft|2|Magical Beast|Small|10|Bakkas|Garden of the Plantmaster|6
   Blindsight 90ft|0|Magical Beast|Small|20|Darkmantle|Monster Manual|6
+  Tremorsense 30ft|2|Magical Beast|Small|40|Gem Scarab, Diamond|Monster Manual V|22
   tremorsense 1200ft|5|Magical Beast|Gargantuan|50|Malastor|Monster Manual V|25
   tremorsense 60ft|1|Magical Beast|Medium|20|Thrum Worm|Races of Stone|7
+  tremorsense 60ft|1|Magical Beast|Medium|30|Watchspider|City of Splendors: Waterdeep|22
+  tremorsense 60ft|3|Magical Beast|Tiny|20|Tomb Spider, Broodswarm|Monster Manual IV|23
+  tremorsense 60ft|0|Magical Beast|Small|30|Bloodsilk Spider|Monster Manual IV|22
   tremorsense 60ft|1|Magical Beast|Large|30|Ankheg|Monster Manual|8
+
+Blindsight requires line of effect, but tremorsense does not.
+If no straight path exists through the ground from the creature to those that it's sensing, then the range defines the maximum distance of the shortest indirect path.
+It must itself be in contact with the ground, and the creatures must be moving. As long as the other creatures are taking physical actions, including casting spells with somatic components, they're considered moving; they don't have to move from place to place for a creature with tremorsense to detect them.
+
+Unlike mundane or even monstrous vermin, bloodsilk spiders possess a cunning intelligence. They attack any living thing for its blood, using their webs to catch and slay even more prey. They are not powerful individually, so they prefer to attack in numbers, usually groups of four to eight.
+A typical bloodsilk spider is about 3 feet long and weighs 40 to 50 pounds.
+
+Watchspiders are fairly common in the cellars and warehouses of guild houses and rich merchants. They are trained to obey a single master, who can order them not to attack certain beings. Moreover, they can be trained so that most
+attack while another rings an alarm bell or drinks from a basin containing a magic potion before joining a fight.
+Watchspiders are indigenous to Tharsult, where the natives first trained the species as guards. The Mhairuun merchant family brought watchspiders and their breeding and training processes north to Waterdeep, swiftly establishing a lucrative business with this rare commodity. After sixty years of breeding in the North, watchspiders can be found in Sword Coast cities from Neverwinter to Lantan, all purchased and shipped from Waterdeep. While still a creature of more temperate climes, watchspiders have adapted to the Sword Coast with the growth of heavier hair (almost fur), but they still cannot survive the cold any further north than Neverwinter.
+
+Trainable (Ex): A thrum worm is easier to train and handle than most other magical beasts. Handle Animal checks made to train or handle a thrum worm are not increased by 5. Gnomes receive a +2 circumstance bonus on all Handle Animal checks made to train or handle a thrum worm.
 
 Hmm, I've always wondered, what is the intended use-case of the `Hover <http://www.d20srd.org/srd/monsterFeats.htm#hover>`_ feat?
 
@@ -719,7 +759,7 @@ Mounts?
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monstertype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, land_speed, dnd_monster.name, dnd_rulebook.name, hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) order by land_speed, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -DC;
+  sqlite> select distinct dnd_monstertype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16 as light_load, land_speed, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) order by land_speed, light_load, -DC;
   Colossal|51200|20|Dinosaur, Seismosaurus|Monster Manual II|32
   Colossal|89600|20|Dinosaur, Diplodocus|Dragon Magazine|28
   Gargantuan|25600|30|Elephant, Dire|Monster Manual II|20
@@ -816,7 +856,7 @@ Or maybe all you really want is a messenger eagle.
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, abbrev, speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where dnd_monstertype.name="Animal" order by abbrev, speed, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -hit_dice;
+  sqlite> select distinct dnd_racesize.name, dnd_monstertype.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16 as light_load, abbrev, speed, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<=2) ) order by abbrev, speed, light_load, -DC;
   Tiny|17|b|5|Lizard, Horned|Sandstorm|1
   Medium|87|b|10|Wolverine|Monster Manual|3
   Large|520|b|20|Dinosaur, Bloodstriker|Monster Manual III|9
@@ -856,18 +896,20 @@ Baboon Rock in Tanzania, Africa https://www.youtube.com/watch?v=42Px9N7jV7w&t=33
 
 Burrowing is of questionable usefulness. A creature with a burrow speed can tunnel through dirt, but not through rock unless the descriptive text says otherwise. Most burrowing creatures do not leave behind tunnels other creatures can use.
 
-40gp 25pound Saddle, Burrower's: This specialized exotic saddle allows the rider to stay safely on a mount that has the ability to burrow. The saddle includes a secure system of straps and buckles that holds the rider fl ush to the burrowing mount's back. In addition, a thick, round-edged piece of leather reinforced with bone or wood rises from the front of the shield, just before the rider's seat, roughly to the height of the rider's chest. The curved piece of leather bends up and toward the rider, allowing her to duck behind it while her mount burrows, shielding her from most of the dirt and rocks that might otherwise tear the rider from her perch, straps or no straps. Similar bits of reinforced leather protect the front and sides of the rider's legs.
+40gp 25pound Saddle, Burrower's: This specialized exotic saddle allows the rider to stay safely on a mount that has the ability to burrow. The saddle includes a secure system of straps and buckles that holds the rider flush to the burrowing mount's back. In addition, a thick, round-edged piece of leather reinforced with bone or wood rises from the front of the shield, just before the rider's seat, roughly to the height of the rider's chest. The curved piece of leather bends up and toward the rider, allowing her to duck behind it while her mount burrows, shielding her from most of the dirt and rocks that might otherwise tear the rider from her perch, straps or no straps. Similar bits of reinforced leather protect the front and sides of the rider's legs.
  Strapping oneself to the saddle requires three consecutive full-round actions that provoke attacks of opportunity. Unbuckling the straps is a full-round action that provokes attacks of opportunity. While strapped into the saddle, you lose your Dexterity bonus to Armor Class and take a -4 penalty on all attack rolls.
  Weight given is for a saddle meant for a Large creature. Saddles made for Medium mounts weigh half this amount, and saddles made for Huge creatures weigh twice as much.
 
 A burrowing ankheg usually does not make a usable tunnel, but can construct a tunnel; it burrows at half speed when it does so.
+A frost worm cannot burrow through stone, but can manage ice and frozen earth. When moving through such hard materials it leaves behind a usable tunnel about 5 feet in diameter.
+Dire badgers cannot burrow into solid rock, but can move through just about any material softer than that. A dire badger usually leaves behind a usable tunnel 5 feet in diameter when burrowing unless the material it's moving through is very loose. https://www.dailymail.co.uk/news/article-2120345/Residents-fear-homes-giant-badgers-dig-gardens-threatening-building-foundations.html
 
 
 Technically, Handle Animal can work on any creature with an Intelligence score of 1 or 2 (which are also vulnerable to Ray of Stupidity), which technically includes any creature that has been Feebleminded, but making a creature friendly enough to be willing to be trained is a sticking point.
 A druid can also use Wild Empathy to influence a magical beast with an Intelligence score of 1 or 2, but she takes a -4 penalty on the check.
 Wild animals are usually unfriendly, http://www.d20srd.org/srd/classes/druid.htm#wildEmpathy
 so it takes a DC15 check to make it indifferent, DC25 to make it friendly. A druid can also use this ability to influence a magical beast with an Intelligence score of 1 or 2, but she takes a -4 penalty on the check.
-Trainable (Ex): A thrum worm is easier to train and handle than most other magical beasts. Handle Animal checks made to train or handle a thrum worm are not increased by 5. Gnomes receive a +2 circumstance bonus on all Handle Animal checks made to train or handle a thrum worm.
+
 
 .. code-block:: bash
 
@@ -896,20 +938,45 @@ We can also search for templates with a final (not initial) type of animal:
   sqlite> select distinct dnd_template.name, dnd_rulebook.name, page from dnd_template inner join template_type on dnd_template.id=template_id inner join dnd_monstertype as output on output.id=output_type inner join dnd_monstertype as input on input.id=base_type inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where output.name="Animal" and input.name!="Animal" order by dnd_rulebook.name;
 
 
+Dungeonbred is an inherited template that can be applied to any living corporeal aberration, animal, magical beast, or vermin that is Large or bigger.
+Size and Type: The size of the creature is reduced one step, so that a Large base creature becomes a Medium dungeonbred monster.
+Easy Maintenance (Ex): Dungeonbred monsters consume food and water as if they were one size smaller than they actually are (and thus two sizes smaller than the base creature).
+Abilities: Increase from the base creature as follows: Str +4, Con +4. Since a dungeonbred monster is reduced in size from the base creature, remember to adjust its ability scores appropriately: -8 Str and -4 Con (so on net -4 Str), usually +2 Dex, and loss of some natural armor.
+
 A chameleon creature has a climb speed equal to one-half its highest nonflying speed.
 Of course, it's not likely to be a better climber than an ape or a forest sloth. And very high speeds tend to be swim speeds anyway, and those animals tend to be Aquatic, which means they won't really get to use that climb speed unless they're amphibious.
 The chameleon template does, however, allow an animal that has only a swim speed (yet can breathe air) to function on land.
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monstersubtype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/16 as maxLoad, abbrev, speed, dnd_monster.name, dnd_rulebook.name, hit_dice from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_movement_mode.monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id left join monster_has_subtype on monster_has_subtype.monster_id=dnd_monster.id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id left join monster_has_special_ability on monster_has_special_ability.monster_id=dnd_monster.id left join dnd_special_ability on special_ability_id=dnd_special_ability.id where dnd_monstertype.name="Animal" and abbrev="s" and (dnd_monstersubtype.name is null or dnd_monstersubtype.name!="Aquatic" or dnd_special_ability.name like "%Amphibious%") order by speed, maxLoad, -hit_dice;
+  sqlite> select distinct dnd_monstersubtype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/16 as maxLoad, abbrev, speed, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_movement_mode on dnd_monster.id=monster_movement_mode.monster_id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id left join monster_has_subtype on monster_has_subtype.monster_id=dnd_monster.id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id left join monster_has_special_ability on monster_has_special_ability.monster_id=dnd_monster.id left join dnd_special_ability on special_ability_id=dnd_special_ability.id where dnd_monstertype.name="Animal" and abbrev="s" and (dnd_monstersubtype.name is null or dnd_monstersubtype.name!="Aquatic" or dnd_special_ability.name like "%Amphibious%") order by speed, maxLoad, -DC;
   Medium|57|s|80|Porpoise|Monster Manual|2
 
 Similarly, a mineral warrior gains a burrow speed equal to one-half the base creature's highest speed.
 Of course, mineral warriors are rare and expensive to create.
 
 Kord-blooded is an acquired template that can be added to any non-evil living creature that has a Strength score of 16 or higher.
+Each year, the major temples to Kord hold a great wrestling tournament, and the tournament's winner wrestles an aspect of Kord. Whoever pins the other wins.
 Kord's Athleticism (Su): Once per day, as a swift action, a Kord-blooded creature can call upon the blood invested in him to gain a tremendous surge of prowess. For the next minute, the Kord-blooded creature gains a +4 bonus on Strength and Dexterity checks, Strength- and Dexterity-based skill checks, and grapple checks.
+
+.. code-block:: bash
+
+  sqlite> select distinct dnd_template.name, dnd_rulebook.name, page from dnd_template inner join template_type on dnd_template.id=template_id inner join dnd_monstertype on dnd_monstertype.id=output_type inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where dnd_monstertype.name="Magical Beast" order by dnd_rulebook.name;
+  Chimeric or Ti-khana creatures get Int +2. Quorbound or quorbred creatures get Int +4.
+  Living Zombie|Champions of Ruin|128
+  Half-Golem Will succeeded|Monster Manual II|209
+
+Half-golem is a template that can be added to any animal, beast, giant, humanoid creature, magical beast, or monstrous humanoid.
+Abilities: Half-golems have -2 Dex, +4 Con (or no Con upon a failed Will save), -6 Int, +0 Wis, and -6 Cha.
+Wound (Ex): The damage a clay half-golem deals doesn't heal naturally. Only a spell of 6th level or higher with the healing descriptor (such as heal) can repair it.
+A clay limb must be sculpted from a single block of clay weighing at least 100 pounds. The sculpting requires a successful Craft (sculpting) or Profession (mason) check (DC 20). The rituals cost 12,000 gp and 240 XP and require animate objects and geas/quest. Attaching the limb requires the ability to cast 6th-level divine spells.
+
+A living zombie's Intelligence changes to 1.
+Creating a living zombie costs 1,000 gp in materials.
+It is unable to act contrary to its creator's wishes. A spellcaster can concurrently control at most one living zombie per ability point bonus in primary spellcasting ability.
+
+
+
 
 
 What about hirelings? Maybe what you really need is for someone to dangle a rope down into the chasm, and when you come running out of the dungeon in the "Get to the choppa!" moment, pull you up leaving your pursuers behind. For that, animals just won't do.
@@ -1069,7 +1136,11 @@ Earth Root (Ex): A sheengrass swarm can travel only on soft natural ground (such
 Pseudodragons are a trap: when you go to look at the actual ability text, it doesn't work like other Telepathy abilities.
 Telepathy (Su): Pseudodragons can communicate telepathically with creatures that speak Common or Sylvan, provided they are within 60 feet.
 
+Telepathy (Ex): Nagas are all part of a communal consciousness they call the Akasha. This shared consciousness facilitates communication between nagas near and far, and contains the memories of their entire species. A group of nagas within 30 feet of each other are in constant communication.
+
 If you have access to the Outer Planes, you have a lot of options. If you're confined to the Material Plane, you basically have the Coke-or-Pepsi choice of mind leech or puppeteer. Puppeteers can only charm humanoids, so there's that. Both Lawful Evil, both highly intelligent. If you successfully form an alliance --- good luck with that --- they probably won't outright betray you, but you'll be trusting a highly intelligent evil creature to tell you what people are saying and tell other people what *you* are saying. Oh, and in the case of the mind leech, you have to convince people to allow the mind leech into their brains before you can communicate with them.
+
+It's worth mentioning that a mane, dretch, coure, lantern archon, or protectar can also take the Mindsight feat to sense creatures within 100 feet.
 
 There is another way to "communicate".
 A commanded undead creature is under the mental control of the evil cleric. The cleric must take a standard action to give mental orders to a commanded undead.
@@ -1088,6 +1159,13 @@ A commanded undead creature is under the mental control of the evil cleric. The 
 
   sqlite> select distinct dnd_template.name, dnd_rulebook.name, page from dnd_template inner join template_type on dnd_template.id=template_id inner join dnd_monstertype on dnd_monstertype.id=output_type inner join (select id as input_id, name as input_name from dnd_monstertype) on input_id=base_type inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where (dnd_monstertype.name="Undead" or dnd_monstertype.name="Plant" or dnd_monstertype.name="Dragon" or (dnd_monstertype.name="Elemental" and input_name!="Elemental") ) and input_name!="Undead" and input_name!="Plant" and input_name!="Dragon" and input_name!="Animal" order by dnd_rulebook.name;
   Bone Naga|Serpent Kingdoms|73 http://archive.wizards.com/default.asp?x=dnd/ex/20040709a&page=4
+   A bone naga is a skeletal undead creature created from a naga by a spellcaster (usually of its own race). A create undead spell can produce a bone naga from any naga subject with fewer Hit Dice than the creator.
+   Though it despises servitude, a bone naga unswervingly obeys its creator, attacking even other nagas if so commanded. Should its master die, the bone naga becomes free-willed and can choose its own destiny.
+   "Bone naga" is an acquired template that can be added to any naga (referred to hereafter as the base creature). Including, say, a greensnake.
+   Abilities: As an undead creature, a bone naga has no Constitution score.
+   Challenge Rating: Same as the base creature +1.
+   Treasure: None
+   Alignment: Any evil.
    Telepathy (Su): A bone naga can communicate telepathically with any creature within 250 feet that has a language.
   Bonesinger|Ghostwalk|158
   Tainted Minion|Heroes of Horror|153

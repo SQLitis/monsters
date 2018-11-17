@@ -1143,7 +1143,7 @@ Initial: user dazzled for 1 minute
 Secondary: user immune to effects that read or alter thoughts/emotions for 1d4 hours (includes detect thoughts, zone of truth, calm emotions, cause fear)
 Side: attempts to communicate telepathically/empathically fail
 Overdose: none
-Comments: Magical effect. The strange wording on this doesn't explicitly say the user is immune to all mind-affecting spells... it doesn't mention charm or compulsion spells, but I can't imagine how those could *not* involve altering the target's thoughts. So yeah, looks like for only 500 GP you can get the equivalent of mind blank for 1d4 hours. 
+Comments: Magical effect. The strange wording on this doesn't explicitly say the user is immune to all mind-affecting spells... it doesn't mention charm spells, but I can't imagine how those could *not* involve altering the target's thoughts. So yeah, looks like for only 500 GP you can get the equivalent of mind blank for 1d4 hours. 
 Addiction: none
 Darkeye (Sharn, City of Towers)
 50gp, Alchemy DC: 25. A toxic beverage: DC 12 ingested, paralysis/secondary damage 1 Con. However, if the victim fails his saving throw against the secondary damage, the paralysis continues and he must make another save after a minute has passed. This continues until the victim makes a successful saving throw.
