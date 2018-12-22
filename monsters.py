@@ -1278,6 +1278,7 @@ class Monster(object):
     allUnknownTerms[len(nameSegments) - 1].add(', '.join(nameSegments) )
 
     self.size = xls_row[1].value
+    if self.name == 'Lycanthrope, Wererat (rat form)': self.size = 'Small'
     self.type_name = xls_row[2].value
     if self.name in ('Energon, Xag-Ya','Energon, Xeg-Yi'):
       self.type_name = 'Outsider'
@@ -1314,14 +1315,29 @@ class Monster(object):
               raise ValueError(self.name, mode, self.maneuverability)
           except IndexError:
             raise Exception(self.name)
-    AC = int(xls_row[8].value)
+
+    self.ArmorClass = int(xls_row[8].value)
     touchAC = int(xls_row[9].value)
-    self.armorPlusShieldPlusNaturalArmor = AC - touchAC
+    if self.name == 'Dragon, Chromatic, Black, Young' and touchAC == 11: touchAC = 10 # error in table
+    elif self.name == 'Ghast' and touchAC == 12: touchAC = 13 # error in Monster Manual
+    elif self.name == 'Vargouille' and touchAC == 11: touchAC = 12 # error in Monster Manual
+    elif self.name == 'Swarm, Bat': touchAC = self.ArmorClass # error in Monster Manual
+    elif self.name == 'Inevitable, Marut':
+      self.ArmorClass = int(xls_row[7].value)
+      touchAC = int(xls_row[8].value)
+    elif self.name == 'Monstrous Centipede, Colossal':
+      # Colossal Monstrous scorpions and spiders both lose 2 Dex from Gargantuan, and the Colossal Monstrous Centipede has initiative, Reflex, and Hide consistent with a decreased Dex.
+      self.ArmorClass -= 1
+      touchAC -= 1
+    self.armorPlusShieldPlusNaturalArmor = self.ArmorClass - touchAC
     if self.name == 'Minotaur':
-      flatfootedAC = AC
+      flatfootedAC = self.ArmorClass
     else:
       flatfootedAC = int(xls_row[10].value)
+
     # http://stackoverflow.com/questions/2415398/can-i-set-a-formula-for-a-particular-column-in-sql
+    # https://stackoverflow.com/questions/1124695/can-i-create-computed-columns-in-sqlite
+    # SQLite doesn't supported computed columns.
     
     attacks = xls_row[12].value
     #attacks = xls_row[13].value
@@ -1377,9 +1393,7 @@ class Monster(object):
 
     self.strength = integer_or_non(xls_row[20].value)
     self.dexterity = integer_or_non(xls_row[21].value)
-    #if self.dexterity is not None and AC - flatfootedAC != max(0, self.dexterity//2 - 5):
-    #  print(self.name)
-      # Girallon Armor Class: 16 (-1 size, +3 Dex, +4 natural), touch 12, flat-footed 15 wut?
+    if self.name == 'Monstrous Scorpion, Colossal': self.dexterity = 8 # error in table
     self.constitution = integer_or_non(xls_row[22].value)
     self.intelligence = integer_or_non(xls_row[23].value)
     self.wisdom = int(xls_row[24].value)
@@ -1412,6 +1426,20 @@ class Monster(object):
         raise Exception(self.name, self.HitDice, self.constitution, listedFortitude)
         # n the case the the Flotsam Ooze, the error is in the Fiend Folio, so I don't know what the error is.
     if self.name == 'Ooze, Ochre Jelly': assert self.HitDice == 6
+
+    dexterityModifier = self.dexterity//2 - 5 if self.dexterity is not None else 0
+    # A creature with no Dexterity score can't move. If it can perform actions (such as casting spells), it applies its Intelligence modifier to initiative checks instead of a Dexterity modifier. The creature automatically fails Reflex saves and Dexterity checks.
+    # The modifier for a nonability is +0.
+    # An inanimate object has not only a Dexterity of 0 (-5 penalty to AC), but also an additional -2 penalty to its AC.
+    # But an immobile creature like a Formian Queen has no penalty to AC. But a Shrieker fungus, despite having no Dex, has a -5 Dex penalty to AC. Similarly an udoroot has no Dex and a -5 Dex penalty to AC.
+    # The formian queen, despite having no Dex penalty to AC, does have a Dex penalty to initiative. So does a shrieker.
+    # An udoroot, despite having a Dex penalty to AC, has no Dex penalty to initiative. Neither does it apply its Intelligence modifier to initiative; it has initiative of +0, as if they tried to apply the rule the no Dex means no Dex modifier in that case but not in the case of AC.
+    #if self.dexterity == 0: print('0 Dex:', self.name)
+    #if self.dexterity is None: print('has no Dex:', self.name)
+    #if AC - flatfootedAC != max(0, dexterityModifier):
+    #  print('flat-footed', flatfootedAC, 'does not match:', AC, '-', max(0, dexterityModifier), self.name)
+    # A girallon has a listed flat-footed AC of 15 with an AC of 16 (-1 size, +3 Dex, +4 natural). Not just in the table, in the actual Monster Manual.
+
 
     self.environment = xls_row[26].value
     #Monster.allEnvs.add(environment)
@@ -1633,7 +1661,7 @@ class Monster(object):
         #onlyOneRow = [spell.replace('"(', '(').replace(')"', ')') for spell in onlyOneRow]
         #print('onlyOneRow=', onlyOneRow)
   
-  statblockRE = re.compile(r"([\w\, ]+): CR (\d|\d/\d{1,2}); (Fine|Diminutive|Tiny|Small|Medium|Large|Huge|Gargantuan|Colossal) ([\w ]+); HD (\d|\d/\d)d\d(?:(?:\-|\+)\d{1,2})?; hp \d{1,3}; Init \+\d; Spd (\d\d) ft\.(?:\, (?:burrow|climb|fly|swim) \d\d ft\.(?: \((?:clumsy|poor|average|good|perfect)\))?)*; AC \d\d, touch \d\d, flat-footed \d\d; Base Atk \+\d; Grp (?:\-|\+)\d{1,2}; Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)); Full Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)(?: and \+\d melee \([\d\-\+\, \w]+\))?); Space/Reach (?:\d|\d/\d) ft\./\d ft\.; SA ([\w\-]+); SQ ([\w \,\-]+); AL (\w{1,2}); SV Fort \+\d, Ref \+\d, Will \+\d; Str (\d{1,2})\, Dex (\d{1,2})\, Con (\d{1,2})\, Int (\d{1,2})\, Wis (\d{1,2})\, Cha (\d{1,2})\.\s+Skills and Feats: [\w \+\-\d\,]+; [\w \,]+\.")
+  statblockRE = re.compile(r"([\w\, ]+): CR (\d|\d/\d{1,2}); (Fine|Diminutive|Tiny|Small|Medium|Large|Huge|Gargantuan|Colossal) ([\w ]+); HD (\d|\d/\d)d\d(?:(?:\-|\+)\d{1,2})?; hp \d{1,3}; Init \+\d; Spd (\d\d) ft\.(?:\, (?:burrow|climb|fly|swim) \d\d ft\.(?: \((?:clumsy|poor|average|good|perfect)\))?)*; AC (\d\d), touch (\d\d), flat-footed \d\d; Base Atk \+\d; Grp (?:\-|\+)\d{1,2}; Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)); Full Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)(?: and \+\d melee \([\d\-\+\, \w]+\))?); Space/Reach (?:\d|\d/\d) ft\./\d ft\.; SA ([\w\-]+); SQ ([\w \,\-]+); AL (\w{1,2}); SV Fort \+\d, Ref \+\d, Will \+\d; Str (\d{1,2})\, Dex (\d{1,2})\, Con (\d{1,2})\, Int (\d{1,2})\, Wis (\d{1,2})\, Cha (\d{1,2})\.\s+Skills and Feats: [\w \+\-\d\,]+; [\w \,]+\.")
   assert statblockRE.match("Owl, Medium: CR 1; Medium animal; HD 2d8; hp 13; Init +1; Spd 10 ft., fly 60 ft. (average); AC 14, touch 11, flat-footed 13; Base Atk +1; Grp +3; Atk +2 melee (1d4+2, talons); Full Atk +2 melee (1d4+2, talons) and +0 melee (1d6+1, bite); Space/Reach 5 ft./5 ft.; SA -; SQ -; AL N; SV Fort +4, Ref +4, Will +2; Str 14, Dex 13, Con 12, Int 2, Wis 14, Cha 4. Skills and Feats: Listen +14, Move Silently +19, Spot +14; Multiattack.") is not None
   assert statblockRE.match("Raven, Small: CR 1/2; Small animal; HD 1d8; hp 5; Init +1; Spd 10 ft., fly 40 ft. (average); AC 13, touch 12, flat-footed 12; Base Atk +0; Grp -7; Atk +2 melee (1d3-3, talons); Full Atk +2 melee (1d3-3, talons); Space/Reach 5 ft./5 ft.; SA -; SQ -; AL N; SV Fort +3, Ref +3, Will +2; Str 5, Dex 13, Con 12, Int 2, Wis 14, Cha 6. Skills and Feats: Listen +6, Spot +6; Weapon Finesse.") is not None
   @staticmethod
@@ -1650,16 +1678,17 @@ class Monster(object):
     ret.landSpeed = int(matchObj.group(6) )
     ret.movementModes = []
     ret.maneuverability = None
-    ret.armorPlusShieldPlusNaturalArmor = None
-    ret.specialAttacks = Monster.splitSpecialAbilities(matchObj.group(7) )
-    ret.specialQualities = Monster.splitSpecialAbilities(matchObj.group(8) )
-    ret.set_default_alignment(matchObj.group(9) )
-    ret.strength     = integer_or_non(matchObj.group(10) )
-    ret.dexterity    = integer_or_non(matchObj.group(11) )
-    ret.constitution = integer_or_non(matchObj.group(12) )
-    ret.intelligence = integer_or_non(matchObj.group(13) )
-    ret.wisdom       = integer_or_non(matchObj.group(14) )
-    ret.charisma     = integer_or_non(matchObj.group(15) )
+    ret.ArmorClass = int(matchObj.group(7))
+    ret.armorPlusShieldPlusNaturalArmor = ret.ArmorClass - int(matchObj.group(8))
+    ret.specialAttacks = Monster.splitSpecialAbilities(matchObj.group(9) )
+    ret.specialQualities = Monster.splitSpecialAbilities(matchObj.group(10) )
+    ret.set_default_alignment(matchObj.group(11) )
+    ret.strength     = integer_or_non(matchObj.group(12) )
+    ret.dexterity    = integer_or_non(matchObj.group(13) )
+    ret.constitution = integer_or_non(matchObj.group(14) )
+    ret.intelligence = integer_or_non(matchObj.group(15) )
+    ret.wisdom       = integer_or_non(matchObj.group(16) )
+    ret.charisma     = integer_or_non(matchObj.group(17) )
     ret.rulebook_abbrev = rulebook_abbrev
     ret.environment = 'environment not given'
     ret.SpellLikeAbilities = []
@@ -1701,6 +1730,22 @@ class Monster(object):
     assert size_id is not None
     type_id = id_from_name(curs, 'dnd_monstertype', self.type_name)
     assert type_id is not None
+
+    sizeModifierToAC = 0 if size_id == 5 else int(math.copysign(2**(abs(size_id - 5) - 1), 5 - size_id))
+    if self.dexterity is None:
+      dexterityModifierToAC = 0 if self.name == 'Formian, Queen' else -5
+    else:
+      dexterityModifierToAC = self.dexterity//2 - 5
+    if self.name == 'Titan':
+      # This is actually correct; the titan is wearing half-plate armor, which has a max Dex bonus of +0.
+      dexterityModifierToAC = min(0, dexterityModifierToAC)
+    if 'Incorporeal' in self.subtypes or 'unearthly grace' in self.specialQualities:
+      charismaBonusToAC = max(1, self.charisma//2 - 5)
+    else:
+      charismaBonusToAC = 0
+    #if self.ArmorClass != 10 + self.armorPlusShieldPlusNaturalArmor + sizeModifierToAC + dexterityModifierToAC + charismaBonusToAC:
+    #  print('unaccounted-for AC:' + self.name + ''.join(self.subtypes) + 'AC {} != 10 + {}armor + {}size + {}Dex + {}Cha'.format(self.ArmorClass, self.armorPlusShieldPlusNaturalArmor, sizeModifierToAC, dexterityModifierToAC, charismaBonusToAC) )
+
     curs.execute('''INSERT INTO dnd_monster
                  (name, rulebook_id, size_id, type_id, hit_dice, land_speed, strength, dexterity, constitution, intelligence, wisdom, charisma, natural_armor_bonus, challenge_rating)
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
@@ -2146,7 +2191,7 @@ def readShax(filepath='ShaxItems.txt'):
 
 parenthesizedReferenceRE = re.compile(r'\((\w{1,5})\sp(\d{1,3})\)')
 def readCrystalKeepItems(filepath='IndexMagicItems.docx'):
-  # You can open any Word 2007 or later file this way (.doc files from Word 2003 and earlier won’t work).
+  # You can open any Word 2007 or later file this way (.doc files from Word 2003 and earlier won't work).
   fileObj = open(filepath, 'rb')
   wordDoc = docx.Document(filepath)
   personalItems = wordDoc.tables[0]
