@@ -845,6 +845,7 @@ Raising a dire boar requires a total +12 if you take 10. A first-level human com
 
 10gp Animal Training Pole: This hollow pole has a strong, thin cord threaded through it and twisted into a loop at the end. When looped around an animal's neck, it provides an easy way to direct the animal while preventing the animal from moving any closer than the pole's length. An animal training pole provides a +2 circumstance bonus on attempts to teach an animal a task.
 
+Teamwork benefits require Int 8 for the leader, so a trained animal cannot be the leader.
 You may have heard of the Team Rush teamwork benefit from the Player's Handbook II; that's the reason why, if you hitch an advanced 5HD shadow mastiff to a sled with a pack of regular dogs, they're inspired to move at the shadow mastiff's speed (50feet).
 With the same teamwork training, an 8HD megaraptor can get a team of giant crocodiles or anklyosaurs to move at a speed of 60feet. Of course, if you can do that, you're close to getting elephants anyway.
 More immediately, a 5HD advanced deinonychus can lead a team of Large giant footpad lizards at a speed of 60feet. (If you're restricted to Medium-size, then the heaviest-load-carrier up to DC20 *is* the deinonychus, so there's no point.)
