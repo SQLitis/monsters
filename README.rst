@@ -586,7 +586,10 @@ Interestingly, if we restrict to Large or smaller, there are no reversals; all L
   Improved grab|23|Large|31|Bear, Dire|Monster Manual|12
 
 ...*except* for the Serpent Kingdoms sewerm.
-This just goes to show that the database doesn't yet include racial bonuses. A sewerm has a +16 racial bonus on grapple checks, so although it's Small, with 2HD and Str 17 it has total +16 to grapple checks. Also, anesthetic poison.
+This just goes to show that the database doesn't yet include racial bonuses. A sewerm has a +16 racial bonus on grapple checks, so although it's a Small animal, with 2HD and Str 17 it has total +16 to grapple checks. Also, anesthetic poison. Speed 20feet with climb and swim, just like other snakes.
+A sewerm does not have Improved Grab, but unlike, say, a weasel, a sewerm's Attach ability is considered grappling.
+Advancement: 3--4HD Medium, 5HD Large
+The increase in size of Medium gives +4 Strength for a total of +6 to grapple checks. Its BAB also increases from +1 to +2, so a 3HD Medium sewerm has a total +23 to grapple checks.
 
 Of course, an animal could in theory be trained to grapple even if it doesn't naturally do so. Sometimes, indeed, you don't actually want or need to damage the target in grappling them.
 If it is Huge or bigger, the Snatch feat grants Improved Grab for a claw or bite attack.
@@ -628,17 +631,19 @@ Advancement is usually not worthwhile for trippers, but for grapplers they get b
      Advancement +6=13HD Gargantuan
   22|Huge|26|Dragonhawk|Five Nations|23
   24|Huge|28|Lizard, Giant Banded|Sandstorm|25
+  27|Huge|33|Lizard, Giant, Footpad, Advanced|Drow of the Underdark|26
   19|Medium|30|Ape, Legendary|Monster Manual II|13
   55|Colossal|40|Dinosaur, Seismosaurus|Monster Manual II|32
 
 Bigger animals are better at tripping...it helps to think of it not in terms of the word trip, but in terms of knocking someone prone ala the Awesome Blow feat.
-For a given number of HD, the best trippers are exactly the best grapplers.
+For any given number of Hit Dice, the best trippers are exactly the best grapplers --- Hit Dice affects grappling while it doesn't affect tripping, but if we hold Hit Dice constant, that doesn't matter. On the other hand, status as an animal effectively gives five free Hit Dice, which makes animals more likely to be the best grapplers.
 
 .. code-block:: bash
 
   sqlite> select distinct dnd_special_ability.name, ( (strength - 10)/2 + (size_id - 5)*4) as trip, dnd_monstertype.name, dnd_racesize.name, strength, dnd_monster.name, dnd_rulebook.name, hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) and dnd_special_ability.name like "%trip%" order by trip, -DC, -size_id;
   Trip|2|Medium|15|Bat, Hunting|Monster Manual II|4
   Trip|2|Medium|14|Hyena|Monster Manual|2
+    Advancement: +2=4HD Large
   Trip|3|Medium|16|Cheetah|Monster Manual|3
   Trip|3|Medium|17|War Mastiff|Heroes of Battle|3
   Trip|7|Medium|25|Wolf, Legendary|Monster Manual II|14
@@ -648,6 +653,7 @@ For a given number of HD, the best trippers are exactly the best grapplers.
   Knockback|Brixashulty|Races of the Wild|2
   Knockback (Ex): A gore attack from a brixashulty can literally drive back a foe. When a brixa hits with its gore attack, it can immediately attempt a bull rush without entering the foe's space or provoking an attack of opportunity. The brixa makes a Strength check with a +7 bonus, which includes a +4 racial bonus. If the bull rush succeeds, the foe is driven back 5 feet and must make a DC 12 Reflex save or fall down. If being driven back would force the opponent into a barrier or into a square where it cannot stop (such as a wall or a square that already contains another creature), the foe falls down in its square instead.
   A brixashulty kid is worth 30 gp and is ready for training by age two. It can live for up to 50 years.
+  A character with the Handle Animal skill can train a brixashulty as noted in the Handle Animal skill description
 
 And of course an animal can trip without a special ability.
 
@@ -702,6 +708,9 @@ Just for fun, remember that Moonrats are indistinguishable from normal rats exce
   tremorsense 60ft|0|Magical Beast|Small|30|Bloodsilk Spider|Monster Manual IV|22
   tremorsense 60ft|1|Magical Beast|Large|30|Ankheg|Monster Manual|8
 
+`Chordevoc <http://archive.wizards.com/default.asp?x=dnd/ex/20050204a&page=5>`_
+A halfling can train a chordevoc without penalty, but the Handle Animal DCs for any other trainer increase by 5.
+
 Blindsight requires line of effect, but tremorsense does not.
 If no straight path exists through the ground from the creature to those that it's sensing, then the range defines the maximum distance of the shortest indirect path.
 It must itself be in contact with the ground, and the creatures must be moving. As long as the other creatures are taking physical actions, including casting spells with somatic components, they're considered moving; they don't have to move from place to place for a creature with tremorsense to detect them.
@@ -714,6 +723,7 @@ attack while another rings an alarm bell or drinks from a basin containing a mag
 Watchspiders are indigenous to Tharsult, where the natives first trained the species as guards. The Mhairuun merchant family brought watchspiders and their breeding and training processes north to Waterdeep, swiftly establishing a lucrative business with this rare commodity. After sixty years of breeding in the North, watchspiders can be found in Sword Coast cities from Neverwinter to Lantan, all purchased and shipped from Waterdeep. While still a creature of more temperate climes, watchspiders have adapted to the Sword Coast with the growth of heavier hair (almost fur), but they still cannot survive the cold any further north than Neverwinter.
 
 Trainable (Ex): A thrum worm is easier to train and handle than most other magical beasts. Handle Animal checks made to train or handle a thrum worm are not increased by 5. Gnomes receive a +2 circumstance bonus on all Handle Animal checks made to train or handle a thrum worm.
+A thrum worm larva costs 1,500 gp on the open market
 
 Hmm, I've always wondered, what is the intended use-case of the `Hover <http://www.d20srd.org/srd/monsterFeats.htm#hover>`_ feat?
 
@@ -723,15 +733,13 @@ Hmm, I've always wondered, what is the intended use-case of the `Hover <http://w
   2|Blindsense 40ft|Animal|Large|Bat, Dire|Monster Manual v.3.5|40
 
 In theory a Medium-size creature could advance to Large size, but if you actually look at the blindsensers of Medium size who can fly, none of them fly with wings.
-Of course since Hover doesn't obstruct sight at melee range, it doesn't really need blindsense...but the dire bat still pops up first anyway. (Though a 9HD Large cloaked ape CR 3 is also a possibility. There's also a 6HD Large sailsnake CR3, 9HD Large dire hawk CR3.)
-A half-fiend Ur'Epona (probably spawned by an armanite) is CR 2 and a fairly serious threat in melee with its 1d6+5 claws and 1d8+2 bite and 1d6+2 hooves, plus DR 5/magic and SR13.
+Of course since Hover doesn't obstruct sight at melee range, it doesn't really need blindsense...but the dire bat still pops up first anyway. (Though a 9HD Large cloaked ape CR 3 is also a possibility. There's also a 6HD Large sailsnake CR3, or a 9HD Large dire hawk CR3.)
+Half-fiends have wings. A half-fiend Ur'Epona (probably spawned by an armanite) is CR 2 and a fairly serious threat in melee with its 1d6+5 claws and 1d8+2 bite and 1d6+2 hooves, plus DR 5/magic and SR13.
 
 .. code-block:: bash
 
   sqlite> select distinct challenge_rating, dnd_monstertype.name, dnd_racesize.name, dnd_monster.name, dnd_rulebook.name, speed from dnd_monster inner join monster_movement_mode on monster_movement_mode.monster_id=dnd_monster.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where abbrev='f' and intelligence is not null and size_id>5 and challenge_rating<6 order by challenge_rating;
   2|Animal|Large|Bat, Dire|Monster Manual v.3.5|40
-
-`Chordevoc <http://archive.wizards.com/default.asp?x=dnd/ex/20050204a&page=5>`_
 
 .. code-block:: bash
 
@@ -739,7 +747,7 @@ A half-fiend Ur'Epona (probably spawned by an armanite) is CR 2 and a fairly ser
   poison|8|Diminutive|15|Hedgehog|Dungeon Master's Guide v.3.5|-4 Dexterity
   Poison|8|Tiny|10|Sea Snake, Tiny|Stormwrack|-4
   Poison|10|Small|10|Sea Snake, Small|Stormwrack|1 Constitution Poison (Ex): A sea snake's poison is extraordinarily virulent. It has a +2 racial bonus on the poison's save DC.
-  Poison|10|Small||Stingray|Stormwrack|1 Poison (Ex): Injury, Fortitude DC 12, nauseated 1d4 hours/1d3 Dex. The save DC is Constitution-based and includes a +2 racial bonus. A creature that makes its saving throw against the poison's initial damage is instead sickened for 1d6 rounds. Blood Web (Ex) A bloodsilk spider can throw a blood-red web eight times per day. An entangled creature can escape with a DC 11 Escape Artist check or burst the web with a DC 15 Strength check. Both are standard actions and thus cannot be taken while nauseated.
+  Poison|10|Small||Stingray|Stormwrack|1 Poison (Ex): Injury, Fortitude DC 12, nauseated 1d4 hours/1d3 Dex. The save DC is Constitution-based and includes a +2 racial bonus. A creature that makes its saving throw against the poison's initial damage is instead sickened for 1d6 rounds. Blood Web (Ex) A bloodsilk spider can throw a blood-red web eight times per day. An entangled creature can escape with a DC 11 Escape Artist check or burst the web with a DC 15 Strength check. Both are standard actions and thus cannot be taken while nauseated, so a bloodsilk spider plus a stingray could keep someone contained for hours. Of course, you could just, you know, tie them up.
   poison|10|Small|20|Dragon Newt|Web|1 Strength http://archive.wizards.com/default.asp?x=dnd/mm/20030920a
   Poison spray|12|Small|30|Dinosaur, Swindlespitter|Monster Manual III|2 Poison Spray (Ex): When threatened, a swindlespitter sprays a corrosive poison in a 15-foot cone from its mouth. Contact; Fort DC 12; initial damage blindness for 2d4 minutes; secondary damage 1d4 Con. The swindlespitter can spray this poison once every 1d4 rounds. Swindlespitters flee from blinded opponents if possible.
   Venom spray|13|Medium|20|Sailsnake|Monster Manual IV|3 Venom Spray (Ex) 20-ft. cone, once every 6 rounds, blind for 1d4 rounds, Fortitude DC 13 half.
@@ -752,7 +760,7 @@ A half-fiend Ur'Epona (probably spawned by an armanite) is CR 2 and a fairly ser
   poison|25|Large|30|Snake, Legendary|Monster Manual II|16 Constitution
 
   poison|17|Magical Beast|Large|30|Spider Eater|Monster Manual|9 Poison (Ex): Injury, Fortitude DC 17, initial damage none, secondary damage paralysis for 1d8+5 weeks. The save DC is Constitution-based.
-  Mlarraun Serpent Kingdoms Poison (Ex): spit, contact, Fortitude DC11, initial damage blindness 2d6hours, secondary damage blindness 4d6hours and 1d4 points of damage. The poison need not touch the eyes to cause blindness.
+  Mlarraun 2HD Magical Beast Serpent Kingdoms Poison (Ex): spit, contact, Fortitude DC11, initial damage blindness 2d6hours, secondary damage blindness 4d6hours and 1d4 points of damage. The poison need not touch the eyes to cause blindness.
 
 
 Mounts?
@@ -789,7 +797,24 @@ Mounts?
   Large|15|65|Axebeak|Arms & Equipment Guide|3 Axebeaks move five times their normal speed when running instead of four times the speed. This is probably only noted as a special ability because animals didn't have feats in 3.0. Axebeak eggs are worth 20 gp on the open market. Note that axebeaks are bipeds, so cannot carry as much as the formula would indicate. An axebeak also cannot use a Tooth of Savnok after you can afford the 2,000gp, which allows other mounts to carry a medium or heavy load without slowing down. An axebeak is good for one thing and one thing only: outrunning pursuers by being just a *little bit faster* than a light horse, while not carrying much.
   Large|29|80|Horse, Legendary|Monster Manual II|18
 
-The warbeast template, found by searching for templates below, adds +10 to land speed (maybe other speeds, it's not clear) and +3 Strength at the cost of 1HD.
+The warbeast template, found by searching for templates below, adds +10 to land speed (maybe other speeds, it's not clear) and +3 Strength at the cost of 1HD. It also gains +3 to Constitution, so poisoners might benefit.
+Speed: Same as base creature +10 feet.
+Advancement: Same as base creature. So an animal will still increase in size at the same absolute HD count. Of course, advanced warbeasts are pricey.
+A creature may become larger when its Hit Dice are increased (the new size is noted parenthetically in the monster's Advancement entry). Increased size also affects a creature's ability scores as indicated on the tables.
+The warbeast is a creature born and raised to serve as a rider's mount. Bred for exceptional strength, aggression, and surefootedness, these creatures are powerfully built, strong-willed, and openly belligerent.
+A warbeast can be reared and trained just as the base creature can. If the base creature is a domestic animal, the creature need not be specially reared, but it must be trained for two months (Handle Animal DC 20) to develop its abilities.
+A warbeast based on a wild animal must be reared for one year (Handle Animal DC 15 + HD of the warbeast), then trained for 2 months (Handle Animal DC 20 + HD of the warbeast).
+In 3.0, there were three categories of difficulty for Handle Animal: Domestic Animals, Wild Animals, and Beasts. Obviously, a Warbeast is always Domestic (in the D&D sense anyway if not the biological one). What that line says is that even though a Warbeast is domestic, it is still reared and trained as the base creature. If the base creature is a domestic animal, the warbeast is trained as a domestic animal. If it's a wild animal, it is trained as a wild animal. If it is a beast, it is trained as a beast. The DCs match, if you look up how 3.0 Handle Animal worked.
+A trained warbeast is proficient with light, medium, and heavy armor.
+Market Price: The market price of a warbeast is a function of its Hit Dice: 50 gp/HD for a warbeast of 3 HD or less, or 100 gp + 75 gp/HD for one of 4 HD or more.
+A 100gp warbaboon has Str 18; a 100gp warphynxkin has Str 17. It's not clear whether they get a bonus to climb speed, however.
+A 150gp warnifern has improved poison (and improved Strength).
+A 150gp warhyena is even better at tripping. Gnolls probably use these.
+A warbrixashulty kid probably costs 30gp + 150gp = 180gp.
+A 150gp 3HD warsewerm has Str 17 + 3 + 4 = 24 since it increases in size to Medium, with a total grapple bonus of +25, and speed 30feet.
+
+A dark dire warjackal costs 475gp and requires access to the Plane of Shadow, but has a speed of 80feet.
+A dark waraxebeak costs 400gp and requires access to the Plane of Shadow, but has a speed of 85feet.
 
 Of course, merchant caravans care about speed less than they care about efficiency of load-carrying.
 Let's assume for the moment that size category can be a proxy for how much food and care an animal needs. Unfortunately, the database has no way to distinguish carnivores from herbivores, or quadrupeds from bipeds.
@@ -861,6 +886,7 @@ Or maybe all you really want is a messenger eagle.
   Tiny|17|b|5|Lizard, Horned|Sandstorm|1
   Medium|87|b|10|Wolverine|Monster Manual|3
   Large|520|b|20|Dinosaur, Bloodstriker|Monster Manual III|9
+  Large|Magical Beast|460|b|20|Ankheg|Monster Manual v.3.5|23
   Huge|1840|b|20|Tortoise, Dire|Sandstorm|14
   Medium|87|c|10|Wolverine|Monster Manual|3
   Large|520|c|10|Wolverine, Dire|Monster Manual|5
@@ -884,6 +910,8 @@ Or maybe all you really want is a messenger eagle.
   Huge|1840|f|100|Dinosaur, Quetzelcoatlus|Monster Manual II|10
 
 Bats have good maneuverability.
+
+Training a pteranadon to bear a rider requires a DC 25 Handle Animal check, higher than normal. (Training a pteranodon to grapple, however, is no harder than normal.)
 
 Unfortunately the database does not yet include skill ranks, so we cannot sort by the kinds of walls an animal can climb.
 
@@ -923,13 +951,14 @@ We can also search for templates with a final (not initial) type of animal:
 .. code-block:: bash
 
   sqlite> select distinct dnd_template.name, dnd_rulebook.name, page from dnd_template inner join template_type on dnd_template.id=template_id inner join dnd_monstertype on dnd_monstertype.id=output_type inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where dnd_monstertype.name="Animal";
+  Half-Golem Will succeeded|Monster Manual II|209 -6 Int would kill an animal
   Dungeonbred Monster|Dungeonscape|112
   Warbeast|Monster Manual II|219
   Chameleon Creature|Underdark|83
   Dark Creature|Tome of Magic|158
   Kord-Blooded|Monster Manual V|66
   Mineral Warrior|Underdark|96
-  Voidmind Creature|Monster Manual III|187
+  Voidmind Creature|Monster Manual III|187 Int +2
   Woodling|Monster Manual III|197
 
 (There are no templates that turn something into an Animal that wasn't an Animal before.)
@@ -956,9 +985,25 @@ The chameleon template does, however, allow an animal that has only a swim speed
 Similarly, a mineral warrior gains a burrow speed equal to one-half the base creature's highest speed.
 Of course, mineral warriors are rare and expensive to create.
 
+The Plane of Shadow boasts dark reflections of just about every race to populate the Material Plane.
+Dark creatures dwell on the Plane of Shadow, sometimes crossing into other planes where the barriers between dimensions are weak. Just as parts of the Plane of Shadow resemble a strange, distorted version of the Material Plane, dark creatures superficially resemble creatures from the Material Plane.
+Gray and black are their most common colors, and they almost never boast bright hues such as white or yellow.
+Dark is an acquired or inherited template that can be added to any creature (referred to hereafter as the base creature).
+Dark creatures tend to be much duller in color, with more gray and black skin tones and hair highlights, than their Material Plane versions. In general, they also weigh less, as if part of their very substance was mere shadow stuff.
+Speed: As base creature, +10 feet to all modes of movement.
+Resistance to cold 10, which might matter for otherwise-tropical animals.
+Environment: Changes to Plane of Shadow.
+Alignment: Usually one step different from the base creature, rarely good. The example dark lion is usually neutral evil.
+
+A dark crocodile has a land speed of 30feet, making it much more viable. Of course, a dark crocodile is almost definitely going to be neutral evil.
+
 Kord-blooded is an acquired template that can be added to any non-evil living creature that has a Strength score of 16 or higher.
 Each year, the major temples to Kord hold a great wrestling tournament, and the tournament's winner wrestles an aspect of Kord. Whoever pins the other wins.
 Kord's Athleticism (Su): Once per day, as a swift action, a Kord-blooded creature can call upon the blood invested in him to gain a tremendous surge of prowess. For the next minute, the Kord-blooded creature gains a +4 bonus on Strength and Dexterity checks, Strength- and Dexterity-based skill checks, and grapple checks.
+
+Kord-blooded is of benefit to trippers, but obviously it's most appropriate for grapplers.
+
+A 3HD woodling can use Summon Nature's Ally II to summon an elemental.
 
 .. code-block:: bash
 
@@ -969,7 +1014,7 @@ Kord's Athleticism (Su): Once per day, as a swift action, a Kord-blooded creatur
 
 Half-golem is a template that can be added to any animal, beast, giant, humanoid creature, magical beast, or monstrous humanoid.
 Abilities: Half-golems have -2 Dex, +4 Con (or no Con upon a failed Will save), -6 Int, +0 Wis, and -6 Cha.
-Wound (Ex): The damage a clay half-golem deals doesn't heal naturally. Only a spell of 6th level or higher with the healing descriptor (such as heal) can repair it.
+Wound (Ex): The damage a clay half-golem deals doesn't heal naturally. Only a spell of 6th level or higher with the healing descriptor (such as heal) can repair it. But the 3.5 update says: See Monster Manual for revised golem special attacks (note the change to clay golem's cursed wound).
 A clay limb must be sculpted from a single block of clay weighing at least 100 pounds. The sculpting requires a successful Craft (sculpting) or Profession (mason) check (DC 20). The rituals cost 12,000 gp and 240 XP and require animate objects and geas/quest. Attaching the limb requires the ability to cast 6th-level divine spells.
 
 A living zombie's Intelligence changes to 1.

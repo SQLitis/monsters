@@ -349,7 +349,7 @@ darkvisionRE = re.compile(r"DV\d{2,3}")
 damageReductionRE = re.compile(r"DR (\d{1,2})/((?:[\w\-\+]|\s(?!and [D\d]))+)(?: and (?:DR )?(\d{1,2})/([\w\s\-\+]+))?")
 # match a only with negative lookahead assertion that not followed by nd?
 # match \s only with negative lookahead assertion that not followed by and
-spellResistanceRE = re.compile(r"SR \d{1,2}")
+spellResistanceRE = re.compile(r"SR ?(\d{1,2})")
 fastHealingRE = re.compile(r"FH(\d{1,2})")
 
 def insert_damage_reduction_by_value(curs, monster_id, value, bypass):
@@ -379,6 +379,14 @@ def insert_fast_healing(curs, monster_id, quality):
     return None
   assert matchObj.group(1) is not None
   curs.execute('''INSERT INTO monster_has_fast_healing (monster_id, healing) VALUES (?,?);''', (monster_id, int(matchObj.group(1))) )
+  return matchObj
+
+def insert_spell_resistance(curs, monster_id, quality):
+  matchObj = spellResistanceRE.match(quality)
+  if matchObj is None:
+    return None
+  assert matchObj.group(1) is not None
+  curs.execute('''INSERT INTO monster_has_spell_resistance (monster_id, resistance) VALUES (?,?);''', (monster_id, int(matchObj.group(1))) )
   return matchObj
 
 casterLevelValueREstring = '(?:(?:\d{1,2})|(?:HD)|(?:lvl))\s*(?:\([\w\s]+\d?\))?'
@@ -1837,7 +1845,9 @@ class Monster(object):
       elif darkvisionRE.match(quality): quality = "Darkvision"
       elif insert_damage_reduction(curs, monster_id, quality):
         quality = "Damage Reduction"
-      elif spellResistanceRE.match(quality): quality = "Spell Resistance"
+      elif insert_spell_resistance(curs, monster_id, quality): quality = "Spell Resistance"
+      elif quality == 'immunity to magic' or quality == 'magic immunity' or quality == 'immunity to cold and magic':
+        curs.execute('''INSERT INTO monster_has_spell_resistance (monster_id, resistance) VALUES (?,?);''', (monster_id, 127) )
       elif insert_fast_healing(curs, monster_id, quality): quality = "Fast Healing"
       #if 'sensitiv' in quality: print(self.name, quality)
       ability_id = insert_if_needed(curs, 'dnd_special_ability', quality, special_attack=0)
@@ -3083,6 +3093,11 @@ FOREIGN KEY(bypass_id) REFERENCES damage_reduction(id)
   curs.execute('''CREATE TABLE monster_has_fast_healing (
   monster_id INTEGER NOT NULL,
   healing tinyint(2) NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
+  );''')
+  curs.execute('''CREATE TABLE monster_has_spell_resistance (
+  monster_id INTEGER NOT NULL,
+  resistance tinyint(2) NOT NULL,
 FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   );''')
   print('about to insert psionic powers')
