@@ -1184,6 +1184,9 @@ Telepathy (Su): Pseudodragons can communicate telepathically with creatures that
 
 Telepathy (Ex): Nagas are all part of a communal consciousness they call the Akasha. This shared consciousness facilitates communication between nagas near and far, and contains the memories of their entire species. A group of nagas within 30 feet of each other are in constant communication.
 
+A possessing fiend can, at any time, speak mentally to the creature it possesses in a language that creature can understand, although if the victim isn't very intelligent, its comprehension might be limited.
+A possessing fiend has immediate access to all of its victim's current thoughts, as though using the detect thoughts spell, except that it automatically reads surface thoughts. If desired, a possessing fiend can probe the possessed creature's memories as well, but the victim is allowed a Will save.
+
 If you have access to the Outer Planes, you have a lot of options. If you're confined to the Material Plane, you basically have the Coke-or-Pepsi choice of mind leech or puppeteer. Puppeteers can only charm humanoids, so there's that. Both Lawful Evil, both highly intelligent. If you successfully form an alliance --- good luck with that --- they probably won't outright betray you, but you'll be trusting a highly intelligent evil creature to tell you what people are saying and tell other people what *you* are saying. Oh, and in the case of the mind leech, you have to convince people to allow the mind leech into their brains before you can communicate with them.
 
 It's worth mentioning that a mane, dretch, coure, lantern archon, or protectar can also take the Mindsight feat to sense creatures within 100 feet.

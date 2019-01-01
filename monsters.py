@@ -2524,7 +2524,12 @@ FOREIGN KEY(rulebook_id) REFERENCES dnd_rulebook(id)
   curs.execute('''CREATE INDEX index_dnd_rulebook_name ON dnd_rulebook(name);''')
   curs.execute('''CREATE INDEX index_rulebook_abbrev ON rulebook_abbrev(abbr);''')
 
+def migrate_rulebook_ids_in_table(curs, tableName):
+  SQLcmd = '''UPDATE {0} SET rulebook_id = (SELECT dnd_rulebook.id FROM dnd_rulebook INNER JOIN rulebooks_backup ON dnd_rulebook.name=rulebooks_backup.name WHERE rulebooks_backup.id=rulebook_id);'''.format(tableName)
+  curs.execute(SQLcmd)
+
 def migrate_rulebook_id(curs):
+  migrate_rulebook_ids_in_table(curs, 'dnd_feat')
   curs.execute('''UPDATE dnd_characterclassvariant SET rulebook_id = (SELECT dnd_rulebook.id FROM dnd_rulebook INNER JOIN rulebooks_backup ON dnd_rulebook.name=rulebooks_backup.name WHERE rulebooks_backup.id=rulebook_id);''')
   curs.execute('''UPDATE dnd_spell SET rulebook_id = (SELECT dnd_rulebook.id FROM dnd_rulebook INNER JOIN rulebooks_backup ON dnd_rulebook.name=rulebooks_backup.name WHERE rulebooks_backup.id=rulebook_id);''')
 
