@@ -1669,7 +1669,10 @@ class Monster(object):
         #onlyOneRow = [spell.replace('"(', '(').replace(')"', ')') for spell in onlyOneRow]
         #print('onlyOneRow=', onlyOneRow)
   
-  statblockRE = re.compile(r"([\w\, ]+): CR (\d|\d/\d{1,2}); (Fine|Diminutive|Tiny|Small|Medium|Large|Huge|Gargantuan|Colossal) ([\w ]+); HD (\d|\d/\d)d\d(?:(?:\-|\+)\d{1,2})?; hp \d{1,3}; Init \+\d; Spd (\d\d) ft\.(?:\, (?:burrow|climb|fly|swim) \d\d ft\.(?: \((?:clumsy|poor|average|good|perfect)\))?)*; AC (\d\d), touch (\d\d), flat-footed \d\d; Base Atk \+\d; Grp (?:\-|\+)\d{1,2}; Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)); Full Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)(?: and \+\d melee \([\d\-\+\, \w]+\))?); Space/Reach (?:\d|\d/\d) ft\./\d ft\.; SA ([\w\-]+); SQ ([\w \,\-]+); AL (\w{1,2}); SV Fort \+\d, Ref \+\d, Will \+\d; Str (\d{1,2})\, Dex (\d{1,2})\, Con (\d{1,2})\, Int (\d{1,2})\, Wis (\d{1,2})\, Cha (\d{1,2})\.\s+Skills and Feats: [\w \+\-\d\,]+; [\w \,]+\.")
+  statblockMovementModeRE = re.compile('''(burrow|climb|fly|swim) (\d\d) ft\.(?: \((clumsy|poor|average|good|perfect)\))?''')
+  assert statblockMovementModeRE.search(", fly 60 ft. (average)")
+  assert len(list(statblockMovementModeRE.finditer(", fly 60 ft. (average)"))) == 1
+  statblockRE = re.compile(r"([\w\, ]+): CR (\d|\d/\d{1,2}); (Fine|Diminutive|Tiny|Small|Medium|Large|Huge|Gargantuan|Colossal) ([\w ]+); HD (\d|\d/\d)d\d(?:(?:\-|\+)\d{1,2})?; hp \d{1,3}; Init \+\d; Spd (\d\d) ft\.((?:\, (?:burrow|climb|fly|swim) \d\d ft\.(?: \((?:clumsy|poor|average|good|perfect)\))?)*); AC (\d\d), touch (\d\d), flat-footed \d\d; Base Atk \+\d; Grp (?:\-|\+)\d{1,2}; Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)); Full Atk (?:\-|\+\d melee \([\d\-\+\, \w]+\)(?: and \+\d melee \([\d\-\+\, \w]+\))?); Space/Reach (?:\d|\d/\d) ft\./\d ft\.; SA ([\w\-]+); SQ ([\w \,\-]+); AL (\w{1,2}); SV Fort \+\d, Ref \+\d, Will \+\d; Str (\d{1,2})\, Dex (\d{1,2})\, Con (\d{1,2})\, Int (\d{1,2})\, Wis (\d{1,2})\, Cha (\d{1,2})\.\s+Skills and Feats: [\w \+\-\d\,]+; [\w \,]+\.")
   assert statblockRE.match("Owl, Medium: CR 1; Medium animal; HD 2d8; hp 13; Init +1; Spd 10 ft., fly 60 ft. (average); AC 14, touch 11, flat-footed 13; Base Atk +1; Grp +3; Atk +2 melee (1d4+2, talons); Full Atk +2 melee (1d4+2, talons) and +0 melee (1d6+1, bite); Space/Reach 5 ft./5 ft.; SA -; SQ -; AL N; SV Fort +4, Ref +4, Will +2; Str 14, Dex 13, Con 12, Int 2, Wis 14, Cha 4. Skills and Feats: Listen +14, Move Silently +19, Spot +14; Multiattack.") is not None
   assert statblockRE.match("Raven, Small: CR 1/2; Small animal; HD 1d8; hp 5; Init +1; Spd 10 ft., fly 40 ft. (average); AC 13, touch 12, flat-footed 12; Base Atk +0; Grp -7; Atk +2 melee (1d3-3, talons); Full Atk +2 melee (1d3-3, talons); Space/Reach 5 ft./5 ft.; SA -; SQ -; AL N; SV Fort +3, Ref +3, Will +2; Str 5, Dex 13, Con 12, Int 2, Wis 14, Cha 6. Skills and Feats: Listen +6, Spot +6; Weapon Finesse.") is not None
   @staticmethod
@@ -1684,19 +1687,22 @@ class Monster(object):
     ret.subtypes = []
     ret.HitDice = fraction_to_negative(matchObj.group(5) )
     ret.landSpeed = int(matchObj.group(6) )
+    movementModes = matchObj.group(7)
     ret.movementModes = []
+    for movementModeMatchObj in Monster.statblockMovementModeRE.finditer(movementModes):
+      ret.movementModes.append( (movementModeMatchObj.group(1)[0], int(movementModeMatchObj.group(2))) )
     ret.maneuverability = None
-    ret.ArmorClass = int(matchObj.group(7))
-    ret.armorPlusShieldPlusNaturalArmor = ret.ArmorClass - int(matchObj.group(8))
-    ret.specialAttacks = Monster.splitSpecialAbilities(matchObj.group(9) )
-    ret.specialQualities = Monster.splitSpecialAbilities(matchObj.group(10) )
-    ret.set_default_alignment(matchObj.group(11) )
-    ret.strength     = integer_or_non(matchObj.group(12) )
-    ret.dexterity    = integer_or_non(matchObj.group(13) )
-    ret.constitution = integer_or_non(matchObj.group(14) )
-    ret.intelligence = integer_or_non(matchObj.group(15) )
-    ret.wisdom       = integer_or_non(matchObj.group(16) )
-    ret.charisma     = integer_or_non(matchObj.group(17) )
+    ret.ArmorClass = int(matchObj.group(8))
+    ret.armorPlusShieldPlusNaturalArmor = ret.ArmorClass - int(matchObj.group(9))
+    ret.specialAttacks = Monster.splitSpecialAbilities(matchObj.group(10) )
+    ret.specialQualities = Monster.splitSpecialAbilities(matchObj.group(11) )
+    ret.set_default_alignment(matchObj.group(12) )
+    ret.strength     = integer_or_non(matchObj.group(13) )
+    ret.dexterity    = integer_or_non(matchObj.group(14) )
+    ret.constitution = integer_or_non(matchObj.group(15) )
+    ret.intelligence = integer_or_non(matchObj.group(16) )
+    ret.wisdom       = integer_or_non(matchObj.group(17) )
+    ret.charisma     = integer_or_non(matchObj.group(18) )
     ret.rulebook_abbrev = rulebook_abbrev
     ret.environment = 'environment not given'
     ret.SpellLikeAbilities = []
