@@ -1850,7 +1850,7 @@ class Monster(object):
           numberOfWeaponDamageDice = 1
         else:
           numberOfWeaponDamageDice = damageRollAsSingletonOrPair[0]
-        damageRollAsSingletonOrPair = damageRollAsSingletonOrPair[-1]
+        weaponDamageDieSize = damageRollAsSingletonOrPair[-1]
       if initialDamageMatchObj is None or initialDamageMatchObj.group(2) is None: # if no damage modifier, then it's +0
         damageModifier = 0
       else:
@@ -1886,11 +1886,11 @@ class Monster(object):
         #else:
         #  print('unaccounted-for attack penalty of size {}:'.format(attackBonusWithoutBaseAndSize - strengthModifier) + rulebook_abbrev + self.name + ''.join(self.subtypes) + '+{} != {}BAB + {}size + {}Str'.format(attackBonus, BAB, sizeModifierToAC, strengthModifier) )
         #  print(initialDamage, damageModifier, strengthModifier)
-      curs.execute('''INSERT OR IGNORE INTO monster_has_natural_weapon (monster_id, weapon_id) VALUES (?, ?);''', (monster_id, weapon_id) )
+      curs.execute('''INSERT OR IGNORE INTO monster_has_natural_weapon (monster_id, weapon_id, number_of_damage_dice, damage_die_size) VALUES (?, ?, ?, ?);''', (monster_id, weapon_id, numberOfWeaponDamageDice, weaponDamageDieSize) )
     for naturalWeaponMatchObj in naturalWeaponRE.finditer(self.fullAttack):
       # Secondary natural weapons, such as a rulkar madclaw's claws, appear only under full attack (this is the only time attack bonus and damage will be listed in the full attack column)
       weapon_id = id_from_name(curs, 'dnd_weapon', naturalWeaponMatchObj.group(1).lower())
-      curs.execute('''INSERT OR IGNORE INTO monster_has_natural_weapon (monster_id, weapon_id) VALUES (?, ?);''', (monster_id, weapon_id) )
+      curs.execute('''INSERT OR IGNORE INTO monster_has_natural_weapon (monster_id, weapon_id, number_of_damage_dice, damage_die_size) VALUES (?, ?, ?, ?);''', (monster_id, weapon_id, 0, 0) )
     # When a creature has more than one natural weapon, one of them (or sometimes a pair or set of them) is the primary weapon. All the creature's remaining natural weapons are secondary.
     # The primary weapon is given in the creature's Attack entry, and the primary weapon or weapons is given first in the creature's Full Attack entry.
     # An attack with a primary natural weapon uses the creature's full attack bonus. Attacks with secondary natural weapons are less effective and are made with a -5 penalty on the attack roll, no matter how many there are. (Creatures with the Multiattack feat take only a -2 penalty on secondary attacks.) This penalty applies even when the creature makes a single attack with the secondary weapon as part of the attack action or as an attack of opportunity.
@@ -2821,6 +2821,8 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
   curs.execute('''CREATE TABLE monster_has_natural_weapon (
   monster_id INTEGER NOT NULL,
   weapon_id INTEGER NOT NULL,
+  number_of_damage_dice tinyint(1) NOT NULL,
+  damage_die_size tinyint(2) NOT NULL,
 FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
 FOREIGN KEY(weapon_id) REFERENCES dnd_weapon(id),
 UNIQUE(monster_id, weapon_id)
@@ -2901,7 +2903,7 @@ UNIQUE(name)
   name char(11) NOT NULL,
   biped_carry_factor tinyint(1) NOT NULL,
   quadruped_carry_factor tinyint(1) NOT NULL
-  );''') # 11 in case what to say Medium-size
+  );''') # 11 in case want to call it "Medium-size" rather than just "Medium"
   curs.execute('''INSERT INTO dnd_racesize (name, biped_carry_factor, quadruped_carry_factor) VALUES ("Fine",1,2), ("Diminutive",2,4), ("Tiny",4,6), ("Small",6,8), ("Medium",8,12), ("Large",16,24), ("Huge",32,48), ("Gargantuan",64,96), ("Colossal",128,192);''')
   curs.execute('''CREATE INDEX index_racesize_name ON dnd_racesize(name);''')
   """ need to not have parentheses at top level:
