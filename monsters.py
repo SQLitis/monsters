@@ -427,7 +427,7 @@ damageTypeREstring = r'(?: [A-Za-z ]+)' # 1d4 Wis drain, 1 fire
 numericalDamageREstring = (r'(?:' + dieRollOrConstantREstring + damageBonusREstring + '?' + criticalRangeREstring + '?' + criticalMultiplierREstring + '?' +
                            criticalHitCommentREstring + '?' +
                            ')')
-numericalDamageRE = re.compile(r'(?:' + dieRollOrConstantREstring + damageBonusCapturingREstring + '?' + criticalRangeREstring + '?' +
+numericalDamageRE = re.compile(r'(?:' + '(' + dieRollOrConstantREstring + ')' + damageBonusCapturingREstring + '?' + criticalRangeREstring + '?' +
                            criticalMultiplierREstring + '?' +
                            criticalHitCommentREstring + '?' +
                            ')')
@@ -1840,10 +1840,21 @@ class Monster(object):
         initialDamage = initialDamageMatchObj.group(0)
       #if '+' not in initialDamage and '-' not in initialDamage: initialDamage += '+0'
       #print(initialDamage)
-      if initialDamageMatchObj is None or initialDamageMatchObj.group(1) is None: # if no damage modifier, then it's +0
+      if initialDamageMatchObj is None or initialDamageMatchObj.group(1) is None: # if no damage roll, then it's zero
+        numberOfWeaponDamageDice = 0
+        weaponDamageDieSize = 0
+      else:
+        damageRollAsSingletonOrPair = [int(n) for n in initialDamageMatchObj.group(1).split('d')]
+        assert len(damageRollAsSingletonOrPair) in (1,2)
+        if len(damageRollAsSingletonOrPair) == 1:
+          numberOfWeaponDamageDice = 1
+        else:
+          numberOfWeaponDamageDice = damageRollAsSingletonOrPair[0]
+        damageRollAsSingletonOrPair = damageRollAsSingletonOrPair[-1]
+      if initialDamageMatchObj is None or initialDamageMatchObj.group(2) is None: # if no damage modifier, then it's +0
         damageModifier = 0
       else:
-        damageModifier = int(initialDamageMatchObj.group(1)) #int(re.split(r'[+-]', initialDamage)[1])
+        damageModifier = int(initialDamageMatchObj.group(2)) #int(re.split(r'[+-]', initialDamage)[1])
       if damageModifier != 0:
         pass
       if attackBonusWithoutBaseAndSize > strengthModifier:
