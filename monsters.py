@@ -414,8 +414,12 @@ movementModeRE = re.compile(r'([bcfs])(\d{1,3})(?: ?\(([a-v]{2,4})[\)0])?') # pr
 # put (?:) on all substrings just in case
 dieRollREstring = r'(?:\dd\d{1,2})'
 #dieRollRE = re.compile(dieRollREstring)
-dieRollOrConstantREstring = r'(?:\d|' + dieRollREstring + ')'
+dieRollOrConstantREstring = r'(?:' + dieRollREstring + '|\d)'
+# When you use |, Python re will always try to match the first listed regex, and only if that fails will it match the others.
+# So when we had \d|, it was always stopping at the single digit.
+# If we want to capture number of dice and die size, we'll have to deal with the fact that sometimes we have constants (just one number instead of two).
 damageBonusREstring = r'(?:[+-]\d{1,2})'
+damageBonusCapturingREstring = r'([+-]\d{1,2})' # capturing instead of noncapturing parens
 criticalRangeREstring = r'(?:/1[5-9]\-20)'
 criticalMultiplierREstring = r'(?:/x[2-4])'
 criticalHitCommentREstring = r'(?:\, vorpal)'
@@ -423,10 +427,16 @@ damageTypeREstring = r'(?: [A-Za-z ]+)' # 1d4 Wis drain, 1 fire
 numericalDamageREstring = (r'(?:' + dieRollOrConstantREstring + damageBonusREstring + '?' + criticalRangeREstring + '?' + criticalMultiplierREstring + '?' +
                            criticalHitCommentREstring + '?' +
                            ')')
-#numericalDamageRE = re.compile(numericalDamageREstring)
+numericalDamageRE = re.compile(r'(?:' + dieRollOrConstantREstring + damageBonusCapturingREstring + '?' + criticalRangeREstring + '?' +
+                           criticalMultiplierREstring + '?' +
+                           criticalHitCommentREstring + '?' +
+                           ')')
+assert len(numericalDamageRE.match("1d4+2").group(0)) == 5
+assert len(numericalDamageRE.match('2d10+11/19-20').group(0)) == 13
 singleDamageREstring = r'(?:' + numericalDamageREstring + damageTypeREstring + '?' + r'|[a-z ]+)' # could be eg entangle
 #singleDamageRE = re.compile(singleDamageREstring)
-damageREstring = r'(?:' + singleDamageREstring + r'(?: (?:(?:plus)|(?:or)) ' + singleDamageREstring + r')*)' # Inevitable, Marut Slam +22 (2d6+12 plus 3d6 sonic or 3d6 electricity)
+damageREstring = r'(' + singleDamageREstring + r'(?: (?:(?:plus)|(?:or)) ' + singleDamageREstring + r')*)' # capturing instead of noncapturing parens
+# Inevitable, Marut Slam +22 (2d6+12 plus 3d6 sonic or 3d6 electricity)
 assert re.match(damageREstring, "2d6+12 plus 3d6 sonic or 3d6 electricity")
 assert re.match(damageREstring, "1d3 plus 1 Con")
 #re.compile(damageREstring)
@@ -1410,6 +1420,7 @@ class Monster(object):
     self.fullAttack = xls_row[13].value
 
     self.strength = integer_or_non(xls_row[20].value)
+    if self.name == 'Dragon, Chromatic, Black, Adult': self.strength = 23 # error in table
     self.dexterity = integer_or_non(xls_row[21].value)
     if self.name == 'Monstrous Scorpion, Colossal': self.dexterity = 8 # error in table
     self.constitution = integer_or_non(xls_row[22].value)
@@ -1728,6 +1739,11 @@ class Monster(object):
       if spell_id is not None:
         #print(self.name, 'special attack', attack)
         curs.execute('''INSERT INTO monster_has_spell_like_ability (monster_id, spell_id, caster_level, caster_level_scales_with_HD, uses_per_day, parenthetical) VALUES (?, ?, ?, ?, ?, ?)''', (monster_id, spell_id, self.HitDice, True, 127, 'listed as special ability, guessed to be SLA') )
+
+  @staticmethod
+  def sizeModifierToAttacksAndAC(size_id):
+    return 0 if size_id == 5 else int(math.copysign(2**(abs(size_id - 5) - 1), 5 - size_id))
+
   def insert_into(self, curs):
     #print('rulebook_abbrev =', self.rulebook_abbrev)
     rulebook_abbrevs = [s.strip() for s in self.rulebook_abbrev.split(',')] # comma-separated list of rulebooks
@@ -1757,7 +1773,7 @@ class Monster(object):
     type_id = id_from_name(curs, 'dnd_monstertype', self.type_name)
     assert type_id is not None
 
-    sizeModifierToAC = 0 if size_id == 5 else int(math.copysign(2**(abs(size_id - 5) - 1), 5 - size_id))
+    sizeModifierToAC = Monster.sizeModifierToAttacksAndAC(size_id)
     if self.dexterity is None:
       dexterityModifierToAC = 0 if self.name == 'Formian, Queen' else -5
     else:
@@ -1797,7 +1813,6 @@ class Monster(object):
     elif self.maneuverability == 'prf' or self.maneuverability == 'prft':
       curs.execute('''INSERT INTO monster_maneuverability (monster_id,maneuverability) VALUES (?,?);''', (monster_id, 5) )
 
-    if 'claw' in self.name: print(self.name, self.attacks)
     for naturalWeaponMatchObj in naturalWeaponAttackRE.finditer(self.attacks):
       weapon_id = id_from_name(curs, 'dnd_weapon', naturalWeaponMatchObj.group(1).lower())
       # check for None?
@@ -1805,10 +1820,71 @@ class Monster(object):
       # We could insist on the natural weapon name being either at the start of the string or having space before it...but honestly,
       # if it has a prefix it's probably pretty much the same thing, so we don't want to not match that in general.
       # We can just allow multi-match.
+      # A camel's bite is treated as a secondary natural attack and adds only half the camel's Strength bonus to damage.
+      attackBonus = int(naturalWeaponMatchObj.group(2))
+      if self.name == 'Owlbear': attackBonus = 9 # error in table
+      elif self.name == 'Demon, Sorrowsworn': attackBonus = 23 # error in table, but even getting 23 from MM3 not clear what's going on
+      elif self.name == 'Corpse Gatherer': attackBonus = 24 # per 3.5 update
+      elif self.name == 'Bat, Guard': attackBonus = 5 # error in table
+      elif self.name == 'Demon, Carnage': attackBonus = 8 # error in table
+      # Abyssal Drake appears to be an error in the Draconomicon
+      curs.execute('''SELECT base_attack_per_4HD FROM dnd_monstertype WHERE id=?;''', (type_id,) )
+      BAB = curs.fetchone()[0]*max(0, self.HitDice)//4
+      strengthModifier = 0 if self.strength is None else self.strength//2 - 5
+      attackBonusWithoutBaseAndSize = attackBonus - BAB - sizeModifierToAC
+      initialDamageMatchObj = numericalDamageRE.match(naturalWeaponMatchObj.group(3))
+      # might not be able to find numerical damage, e.g. Tentacle +3 (paralysis) paralysis
+      if initialDamageMatchObj is None:
+        initialDamage = '0+0'
+      else:
+        initialDamage = initialDamageMatchObj.group(0)
+      #if '+' not in initialDamage and '-' not in initialDamage: initialDamage += '+0'
+      #print(initialDamage)
+      if initialDamageMatchObj is None or initialDamageMatchObj.group(1) is None: # if no damage modifier, then it's +0
+        damageModifier = 0
+      else:
+        damageModifier = int(initialDamageMatchObj.group(1)) #int(re.split(r'[+-]', initialDamage)[1])
+      if damageModifier != 0:
+        pass
+      if attackBonusWithoutBaseAndSize > strengthModifier:
+        if attackBonusWithoutBaseAndSize == self.dexterity//2 - 5:
+          # suspect Weapon Finesse
+          pass
+        elif attackBonusWithoutBaseAndSize == strengthModifier + 1:
+          # suspect Weapon Focus feat
+          pass
+        elif attackBonusWithoutBaseAndSize == self.dexterity//2 - 5 + 1:
+          # suspect Weapon Finesse *and* Weapon Focus, as greater fire elementals have
+          pass
+        # Enhanced Bite (Ex): A spellgaunt's fangs function as +4 weapons.
+        # A blighted bloodfire ooze has the traits of an outsider but the features (including BAB) of an ooze.
+        #else:
+          # what happened to Bodak? it was showing up before...ah, Bodak *looks* like a Weapon Finesse case though in fact it's Weapon Focus (slam)
+          # Nightshades all make liberal use of Haste, which they have at-will, so it looks like Haste might already be included in their attack bonus?
+          # Pseudodragon has Weapon Finesse so should have a total attack bonus of +6, but only has +4...no explanation yet
+        #  print('unaccounted-for attack bonus of size {}:'.format(attackBonusWithoutBaseAndSize - strengthModifier) + rulebook_abbrev + self.name + ''.join(self.subtypes) + '+{} != {}BAB + {}size + {}Str/Dex'.format(attackBonus, BAB, sizeModifierToAC, max(strengthModifier, self.dexterity//2 - 5)) )
+      elif attackBonusWithoutBaseAndSize < strengthModifier:
+        # MM3 Charnel Hound has -5 penalty for Power Attack included, ditto MM3 Drowned, MM3 Necronaut, MM3 Odopi
+        if strengthModifier - attackBonusWithoutBaseAndSize in (damageModifier - strengthModifier, damageModifier - strengthModifier*3//2):
+          # suspect Power Attack
+          pass
+        elif strengthModifier - attackBonusWithoutBaseAndSize == 5 and damageModifier == strengthModifier//2:
+          # suspect secondary natural weapon
+          pass
+        # Powerful Slam (Ex) A goristro’s slam attacks are treated as if they were two-handed weapons for purposes of applying modifiers to damage with Power Attack and from its Strength bonus.
+        #else:
+        #  print('unaccounted-for attack penalty of size {}:'.format(attackBonusWithoutBaseAndSize - strengthModifier) + rulebook_abbrev + self.name + ''.join(self.subtypes) + '+{} != {}BAB + {}size + {}Str'.format(attackBonus, BAB, sizeModifierToAC, strengthModifier) )
+        #  print(initialDamage, damageModifier, strengthModifier)
       curs.execute('''INSERT OR IGNORE INTO monster_has_natural_weapon (monster_id, weapon_id) VALUES (?, ?);''', (monster_id, weapon_id) )
     for naturalWeaponMatchObj in naturalWeaponRE.finditer(self.fullAttack):
+      # Secondary natural weapons, such as a rulkar madclaw's claws, appear only under full attack (this is the only time attack bonus and damage will be listed in the full attack column)
       weapon_id = id_from_name(curs, 'dnd_weapon', naturalWeaponMatchObj.group(1).lower())
       curs.execute('''INSERT OR IGNORE INTO monster_has_natural_weapon (monster_id, weapon_id) VALUES (?, ?);''', (monster_id, weapon_id) )
+    # When a creature has more than one natural weapon, one of them (or sometimes a pair or set of them) is the primary weapon. All the creature's remaining natural weapons are secondary.
+    # The primary weapon is given in the creature's Attack entry, and the primary weapon or weapons is given first in the creature's Full Attack entry.
+    # An attack with a primary natural weapon uses the creature's full attack bonus. Attacks with secondary natural weapons are less effective and are made with a -5 penalty on the attack roll, no matter how many there are. (Creatures with the Multiattack feat take only a -2 penalty on secondary attacks.) This penalty applies even when the creature makes a single attack with the secondary weapon as part of the attack action or as an attack of opportunity.
+    # This suggests that the primary natural weapon should go in the dnd_monster table itself, while secondaries should go in the auxiliary table.
+    # Almost every monster will have one primary natural weapon, right?
 
     curs.execute('''INSERT INTO monster_has_alignment (monster_id, good_evil, law_chaos) VALUES (?,?,?);''', (monster_id, self.goodEvilID, self.lawChaosID) )
     #curs.execute('''SELECT id from dnd_plane WHERE name like "%{}";'''.format(self.environment) )
