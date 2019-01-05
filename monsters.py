@@ -427,6 +427,8 @@ numericalDamageREstring = (r'(?:' + dieRollOrConstantREstring + damageBonusREstr
 singleDamageREstring = r'(?:' + numericalDamageREstring + damageTypeREstring + '?' + r'|[a-z ]+)' # could be eg entangle
 #singleDamageRE = re.compile(singleDamageREstring)
 damageREstring = r'(?:' + singleDamageREstring + r'(?: (?:(?:plus)|(?:or)) ' + singleDamageREstring + r')*)' # Inevitable, Marut Slam +22 (2d6+12 plus 3d6 sonic or 3d6 electricity)
+assert re.match(damageREstring, "2d6+12 plus 3d6 sonic or 3d6 electricity")
+assert re.match(damageREstring, "1d3 plus 1 Con")
 #re.compile(damageREstring)
 parenthesizedDamageREstring = r'(?: +\(' + damageREstring + r'\))'
 #parenthesizedDamageRE = re.compile(parenthesizedDamageREstring)
@@ -448,6 +450,11 @@ attacksREstring = singleAttackModeREstring + r'(?: or ' + singleAttackModeREstri
 singleAttackModeRE = re.compile(singleAttackModeREstring)
 attacksRE = re.compile(attacksREstring)
 #attackWithoutParensRE = re.compile(attackNameREstring + compositeBowStrBonusREstring + '?' + ' ' + attackBonusREstring + attackRollTypeREstring + '? ' + damageREstring)
+naturalWeaponREstring = r'([Bb]ite|[Cc]law|[Tt]alon|[Gg]ore|[Ss]lap|[Ss]lam|[Ss]ting|[Tt]entacle)s?' # capturing instead of noncapturing parens
+naturalWeaponRE = re.compile(naturalWeaponREstring)
+naturalWeaponAttackREstring = naturalWeaponREstring + ' ' + attackBonusREstring + attackRollTypeREstring + '?' + parenthesizedDamageREstring
+naturalWeaponAttackRE = re.compile(naturalWeaponAttackREstring)
+assert naturalWeaponAttackRE.match("claws +3 (1d3 plus 1 Con)")
 
 parentheticalREstring = r'\([^)]*\)' # ( followed by any characters other than ), then )
 parentheticalREstringWithGroup = r'\(([^)]*)\)' # for some unknown reason, including the group in the main causes noUnparenthesizedCommasRE to only match the interiors of parentheses
@@ -1347,8 +1354,8 @@ class Monster(object):
     # https://stackoverflow.com/questions/1124695/can-i-create-computed-columns-in-sqlite
     # SQLite doesn't supported computed columns.
     
-    attacks = xls_row[12].value
-    #attacks = xls_row[13].value
+    attacks = xls_row[12].value # single attack
+    #attacks = xls_row[13].value # full attack often "Same as Attack" or some abbreviated form like "4 tentacles"
     if attacks[:6] == 'Bite 1': attacks = 'Bite +1' + attacks[6:]
     elif '(' in attacks and ')' not in attacks: # mismatched parentheses
       if attacks[-1] == '(': # typo, closing paren was open paren instead
@@ -1398,6 +1405,9 @@ class Monster(object):
       #  print(self.name, 'attacks', attacks, matchObj.group(1), matchObj.group(2) )
     #if (self.type_name == 'Humanoid' or self.type_name == 'Animal') and ('Slam' in attacks or 'slam' in attacks):
     #  print(self.type_name, self.name, 'has a slam attack', attacks)
+    #self.attacks = attacks if xls_row[13].value == 'Same as Attack' else xls_row[13].value
+    self.attacks = attacks
+    self.fullAttack = xls_row[13].value
 
     self.strength = integer_or_non(xls_row[20].value)
     self.dexterity = integer_or_non(xls_row[21].value)
@@ -1694,6 +1704,8 @@ class Monster(object):
     ret.maneuverability = None
     ret.ArmorClass = int(matchObj.group(8))
     ret.armorPlusShieldPlusNaturalArmor = ret.ArmorClass - int(matchObj.group(9))
+    ret.attacks = ''
+    ret.fullAttack = ''
     ret.specialAttacks = Monster.splitSpecialAbilities(matchObj.group(10) )
     ret.specialQualities = Monster.splitSpecialAbilities(matchObj.group(11) )
     ret.set_default_alignment(matchObj.group(12) )
@@ -1784,6 +1796,19 @@ class Monster(object):
       curs.execute('''INSERT INTO monster_maneuverability (monster_id,maneuverability) VALUES (?,?);''', (monster_id, 4) )
     elif self.maneuverability == 'prf' or self.maneuverability == 'prft':
       curs.execute('''INSERT INTO monster_maneuverability (monster_id,maneuverability) VALUES (?,?);''', (monster_id, 5) )
+
+    if 'claw' in self.name: print(self.name, self.attacks)
+    for naturalWeaponMatchObj in naturalWeaponAttackRE.finditer(self.attacks):
+      weapon_id = id_from_name(curs, 'dnd_weapon', naturalWeaponMatchObj.group(1).lower())
+      # check for None?
+      # Frostburn urskan will match claw twice: Steelclaw +11 (1d12+7) or claw +11 (1d8+7)
+      # We could insist on the natural weapon name being either at the start of the string or having space before it...but honestly,
+      # if it has a prefix it's probably pretty much the same thing, so we don't want to not match that in general.
+      # We can just allow multi-match.
+      curs.execute('''INSERT OR IGNORE INTO monster_has_natural_weapon (monster_id, weapon_id) VALUES (?, ?);''', (monster_id, weapon_id) )
+    for naturalWeaponMatchObj in naturalWeaponRE.finditer(self.fullAttack):
+      weapon_id = id_from_name(curs, 'dnd_weapon', naturalWeaponMatchObj.group(1).lower())
+      curs.execute('''INSERT OR IGNORE INTO monster_has_natural_weapon (monster_id, weapon_id) VALUES (?, ?);''', (monster_id, weapon_id) )
 
     curs.execute('''INSERT INTO monster_has_alignment (monster_id, good_evil, law_chaos) VALUES (?,?,?);''', (monster_id, self.goodEvilID, self.lawChaosID) )
     #curs.execute('''SELECT id from dnd_plane WHERE name like "%{}";'''.format(self.environment) )
@@ -2698,6 +2723,20 @@ FOREIGN KEY(abbrev) REFERENCES dnd_movement_mode(abbrev)
   maneuverability tinyint(1) NOT NULL,
 FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
 FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
+  );''')
+
+  curs.execute('''CREATE TABLE dnd_weapon (
+  id INTEGER PRIMARY KEY NOT NULL
+  ,name char(8) NOT NULL
+  );''')
+  curs.execute('''INSERT INTO dnd_weapon (name) VALUES ("bite"), ("claw"), ("talon"), ("gore"), ("slap"), ("slam"), ("sting"), ("tentacle");''')
+  curs.execute('''CREATE INDEX index_dnd_weapon_name ON dnd_weapon(name);''')
+  curs.execute('''CREATE TABLE monster_has_natural_weapon (
+  monster_id INTEGER NOT NULL,
+  weapon_id INTEGER NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
+FOREIGN KEY(weapon_id) REFERENCES dnd_weapon(id),
+UNIQUE(monster_id, weapon_id)
   );''')
 
   create_rulebook_table(curs)
