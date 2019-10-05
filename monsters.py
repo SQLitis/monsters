@@ -134,6 +134,7 @@ rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MMI': 'Monster Manual v
  'Storm':'Stormwrack', 'Sto':'Stormwrack',
  'C.War': 'Complete Warrior', 'C.Adv': 'Complete Adventurer', 'C.Sco': 'Complete Scoundrel', 'C.Mag': 'Complete Mage',
  'CW': 'Complete Warrior', 'CS': 'Complete Scoundrel',
+ 'S&S': 'Song & Silence',
  'SlvSk': 'The Silver Skeleton', 'RTEE': 'Return to the Temple of Elemental Evil',
  'HoH': 'Heroes of Horror', 'HH': 'Heroes of Horror',
  'TVoS': 'The Vessel of Stars',
@@ -155,6 +156,9 @@ rulebook_priority = ('EPH', 'MM1', 'MM4', 'LoM', 'Sand', 'MH', 'MM2', 'C.Ps', 'O
   # this pegs Dragon #309 as the start of 3.5ed http://www.enworld.org/forum/showthread.php?9651-DRAGON-Magazine-monster-index!
   # Dragon #309 (War, Incursion) from July 2003 was the first D&D 3.5 issue. https://rpg.stackexchange.com/questions/14892/in-what-issue-did-dragon-dungeon-magazine-transition-to-3-5e-rules
 # Miniatures Handbook is 3.5 2003, Sandstorm is March 1, 2005
+
+TERRAIN_NAMES = ('desert', 'forest', 'hill', 'mountain', 'plain', 'marsh', 'aquatic')
+
 
 
 def fraction_to_negative(string):
@@ -1320,6 +1324,8 @@ class Monster(object):
     for mode in swimflyburrowcrawl:
       if self.name == 'Uloriax' and mode == 'f20':
         mode = 'c20' # http://archive.wizards.com/default.asp?x=dnd/fw/20040509a
+      elif self.name == 'Thoqqua' and mode == 's10':
+        continue # Thoqquas cannot swim
       matchObj = movementModeRE.match(mode)
       if matchObj is None:
         if self.name != "Inevitable, Marut":
@@ -1495,6 +1501,7 @@ class Monster(object):
     if self.challenge_rating < self.HitDice/3 and self.type_name == 'Dragon':
       # suspect that missing a digit like Dragon, Chromatic, Blue, Young Adult
       self.challenge_rating += 10
+    elif self.name == 'Ki-rin': self.challenge_rating = 18 # error in table
 
     self.rulebook_abbrev = xls_row[30].value
     if self.name == 'Demon, Alkilith': self.rulebook_abbrev = 'FF'
@@ -1943,7 +1950,7 @@ class Monster(object):
       curs.execute('''INSERT INTO monster_in_climate (monster_id, climate) VALUES (?,0);''', (monster_id,) )
     elif 'Warm' in self.environment or 'warm' in self.environment:
       curs.execute('''INSERT INTO monster_in_climate (monster_id, climate) VALUES (?,1);''', (monster_id,) )
-    for name in ('desert', 'forest', 'hill', 'mountain', 'plain', 'marsh'):
+    for name in TERRAIN_NAMES:
       if name in self.environment:
         curs.execute('''INSERT INTO monster_on_terrain (monster_id, terrain_id) VALUES (?,?);''', (monster_id, id_from_name(curs, 'dnd_terrain', name) ) )
 
@@ -2284,7 +2291,19 @@ def make_familiar_table(curs):
 
 
 
-ShaxItemRE = re.compile(r'<b>(?P<name>[\w\s]+)</b>[\s\w\d\.\,\(\)]*?<br />\nPrice: (?P<price>\d+) (?P<coin>[CSG])P<br />\nWeight: (?P<weight>\d+\.?\d*|\-+)#?<br />\n\((?P<book>[\w\s]+) p\. (?P<page>\d+)\)<br />\n(?P<desc>.+)')
+ShaxItemRE = re.compile(r'<b>(?P<name>[\w\s]+)</b>[\s\w\d\.\,\(\)]*?<br />\nPrice: (?P<price>\d+) (?P<coin>[CSG])P<br />\nWeight: (?P<weight>\d+\.?\d*|\-+)#?<br />\n\((?P<book>[\w\s&;]+) p\. (?P<page>\d+)\)<br />\n(?P<desc>.+)')
+# still need to handle:
+assert not ShaxItemRE.match('''<b>Wick, Candle</b> (x5, 2 SP ea.)<br />
+Price: 1 GP<br />
+Weight: --<br />
+(Arms &amp; Equipment Guide p. 27)<br />
+Can be used anywhere you would use Twine (Dungeonscape p. 33), such as tripwires, improvised alarm systems, fishing lines, signal kites, or hang from the ceiling to detect invisible flying creatures. In addition, you can use it as a timing device: it takes 30 seconds (5 rounds) to burn 1 inch. Comes in 50' rolls. <br />''')
+
+assert(ShaxItemRE.match('''<b>Bolt Cutters</b><br />
+Price: 6 GP<br />
+Weight: 5#<br />
+(Arms &amp; Equipment Guide p. 21)<br />
+A useful tool, but can be replicated with Shapesand until you can get hold of Stone Dragon Belt/Mountain Hammer, which can cut through just about anything.<br />''').group('weight') == '5')
 assert(ShaxItemRE.match('<b>Acidic Fire</b> (x2, 30 GP ea.)<br />\nPrice: 60 GP<br />\nWeight: 0.3#<br />\n(Expedition to Castle Ravenloft p. 208)<br />\nblah').group('name') == 'Acidic Fire')
 assert(ShaxItemRE.match("<b>Kyo Crystals</b><br />\nPrice: 50 GP<br />\nWeight: --<br />\n(Expedition to Undermountain p. 217)<br />\nOne-shot items similar to potions, but unlike potions activating them with a standard action does not provoke an AoO. They cost the same as potions (I've listed a cost above for a 1st level spell because I thought they were the most useful), but the spell must be chosen from a limited list: <i>burning hands</i>, <i>cure light wounds</i>, <i>cure moderate wounds</i> (150 GP), <i>cure serious wounds</i> (250 GP), <i>light</i> (25 GP), <i>mage armor</i>, <i>magic missle</i>, <i>magic weapon</i>, <i>mirror image</i> (150 GP), or <i>ray of frost</i> (25 GP). Oddly enough, you don't have to have these spells on your spell list to create these items, so wizards can create <i>cure</i> crystals. Of the available spells, <i>magic missle</i> (autohit force damage) and <i>magic weapon</i> (easier than applying an oil) look like the most useful.").group('weight') == '--')
 def readShax(filepath='ShaxItems.txt'):
@@ -2297,7 +2316,6 @@ def readShax(filepath='ShaxItems.txt'):
   #print(split[1], ' = split[1]')
   for entry in split:
     matchObj = ShaxItemRE.match(entry)
-    #print('entry', len(entry), entry[:20])
     if matchObj is not None:
       name = matchObj.group('name')
       price_sp = int(matchObj.group('price') )
@@ -2309,9 +2327,10 @@ def readShax(filepath='ShaxItems.txt'):
         weight = float(matchObj.group('weight') )
       except ValueError:
         weight = 0
-      book = matchObj.group('book').replace('Xendrik', "Xen'drik")
+      book = matchObj.group('book').replace('Xendrik', "Xen'drik").replace('&amp;', '&')
       rulebooks.add(book)
       page = int(matchObj.group('page') )
+      #print('Shax entry', entry[:20], name, price_sp, weight, book, page)
       assert (name, price_sp, weight, matchObj.group('desc'), page, book) not in items
       items.append( (name, price_sp, weight, matchObj.group('desc'), page, book) )
   print('done readShax')
@@ -2404,6 +2423,12 @@ def make_item_tables(curs):
   curs.execute('''INSERT INTO armorweapon_property_type (name, slug) SELECT name, slug from dnd_itemproperty;''')
   curs.execute('''CREATE INDEX index_armorweapon_property_type_name ON armorweapon_property_type(name);''')
 
+  curs.execute('''CREATE TABLE wealth_by_level (
+  level TINYINT(2) PRIMARY KEY
+  ,PCwealth INT(6)
+  ,NPCwealth INT(6) NOT NULL
+  );''')
+  curs.execute('''INSERT INTO wealth_by_level (level, PCwealth, NPCwealth) VALUES (1, 10, 900), (2, 900, 2000), (3, 2700, 2500), (4, 5400, 3300), (5, 9000, 4300), (6, 13000, 5600), (7, 19000, 7200), (8, 27000, 9400), (9, 36000, 12000);''')
   curs.execute('''CREATE TABLE item_level (
   level TINYINT(2)
   ,market_price_max_gp int(6)
@@ -2558,9 +2583,10 @@ def make_item_tables(curs):
       domain_id = insert_if_needed(curs, 'dnd_domain', domain, slug=domain.lower())
       curs.execute('''INSERT INTO deity_has_domain (deity_id, domain_id) VALUES (?, ?);''', (deity_id, domain_id) )
   items = readShax()
-  if False:
+  if True: # the below SQL command will silently drop any non-matched rulebook name
     for item in items:
       curs.execute('''SELECT dnd_rulebook.id FROM dnd_rulebook WHERE dnd_rulebook.name=?;''', item[-1:] )
+      #print('trying to fetch dnd_rulebook for', item)
       if curs.fetchone() is None:
         raise Exception(item)
   items = set(items)
@@ -2899,12 +2925,15 @@ UNIQUE(name)
   
   curs.execute('''DROP TABLE dnd_racesize;''')
   curs.execute('''CREATE TABLE dnd_racesize (
-  id INTEGER PRIMARY KEY NOT NULL,
-  name char(11) NOT NULL,
-  biped_carry_factor tinyint(1) NOT NULL,
-  quadruped_carry_factor tinyint(1) NOT NULL
+  id INTEGER PRIMARY KEY NOT NULL
+  ,name char(11) NOT NULL
+  ,biped_carry_factor tinyint(1) NOT NULL
+  ,quadruped_carry_factor tinyint(1) NOT NULL
+  ,AC_size_modifier tinyint(1) NOT NULL
+  ,grapple_size_modifier tinyint(2) NOT NULL
   );''') # 11 in case want to call it "Medium-size" rather than just "Medium"
-  curs.execute('''INSERT INTO dnd_racesize (name, biped_carry_factor, quadruped_carry_factor) VALUES ("Fine",1,2), ("Diminutive",2,4), ("Tiny",4,6), ("Small",6,8), ("Medium",8,12), ("Large",16,24), ("Huge",32,48), ("Gargantuan",64,96), ("Colossal",128,192);''')
+  curs.execute('''INSERT INTO dnd_racesize (name, biped_carry_factor, quadruped_carry_factor, AC_size_modifier, grapple_size_modifier) VALUES
+  ("Fine",1,2,8,-16), ("Diminutive",2,4,4,-12), ("Tiny",4,6,2,-8), ("Small",6,8,1,-4), ("Medium",8,12,0,0), ("Large",16,24,-1,4), ("Huge",32,48,-2,8), ("Gargantuan",64,96,-4,12), ("Colossal",128,192,-8,16);''')
   curs.execute('''CREATE INDEX index_racesize_name ON dnd_racesize(name);''')
   """ need to not have parentheses at top level:
   sqlite> insert into blanh values (3, 4, 5);
@@ -3130,7 +3159,7 @@ FOREIGN KEY(plane_id) REFERENCES dnd_plane(id)
   id INTEGER PRIMARY KEY,
   name char(10)
   );''')
-  curs.executemany('''INSERT INTO dnd_terrain(name) VALUES (?)''', [(name,) for name in ('desert', 'forest', 'hill', 'mountain', 'plain', 'marsh')] )
+  curs.executemany('''INSERT INTO dnd_terrain(name) VALUES (?)''', [(name,) for name in TERRAIN_NAMES] )
   # A swamp is a place where the plants that make up the area covered in water are primarily woody plants or trees. Woody plants would be mangroves or cypress trees. A marsh, on the other hand, is defined as having no woody plants. The non-woody plants would be saltmarsh grasses, reeds, or sedges.
   curs.execute('''CREATE TABLE monster_on_terrain (
   monster_id INTEGER NOT NULL,
@@ -3242,6 +3271,28 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
   print('about to insert psionic powers')
   insert_psionic_powers(curs)
   print('done inserting psionic powers')
+
+  curs.execute('''CREATE TABLE min_level_to_cast_spell (
+  character_class_id INTEGER,
+  spell_level tinyint(1) NOT NULL,
+  class_level tinyint(2) NOT NULL,
+PRIMARY KEY (character_class_id, spell_level)
+  );''')
+  for character_class_name in ("Cleric", "Druid", "Wizard"):
+    character_class_id = id_from_name(curs, 'dnd_characterclass', character_class_name)
+    curs.executemany('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
+                     [(character_class_id, spell_level, 2*spell_level - 1) for spell_level in range(1, 10)])
+  for character_class_name in ("Paladin", "Ranger"):
+    character_class_id = id_from_name(curs, 'dnd_characterclass', character_class_name)
+    curs.executemany('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
+                     [(character_class_id, spell_level, 4*spell_level) for spell_level in range(1, 5)])
+  for character_class_name in ("Bard",):
+    character_class_id = id_from_name(curs, 'dnd_characterclass', character_class_name)
+    curs.executemany('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
+                     [(character_class_id, spell_level, 3*spell_level - 2) for spell_level in range(1, 7)])
+  """
+  sqlite> SELECT dnd_characterclass.name, spell_level, class_level FROM min_level_to_cast_spell INNER JOIN dnd_characterclass ON character_class_id=dnd_characterclass.id;
+  """
 
   curs.execute('''CREATE TABLE spell_brings_monster (
   spell_id INTEGER NOT NULL,

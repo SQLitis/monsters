@@ -6,8 +6,9 @@ Price: 20 GP<br />
 Weight: 1#<br />
 (Savage Species p. 46)<br />
 This is one of the cheapest and deadliest poisons in the game, although not actually a poison so there's no check to see if you accidentally poison yourself. Thrown as a grenade-like weapon, so make a ranged touch attack to hit (no splash effect). If the creature fails a Fort save DC 19, it loses the ability to breathe air for 3 hours. A creature can hold its breath for a number of rounds equal to twice its Constitution score, so it essentially has that many rounds to find someone who can cast <i>water breathing</i> or <i>air breathing</i>. <i>Delay poison</i> and <i>neutralize poison</i> won't help (it's not a poison), <i>dispel magic</i> won't help (it's non-magical), <i>deep breath</i> (Spell Compendium) won't work (it fills your lungs with air you still can't breathe), sticking your head in a bucket of water won't help (the mucus doesn't confer the ability to breathe water), and there may be a good argument that a <i>heal</i> spell won't work, either (unable to breathe isn't one of the conditions listed in the spell description). After failing a Con check, the creature starts to suffocate and falls unconscious, and two rounds later it dies. So while it may take a little longer than poison (2-3 minutes), getting hit with this is pretty much a death sentence for most creatures.<br />
-Savage Species says that "Any creature coming into contact with *or* inhaling this substance" is affected, while the 3.5 Monster Manual says "Any creature coming into contact with *and* inhaling this substance" is affected. Is this a change from the 3.0 MM to the 3.5 MM?
-You know what does confer the ability to breathe air, though? The very next item on the page.
+Savage Species says that "Any creature coming into contact with *or* inhaling this substance" is affected, while the 3.5 Monster Manual says "Any creature coming into contact with *and* inhaling this substance" is affected. Is this a change from the 3.0 MM to the 3.5 MM? No, as it turns out: The 3.0 SRD says "Any creature coming into contact with *and* inhaling this substance", and per http://archive.wizards.com/default.asp?x=dnd/errata no errata changed the 3.0 Monster Manual's text on the aboleth.
+It appears overwhelmingly likely that this is just a copy error from the 3.0 Monster Manual to Savage Species. I am 100% okay with abusing the writers' errors in *logic*, when they just didn't fully think through the implications of what they work, but it seems obvious that this is just a plain typo.
+You know what does confer the ability to breathe water, though? The very next item on the page.
 Breathing Mask: This desmodu-made mask covers the user's whole face. It is fitted with goggles and a bag of an alchemical substance within that allows the wearer to breathe for up to 4 hours.
 It even enables the wearer to function underwater or in an airless environment. A slightly different version (with the same cost and weight) allows water-breathers to function out of water.
 The item consists of a masterwork leather mask with goggles (cost 50 gp) and the alchemical air supply, which costs 950 gp and can be manufactured with a successful Craft (alchemy) check (DC 20). A partially used air supply cannot be combined with another partially used one to get a fresh supply, but it can be discarded and replaced with a new supply.<br />
@@ -147,7 +148,9 @@ Monster Manual II page 64: 100' winch that pulls with a Strength of 16 (lift 230
 Wear a harness that can clip and unclip from the cable. The cable has a snap ring at each end so that it can be quickly attached to or detached from a piton, spike, grappling hook, or other item without a Use Rope check. The cable has 10 hit points and hardness 5. It can be broken with a successful Strength check (DC 32). Its stiffness, however, imposes a -2 circumstance penalty on Use Rope checks.
 Harness: Desmodus cannot wear belts because of the flaps of skin attached to their flanks. Instead, they wear harnesses that loop over their shoulders and between their legs. Straps crisscross the front and back of the desmodu's body to keep the harness from slipping off. Each desmodu harness is fitted with rings, hooks, and ties for carrying weapons and equipment. A reinforced hook hangs near the waist for carrying a cablespool.
 If you need to lift more, use multiple cablespools (just don't count on them all lifting precisely evenly, since they're just machines not intelligent creatures).
+Alternatively, see the A&EG winch (Strength 18--22) or crane (Strength 24--28).
 Similarly, if you have a vertical ascent of more than 100 feet, chain multiple cablespools in series.
+To change direction, A&EG 5gp 1lb pulley can withstand a load of up to 750 pounds before breaking.
 Cablespool: This gadget carries 100 feet of cable in an enclosed reel. The reel is spring-wound and can pull in all 100 feet of cable in 1 round (pulling with an effective Strength score of 16 [max load 230pounds]). [Pulling more than a light load of 76pounds might slow it to a mere 70feet per round.] It can be set to reel or unreel the cable automatically as the user climbs, or to act as a brake, allowing the user to jump down 100 feet without harm.
 Cost: 125 gp (175 with cable); Weight: 2 lb. (6 lb. with cable).
 <br />
@@ -243,7 +246,9 @@ While I'm offended by the rather suspicious definition of &quot;everfull&quot;, 
 Price: 50 GP<br />
 Weight: --<br />
 (Sharn City of Towers p. 170)<br />
-One-shot item, activate <i>feather fall</i> as a free action. While there are a variety of similar items to prevent falling damage, this is the cheapest.<br />
+One-shot item, activate <i>feather fall</i> as a free action.
+Like the feather fall spell, the item can be activated even when it is not the wearer's turn.
+While there are a variety of similar items to prevent falling damage, this is the cheapest.<br />
 <br />
 <b>Feather Token, Fan</b><br />
 Price: 200 GP<br />
@@ -380,13 +385,17 @@ Weight: --<br />
 Price: 50 GP<br />
 Weight: --<br />
 (Expedition to Undermountain p. 217)<br />
-One-shot items similar to potions, but unlike potions activating them with a standard action does not provoke an AoO. They cost the same as potions (I've listed a cost above for a 1st level spell because I thought they were the most useful), but the spell must be chosen from a limited list: <i>burning hands</i>, <i>cure light wounds</i>, <i>cure moderate wounds</i> (150 GP), <i>cure serious wounds</i> (250 GP), <i>light</i> (25 GP), <i>mage armor</i>, <i>magic missle</i>, <i>magic weapon</i>, <i>mirror image</i> (150 GP), or <i>ray of frost</i> (25 GP). Oddly enough, you don't have to have these spells on your spell list to create these items, so wizards can create <i>cure</i> crystals. Of the available spells, <i>magic missle</i> (autohit force damage) and <i>magic weapon</i> (easier than applying an oil) look like the most useful.<br />
+One-shot items similar to potions, but unlike potions activating them with a standard action does not provoke an AoO. They cost the same as potions (I've listed a cost above for a 1st level spell because I thought they were the most useful), but the spell must be chosen from a limited list:
+<i>burning hands</i>,
+<i>cure light wounds</i>, <i>cure moderate wounds</i> (150 GP), <i>cure serious wounds</i> (250 GP), <i>light</i> (25 GP),
+<i>mage armor</i>, <i>magic missle</i>, <i>magic weapon</i>, <i>mirror image</i> (150 GP), or <i>ray of frost</i> (25 GP). Oddly enough, you don't have to have these spells on your spell list to create these items, so wizards can create <i>cure</i> crystals. Of the available spells, <i>magic missle</i> (autohit force damage) and <i>magic weapon</i> (easier than applying an oil) look like the most useful.<br />
 <br />
 <b>Liquid Ice</b><br />
 Price: 30 GP<br />
 Weight: 1#<br />
 (Dragon Compendium p. 118)<br />
-Empty your waterskin on the ground and you can use this to create a non-magical 10' x 10' ice sheet, or extinguish a 10' x 10' section of fire. As per the DMG p. 91, slippery ice counts as difficult terrain, costing 2 squares of movement. It also has the same effect as a <i>grease</i> spell, as described in the PHB under the Balance skill: targets without 5 ranks in Balance that are attacked on a slippery surface are considered flat-footed. From there, you can add Razor Ice Powder to create a 10' x 10' section of Razor Ice (1d4 slashing damage and 1d6 cold damage for each square entered, no save). Liquid Ice can also be thrown as a splash weapon, doing 1d6 cold damage on a direct hit and 1 splash damage. If your DM doesn't allow Dragon Compendium material, you can use Freeze Powder (100 GP, Frostburn p. 79) instead, although this can't be thrown as a splash weapon. If you need an alternative for splash damage, use Alchemist's Frost (25 GP, Eberron Campaign Setting p. 120). Note: Neither Dragon Compendium nor the original Dragon Magazine article listed a weight, so I had to guess. Alchemist's Frost, Freeze Powder, and Frostfire all weighed 1 lb., so I figured Liquid Ice would most likely weigh the same.<br />
+Empty your waterskin on the ground and you can use this to create a non-magical 10' x 10' ice sheet, or extinguish a 10' x 10' section of fire. As per the DMG p. 91, slippery ice counts as difficult terrain, costing 2 squares of movement. It also has the same effect as a <i>grease</i> spell, as described in the PHB under the Balance skill: targets without 5 ranks in Balance that are attacked on a slippery surface are considered flat-footed. From there, you can add Razor Ice Powder to create a 10' x 10' section of Razor Ice (1d4 slashing damage and 1d6 cold damage for each square entered, no save). Liquid Ice can also be thrown as a splash weapon, doing 1d6 cold damage on a direct hit and 1 splash damage.
+If your DM doesn't allow Dragon Compendium material, you can use Freeze Powder (100 GP, Frostburn p. 79) instead, although this can't be thrown as a splash weapon. If you need an alternative for splash damage, use Alchemist's Frost (25 GP, Eberron Campaign Setting p. 120). Note: Neither Dragon Compendium nor the original Dragon Magazine article listed a weight, so I had to guess. Alchemist's Frost, Freeze Powder, and Frostfire all weighed 1 lb., so I figured Liquid Ice would most likely weigh the same.<br />
 Craft (Alchemy) DC: 25  <br />
 <br />
 <b>Liquid Smoke</b><br />
@@ -604,9 +613,10 @@ This stamp produces a magical wax seal that you can attach to any object up to 0
 Price: 20 GP<br />
 Weight: 1#<br />
 (Arms &amp; Equipment Guide p. 35)<br />
-Thrown as grenade-like weapon. Against stone objects/creatures, 5d10 damage over 2 rounds that ignores hardness. While Delver Slime (150 GP, Savage Species) may deal more damage per application, Stonebreaker Acid is a lot cheaper. Stone has 15 hit points per inch of thickness, so 740gp of Stonebreaker Acid (185d10 avg 1017dmg) will get through almost 68inches. How wide the resulting passage will be is unknown.
+Thrown as grenade-like weapon. Against stone objects/creatures, 5d10 damage over 2 rounds that ignores hardness. While Delver Slime (150 GP, Savage Species) may deal more damage per application, Stonebreaker Acid is a lot cheaper.
 A 1-foot-thick masonry wall has 90 hit points Per 10-foot-by-10-foot section. A 3-foot-thick hewn stone wall has 540 hp Per 10-foot-by-10-foot section.
 A 4-inch-thick stone door has 60 hp. Some dungeons, like the Sunless Citadel, specifically have 2-inch-thick stone doors with only 30hp.
+Stone has 15 hit points per inch of thickness, so 740gp of Stonebreaker Acid (185d10 avg 1017dmg) will get through almost 68inches. How wide the resulting passage will be is unknown.
 Compare to 750gp Sculptor's Slime: Another product of dwarf dealings with delvers, this slimy liquid softens stone. One flask allows a Craft (stonemasonry) check (DC 10) to shape up to 25 cubic feet of stone, as stone shape cast by a 15th-level druid. Sculptor's slime requires a Craft (alchemy) check (DC 20) to create. Because it references the spell, it's technically not obvious that it can affect a small part of a larger stone rather than a single stone.
 Compare to 100gp Rust Cube: Made of rusty iron, rust cubes are sometimes disguised as dice. A rust cube can be thrown as a ranged attack with a range increment of 5 feet. Alternatively, it can be loaded into a sling and used as a sling stone. When it strikes a hard surface, the cube shatters into a fine powder of rusted iron. An object or creature made of metal that is hit by the rust cube immediately takes 1d6 points of damage (ignoring hardness), plus an additional 1d6 points of damage each round for the next 2 rounds. A creature can wipe the dust off with a move action. A rust cube is useful against locks and pretty much nothing else.
 Against wood or metal, green slime deals 2d6 points of damage per round, ignoring metal's hardness but not that of wood. It does not harm stone.
@@ -660,7 +670,9 @@ Provides trail rations 3/day, a flask that produces up to 2 gallons of cool wate
 Price: 90 GP<br />
 Weight: --<br />
 (Dungeonscape p. 37)<br />
-Running into a regenerating creature when the party isn't ready for it can quickly turn into a TPK. While one dose of Alchemist's Fire, Bladefire, or Quickflame might be cheaper, trollbane allows all of a weapon's damage (not just fire/acid) to ignore regeneration. Save this for high-damage single-hit attacks, such as two-handed power-attack leap-attack ubercharger combos.<br />
+Running into a regenerating creature when the party isn't ready for it can quickly turn into a TPK. While one dose of Alchemist's Fire, Bladefire, or Quickflame might be cheaper, trollbane allows all of a weapon's damage (not just fire/acid) to ignore regeneration.
+Trollbane functions as injury poison (DMG 296) and can be applied directly to weapons prior to combat.
+Save this for high-damage single-hit attacks, such as two-handed power-attack leap-attack ubercharger combos.<br />
 Craft (Alchemy) DC: 25<br />
 <br />
 <b>Troll Gut Rope</b><br />
@@ -797,7 +809,20 @@ This is a little stronger than a normal silk rope, but I'm not sure ropes breaki
 Price: 300 GP<br />
 Weight: --<br />
 (Champions of Valor p. 64)<br />
-These necklaces are tied to a particular Forgotten Realms deity (which may not be available in your campaign), and may only be activated by a member of that faith (although this is listed as an optional prerequisite... otherwise, try UMD). They allow you to cast one 0-level spell twice per day, or two different 0-level spells once per day each. I won't describe them all here, but I'll mention a few that look the most useful: Corellon Larethian (<i>detect magic</i>, <i>summon instrument</i>), Garl Glittergold (<i>prestidigitation</i>, <i>virtue</i>), or Ilmater (<i>cure minor wounds</i>). Note: you can use <i>summon instrument</i> to summon a handbell up to the maximum weight you can lift in one hand.<br />
+These necklaces are tied to a particular Forgotten Realms deity (which may not be available in your campaign), and may only be activated by a member of that faith (although this is listed as an optional prerequisite... otherwise, try UMD). They allow you to cast one 0-level spell twice per day, or two different 0-level spells once per day each.
+Faith tokens are command word activated, usually requiring a few words of prayer (such as Ilmater protect me)
+I won't describe them all here, but I'll mention a few that look the most useful:
+Corellon Larethian (<i>detect magic</i>, <i>summon instrument</i>),
+Oghma songbird, summon instrument
+Garl Glittergold (<i>prestidigitation</i>, <i>virtue</i>), or
+Ilmater/Lurue (<i>cure minor wounds</i>).
+Arvoreen/Horus-Re message
+Chauntea mending, naturewatch
+Eilistraee ghost sound
+Hanali Celanil/Sune minor disguise
+Mielikki detect poison, know direction
+Yondalla open/close, purify food and drink
+Note: you can use <i>summon instrument</i> to summon a handbell up to the maximum weight you can lift in one hand.<br />
 <br />
 <b>Fishing Tackle</b><br />
 Price: 20 GP<br />
@@ -888,7 +913,7 @@ More of an annoyance than a threat, really, but you don't have to spend any acti
 Price: 20 GP<br />
 Weight: --<br />
 (Complete Scoundrel p. 111)<br />
-Bunko's Bargain Basement suggested this as a much cheaper everburning torch, but I opted to include the Angel Radiance instead, since as a spell component it can be drawn as a free action. However, liquid sunlight has a unique feature: as alchemical items, they can be crafted cheaply and quickly. Which means if you crafted a whole bunch of them and introduced affordable illumination into a pre-industrial world, you could revolutionize agriculture, manufacturing, transportation, labor practices, literacy, crime prevention and whatnot. Only with, you know, wizards and dragons and stuff still around. <br />
+Bunko's Bargain Basement suggested this as a much cheaper everburning torch, but I opted to include the Angel Radiance instead, since as a spell component it can be drawn as a free action. [not sure that's true; spell components can be "prepared" as a free action] However, liquid sunlight has a unique feature: as alchemical items, they can be crafted cheaply and quickly. Which means if you crafted a whole bunch of them and introduced affordable illumination into a pre-industrial world, you could revolutionize agriculture, manufacturing, transportation, labor practices, literacy, crime prevention and whatnot. Only with, you know, wizards and dragons and stuff still around. <br />
 Craft (Alchemy) DC: 30<br />
 <br />
 <b>Messenger Arrow</b><br />
@@ -938,7 +963,9 @@ Expensive and somewhat difficult to handle more than an ounce without Oil of Sli
 Price: 80 GP<br />
 Weight: 5#<br />
 (Underdark p. 67)<br />
-+2 circumstance bonus on Balance, Climb, Escape Artist, and Survival checks when in tough-to-access areas or cramped spaces. This bonus stacks with the Climber's Kit and Spider Kit, although I imagine wearing all three kits at once wouldn't be all that comfortable. This kit includes a headlamp, head protection, protective clothing, gloves, kneepads, and heavy boots. <br />
++2 circumstance bonus on Balance, Climb, Escape Artist, and Survival checks when in tough-to-access areas or cramped spaces. This bonus stacks with the Climber's Kit and Spider Kit, although I imagine wearing all three kits at once wouldn't be all that comfortable.
+A&EG Housebreaker Harness 20gp adds another +1 to Climb checks
+This kit includes a headlamp, head protection, protective clothing, gloves, kneepads, and heavy boots. <br />
 <br />
 <b>Spider Kit</b><br />
 Price: 110 GP<br />
@@ -1016,7 +1043,9 @@ The definitive &quot;whatever you can possibly imagine&quot; item. Not only can 
 Price: 3000 GP<br />
 Weight: 1#<br />
 (Tome of Battle p. 150)<br />
-This item is used primarily to get access to the Mountain Hammer maneuver, the ultimate Swiss-Army chainsaw and dungeon redecorating tool, which is a standard action strike that ignores DR, hardness, and does an extra 2d6 damage. This allows you to cut down, break apart, or sunder anything your heart desires, over and over again. There are a few requirements, however. Because it's a Stone Dragon strike, you have to be in contact with the ground. You also need a high enough Initiator Level. For a non-martial adept, this means you need 6 levels/HD. You can only use the maneuver once per encounter, or if you're out of combat, you have to meditate for 5 minutes to re-ready the maneuver. If you already have martial adept levels and a high enough initiator level, then you can use your usual recovery method. If you don't have a high enough level yet, you can pick up either the Charging Minotaur or Stone Bones strike instead. If you have an Initiator Level of 5 or more, you can also get access to the 3rd level strikes Bonecrusher and Stone Dragon's Fury. The item description doesn't specify how you choose a new maneuver, but it stands to reason that if you take the item off and wait 24 hours for it to re-attune, you can select a different maneuver.
+This item is used primarily to get access to the Mountain Hammer maneuver, the ultimate Swiss-Army chainsaw and dungeon redecorating tool, which is a standard action strike that ignores DR, hardness, and does an extra 2d6 damage. This allows you to cut down, break apart, or sunder anything your heart desires, over and over again. There are a few requirements, however. Because it's a Stone Dragon strike, you have to be in contact with the ground. You also need a high enough Initiator Level. For a non-martial-adept, this means you need 6 levels or Hit Dice. You can only use the maneuver once per encounter, or if you're out of combat, you have to meditate for 5 minutes to re-ready the maneuver. If you already have martial adept levels and a high enough initiator level, then you can use your usual recovery method.
+Eh? Why would you need Initiator Level? The item description quite explicitly says you can get any maneuver up to 3rd level, as long as you meet the prerequisite. Initiator Level is not a prerequisite.
+If you don't have a high enough level yet, you can pick up either the Charging Minotaur or Stone Bones strike instead. If you have an Initiator Level of 5 or more, you can also get access to the 3rd level strikes Bonecrusher and Stone Dragon's Fury. The item description doesn't specify how you choose a new maneuver, but it stands to reason that if you take the item off and wait 24 hours for it to re-attune, you can select a different maneuver.
 <br />
 
 <b>Angriz's Chest</b><br />
@@ -1040,7 +1069,8 @@ The animal serves the character who drew it from the bag for 10 minutes (or unti
 Price: 10 GP<br />
 Weight: --<br />
 (Serpent Kingdoms p. 149)<br />
-A very odd item... rub this on someone's body, and then sometime later, as long as you're within 25' you can speak a command word to have it deliver a <i>cure minor wounds</i> effect. But it's supposedly an alchemical substance and not magical... huh.<br />
+A very odd item... rub this on someone's body, and then sometime later, as long as you're within 25' you can speak a command word to have it deliver a <i>cure minor wounds</i> effect. But it's supposedly an alchemical substance and not magical... huh.
+Usually better than a Blessed Bandage.<br />
 Craft (Alchemy) DC: 20<br />
 <br />
 <b>Bolt Cutters</b><br />
@@ -1073,13 +1103,18 @@ Craft (Alchemy) DC: 20<br />
 Price: 25 GP<br />
 Weight: 0.5#<br />
 (Planar Handbook p. 77)<br />
-If your DM won't allow dust eggshell grenades, this may be a reasonable alternative. While this has the same Ref save DC 15 as a Flash Pellet, it has a much longer duration (2d4 rounds) for only half the cost. Flashstones have a slightly higher Ref save DC 16 and a 15' diameter burst.<br />
+If your DM won't allow dust eggshell grenades, this may be a reasonable alternative.
+those within 5 feet of the point of impact must make a DC 10 Reflex save or be blinded for 1 round.
+While this has the same Ref save DC 15 as a Flash Pellet, it has a much longer duration (2d4 rounds) for only half the cost. Flashstones have a slightly higher Ref save DC 16 and a 15' diameter burst.<br />
 <br />
 <b>Flash Pellet</b><br />
 Price: 50 GP<br />
 Weight: --<br />
 (Complete Adventurer p. 118)<br />
-If your DM won't allow dust eggshell grenades, this may be a reasonable alternative. Ref save DC 15, 5' radius burst. However, Red Tidewater has a much better duration for half the cost, and a Flashstone has a slightly higher save DC and bigger burst.<br />
+If your DM won't allow dust eggshell grenades, this may be a reasonable alternative. Ref save DC 15, 5' radius burst.
+range increment of 5feet rather than 10
+All creatures within a 5-foot-radius burst must succeed on a DC 15 Fortitude save or be blinded for 1 round
+However, Red Tidewater has a much better duration for half the cost, and a Flashstone has a slightly higher save DC and bigger burst.<br />
 Craft (Alchemy) DC: 25<br />
 <br />
 <b>Flashstone</b><br />

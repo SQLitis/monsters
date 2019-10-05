@@ -79,7 +79,7 @@ We don't have edition data in the rulebook table yet, but a spot-check reveals t
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monster.name, intelligence, law_chaos, dnd_monstertype.name, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on dnd_racesize.id=size_id inner join monster_has_alignment on dnd_monster.id=monster_has_alignment.monster_id inner join dnd_rulebook on dnd_monster.rulebook_id=dnd_rulebook.id where dnd_monstertype.name="Undead" and good_evil!=-1 order by challenge_rating;
+  sqlite> select distinct dnd_monster.name, intelligence, law_chaos, dnd_monstertype.name, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on dnd_racesize.id=size_id inner join monster_has_alignment on dnd_monster.id=monster_has_alignment.monster_id inner join dnd_rulebook on dnd_monster.rulebook_id=dnd_rulebook.id where dnd_monstertype.name="Undead" and good_evil!=-1 order by intelligence is null, challenge_rating;
   Haunt, Taunting|13|C|Undead|Monster Manual V
 
 
@@ -516,6 +516,7 @@ Large with Strength 18 and a speed of 40feet, bonespurs are decidedly average mo
 .. code-block:: bash
 
   sqlite> select distinct dnd_monstertype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, land_speed, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where constitution is null and intelligence<3 order by land_speed, fine_biped_max_load_ounces*quadruped_carry_factor/3/16, -DC;
+  Undead|Large|300|10|Bonespur|Monster Manual V|24
   Undead|Large|400|50|Skeletal Warbeast|Heroes of Battle|28
 
 .. code-block:: bash
@@ -591,7 +592,7 @@ A sewerm does not have Improved Grab, but unlike, say, a weasel, a sewerm's Atta
 Advancement: 3--4HD Medium, 5HD Large
 The increase in size of Medium gives +4 Strength for a total of +6 to grapple checks. Its BAB also increases from +1 to +2, so a 3HD Medium sewerm has a total +23 to grapple checks.
 
-Of course, an animal could in theory be trained to grapple even if it doesn't naturally do so. Sometimes, indeed, you don't actually want or need to damage the target in grappling them.
+Of course, an animal could in theory be trained to grapple even if it doesn't naturally do so. Sometimes, indeed, you don't actually want or need to damage the target in grappling them, if the purpose is capture.
 If it is Huge or bigger, the Snatch feat grants Improved Grab for a claw or bite attack.
 It's worth noting that some of the best grapplers already have Improved Grab anyway, such as the giant crocodile.
 
@@ -636,7 +637,8 @@ Advancement is usually not worthwhile for trippers, but for grapplers they get b
   55|Colossal|40|Dinosaur, Seismosaurus|Monster Manual II|32
 
 Bigger animals are better at tripping...it helps to think of it not in terms of the word trip, but in terms of knocking someone prone ala the Awesome Blow feat.
-For any given number of Hit Dice, the best trippers are exactly the best grapplers --- Hit Dice affects grappling while it doesn't affect tripping, but if we hold Hit Dice constant, that doesn't matter. On the other hand, status as an animal effectively gives five free Hit Dice, which makes animals more likely to be the best grapplers.
+
+For any given number of Hit Dice, the best trippers are exactly the best grapplers --- Hit Dice affects grappling while it doesn't affect tripping, but if we hold Hit Dice constant, that doesn't matter. On the other hand, the Animal type effectively gives five free Hit Dice, which makes animals more likely to be the best grapplers.
 
 .. code-block:: bash
 
@@ -656,6 +658,7 @@ For any given number of Hit Dice, the best trippers are exactly the best grapple
   A character with the Handle Animal skill can train a brixashulty as noted in the Handle Animal skill description
 
 And of course an animal can trip without a special ability.
+Note that an animal's trip bonus equals its bull rush bonus, which also equals its grapple bonus minus its base attack bonus.
 
 .. code-block:: bash
 
@@ -669,6 +672,27 @@ And of course an animal can trip without a special ability.
   11|Large|25|Lizard, Giant, Footpad|Drow of the Underdark|5
   12|Large|27|Bear, Brown|Monster Manual|6
   16|Huge|27|Crocodile, Giant|Monster Manual|7
+
+Bigger animals are better grapplers, but with smaller animals, more can dogpile on.
+
+If your target is already grappling someone else, you can use an attack to start a grapple, as above, except that the target doesn't get an attack of opportunity against you, and your grab automatically succeeds. You still have to make a successful opposed grapple check to become part of the grapple.
+If there are multiple opponents involved in the grapple, you pick one to make the opposed grapple check against.
+Up to four combatants can grapple a single opponent in a given round. Creatures that are one or more size categories smaller than you count for half, creatures that are one size category larger than you count double, and creatures two or more size categories larger count quadruple.
+When you are grappling with multiple opponents, you choose one opponent to make an opposed check against. The exception is an attempt to escape from the grapple; to successfully escape, your grapple check must beat the check results of each opponent.
+
+Up to eight Small creatures can grapple one Medium target, whereas only four Medium creatures or two Large creatures or one Huge creature can do the same. Which is most difficult to escape? We can ask AnyDice.
+
+.. code-block:: anydice
+
+  output [highest 1 of 8d20] > [highest 1 of 4d20] + 6
+  output [highest 1 of 4d20] + 6 > [highest 1 of 2d20] + 16
+  output [highest 1 of 6d20] + 2 > [highest 1 of 3d20] + 4
+
+Generally, the advantage of being larger dwarfs the advantage of being able to dogpile more. Not too surprising.
+
+
+
+
 
 Unfortunately, without a source of data on feats, we cannot know which animals have the Track feat. On the other hand, Handle Animal might make the Track feat irrelevant: Track (DC 20): The animal tracks the scent presented to it. (This requires the animal to have the scent ability.)
 
@@ -821,6 +845,8 @@ Let's assume for the moment that size category can be a proxy for how much food 
 While the thought of a horde of skunks pulling a wagon is amusing, let's stick to animals that can individually carry more than a human.
 We'll order by DC first, then carrying capacity, so that for any given level of Handle Animal available, we can look and see the best animal. Doing it this way, there is only any point in noting an animal at a higher DC if it is better in some way than the best option at a lower DC.
 
+This might also be useful for a low-level druid trying to get the most out of Pass Without Trace --- a camel can carry 900 pounds, so one Pass Without Trace on the camel while it carries two or three party members gets more mileage.
+
 .. code-block:: bash
 
   sqlite> select distinct dnd_monstertype.name, dnd_racesize.name, fine_biped_max_load_ounces*quadruped_carry_factor/3/16 as light_load, land_speed, dnd_monster.name, dnd_rulebook.name, 15 + hit_dice + CASE dnd_monstertype.name WHEN "Animal" THEN 0 ELSE 5 END as DC from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join dnd_racesize on size_id=dnd_racesize.id natural join carrying_capacity inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Animal" or (dnd_monstertype.name="Magical Beast" and intelligence<3) ) and light_load > 33 and size_id<6 order by DC, light_load, land_speed;
@@ -866,9 +892,16 @@ We'll order by DC first, then carrying capacity, so that for any given level of 
   Animal|Huge|3200|40|Elephant|Monster Manual v.3.5|26
 
 The surprise standouts are boars and dire boars. Just as willing to eat foliage as the bodies of your fallen foes, they're strong and not too slow.
-Raising a dire boar requires a total +12 if you take 10. A first-level human commoner with 4 ranks Handle Animal, +1 Charisma bonus, Skill Focus and Animal Affinity has +10, so they need Aid Another from an assistant *or* a 10gp Animal Training Pole. (The Uncivilized trait could give them a +1 bonus on Handle Animal checks, but that's not enough.)
+Raising a dire boar requires a total +12 if you take 10. A first-level human commoner with 4 ranks Handle Animal, +1 Charisma bonus, Skill Focus and Animal Affinity has +10, so they need Aid Another from an assistant. (The Uncivilized trait could give them a +1 bonus on Handle Animal checks, but that's not enough.)
+Shape Soulmeld Riding Bracers are better than Skill Focus.
+Killoren have a +2 racial bonus on Handle Animal checks; so do desert elves, but desert elves have a harder time managing the 13 Con needed for Shape Soulmeld.
 
-10gp Animal Training Pole: This hollow pole has a strong, thin cord threaded through it and twisted into a loop at the end. When looped around an animal's neck, it provides an easy way to direct the animal while preventing the animal from moving any closer than the pole's length. An animal training pole provides a +2 circumstance bonus on attempts to teach an animal a task.
+A&EG 50gp Animal Trainer's Kit: This kit consists of harnesses, prods, light whips, treats, and other items that are helpful for training animals. There are different kits for different types of animals. It grants a +2 circumstance bonus on Handle Animal checks.
+A&EG Leash and Muzzle: Made to fit creatures of various sizes, this is necessary equipment for training animals. Masterwork versions are also available that grant a +1 circumstance bonus on Handle Animal checks, increasing the price by 20 gp (regardless of size).
+ only priced up to Medium-size 8sp
+Frostburn page 76: "If you are proficient with its use, the goad grants a +2 circumstance bonus on all Handle Animal checks made against animals of Huge size or larger."
+ Although many of these primitive weapons are categorized as exotic weapons, they can be used as martial weapons by those not trained in their use as exotic weapons. If a primitive exotic weapon is used as a martial weapon, the user cannot make use of any of that weapon's special qualities (such as the iuak's ability to damage objects, or the tigerskull club's ability to disarm and trip).
+A&EG 10gp Animal Training Pole: This hollow pole has a strong, thin cord threaded through it and twisted into a loop at the end. When looped around an animal's neck, it provides an easy way to direct the animal while preventing the animal from moving any closer than the pole's length. An animal training pole provides a +2 circumstance bonus on attempts to teach an animal a task [but not to rear a wild animal].
 
 Teamwork benefits require Int 8 for the leader, so a trained animal cannot be the leader.
 You may have heard of the Team Rush teamwork benefit from the Player's Handbook II; that's the reason why, if you hitch an advanced 5HD shadow mastiff to a sled with a pack of regular dogs, they're inspired to move at the shadow mastiff's speed (50feet).
@@ -922,6 +955,7 @@ Large magical beast; HD 2d10+6; hp 17; Spd 40 ft.; Str 18, Dex 13, Con 17, Int 2
 Baboons can carry up to a hundred pounds, three hundred pounds if they accept moving slower.
 Baboons have a +10 Climb modifier and can always take 10, so it can climb An uneven surface with some narrow handholds and footholds, such as a typical wall in a dungeon or ruins, but cannot climb a DC25 wall such as a natural rock wall or a brick wall.
 Baboon Rock in Tanzania, Africa https://www.youtube.com/watch?v=42Px9N7jV7w&t=33s
+(A phynxkin has only Climb +8, having allocated skill points to Hide and Move Silently? Something's wrong there, a phynxkin's Str 14 ought to be enough for Climb +10 on its own with no skill ranks.)
 
 Burrowing is of questionable usefulness. A creature with a burrow speed can tunnel through dirt, but not through rock unless the descriptive text says otherwise. Most burrowing creatures do not leave behind tunnels other creatures can use.
 
@@ -961,11 +995,12 @@ We can also search for templates with a final (not initial) type of animal:
   Voidmind Creature|Monster Manual III|187 Int +2
   Woodling|Monster Manual III|197
 
-(There are no templates that turn something into an Animal that wasn't an Animal before.)
+(There are no templates that turn something into an Animal that wasn't an Animal before. Same for the Vermin type.)
 
 .. code-block:: bash
 
   sqlite> select distinct dnd_template.name, dnd_rulebook.name, page from dnd_template inner join template_type on dnd_template.id=template_id inner join dnd_monstertype as output on output.id=output_type inner join dnd_monstertype as input on input.id=base_type inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where output.name="Animal" and input.name!="Animal" order by dnd_rulebook.name;
+  sqlite> select distinct dnd_template.name, dnd_rulebook.name, page from dnd_template inner join template_type on dnd_template.id=template_id inner join dnd_monstertype as output on output.id=output_type inner join dnd_monstertype as input on input.id=base_type inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where output.name="Vermin" and input.name!="Vermin" order by dnd_rulebook.name;
 
 
 Dungeonbred is an inherited template that can be applied to any living corporeal aberration, animal, magical beast, or vermin that is Large or bigger.
@@ -1016,6 +1051,18 @@ Half-golem is a template that can be added to any animal, beast, giant, humanoid
 Abilities: Half-golems have -2 Dex, +4 Con (or no Con upon a failed Will save), -6 Int, +0 Wis, and -6 Cha.
 Wound (Ex): The damage a clay half-golem deals doesn't heal naturally. Only a spell of 6th level or higher with the healing descriptor (such as heal) can repair it. But the 3.5 update says: See Monster Manual for revised golem special attacks (note the change to clay golem's cursed wound).
 A clay limb must be sculpted from a single block of clay weighing at least 100 pounds. The sculpting requires a successful Craft (sculpting) or Profession (mason) check (DC 20). The rituals cost 12,000 gp and 240 XP and require animate objects and geas/quest. Attaching the limb requires the ability to cast 6th-level divine spells.
+
+Lost is an acquired template that can be added to any living creature with an Intelligence score of at least 3.
+A lost's type does not change, but it gains the incarnum subtype.
+The creature's base land speed increases by 10 ft. Any swim, fly, or burrow speeds the base creature might have do not increase.
+Song of Misery (Ex): As a free action, a miserable lost can begin a droning song. Every creature within 30 feet who can hear it is fascinated for as long as the song continues, plus 1 round thereafter (Will negates).
+But a miserable lost might not be the best to train --- a despairing lost might be less likely to rebel.
+Twisted Mind (Ex): A lost's mind is demented and difficult to control. If the creature fails its saving throw against a mind-affecting spell or effect, it can attempt to save again 1 round later at the same DC. The lost gets only this one extra chance to succeed on its saving throw.
+Abilities: Alter from the base creature as follows: Str +4, Con +4, Int -6 (minimum 1). If the lost's Intelligence score falls to 2 or 1, the creature regresses to an animal state and commences living off the wild as best it can.
+Organization: Any.
+Challenge Rating: Same as the base creature +1.
+Alignment: Always evil (any).
+If an infected creature takes 6 or more points of Intelligence damage while within the bounds of a lost site, the creature immediately gains the lost template described on page 183. Only living creatures with an Intelligence score (before disease damage) of at least 3 are at risk of becoming lost.
 
 A living zombie's Intelligence changes to 1.
 Creating a living zombie costs 1,000 gp in materials.
@@ -1196,7 +1243,7 @@ A commanded undead creature is under the mental control of the evil cleric. The 
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monster.name, intelligence, dnd_monstertype.name, dnd_monstersubtype.name, dnd_racesize.name, hit_dice, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monstertype.id=dnd_monster.type_id left join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Undead" or dnd_monstertype.name="Dragon" or dnd_monstertype.name="Plant" or dnd_monstertype.name="Elemental" or dnd_monstersubtype.name="Air" or dnd_monstersubtype.name="Earth" or dnd_monstersubtype.name="Fire" or dnd_monstersubtype.name="Water" or dnd_monster.name like "%Naga%") and intelligence>=3 and hit_dice<=1 order by hit_dice, dnd_monstertype.name;
+  sqlite> select distinct dnd_monster.name, intelligence, dnd_monstertype.name, dnd_monstersubtype.name, dnd_racesize.name, hit_dice, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monstertype.id=dnd_monster.type_id left join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id left join dnd_monstersubtype on subtype_id=dnd_monstersubtype.id inner join dnd_racesize on size_id=dnd_racesize.id inner join dnd_rulebook on dnd_rulebook.id=rulebook_id where (dnd_monstertype.name="Undead" or dnd_monstertype.name="Dragon" or dnd_monstertype.name="Plant" or dnd_monstertype.name="Elemental" or dnd_monstersubtype.name="Air" or dnd_monstersubtype.name="Earth" or dnd_monstersubtype.name="Fire" or dnd_monstersubtype.name="Water" or dnd_monster.name like "%Naga%") and intelligence>=3 and hit_dice<=1 order by hit_dice, dnd_monstertype.name, dnd_rulebook.name;
   Myconid, Junior Worker|9|Plant|Tiny|1|Monster Manual II
   Twig Blight|5|Plant|Small|1|Monster Manual II
   Volodni|8|Plant|Medium|1|Unapproachable East
@@ -1258,13 +1305,13 @@ A necromental taint elemental could have the Touch of Taint [Monstrous] feat to 
 It takes 42 corruption to kill a Con9--12 creature. More generally, 14*ceil(Con/4).
 If a character's corruption score ever exceeds the severe taint threshold, she dies, and 1d6 hours later she rises as a tainted minion --- a hideous, evil creature under the control of the DM.
 
-Mummified creature is an acquired template that can be added to any corporeal giant, humanoid, or monstrous humanoid
-(referred to hereafter as the base creature).
+Libris Mortis: "Mummified creature is an acquired template that can be added to any corporeal giant, humanoid, or monstrous humanoid."
+Savage Species: "Mummified is an acquired template that can be added to any corporeal animal, giant, or humanoid." Libris Mortis is the more up-to-date source; Libris Mortis talks about Damage Reduction 5/-, while Savage Species talks about Damage Reduction 5/+1 and half damage, 3.0 terminology.
 A mummified creature speaks all the languages it spoke in life
 Speed: A mummified creature's land speed decreases by 10 feet (to a minimum of 10 feet). The speeds for other movement modes are unchanged.
 Abilities: A mummified creature's ability scores are modified as follows: Str +8, Int -4 (minimum 1), Wis +4, Cha +4. As an undead creature, a mummified creature has no Constitution score.
 The process of becoming a mummy is usually involuntary, but expressing the wish to become a mummy to the proper priests (and paying the proper fees) can convince them to bring you back to life as a mummy. The mummy retains all class abilities it had in life, provided that its new ability scores still allow it to use them (a wizard loses access to some spell levels, for instance). A loss of Intelligence does not retroactively remove skill points from a mummified creature.
-Special Qualities: A mummified creature gains the special qualities described below...
+Special Qualities: A mummified creature gains the special qualities described below...which do not include turn resistance.
 
 Can you get either a tainted minion or a mummified creature of less than one Hit Die, thus giving you an intelligent undead minion of less than one Hit Die? Why, it's our old friend the Muckdweller!
 
@@ -1392,9 +1439,9 @@ On a lighter note, I always thought that a "living will" sounded like a magical 
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monster.name,challenge_rating from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_subtype on dnd_monster.id=monster_subtype.monster_id inner join dnd_monstersubtype on monster_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monstertype.name="Construct") and (dnd_monstersubtype.name="Incorporeal") order by challenge_rating;
-  Umbral Spy|3
-  Golem, Prismatic|18
+  sqlite> select distinct challenge_rating, dnd_monster.name, dnd_rulebook.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id inner join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where (dnd_monstertype.name="Construct") and (dnd_monstersubtype.name="Incorporeal") order by challenge_rating;
+  3|Umbral Spy|The Forge of War
+  18|Golem, Prismatic|Monster Manual III
 
 
 
