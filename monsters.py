@@ -3289,7 +3289,15 @@ PRIMARY KEY (character_class_id, spell_level)
   for character_class_name in ("Bard",):
     character_class_id = id_from_name(curs, 'dnd_characterclass', character_class_name)
     curs.executemany('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
-                     [(character_class_id, spell_level, 3*spell_level - 2) for spell_level in range(1, 7)])
+                     [(character_class_id, spell_level, 3*spell_level - 2) for spell_level in range(2, 7)])
+  for character_class_name in ("Cleric", "Druid", "Wizard", "Bard"):
+    character_class_id = id_from_name(curs, 'dnd_characterclass', character_class_name)
+    curs.execute('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
+                 (character_class_id, 0, 1))
+  curs.execute('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
+               (id_from_name(curs, 'dnd_characterclass', "Bard"), 1, 2))
+  curs.execute('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
+               (id_from_name(curs, 'dnd_characterclass', "Sorcerer"), 1, 1))
   """
   sqlite> SELECT dnd_characterclass.name, spell_level, class_level FROM min_level_to_cast_spell INNER JOIN dnd_characterclass ON character_class_id=dnd_characterclass.id;
   """

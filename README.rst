@@ -903,6 +903,14 @@ Frostburn page 76: "If you are proficient with its use, the goad grants a +2 cir
  Although many of these primitive weapons are categorized as exotic weapons, they can be used as martial weapons by those not trained in their use as exotic weapons. If a primitive exotic weapon is used as a martial weapon, the user cannot make use of any of that weapon's special qualities (such as the iuak's ability to damage objects, or the tigerskull club's ability to disarm and trip).
 A&EG 10gp Animal Training Pole: This hollow pole has a strong, thin cord threaded through it and twisted into a loop at the end. When looped around an animal's neck, it provides an easy way to direct the animal while preventing the animal from moving any closer than the pole's length. An animal training pole provides a +2 circumstance bonus on attempts to teach an animal a task [but not to rear a wild animal].
 
+A&EG Whip of Obeyance: This masterwork leather riding whip grants its user a +10 circumstance bonus on Handle Animal checks. This bonus applies only to creatures with Intelligence 2 or lower.
+Caster Level: 5th; Prerequisites: Craft Wondrous Item, animal friendship; Market Price: 2,000 gp; Weight: 2 lb.
+
+Bridle of Ease: This magic bridle grants trainers a +5 competence bonus on Handle Animal checks when training a *mount*. Versions of this item are available for exotic mounts.
+Caster Level: 7th; Prerequisites: Craft Wondrous Item, charm monster; Market Price: 500 gp; Weight: 1 lb.
+An animal can be trained for only one general purpose, though if the creature is capable of learning additional tricks (above and beyond those included in its general purpose), it may do so.
+Riding (DC 15): An animal trained to bear a rider knows the tricks come, heel, and stay. Training an animal for riding takes three weeks.
+
 Teamwork benefits require Int 8 for the leader, so a trained animal cannot be the leader.
 You may have heard of the Team Rush teamwork benefit from the Player's Handbook II; that's the reason why, if you hitch an advanced 5HD shadow mastiff to a sled with a pack of regular dogs, they're inspired to move at the shadow mastiff's speed (50feet).
 With the same teamwork training, an 8HD megaraptor can get a team of giant crocodiles or anklyosaurs to move at a speed of 60feet. Of course, if you can do that, you're close to getting elephants anyway.
