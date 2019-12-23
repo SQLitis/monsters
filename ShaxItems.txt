@@ -614,6 +614,7 @@ Price: 20 GP<br />
 Weight: 1#<br />
 (Arms &amp; Equipment Guide p. 35)<br />
 Thrown as grenade-like weapon. Against stone objects/creatures, 5d10 damage over 2 rounds that ignores hardness. While Delver Slime (150 GP, Savage Species) may deal more damage per application, Stonebreaker Acid is a lot cheaper.
+While Stoneburn Acid (10gp for 2d6, Drow of the Underdark) may be cheaper, Stonebreaker Acid deals a lot more damage.
 A 1-foot-thick masonry wall has 90 hit points Per 10-foot-by-10-foot section. A 3-foot-thick hewn stone wall has 540 hp Per 10-foot-by-10-foot section.
 A 4-inch-thick stone door has 60 hp. Some dungeons, like the Sunless Citadel, specifically have 2-inch-thick stone doors with only 30hp.
 Stone has 15 hit points per inch of thickness, so 740gp of Stonebreaker Acid (185d10 avg 1017dmg) will get through almost 68inches. How wide the resulting passage will be is unknown.
@@ -965,6 +966,7 @@ Weight: 5#<br />
 (Underdark p. 67)<br />
 +2 circumstance bonus on Balance, Climb, Escape Artist, and Survival checks when in tough-to-access areas or cramped spaces. This bonus stacks with the Climber's Kit and Spider Kit, although I imagine wearing all three kits at once wouldn't be all that comfortable.
 A&EG Housebreaker Harness 20gp adds another +1 to Climb checks
+Stoneburners (5gp + 10gp, Drow of the Underdark) can add another +2, but if you're paying 10gp per 200feet to climb stone, a potion of spider climb would probably be better.
 This kit includes a headlamp, head protection, protective clothing, gloves, kneepads, and heavy boots. <br />
 <br />
 <b>Spider Kit</b><br />

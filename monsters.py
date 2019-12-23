@@ -416,7 +416,7 @@ if matchObj.group(0) != 'CL10 (with Graystaff only)':
 movementModeRE = re.compile(r'([bcfs])(\d{1,3})(?: ?\(([a-v]{2,4})[\)0])?') # prf, gd, avg, pr, clu
 
 # put (?:) on all substrings just in case
-dieRollREstring = r'(?:\dd\d{1,2})'
+dieRollREstring = r'(?:\d{1,2}d\d{1,2})'
 #dieRollRE = re.compile(dieRollREstring)
 dieRollOrConstantREstring = r'(?:' + dieRollREstring + '|\d)'
 # When you use |, Python re will always try to match the first listed regex, and only if that fails will it match the others.
@@ -427,7 +427,8 @@ damageBonusCapturingREstring = r'([+-]\d{1,2})' # capturing instead of noncaptur
 criticalRangeREstring = r'(?:/1[5-9]\-20)'
 criticalMultiplierREstring = r'(?:/x[2-4])'
 criticalHitCommentREstring = r'(?:\, vorpal)'
-damageTypeREstring = r'(?: [A-Za-z ]+)' # 1d4 Wis drain, 1 fire
+damageTypeREstring = r'( (?!plus)[A-Za-z\- ]+)' # 1d4 Wis drain, 1 fire, +1 merciful greataxe +8 (3d6+5/x3 or 4d6+5/x3 non-lethal)
+nonNumericalDamageREstring = r"([A-Za-zç' ]+)" # could be eg entangle or Kyuss's gift
 numericalDamageREstring = (r'(?:' + dieRollOrConstantREstring + damageBonusREstring + '?' + criticalRangeREstring + '?' + criticalMultiplierREstring + '?' +
                            criticalHitCommentREstring + '?' +
                            ')')
@@ -437,9 +438,10 @@ numericalDamageRE = re.compile(r'(?:' + '(' + dieRollOrConstantREstring + ')' + 
                            ')')
 assert len(numericalDamageRE.match("1d4+2").group(0)) == 5
 assert len(numericalDamageRE.match('2d10+11/19-20').group(0)) == 13
-singleDamageREstring = r'(?:' + numericalDamageREstring + damageTypeREstring + '?' + r'|[a-z ]+)' # could be eg entangle
+singleDamageREstring = r'(?:' + numericalDamageREstring + damageTypeREstring + '?' + '|' + nonNumericalDamageREstring + ')'
 #singleDamageRE = re.compile(singleDamageREstring)
-damageREstring = r'(' + singleDamageREstring + r'(?: (?:(?:plus)|(?:or)) ' + singleDamageREstring + r')*)' # capturing instead of noncapturing parens
+damageREstring = r'(' + singleDamageREstring + r'(?: (?:(?:plus)|(?:or)|(?:and)) ' + singleDamageREstring + r')*)' # capturing instead of noncapturing parens
+# We cannot use (?p<damage> to name this because we are going to include this multiple times; instead we use SINGLE_ATTACK_DAMAGE_GROUP_NUMBER.
 # Inevitable, Marut Slam +22 (2d6+12 plus 3d6 sonic or 3d6 electricity)
 assert re.match(damageREstring, "2d6+12 plus 3d6 sonic or 3d6 electricity")
 assert re.match(damageREstring, "1d3 plus 1 Con")
@@ -449,21 +451,71 @@ parenthesizedDamageREstring = r'(?: +\(' + damageREstring + r'\))'
 # Gargantuan +3 adamantine warhammer +37 (4d6+27/x3) or +3 javelin +22 (2d6+19) or slam +34 (1d8+16)
 numberOfAttacksREstring = r'(\d{1,3} )' # Hydra, 10-Headed 10 bites +14 (1d10+5) # Hecatoncheires 100 greatswords +73
 # when spaces are needed to be sure a bit is separate, I arbitrarily assign the spaces to the end of each REstring
-weaponSizeREstring = r'(?:(?:Tiny)|(?:Small)|(?:Large)|(?:Huge)|(?:Gargantuan) )'
+weaponSizeREstring = r'(?:(?:(?:Tiny)|(?:Small)|(?:Large)|(?:Huge)|(?:Gargantuan)) )'
 weaponEnchantmentREstring = r'(?:\+\d{1,2} )' # Gloom +10 keen dagger of human dread +54 (1d4+21/15-20)
 possiblyHyphenatedWordREstring = r"(?:[A-Za-z]+(?:\-[a-z]+)?(?:'s)?)" # add 's to make possessive
 attackNameREstring = r'(' + possiblyHyphenatedWordREstring + '(?: ' + possiblyHyphenatedWordREstring + ')*' + ')' # capturing instead of noncapturing parens
 compositeBowStrBonusREstring = r'(?: \(\+\d{1,2} Str bonus\))'
 # \+|\- doesn't work, possibly because needed parentheses around (A|B)
 attackBonusREstring = r'([+-]\d{1,3})' # capturing instead of noncapturing parens
-attackRollTypeREstring = r'(?: (?:ranged )?touch)'
+attackRollTypeREstring = r'(?:(?: ranged)?(?: touch)?)' # r'(?: (?:ranged )?touch)'
 singleAttackModeREstring = r'(?:' + numberOfAttacksREstring + '?' + weaponSizeREstring + '?' + weaponEnchantmentREstring + '?' + attackNameREstring + compositeBowStrBonusREstring + '?' + ' ' + attackBonusREstring + attackRollTypeREstring + '?' + parenthesizedDamageREstring + '?' + ')'
-attacksREstring = singleAttackModeREstring + r'(?: or ' + singleAttackModeREstring + r')*'
+attacksREstring = '(' + singleAttackModeREstring + ')' + r'(?: or (' + singleAttackModeREstring + r'))*'
 #noAttacksREstring = r'(?:\-)' # not much point in allowing this, since cannot extract an attack bonus or anything, will still have to specifically check for the case of no attacks
 #print('attacksREstring =', attacksREstring)
 singleAttackModeRE = re.compile(singleAttackModeREstring)
 attacksRE = re.compile(attacksREstring)
 #attackWithoutParensRE = re.compile(attackNameREstring + compositeBowStrBonusREstring + '?' + ' ' + attackBonusREstring + attackRollTypeREstring + '? ' + damageREstring)
+
+assert re.match('(\w)(?: or (\w))*', 'a or b or c or d').groups() == ('a', 'd')
+# This doesn't seem like it can possibly be intended behavior.
+# If normally-capturing parentheses don't capture when they're wrapped in repetition qualifiers (*, +, ?, {m,n}, etc), then, fine. That would certainly keep things simple and easy to use, even if it would prevent some useful features.
+# But why would it capture *one* instance of the repetition, yet not the others? And even if it was going to do that, why the last rather than the first?
+
+SINGLE_ATTACK_DAMAGE_GROUP_NUMBER = 4
+# Consider Bite +7 (2d6+7 plus 1d4 acid).
+# There are two instances of damage, with different group numbers.
+# We could isolate the damage string inside the parentheses and then finditer with singleDamageREstring, but singleDamageREstring will match almost everything, including e.g. "acid" by itself.
+# We could iterate over the groups of the damage match object and individually check each one for matching singleDamageREstring, but again, singleDamageREstring will match almost anything, including "acid" by itself, which will get misread as a non-numerical damage instead of a damage type.
+SINGLE_ATTACK_DAMAGE_TYPE_GROUP_NUMBER = 5
+SINGLE_ATTACK_NON_NUMERICAL_DAMAGE_GROUP_NUMBER = 8
+
+assert attacksRE.match('Short sword +2 (1d6/19-20) or touch +2 (1d4 Int)')
+matches = list(singleAttackModeRE.finditer('Short sword +2 (1d6/19-20) or touch +2 (1d4 Int)'))
+assert len(matches) == 2
+assert matches[1].group(2) == 'or touch' # probably not worth fixing now, but note
+assert matches[0].group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '1d6/19-20'
+assert matches[1].group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '1d4 Int'
+assert matches[1].group(SINGLE_ATTACK_DAMAGE_TYPE_GROUP_NUMBER) == ' Int'
+matchObj = singleAttackModeRE.match('rock +9 ranged (2d6+8)')
+assert matchObj.group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d6+8'
+
+assert singleAttackModeRE.match('+2 composite longbow (+5 Str bonus) +28 (2d6+7/x3 plus slaying)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d6+7/x3 plus slaying'
+print(singleAttackModeRE.match('+2 composite longbow (+5 Str bonus) +28 (2d6+7/x3 plus slaying)').groups())
+assert singleAttackModeRE.match('+2 composite longbow (+5 Str bonus) +28 (2d6+7/x3 plus slaying)').group(SINGLE_ATTACK_NON_NUMERICAL_DAMAGE_GROUP_NUMBER) == 'slaying'
+assert singleAttackModeRE.match('Gargantuan +3 adamantine warhammer +37 (4d6+27/x3)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '4d6+27/x3'
+assert re.match('(?:Large) ', 'Large ').group(0) == 'Large '
+assert re.match(r'(?:(?:Large) )', 'Large ').group(0) == 'Large '
+assert re.match(r'(?:(?:Gargantuan) )', 'Gargantuan ').group(0) == 'Gargantuan '
+assert re.match(weaponSizeREstring + '?', 'Gargantuan').group(0) == '' # cannot match because it didn't find the trailing space
+assert re.match(weaponSizeREstring + '?', 'Gargantuan ').group(0) == 'Gargantuan '
+assert re.match(weaponSizeREstring + '?', 'Large').group(0) == ''
+assert re.match(weaponSizeREstring + '?', 'Large ').group(0) == 'Large '
+assert re.match(weaponSizeREstring + '?' + weaponEnchantmentREstring + '?', 'Large +3 ').group(0) == 'Large +3 '
+assert singleAttackModeRE.match('Large +3 adamantine warhammer +37 (4d6+27/x3)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '4d6+27/x3'
+assert singleAttackModeRE.match('2 composite longbows +14 (2d6+6/x3)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d6+6/x3'
+assert singleAttackModeRE.match('2 composite longbows (+5 Str bonus) +14 (2d6+6/x3)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d6+6/x3'
+assert singleAttackModeRE.match('2 +1 composite longbows (+5 Str bonus) +14 (2d6+6/x3)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d6+6/x3'
+assert singleAttackModeRE.match('2 Large composite longbows (+5 Str bonus) +14 (2d6+6/x3)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d6+6/x3'
+print(singleAttackModeRE.match('Large +1 longbow +14 (2d6)').groups())
+assert re.match('a?a?a', 'aaa').group(0) == 'aaa' # re tries to match as much as possible
+assert singleAttackModeRE.match('Gargantuan +1 longbow +14 (2d6)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d6'
+assert singleAttackModeRE.match('Large +3 adamantine warhammer +14 (2d6)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d6'
+assert singleAttackModeRE.match('Large +1 longbow +14 (2d6)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d6'
+assert singleAttackModeRE.match('2 Large +1 composite longbows +14 (2d6)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d6'
+assert singleAttackModeRE.match('2 Large +1 composite longbows (+5 Str bonus) +14 (2d6+6/x3)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d6+6/x3'
+assert singleAttackModeRE.match('+5 holy flaming longsword +44 (2d8+18/17-20 plus 2d6 holy and 1d6 fire)').group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER) == '2d8+18/17-20 plus 2d6 holy and 1d6 fire'
+
 naturalWeaponREstring = r'([Bb]ite|[Cc]law|[Tt]alon|[Gg]ore|[Ss]lap|[Ss]lam|[Ss]ting|[Tt]entacle)s?' # capturing instead of noncapturing parens
 naturalWeaponRE = re.compile(naturalWeaponREstring)
 naturalWeaponAttackREstring = naturalWeaponREstring + ' ' + attackBonusREstring + attackRollTypeREstring + '?' + parenthesizedDamageREstring
@@ -1238,6 +1290,7 @@ class Monster(object):
     # Lycanthrope, Drow Werebat
     # Lycanthrope, Goblin Rat
     if self.name == 'Lycanthrope, Goblin Rat, (human form)': self.name = 'Lycanthrope, Goblin Rat (human form)'
+    elif self.name == 'Quasit': self.name = 'Demon, Quasit'
     reducedName = self.name
     parentheticals = list()
     for matchObj in nameParentheticalRE.finditer(self.name):
@@ -1372,18 +1425,139 @@ class Monster(object):
     
     attacks = xls_row[12].value # single attack
     #attacks = xls_row[13].value # full attack often "Same as Attack" or some abbreviated form like "4 tentacles"
-    if attacks[:6] == 'Bite 1': attacks = 'Bite +1' + attacks[6:]
+    if attacks == 'Huge +5 triple flail +51 (1d12+24/19-20 [for each of 1d3 heads]':
+      # In this particular case, paren is opened but should not be closed at the end
+      attacks = 'Huge +5 triple flail +51 (1d12+24/19-20) [for each of 1d3 heads]'
     elif '(' in attacks and ')' not in attacks: # mismatched parentheses
-      if attacks[-1] == '(': # typo, closing paren was open paren instead
+      if attacks[-1] == '(' or attacks[-1] == '_': # typo, hit the key immediately to left or right of closing paren
         attacks = attacks[:-1] + ')'
       else: # typo, closing paren was left off
         attacks = attacks + ')'
+    elif ')' in attacks and '(' not in attacks:
+      if attacks.count(')') == 2:
+        attacks = attacks.replace(')', '(', 1)
+    elif attacks == 'Slam +21 (2d6+12 or gore +21 (4d8+12)':
+      attacks = 'Slam +21 (2d6+12) or gore +21 (4d8+12)'
+    elif attacks[:28] == 'Short sword +10 1d6+4/19-20)':
+      attacks = 'Short sword +10 (1d6+4/19-20)' + attacks[28:]
+    elif attacks == 'Tail slap +4 (1d6+1 plus positive energy) or tail touch +4 (positive energy(':
+      attacks = 'Tail slap +4 (1d6+1 plus positive energy) or tail touch +4 (positive energy)'
     elif attacks[:43] == 'Wand of Orcus (+6 chaotic unholy greatclub)':
       attacks = '+6 chaotic unholy greatclub' + attacks[43:]
     elif attacks[:42] == 'Ruby Rod of Asmodeus (+6 unholy greatclub)':
       attacks = '+6 unholy greatclub' + attacks[42:]
-    #attacks = attacks.replace("Dispater's ", '')
+
+    if attacks[:6] == 'Bite 1':
+      attacks = 'Bite +1' + attacks[6:]
+    elif attacks == 'Bite +56 (2d8+18/19-20/plus 1d6)':
+      attacks = 'Bite +56 (2d8+18/19-20 plus 1d6)'
+    elif attacks[:24] == 'Greataxe +27 (4d6+18x/3)':
+      attacks = 'Greataxe +27 (4d6+18/x3)' + attacks[24:]
+    elif attacks[-10:] == '(1d8+2x/3)':
+      attacks = attacks[:-10] + '(1d8+2/x3)'
+    elif attacks[-17:] == 'javelin +4 (d4+1)':
+      attacks = attacks[:-17] + 'javelin +4 (1d4+1)'
+    elif attacks[:22] == 'Morningstar +3 (16d+1)':
+      attacks = 'Morningstar +3 (1d6+1)' + attacks[22:]
+    elif attacks[-10:] == '(18d+3/x3)':
+      attacks = attacks[:-10] + '(1d8+3/x3)'
+    elif attacks[-7:] == ' (1d6+)':
+      attacks = attacks[:-7] + ' (1d6)'
+
+    if attacks == 'Fire bolt +24 (8d6 fire/19-20)':
+      attacks = 'Fire bolt +24 (8d6/19-20 fire)'
+    elif attacks == 'Flaming sword +36 (3d10 fire/17-20+3d10 fire) or slam +36 (3d6+10 plus 3d6 fire)':
+      attacks = 'Flaming sword +36 (3d10/17-20 fire plus 3d10 fire) or slam +36 (3d6+10 plus 3d6 fire)'
+    elif attacks == 'Masterwork scimitar +14 (1d6+6 plus 1d6 fire/18-20)':
+      attacks = 'Masterwork scimitar +14 (1d6+6/18-20 plus 1d6 fire)'
+    elif attacks == '+5 flaming burst halberd of speed +33 (2d8+23 plus 1d6 fire/19-20/x3 plus 2d10 fire) or +5 seeking composite longbow (+12 Str bonus) +36 (2d6+17/x3)':
+      # Hmm, flaming burst is tricky...
+      attacks = '+5 flaming burst halberd of speed +33 (2d8+23 plus 1d6 fire) or +5 seeking composite longbow (+12 Str bonus) +36 (2d6+17/x3)'
+    elif attacks == 'Slam +8 (1d8+7) or bolt +5 (3d8+3 plus 1d6 fire/x2 plus 1d10 fire)':
+      # Hmm, flaming burst is tricky...
+      attacks = 'Slam +8 (1d8+7) or bolt +5 (3d8+3 plus 1d6 fire)'
+    elif attacks == 'Masterwork lance +14 (2d6+7/x3) or masterwork heavy flail +14 (2d8+7/19-20) or composite longbow (+5 Str bonus) +9 (1d8+6/x3 plus 1d6 electricity [plus 2d10 electricity on critical hit])':
+      # Hmm, shocking burst is tricky...
+      attacks = 'Masterwork lance +14 (2d6+7/x3) or masterwork heavy flail +14 (2d8+7/19-20) or composite longbow (+5 Str bonus) +9 (1d8+6/x3 plus 1d6 electricity)'
+    elif attacks == '+5 acidic burst bastard sword +41 (2d8+18/17-20 plus 1d6 acid [plus 1d10 acid on critical hit])':
+      # Hmm, acidic burst is tricky...
+      attacks = '+5 acidic burst bastard sword +41 (2d8+18/17-20 plus 1d6 acid)'
+    elif attacks == '+1 icy burst cold iron maul +32 (3d8+35/19-20/x3 plus 1d6 cold [plus 2d10 cold on critical hit]) (adj for Pwr Atk) or rock +22 (2d8+15)':
+      # Hmm, acidic burst is tricky...
+      attacks = '+1 icy burst cold iron maul +32 (3d8+35/19-20/x3 plus 1d6 cold) or rock +22 (2d8+15)'
+    elif attacks == '+5 shocking burst adamantine scourge +37 (1d8+12/19-20 plus 1d6 electricity [plus 1d10 electricity on critical hit])':
+      attacks = '+5 shocking burst adamantine scourge +37 (1d8+12/19-20 plus 1d6 electricity)'
+    elif attacks == '+3 fleshgrinding vile ranseur +42 (2d4+15/x3 plus 1 vile [plus extra 2 vile on critical hit]) or claw +38 (1d4+8 plus 1 vile)':
+      attacks = '+3 fleshgrinding vile ranseur +42 (2d4+15/x3 plus 1 vile) or claw +38 (1d4+8 plus 1 vile)'
+    elif attacks == '+5 flaming burst icy burst ranseur +41 (2d6+15/19-20/x3 plus 1d6 cold and 1d6 fire [plus 2d10 cold and 2d10 fire on critical hit])':
+      attacks = '+5 flaming burst icy burst ranseur +41 (2d6+15/19-20/x3 plus 1d6 cold and 1d6 fire)'
+    elif attacks == '+2 flaming burst ranseur +19 (2d6+5/19-20/x3 plus 1d6 fire [2d10 fire on critical hit[)':
+      attacks = '+2 flaming burst ranseur +19 (2d6+5/19-20/x3 plus 1d6 fire)'
+    elif attacks == 'Ruby Rod +51 (2d6+27 plus 3d8+15 negative energy [plus 2d6 against good-aligned creatures])':
+      attacks = 'Ruby Rod +51 (2d6+27 plus 3d8+15 negative energy plus 2d6 against good creatures)'
+    elif attacks == 'Triple flail +31 (3d6+25, plus see text) (adj for Pwr Atk)':
+      attacks = 'Triple flail +31 (3d6+25 plus see text) (adj for Pwr Atk)'
+    # Crit specifier does often come before added damage, eg:
+    # Armblade +20 (1d8+9/19-20 plus 2d6 holy plus 1d6 fire)
+    elif attacks == 'Slam +7 (1d6 plus 1d6 energy/19-20)':
+      attacks = 'Slam +7 (1d6/19-20 plus 1d6 energy)'
+    elif attacks == 'Gargantuan +4 shortspear +50 (2d8+23 plus 1 vile/x3)':
+      attacks = 'Gargantuan +4 shortspear +50 (2d8+23/x3 plus 1 vile)'
+    elif attacks == '+4 ranseur +50 (2d4+13 plus 1 vile/x3)':
+      attacks = '+4 ranseur +50 (2d4+13/x3 plus 1 vile)'
+    elif attacks == 'Flame blade +46 (2d8+20 fire/15-20)':
+      attacks = 'Flame blade +46 (2d8+20/15-20 fire)'
+    elif attacks == '+4 rapier +46 (1d6+16 plus 2d6 precise strike/15-20)':
+      attacks = '+4 rapier +46 (1d6+16/15-20 plus 2d6 precise strike)'
+    elif attacks == '+5 bloodfeeding flaming greatsword +49 (2d6+20 plus 1d6 fire/19-20)':
+      attacks = '+5 bloodfeeding flaming greatsword +49 (2d6+20/19-20 plus 1d6 fire)'
+    elif attacks == 'Slam +52 (1d10+15 plus 1 vile plus withering/19-20)':
+      attacks = 'Slam +52 (1d10+15/19-20 plus 1 vile plus withering)'
+    elif attacks == 'Huge +5 ranseur +50 (2d6+17 plus 1d6 fire or 1d6 cold/x3)':
+      attacks = 'Huge +5 ranseur +50 (2d6+17/x3 plus 1d6 fire or 1d6 cold)'
+    elif attacks == 'Slam +54 (4d8+24 plus 1d6 Con drain plus energy drain/19-20 plus 1d6 plus death)':
+      # Right next to Atropus, Father Llymic Claw +33 (3d6+11/18-20/x3 plus 2d6 cold plus soul chill)
+      attacks = 'Slam +54 (4d8+24/19-20 plus 1d6 Con drain plus energy drain plus 1d6 plus death)'
+    elif attacks == 'Tail +27 (8d6 acid/19-20) or claw +24 ranged (1d10+11/19-20)':
+      attacks = 'Tail +27 (8d6/19-20 acid) or claw +24 ranged (1d10+11/19-20)'
+    elif attacks == 'Touch +49 (2d6 Con drain/19-20)':
+      attacks = 'Touch +49 (2d6/19-20 Con drain)'
+    elif attacks == 'Large scythe +13 (2d6+18 plus entropic blade/19-20/x4) (adj for Pwr Atk)':
+      attacks = 'Large scythe +13 (2d6+18/19-20/x4 plus entropic blade) (adj for Pwr Atk)'
+    elif attacks == 'Tentacle +19 (1d8+9 plus 1d6 electricity/19-20/x3)':
+      attacks = 'Tentacle +19 (1d8+9/19-20/x3 plus 1d6 electricity)'
+    elif attacks == 'Slam +28 (2d10+11) or +5 flaming burst warhammer +33 (1d8+16 plus 1d6 fire/x3 plus 1d10 fire)':
+      attacks = 'Slam +28 (2d10+11) or +5 flaming burst warhammer +33 (1d8+16/x3 plus 1d6 fire)'
+    elif attacks == 'Spinning blade +43 (2d6+12/19-20 [+1d6 on critical hit]) or slam +35 (2d6+6) or shocking touch +35 (2d6+6 electricity) or electricity ray +35 (10d6 electricity) or spike +30 (2d6+12)':
+      attacks = 'Spinning blade +43 (2d6+12/19-20) or slam +35 (2d6+6) or shocking touch +35 (2d6+6 electricity) or electricity ray +35 (10d6 electricity) or spike +30 (2d6+12)'
+    elif attacks == 'Slam +44 (3d6+18/19-20 plus hunefer rot +1d6 on critical hit])':
+      attacks = 'Slam +44 (3d6+18/19-20 plus hunefer rot)'
+    elif attacks == 'Claw +38 (3d8+21/19-20 plus blazefire [+1d6 on critical hit])':
+      attacks = 'Claw +38 (3d8+21/19-20 plus blazefire)'
+    elif ' [+1d6 on critical hit]' in attacks:
+      attacks = attacks.replace(' [+1d6 on critical hit]', '')
+    elif attacks == 'Slam +50 (6d8+19/19-20/+1d6)':
+      attacks = 'Slam +50 (6d8+19/19-20)'
+    elif attacks == '+5 warhammer +87 (4d8+30/19-20 [+2d6 on critical hit]) or +5 javelin +70 (2d10+22/19-20)':
+      attacks = '+5 warhammer +87 (4d8+30/19-20) or +5 javelin +70 (2d10+22/19-20)'
+
+    elif attacks == '2 Large +1 composite longbows (+5 Str bonus) +14/+14 (2d6+6/x3) or claw +15 (1d6+5)':
+      attacks = '2 Large +1 composite longbows (+5 Str bonus) +14 (2d6+6/x3) or claw +15 (1d6+5)'
+    elif attacks == 'Horn +16 or +13 ranged (2d6+6 plus poison)':
+      attacks = 'Horn +16 (2d6+6 plus poison) or Horn +13 ranged (2d6+6 plus poison)'
+    elif attacks == 'Trident +4 or +6 ranged (1d8+1)':
+      attacks = 'Trident +4 (1d8+1) or Trident +6 ranged (1d8+1)'
+    elif attacks == 'Dagger +2 melee or ranged (1d4+1)':
+      attacks = 'Dagger +2 (1d4+1) or Dagger +2 ranged (1d4+1)'
+    elif attacks == 'Claw +8 (2d4+5) or lajatang +7/+7 (2d6+5/2d6+2)':
+      attacks = 'Claw +8 (2d4+5) or lajatang +7 (2d6+5)'
+
     attacks = attacks.replace(' (mimic)', '')
+    attacks = attacks.replace(', plus ', ' plus ')
+    attacks = attacks.replace('Adamantine +1 throwing returning maul', '+1 Adamantine throwing returning maul')
+    attacks = attacks.replace('adamantine +1 throwing returning maul', '+1 adamantine throwing returning maul')
+
+    self.special_damage = set()
 
     if attacks == '-':
       pass
@@ -1391,6 +1565,12 @@ class Monster(object):
       # has no attack bonus
       pass
     elif attacks == 'Vine 1d2+1 plus poison':
+      pass
+    elif attacks == '12 slams +9 (1d4+4) or Huge weapon +9/+4 (dmg +4) and 11 Huge light weapons +9 (dmg +2), or Huge weapon +7/+2 (dmg +4) and 11 Huge weapons (1 or more non-light weapons) +7 (dmg +2)':
+      pass
+    elif attacks == 'Claw +13 (2d4+8) or weapon +13 (dmg +8) or weapon +11 (dmg +8) or stone +5 (1d6+8)':
+      pass
+    elif ' (dmg +' in attacks or ' (dmg+' in attacks: # don't deal with these "arbitrary weapon" entries yet
       pass
     else:
       #matchObj = dieRollRE.search(attacks)
@@ -1412,11 +1592,29 @@ class Monster(object):
       if matchObj is None:
         print('no attacks match for', self.name, 'attacks', attacks)
         raise Exception(self.name, attacks)
-      numberOfAttacks = None if matchObj.group(1) is None else int(matchObj.group(1) )
+      # for attackMatchObj in itertools.chain(singleAttackModeRE.finditer(self.attacks), singleAttackModeRE.finditer(self.fullAttack)):
+      # for attackMatchObj in singleAttackModeRE.finditer(self.attacks):
+      for g in attacksRE.match(attacks).groups():
+        # interior groups will also be there
+        if g is None: continue # some groups will not match
+        attackMatchObj = singleAttackModeRE.match(g)
+        if attackMatchObj is not None:
+          damage = attackMatchObj.group(SINGLE_ATTACK_DAMAGE_GROUP_NUMBER)
+          if damage is None:
+            if attackMatchObj.group(2) not in ('web', 'Energy touch'):
+              raise Exception(self.name, attacks, attackMatchObj, attackMatchObj.group(0), attacksRE.match(attacks).groups())
+            else:
+              self.special_damage.add(attackMatchObj.group(2))
+          else:
+            if not numericalDamageRE.match(damage) or numericalDamageRE.match(damage).group(0) != damage: # anything other than straight HP damage, including Int damage
+              self.special_damage.add(damage)
+      firstAttack = matchObj.group(1)
+      firstAttackMatchObj = singleAttackModeRE.match(firstAttack)
+      numberOfAttacks = None if firstAttackMatchObj.group(1) is None else int(firstAttackMatchObj.group(1) )
       # a few monsters can make multiple attacks with a single attack action
       #if numberOfAttacks is not None:
       #  print(self.name, self.HitDice, self.type_name, numberOfAttacks, attacks) # only with more than hydra is darktentacles 9HD
-      attackName = matchObj.group(2)
+      attackName = firstAttackMatchObj.group(2)
       #else:
       #  print(self.name, 'attacks', attacks, matchObj.group(1), matchObj.group(2) )
     #if (self.type_name == 'Humanoid' or self.type_name == 'Animal') and ('Slam' in attacks or 'slam' in attacks):
@@ -1502,6 +1700,8 @@ class Monster(object):
       # suspect that missing a digit like Dragon, Chromatic, Blue, Young Adult
       self.challenge_rating += 10
     elif self.name == 'Ki-rin': self.challenge_rating = 18 # error in table
+    elif self.name == 'Mind Shard of Pandorym': self.challenge_rating = 25 # error in table
+    elif self.name == 'Abomination, Xixecal': self.challenge_rating = 36 # error in table
 
     self.rulebook_abbrev = xls_row[30].value
     if self.name == 'Demon, Alkilith': self.rulebook_abbrev = 'FF'
@@ -1724,6 +1924,7 @@ class Monster(object):
     ret.armorPlusShieldPlusNaturalArmor = ret.ArmorClass - int(matchObj.group(9))
     ret.attacks = ''
     ret.fullAttack = ''
+    ret.special_damage = set()
     ret.specialAttacks = Monster.splitSpecialAbilities(matchObj.group(10) )
     ret.specialQualities = Monster.splitSpecialAbilities(matchObj.group(11) )
     ret.set_default_alignment(matchObj.group(12) )
@@ -1903,6 +2104,8 @@ class Monster(object):
     # An attack with a primary natural weapon uses the creature's full attack bonus. Attacks with secondary natural weapons are less effective and are made with a -5 penalty on the attack roll, no matter how many there are. (Creatures with the Multiattack feat take only a -2 penalty on secondary attacks.) This penalty applies even when the creature makes a single attack with the secondary weapon as part of the attack action or as an attack of opportunity.
     # This suggests that the primary natural weapon should go in the dnd_monster table itself, while secondaries should go in the auxiliary table.
     # Almost every monster will have one primary natural weapon, right?
+    for dmg in self.special_damage:
+      curs.execute('''INSERT OR IGNORE INTO monster_deals_special_damage (monster_id, damage) VALUES (?, ?);''', (monster_id, dmg) )
 
     curs.execute('''INSERT INTO monster_has_alignment (monster_id, good_evil, law_chaos) VALUES (?,?,?);''', (monster_id, self.goodEvilID, self.lawChaosID) )
     #curs.execute('''SELECT id from dnd_plane WHERE name like "%{}";'''.format(self.environment) )
@@ -2240,6 +2443,8 @@ def make_familiar_table(curs):
       continue
     if givenName == 'Sea snake':
       givenName = 'Sea Snake, Tiny'
+    elif givenName == 'Quasit':
+      givenName = 'Demon, Quasit'
 
     monsterRulebookID = get_rulebook_id(curs, matchObj.group('monsterRulebook'))
     if monsterRulebookID is None:
@@ -2291,10 +2496,29 @@ def make_familiar_table(curs):
 
 
 
+
+def make_skill_table(curs):
+  curs.execute('''CREATE TABLE monster_has_skills (monster_name TEXT, skills TEXT, advancement TEXT);''')
+  book = xlrd.open_workbook(os.path.join('..', 'Creature Catalog 3.5 noSLAsButLAandAdvancementAndSkills.xls'))
+  #print(XLSfilepath, 'has', book.nsheets, 'sheets')
+  #print('The sheet names are', book.sheet_names() )
+  for sheet in book.sheets():
+    for i,xls_row in itertools.dropwhile(lambda pair: pair[0] < 3,
+                 enumerate(sheet.get_rows() ) ):
+      name = xls_row[0].value
+      skills = xls_row[55].value
+      advancement = xls_row[64].value
+      curs.execute('''INSERT INTO monster_has_skills (monster_name, skills, advancement) VALUES (?, ?, ?);''', (name, skills, advancement))
+
+
+
+
+
+
 ShaxItemRE = re.compile(r'<b>(?P<name>[\w\s]+)</b>[\s\w\d\.\,\(\)]*?<br />\nPrice: (?P<price>\d+) (?P<coin>[CSG])P<br />\nWeight: (?P<weight>\d+\.?\d*|\-+)#?<br />\n\((?P<book>[\w\s&;]+) p\. (?P<page>\d+)\)<br />\n(?P<desc>.+)')
 # still need to handle:
 assert not ShaxItemRE.match('''<b>Wick, Candle</b> (x5, 2 SP ea.)<br />
-Price: 1 GP<br />
+Price: 1 GP<br />s
 Weight: --<br />
 (Arms &amp; Equipment Guide p. 27)<br />
 Can be used anywhere you would use Twine (Dungeonscape p. 33), such as tripwires, improvised alarm systems, fishing lines, signal kites, or hang from the ceiling to detect invisible flying creatures. In addition, you can use it as a timing device: it takes 30 seconds (5 rounds) to burn 1 inch. Comes in 50' rolls. <br />''')
@@ -2853,6 +3077,12 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
 FOREIGN KEY(weapon_id) REFERENCES dnd_weapon(id),
 UNIQUE(monster_id, weapon_id)
   );''')
+  curs.execute('''CREATE TABLE monster_deals_special_damage (
+  monster_id INTEGER NOT NULL,
+  damage TEXT NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id)
+UNIQUE(monster_id, damage)
+  );''')
 
   create_rulebook_table(curs)
 
@@ -3290,6 +3520,10 @@ PRIMARY KEY (character_class_id, spell_level)
     character_class_id = id_from_name(curs, 'dnd_characterclass', character_class_name)
     curs.executemany('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
                      [(character_class_id, spell_level, 3*spell_level - 2) for spell_level in range(2, 7)])
+  for character_class_name in ("Adept",):
+    character_class_id = id_from_name(curs, 'dnd_characterclass', character_class_name)
+    curs.executemany('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
+                     [(character_class_id, spell_level, 4*spell_level - 4) for spell_level in range(1, 6)])
   for character_class_name in ("Cleric", "Druid", "Wizard", "Bard"):
     character_class_id = id_from_name(curs, 'dnd_characterclass', character_class_name)
     curs.execute('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
@@ -3380,6 +3614,8 @@ FOREIGN KEY(template_id) REFERENCES dnd_template(id)
     #if i > 8000: break
   
   make_familiar_table(curs)
+
+  make_skill_table(curs)
 
   if False: parse_IMarvinTPA(curs, marvinCache)
   

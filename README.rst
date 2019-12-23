@@ -355,7 +355,7 @@ The classic imp-like quasit actually does not have telepathy.
 
 .. code-block:: bash
 
-  sqlite> select distinct dnd_monster.name,challenge_rating,intelligence,dnd_special_ability.name from dnd_monster inner join monster_special_ability on dnd_monster.id=monster_special_ability.monster_id inner join dnd_special_ability on monster_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id left join monster_subtype on dnd_monster.id=monster_subtype.monster_id left join dnd_monstersubtype on monster_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monster.name like "Demon, %") and (dnd_monstersubtype.name="Tanar'ri" or dnd_special_ability.name like "%telepathy%") order by (challenge_rating);
+  sqlite> select distinct dnd_monster.name,challenge_rating,intelligence,dnd_special_ability.name from dnd_monster inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id left join monster_has_subtype on dnd_monster.id=monster_has_subtype.monster_id left join dnd_monstersubtype on monster_has_subtype.subtype_id=dnd_monstersubtype.id where (dnd_monster.name like "Demon, %") and (dnd_monstersubtype.name="Tanar'ri" or dnd_special_ability.name like "%telepathy%") order by (challenge_rating);
   Demon, Mane|1|3|Acidic cloud
   Demon, Dretch|2|5|summon tanar'ri
   Demon, Gadacro|3|8|Eyethief
@@ -439,6 +439,7 @@ project a 30-foot line of its acidic blood as a standard action. Anyone in the a
 
 Controlling Sting (Su) As the dominate monster spell; 3/day; Fort DC 19 negates; caster level 10th.
 A quanlos's puny intellect prevents it from exercising a fine level of control over its thralls. The creature lacks the sophistication to order a group of dwarf artisans to build a castle for it, or to command an elf wizard to use a specific spell to protect it. Instead, it relies on a limited set of general commands: attack, defend, gather food, and so forth.
+ DMG: If a 1st-level wizard happens to have a staff of fire, the vampire that is compelling him doesn't know that the wand is there and can't tell the wizard to give him the staff or use the staff on his former friends. The vampire, however, can say, "Hand over your most powerful magic item."
 A quanlos can control a number of creatures equal to its total Hit Dice at one time. If it takes control of a creature beyond this limit, it must choose one of its thralls to release from service.
 
 Reverse Gravity (Sp): At will, a gravorg can produce an effect like that of a reverse gravity spell (caster level 10th; Reflex save DC 18), except that the range is 200 feet and it affects an area of up to five 10-foot cubes.
@@ -591,6 +592,8 @@ This just goes to show that the database doesn't yet include racial bonuses. A s
 A sewerm does not have Improved Grab, but unlike, say, a weasel, a sewerm's Attach ability is considered grappling.
 Advancement: 3--4HD Medium, 5HD Large
 The increase in size of Medium gives +4 Strength for a total of +6 to grapple checks. Its BAB also increases from +1 to +2, so a 3HD Medium sewerm has a total +23 to grapple checks.
+
+Note that the Touchstone feat can grant a +6 bonus to Handle Animal checks that's specific to "snakes and snakelike magical beasts."
 
 Of course, an animal could in theory be trained to grapple even if it doesn't naturally do so. Sometimes, indeed, you don't actually want or need to damage the target in grappling them, if the purpose is capture.
 If it is Huge or bigger, the Snatch feat grants Improved Grab for a claw or bite attack.
@@ -897,14 +900,25 @@ Shape Soulmeld Riding Bracers are better than Skill Focus.
 Killoren have a +2 racial bonus on Handle Animal checks; so do desert elves, but desert elves have a harder time managing the 13 Con needed for Shape Soulmeld.
 
 A&EG 50gp Animal Trainer's Kit: This kit consists of harnesses, prods, light whips, treats, and other items that are helpful for training animals. There are different kits for different types of animals. It grants a +2 circumstance bonus on Handle Animal checks.
-A&EG Leash and Muzzle: Made to fit creatures of various sizes, this is necessary equipment for training animals. Masterwork versions are also available that grant a +1 circumstance bonus on Handle Animal checks, increasing the price by 20 gp (regardless of size).
+A&EG page 24 Leash and Muzzle: Made to fit creatures of various sizes, this is necessary equipment for training animals. Masterwork versions are also available that grant a +1 circumstance bonus on Handle Animal checks, increasing the price by 20 gp (regardless of size).
  only priced up to Medium-size 8sp
-Frostburn page 76: "If you are proficient with its use, the goad grants a +2 circumstance bonus on all Handle Animal checks made against animals of Huge size or larger."
+ unclear whether a Medium-size leash and muzzle can be used for multiple animals or must be custom-made...might be adjustable enough for animals with similar muzzles, but not very dissimilar animals
+Frostburn page 76 8gp: "If you are proficient with its use, the goad grants a +2 circumstance bonus on all Handle Animal checks made against animals of Huge size or larger."
  Although many of these primitive weapons are categorized as exotic weapons, they can be used as martial weapons by those not trained in their use as exotic weapons. If a primitive exotic weapon is used as a martial weapon, the user cannot make use of any of that weapon's special qualities (such as the iuak's ability to damage objects, or the tigerskull club's ability to disarm and trip).
 A&EG 10gp Animal Training Pole: This hollow pole has a strong, thin cord threaded through it and twisted into a loop at the end. When looped around an animal's neck, it provides an easy way to direct the animal while preventing the animal from moving any closer than the pole's length. An animal training pole provides a +2 circumstance bonus on attempts to teach an animal a task [but not to rear a wild animal].
 
+A&EG 50gp Nature’s Draught: This tiny vial contains a murky, pungent liquid. When consumed, nature’s draught cause subtle changes in the user’s scent. Animals respond well to a character who has consumed nature’s draught, finding her less threatening and easier to trust. Drinking a vial of nature’s draught provides a +1 circumstance bonus on Handle Animal and Animal Empathy checks made during the next day.
+
 A&EG Whip of Obeyance: This masterwork leather riding whip grants its user a +10 circumstance bonus on Handle Animal checks. This bonus applies only to creatures with Intelligence 2 or lower.
 Caster Level: 5th; Prerequisites: Craft Wondrous Item, animal friendship; Market Price: 2,000 gp; Weight: 2 lb.
+Since the spell Animal Friendship no longer exists in 3.5, and the 3.5 update said it was "Deleted" rather than replaced, this item probably cannot be created unless the prerequisites can be bypassed (by the Ancestral Ralic feat, for example).
+
+The worship of Cyric does not grant any spell-like or supernatural abilities by default, although the church knows of several rituals that grant permanent powers to the devout in exchange for personal and monetary sacrifices.
+A ritual typically takes several hours and requires the intervention of a cleric of Cyric of 9th level or higher.
+The Ritual of Honest Pain: The recipient of this ritual gains a +2 bonus on Bluff, Diplomacy, and Handle Animal checks. The recipient's lies cannot be detected as such by spells of lower than 5th level, and she can lie freely within the bounds of a zone of truth or similar spell. This supernatural ability functions automatically. The cost of this ritual is 2 points of Constitution, since the magical process causes great pain and trauma to the body. Restorative spells (such as restoration or greater restoration) do not reverse this Constitution loss.
+Unlike the other Cyricist rituals in Lords of Darkness, the Ritual of Honest Pain does not require either money or XP, only the "honest pain" in the form of the Constitution loss.
+
+Heroes of Horror Mild Depravity Effects: Bestial: You take on a ferocious, wild demeanor. You gain a +2 circumstance bonus on Handle Animal, Ride, and wild empathy checks. You take a -1 penalty on other Charisma-based ability checks and skill checks.
 
 Bridle of Ease: This magic bridle grants trainers a +5 competence bonus on Handle Animal checks when training a *mount*. Versions of this item are available for exotic mounts.
 Caster Level: 7th; Prerequisites: Craft Wondrous Item, charm monster; Market Price: 500 gp; Weight: 1 lb.
