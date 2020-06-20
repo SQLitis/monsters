@@ -159,6 +159,8 @@ rulebook_priority = ('EPH', 'MM1', 'MM4', 'LoM', 'Sand', 'MH', 'MM2', 'C.Ps', 'O
 
 TERRAIN_NAMES = ('desert', 'forest', 'hill', 'mountain', 'plain', 'marsh', 'aquatic')
 
+CLASS_ABBREVIATIONS = {'sor': 'Sorcerer', 'clr': 'Cleric', 'brd': 'Bard', 'bkgd': 'Blackguard', 'pal': 'Paladin', 'rng': 'Ranger'}
+
 
 
 def fraction_to_negative(string):
@@ -354,7 +356,62 @@ damageReductionRE = re.compile(r"DR (\d{1,2})/((?:[\w\-\+]|\s(?!and [D\d]))+)(?:
 # match a only with negative lookahead assertion that not followed by nd?
 # match \s only with negative lookahead assertion that not followed by and
 spellResistanceRE = re.compile(r"SR ?(\d{1,2})")
+spellsRE = re.compile(r"[Ss]pells \((\w\w\w)(\d{1,2})\)")
 fastHealingRE = re.compile(r"FH(\d{1,2})")
+
+def insert_monster_casts_spells(curs, monster_id, attack):
+  """
+sqlite> select distinct dnd_special_ability.name from dnd_monster inner join dnd_monstertype on dnd_monster.type_id=dnd_monstertype.id inner join monster_has_special_ability on dnd_monster.id=monster_has_special_ability.monster_id inner join dnd_special_ability on monster_has_special_ability.special_ability_id=dnd_special_ability.id inner join dnd_rulebook on rulebook_id=dnd_rulebook.id where dnd_special_ability.name like "%spells%" order by dnd_special_ability.name, dnd_monstertype.name, hit_dice;
+Spells (adept3)
+Spells (air shugenja5)
+Spells (beguiler1)
+Spells (brd7)
+Spells (clr/sor/wiz6) drider
+Spells (clr29 and wiz29)
+Spells (evoker15)
+Spells (mys3)
+Spells (sor lvl = HD+4) sylph, that's wrong, only caster level increases
+Spells (wu-jen10)
+spells (assassin5)
+spells (bkgd2) blackguard
+spells (clr 20 and sor20)
+spells (duskblade3)
+spells (evoker5)
+spells (maho-tsukai3)
+spells (mys4)
+spells (mystic6)
+spells (necromancer13)
+spells (pal11)
+spells (pal4)
+spells (pal6)
+spells (rng4)
+spells (rng6)
+spells (shugenja3)
+spells (sor lvl = HD+2)
+spells (sor117)
+spells (sor14 plus druid spells known)
+spells (sor18; 1d20+22 to overcome SR)
+spells (sor20 and clr20
+  """
+  matchObj = spellsRE.match(attack)
+  if matchObj is None:
+    return None
+  classAbbrev = matchObj.group(1)
+  if classAbbrev not in CLASS_ABBREVIATIONS:
+    return None
+  className = CLASS_ABBREVIATIONS[classAbbrev]
+  curs.execute('''SELECT dnd_characterclass_with_spells.id FROM dnd_characterclass_with_spells WHERE dnd_characterclass_with_spells.name = ?;''', (className,))
+  results = curs.fetchall()
+  #if len(results) == 0:
+  #  return None  # skip clr for now
+  #  raise Exception(attack)
+  if len(results) != 1 or len(results[0]) != 1:
+    raise Exception(className)
+    # curs.execute('''SELECT name FROM dnd_characterclass WHERE name LIKE ?;''', (classAbbrev + '%',))
+    # raise Exception(curs.fetchall())
+  class_id = results[0][0]
+  level = int(matchObj.group(2))
+  curs.execute('''INSERT INTO monster_casts_spells (monster_id, character_class_id, level) VALUES (?,?,?);''', (monster_id, class_id, level))
 
 def insert_damage_reduction_by_value(curs, monster_id, value, bypass):
   value = int(value)
@@ -1702,6 +1759,7 @@ class Monster(object):
     elif self.name == 'Ki-rin': self.challenge_rating = 18 # error in table
     elif self.name == 'Mind Shard of Pandorym': self.challenge_rating = 25 # error in table
     elif self.name == 'Abomination, Xixecal': self.challenge_rating = 36 # error in table
+    elif self.name == 'Demon, Abyssal Ravager': self.challenge_rating = 5 # error in table
 
     self.rulebook_abbrev = xls_row[30].value
     if self.name == 'Demon, Alkilith': self.rulebook_abbrev = 'FF'
@@ -2162,6 +2220,8 @@ class Monster(object):
       ability_id = insert_if_needed(curs, 'dnd_special_ability', attack, special_attack=1)
       curs.execute('''INSERT INTO monster_has_special_ability (monster_id, special_ability_id) VALUES (?, ?);''', (monster_id, ability_id) )
       self.check_if_special_ability_is_spell(curs, monster_id, attack)
+      if insert_monster_casts_spells(curs, monster_id, attack):
+        attack = "Spells"
       #if attack not in ('Poison', 'poison', 'death throes', 'Enslave', 'Camouflage', 'camouflage', 'Curse of lycanthropy'):
       #  spell_id = spell_name_to_id(curs, attack, True)
       #  if spell_id is not None:
@@ -2652,7 +2712,7 @@ def make_item_tables(curs):
   ,PCwealth INT(6)
   ,NPCwealth INT(6) NOT NULL
   );''')
-  curs.execute('''INSERT INTO wealth_by_level (level, PCwealth, NPCwealth) VALUES (1, 10, 900), (2, 900, 2000), (3, 2700, 2500), (4, 5400, 3300), (5, 9000, 4300), (6, 13000, 5600), (7, 19000, 7200), (8, 27000, 9400), (9, 36000, 12000);''')
+  curs.execute('''INSERT INTO wealth_by_level (level, PCwealth, NPCwealth) VALUES (1, 10, 900), (2, 900, 2000), (3, 2700, 2500), (4, 5400, 3300), (5, 9000, 4300), (6, 13000, 5600), (7, 19000, 7200), (8, 27000, 9400), (9, 36000, 12000), (10, 49000, 16000), (11, 66000, 21000), (12, 88000, 27000), (13, 110000, 35000), (14, 150000, 45000), (15, 200000, 59000), (16, 260000, 77000), (17, 340000, 100000), (18, 440000, 130000), (19, 580000, 170000), (20, 760000, 220000);''')
   curs.execute('''CREATE TABLE item_level (
   level TINYINT(2)
   ,market_price_max_gp int(6)
@@ -3066,7 +3126,7 @@ FOREIGN KEY(maneuverability) REFERENCES dnd_maneuverability(maneuverability)
   id INTEGER PRIMARY KEY NOT NULL
   ,name char(8) NOT NULL
   );''')
-  curs.execute('''INSERT INTO dnd_weapon (name) VALUES ("bite"), ("claw"), ("talon"), ("gore"), ("slap"), ("slam"), ("sting"), ("tentacle");''')
+  curs.execute('''INSERT INTO dnd_weapon (name) VALUES ("bite"), ("claw"), ("talon"), ("gore"), ("horn"), ("slap"), ("slam"), ("arm"), ("arms"), ("sting"), ("tentacle");''')
   curs.execute('''CREATE INDEX index_dnd_weapon_name ON dnd_weapon(name);''')
   curs.execute('''CREATE TABLE monster_has_natural_weapon (
   monster_id INTEGER NOT NULL,
@@ -3475,6 +3535,19 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
 FOREIGN KEY(spell_id) REFERENCES dnd_spell(id)
   );''')
   # It's rare, but some monsters do have SLAs of different caster levels.
+  curs.execute('''CREATE TABLE monster_casts_spells (
+  monster_id INTEGER NOT NULL,
+  character_class_id INTEGER NOT NULL,
+  level tinyint(2) NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id),
+FOREIGN KEY(character_class_id) REFERENCES dnd_characterclass(id)
+  );''')
+  curs.execute('''CREATE TEMPORARY TABLE dnd_characterclass_with_spells (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+FOREIGN KEY(id) REFERENCES dnd_characterclass(id)
+  );''')
+  curs.execute('''INSERT INTO dnd_characterclass_with_spells (id, name) SELECT DISTINCT dnd_characterclass.id, dnd_characterclass.name FROM dnd_characterclass INNER JOIN dnd_spellclasslevel ON dnd_spellclasslevel.character_class_id=dnd_characterclass.id;''')
   curs.execute('''CREATE TABLE damage_reduction (
   id INTEGER PRIMARY KEY,
   bypass CHAR(64) NOT NULL,
@@ -3512,6 +3585,10 @@ PRIMARY KEY (character_class_id, spell_level)
     character_class_id = id_from_name(curs, 'dnd_characterclass', character_class_name)
     curs.executemany('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
                      [(character_class_id, spell_level, 2*spell_level - 1) for spell_level in range(1, 10)])
+  for character_class_name in ("Sorcerer",):
+    character_class_id = id_from_name(curs, 'dnd_characterclass', character_class_name)
+    curs.executemany('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',
+                     [(character_class_id, spell_level, 2*spell_level) for spell_level in range(2, 10)])
   for character_class_name in ("Paladin", "Ranger"):
     character_class_id = id_from_name(curs, 'dnd_characterclass', character_class_name)
     curs.executemany('''INSERT INTO min_level_to_cast_spell (character_class_id, spell_level, class_level) VALUES (?, ?, ?)''',

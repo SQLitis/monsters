@@ -920,7 +920,7 @@ Unlike the other Cyricist rituals in Lords of Darkness, the Ritual of Honest Pai
 
 Heroes of Horror Mild Depravity Effects: Bestial: You take on a ferocious, wild demeanor. You gain a +2 circumstance bonus on Handle Animal, Ride, and wild empathy checks. You take a -1 penalty on other Charisma-based ability checks and skill checks.
 
-Bridle of Ease: This magic bridle grants trainers a +5 competence bonus on Handle Animal checks when training a *mount*. Versions of this item are available for exotic mounts.
+Bridle of Ease: This magic bridle grants trainers a +5 competence bonus on Handle Animal checks when *training* [which possibly does not include rearing] a *mount*. Versions of this item are available for exotic mounts.
 Caster Level: 7th; Prerequisites: Craft Wondrous Item, charm monster; Market Price: 500 gp; Weight: 1 lb.
 An animal can be trained for only one general purpose, though if the creature is capable of learning additional tricks (above and beyond those included in its general purpose), it may do so.
 Riding (DC 15): An animal trained to bear a rider knows the tricks come, heel, and stay. Training an animal for riding takes three weeks.
