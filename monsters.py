@@ -159,7 +159,7 @@ rulebook_priority = ('EPH', 'MM1', 'MM4', 'LoM', 'Sand', 'MH', 'MM2', 'C.Ps', 'O
 
 TERRAIN_NAMES = ('desert', 'forest', 'hill', 'mountain', 'plain', 'marsh', 'aquatic')
 
-CLASS_ABBREVIATIONS = {'sor': 'Sorcerer', 'clr': 'Cleric', 'brd': 'Bard', 'bkgd': 'Blackguard', 'pal': 'Paladin', 'rng': 'Ranger'}
+CLASS_ABBREVIATIONS = {'sor': 'Sorcerer', 'wiz': 'Wizard', 'clr': 'Cleric', 'drd': 'Druid', 'brd': 'Bard', 'bkgd': 'Blackguard', 'pal': 'Paladin', 'rng': 'Ranger'}
 
 
 
@@ -2713,6 +2713,8 @@ def make_item_tables(curs):
   ,NPCwealth INT(6) NOT NULL
   );''')
   curs.execute('''INSERT INTO wealth_by_level (level, PCwealth, NPCwealth) VALUES (1, 10, 900), (2, 900, 2000), (3, 2700, 2500), (4, 5400, 3300), (5, 9000, 4300), (6, 13000, 5600), (7, 19000, 7200), (8, 27000, 9400), (9, 36000, 12000), (10, 49000, 16000), (11, 66000, 21000), (12, 88000, 27000), (13, 110000, 35000), (14, 150000, 45000), (15, 200000, 59000), (16, 260000, 77000), (17, 340000, 100000), (18, 440000, 130000), (19, 580000, 170000), (20, 760000, 220000);''')
+  with open('treasure.sql') as treasureFile:
+    curs.executescript(treasureFile.read())
   curs.execute('''CREATE TABLE item_level (
   level TINYINT(2)
   ,market_price_max_gp int(6)
@@ -3147,6 +3149,8 @@ UNIQUE(monster_id, damage)
   create_rulebook_table(curs)
 
   make_item_tables(curs)
+  with open('diseases.sql') as diseaseFile:
+    curs.executescript(diseaseFile.read())
   print('done making item tables')
 
   curs.execute('''CREATE TEMPORARY TABLE types_backup (id int, name varchar(32), slug varchar(32) );''')
@@ -3159,18 +3163,23 @@ UNIQUE(monster_id, damage)
   hit_die tinyint(2) NOT NULL,
   base_attack_per_4HD tinyint(1) NOT NULL,
   CR_per_12HD tinyint(1) NOT NULL,
+  breathe tinyint(1) NOT NULL,
+  eat tinyint(1) NOT NULL,
+  sleep tinyint(1) NOT NULL,
 UNIQUE(name),
 UNIQUE(slug)
   );''') # add BAB as float, 1 or 0.75 or 0.5
-  curs.execute('''CREATE TEMPORARY TABLE types_HD (name varchar(32), hit_die tinyint(2), base_attack_per_4HD tinyint(1), CR_per_12HD tinyint(1) );''')
-  curs.execute('''INSERT INTO types_HD (name, hit_die, base_attack_per_4HD, CR_per_12HD) VALUES
-                  ("Aberration", 8, 3, 3), ("Animal", 8, 3, 4), ("Construct", 10, 3, 3), ("Dragon", 12, 4, 6), ("Elemental", 8, 3, 3),
-                  ("Fey", 6, 2, 3), ("Giant", 8, 3, 3), ("Humanoid", 8, 3, 3), ("Magical Beast", 10, 4, 4), ("Monstrous Humanoid", 8, 4, 4),
-                  ("Ooze", 10, 3, 3), ("Outsider", 8, 4, 6), ("Plant", 8, 3, 3), ("Undead", 12, 2, 3), ("Vermin", 8, 3, 3), ("Deathless", 8, 3, 3);''')
-  curs.execute('''INSERT INTO dnd_monstertype (name, slug, hit_die, base_attack_per_4HD, CR_per_12HD) SELECT types_backup.name, slug, hit_die, base_attack_per_4HD, CR_per_12HD FROM types_backup INNER JOIN types_HD ON types_backup.name=types_HD.name;''')
+  curs.execute('''CREATE TEMPORARY TABLE types_HD (name varchar(32), hit_die tinyint(2), base_attack_per_4HD tinyint(1), CR_per_12HD tinyint(1), breathe tinyint(1), eat tinyint(1), sleep tinyint(1) );''')
+  curs.execute('''INSERT INTO types_HD (name, hit_die, base_attack_per_4HD, CR_per_12HD, breathe, eat, sleep) VALUES
+                  ("Aberration", 8, 3, 3, 1, 1, 1), ("Animal", 8, 3, 4, 1, 1, 1), ("Construct", 10, 3, 3, 0, 0, 0), ("Dragon", 12, 4, 6, 1, 1, 1),
+                  ("Elemental", 8, 3, 3, 0, 0, 0), ("Fey", 6, 2, 3, 1, 1, 1), ("Giant", 8, 3, 3, 1, 1, 1), ("Humanoid", 8, 3, 3, 1, 1, 1),
+                  ("Magical Beast", 10, 4, 4, 1, 1, 1), ("Monstrous Humanoid", 8, 4, 4, 1, 1, 1), ("Ooze", 10, 3, 3, 1, 1, 0),
+                  ("Outsider", 8, 4, 6, 1, 0, 0), ("Plant", 8, 3, 3, 1, 1, 0), ("Undead", 12, 2, 3, 0, 0, 0), ("Vermin", 8, 3, 3, 1, 1, 1),
+                  ("Deathless", 8, 3, 3, 0, 0, 0);''')
+  curs.execute('''INSERT INTO dnd_monstertype (name, slug, hit_die, base_attack_per_4HD, CR_per_12HD, breathe, eat, sleep) SELECT types_backup.name, slug, hit_die, base_attack_per_4HD, CR_per_12HD, breathe, eat, sleep FROM types_backup INNER JOIN types_HD ON types_backup.name=types_HD.name;''')
   curs.execute('''DROP TABLE types_backup;''')
   curs.execute('''DROP TABLE types_HD;''')
-  curs.execute('''INSERT INTO dnd_monstertype (name,slug,hit_die,base_attack_per_4HD,CR_per_12HD) VALUES (?,?,?,?,?);''', ('Animal','animal',8,3,3) )
+  curs.execute('''INSERT INTO dnd_monstertype (name,slug,hit_die,base_attack_per_4HD,CR_per_12HD,breathe,eat,sleep) VALUES (?,?,?,?,?,?,?,?);''', ('Animal','animal',8,3,3,1,1,1) )
   curs.execute('''CREATE INDEX index_monstertype_name ON dnd_monstertype(name);''')
 
   curs.execute('''CREATE TABLE monstertype_save_bonus (
