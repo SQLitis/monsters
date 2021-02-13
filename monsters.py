@@ -92,6 +92,7 @@ rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MMI': 'Monster Manual v
  'LEoF':'Lost Empires of Faerun', 'LE':'Lost Empires of Faerun',
  'Kruk':'The Lost Tomb of Kruk-Ma-Kali', 'SD':'Stone Dead',
  'BoED':'Book of Exalted Deeds', 'FC1':'Fiendish Codex I', 'FC2': 'Fiendish Codex II',
+ 'HoA':'Fiendish Codex I',
  'SoCo':"Something's Cooking",
  'Draco':'Draconomicon',
  'MH':'Miniatures Handbook',
@@ -122,7 +123,7 @@ rulebook_abbreviations = {'MM1':'Monster Manual v.3.5', 'MMI': 'Monster Manual v
  'ToBV': 'The Treasure of the Black Veils', 'DS': 'Desert Sands', 'LDR': 'Lest Darkness Rise',
  'DCS': 'Dragonlance Campaign Setting',
  'HOS': 'Holy Order of the Stars',
- 'MotP': 'Manual of the Planes', 'MP': 'Manual of the Planes',
+ 'MotP': 'Manual of the Planes', 'MP': 'Manual of the Planes', 'MoP': 'Manual of the Planes',
  r'A\d\d': 'Dragon Magazine Annual 00/01',
  r'\d\d\d': 'Dragon Magazine',
  'LoMys': 'Lands of Mystery',
@@ -296,7 +297,7 @@ def spell_name_to_id(curs, spellName, allowNoneResult=False):
   assert spell_id is not None
   return spell_id
 
-EDITION_PRIORITY = ('Core (3.5)', 'Supplementals (3.5)', 'Forgotten Realms (3.5)', 'Eberron (3.5)', 'Core (3.0)', 'Oriental Adventures (3.0)', 'Forgotten Realms (3.0)')
+EDITION_PRIORITY = ('Core (3.5)', 'Supplementals (3.5)', 'Forgotten Realms (3.5)', 'Eberron (3.5)', 'Core (3.0)', 'Oriental Adventures (3.0)', 'Supplementals (3.0)', 'Forgotten Realms (3.0)', None)
 def id_from_name(curs, tableName, name, allowExtraOnLeft=False, allowExtraOnRight=False, useEdition=False, additionalCriteria=tuple() ):
   """
   This function uses SQL's like instead of exact equality, to enable tricks like passing "Colossal%" to match Colossal+.
@@ -317,7 +318,7 @@ def id_from_name(curs, tableName, name, allowExtraOnLeft=False, allowExtraOnRigh
     operator = '='
   if useEdition:
     SQLcmd = '''SELECT {0}.id, dnd_dndedition.name from {0} INNER JOIN dnd_rulebook on dnd_rulebook.id=rulebook_id LEFT JOIN dnd_dndedition on dnd_edition_id=dnd_dndedition.id WHERE {0}.name {1} ?;'''.format(tableName, operator)
-    print('useEdition', SQLcmd.replace('?', name) )
+    # print('useEdition', SQLcmd.replace('?', name) )
     curs.execute(SQLcmd, (name,) )
   else:
     cmd = '''SELECT id from {} WHERE name {} ?'''.format(tableName, operator)
@@ -2556,19 +2557,165 @@ def make_familiar_table(curs):
 
 
 
+advancementRE = re.compile(r'(\d{1,3})(\+|-\d{1,3})?(?: HD)? \((Diminutive|Tiny|Small|Medium|Large|Huge|Gargantuan|Colossal)\)')
+assert advancementRE.match('2-3 HD (Small)')
+assert advancementRE.match('19-36 HD (Huge)')
 
-def make_skill_table(curs):
+def make_skill_table(conn, curs):
+  with open('advancement.sql') as advancementFile:
+    curs.executescript(advancementFile.read())
+  curs.execute('''CREATE TABLE monster_advancement (monster_id INTEGER NOT NULL, max_HD_this_size tinyint(2) NOT NULL,
+FOREIGN KEY(monster_id) REFERENCES dnd_monster(id), UNIQUE(monster_id, max_HD_this_size));''')
   curs.execute('''CREATE TABLE monster_has_skills (monster_name TEXT, skills TEXT, advancement TEXT);''')
   book = xlrd.open_workbook(os.path.join('..', 'Creature Catalog 3.5 noSLAsButLAandAdvancementAndSkills.xls'))
   #print(XLSfilepath, 'has', book.nsheets, 'sheets')
   #print('The sheet names are', book.sheet_names() )
   for sheet in book.sheets():
+    names = set()
     for i,xls_row in itertools.dropwhile(lambda pair: pair[0] < 3,
                  enumerate(sheet.get_rows() ) ):
       name = xls_row[0].value
+      if name in names:
+        # don't deal with monsters appearing in multiple books until have firm foundation to match them up
+        continue
+      names.add(name)
+      HD = xls_row[2].value
+      size = xls_row[5].value
       skills = xls_row[55].value
+      feats = xls_row[58].value
       advancement = xls_row[64].value
+      LA = xls_row[65].value
+      source = xls_row[66].value
+      if not name:
+        if HD or (skills and skills!='None') or advancement:
+          raise Exception(name, HD, skills, advancement)
+        continue
+      if source[:4] == 'DRA ':
+        continue
+      if name == 'Frost Giant Variants':
+        continue
+      if type(HD) is str:
+        if 'd' not in HD:
+          raise Exception(name, HD)
+        hit_dice = int(HD[:HD.find('d')])
+      else:
+        assert type(HD) is float
+        if int(HD) != HD:
+          assert HD == 0.5 or HD == 0.25 or HD == 0.125
+        hit_dice = int(HD)
+      size_id = id_from_name(curs, 'dnd_racesize', size.split()[0])
+      assert size_id
       curs.execute('''INSERT INTO monster_has_skills (monster_name, skills, advancement) VALUES (?, ?, ?);''', (name, skills, advancement))
+      if advancement == 'By character class':
+        advancement = ''
+      if advancement == 'By character class (Fighter)' or advancement == 'By character class (Rogue)':
+        advancement = ''
+      if advancement == 'By character class (Favored: Cleric)' or advancement == 'By character class (Favored: Sorcerer)' or advancement == 'By character class (Favored: Swordsage)':
+        advancement = ''
+      elif advancement == 'By class':
+        advancement = ''
+      elif advancement == 'see text' or advancement == 'See text':
+        advancement = ''
+      elif advancement == 'Special':
+        advancement = ''
+      elif advancement == 'None':
+        advancement = None
+      elif advancement == '* [Pseudonatural + Entropic]':
+        advancement = None
+      elif advancement == '2-3 HD (Medium); 4-9 HD (Large aquatic); 10-20 HD (Huge aquatic)':
+        advancement = '2-3 HD (Medium); 4-9 HD (Large); 10-20 HD (Huge)'
+      elif advancement[2:] == '+ HD':
+        advancement = advancement + ' (Colossal)'
+      elif name == 'Kython, Slaughterking':
+        advancement = '19-30 HD (Large); 31-36 HD (Huge)'
+      elif name == 'Drake, Elemental, Fire':
+        advancement = '15-19 HD (Large); 20-29 HD (Huge); 30-39 HD (Gargantuan); 40-42 HD (Colossal)'
+      elif name == 'Casurua':
+        advancement = '21-28 HD (Huge); 29-38 HD (Gargantuan)'
+      elif name == 'Golem, Cadaver':
+        advancement = '11-20 HD (Large); 21-30 HD (Huge)'
+      elif name == 'Archon, Warden':
+        advancement = '9-18 HD (Large); 19-24 HD (Huge)'
+      advancementRanges = [r.strip() for r in advancement.split(';')] if advancement else []
+      upperEndpoints = list()
+      maxAdvancementHDforSize = int(hit_dice)
+      prev_size_id = size_id
+      for index,r in enumerate(advancementRanges):
+        if r == '3136 HD (Gargantuan)':
+          r = '31-36 HD (Gargantuan)'
+        elif r == '40-48 HD Colossal)':
+          r = '40-48 HD (Colossal)'
+        elif r == '7-12 HD Large)':
+          r = '7-12 HD (Large)'
+        elif r == '11-20 HD (Hudge)':
+         r = '11-20 HD (Huge)'
+        matchObj = advancementRE.match(r)
+        if not matchObj:
+          raise Exception(name, r)
+        advancementSize = matchObj.group(3)
+        new_size_id = id_from_name(curs, 'dnd_racesize', advancementSize)
+        assert new_size_id
+        minAdvancementHDforSize = int(matchObj.group(1))
+        if minAdvancementHDforSize != maxAdvancementHDforSize + 1:
+          if name == 'Dusk Giant, Greater' or name == 'Devil, Abishai, Blue' or name == 'Devil, Abishai, Green':
+            # This is in HoH itself, and FC2.
+            assert index == 0
+            if minAdvancementHDforSize != hit_dice:
+              raise Exception(name, minAdvancementHDforSize, hit_dice)
+            minAdvancementHDforSize = hit_dice + 1
+          elif name == 'Naga, Bright' or name == 'Vodyanoi' or name == 'Devil, Abishai, White' or name == 'Spider, Snow, Large':
+            assert index == 0
+            assert minAdvancementHDforSize == hit_dice + 2
+          elif name == 'Landwyrm, Underdark' or name == 'Ashworm':
+            assert minAdvancementHDforSize == maxAdvancementHDforSize
+          elif name == 'Bleakborn':
+            assert index == 0
+            assert minAdvancementHDforSize == hit_dice - 2
+          elif name == 'Cinderspawn':
+            assert index == 1
+            assert minAdvancementHDforSize == maxAdvancementHDforSize - 4
+          elif name == 'Firefly, Giant':
+            assert index == 1
+            assert minAdvancementHDforSize == maxAdvancementHDforSize - 1
+          else:
+            raise Exception(source, name, HD, advancement, maxAdvancementHDforSize, minAdvancementHDforSize)
+        if matchObj.group(2) == '+':
+          assert advancementSize == 'Colossal'
+          maxAdvancementHDforSize = 127
+        elif not matchObj.group(2):
+          maxAdvancementHDforSize = minAdvancementHDforSize
+        else:
+          assert matchObj.group(2)[0] == '-'
+          maxAdvancementHDforSize = int(matchObj.group(2)[1:])
+        if new_size_id != prev_size_id + 1:
+          if index == 0:
+            assert prev_size_id == size_id
+            if name == 'Manta Ray':
+              assert new_size_id == size_id - 1
+              # According to the Monster Manual, manta rays really are smaller with fewer HD.
+              # Rather than deal with this, we just pretend they stay Large.
+              new_size_id = size_id
+            else:
+              assert new_size_id == size_id
+          else:
+            raise Exception(source, name, size, advancement)
+        prev_size_id = new_size_id
+        if index == 0 and new_size_id != size_id:
+          if new_size_id != size_id + 1:
+            raise Exception(source, name, size, advancement)
+          upperEndpoints.append(hit_dice)
+        upperEndpoints.append(maxAdvancementHDforSize)
+      monster_id = id_from_name(curs, 'dnd_monster', name, useEdition=True)
+      if not monster_id:
+        continue
+      try:
+        curs.executemany('INSERT INTO monster_advancement (monster_id, max_HD_this_size) VALUES (?, ?)', ((monster_id, e) for e in upperEndpoints))
+      except sqlite3.IntegrityError as ex:
+        pass
+        curs.execute('SELECT max_HD_this_size FROM monster_advancement WHERE monster_id=?', (monster_id,))
+        advancementAlreadyThere = curs.fetchall()
+        if advancementAlreadyThere != [(e,) for e in upperEndpoints]:
+          raise Exception(name, upperEndpoints, advancementAlreadyThere) from ex
 
 
 
@@ -3701,7 +3848,8 @@ FOREIGN KEY(template_id) REFERENCES dnd_template(id)
   
   make_familiar_table(curs)
 
-  make_skill_table(curs)
+  conn.commit()
+  make_skill_table(conn, curs)
 
   if False: parse_IMarvinTPA(curs, marvinCache)
   
