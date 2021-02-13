@@ -2636,6 +2636,11 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id), UNIQUE(monster_id, max_HD_th
         advancement = '11-20 HD (Large); 21-30 HD (Huge)'
       elif name == 'Archon, Warden':
         advancement = '9-18 HD (Large); 19-24 HD (Huge)'
+      handle_one_monster_advancement_line(curs, name, source, hit_dice, size_id, advancement)
+  handle_one_monster_advancement_line(curs, 'Dinosaur, Cryptoclidus', None, 3, 6, '4-6 HD (Large); 7-9 HD (Huge)')
+  handle_one_monster_advancement_line(curs, 'Bat, Guard', None, 4, 6, '5-12 HD (Huge)')
+
+def handle_one_monster_advancement_line(curs, name, source, hit_dice, size_id, advancement):
       advancementRanges = [r.strip() for r in advancement.split(';')] if advancement else []
       upperEndpoints = list()
       maxAdvancementHDforSize = int(hit_dice)
@@ -2678,7 +2683,7 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id), UNIQUE(monster_id, max_HD_th
             assert index == 1
             assert minAdvancementHDforSize == maxAdvancementHDforSize - 1
           else:
-            raise Exception(source, name, HD, advancement, maxAdvancementHDforSize, minAdvancementHDforSize)
+            raise Exception(source, name, hit_dice, advancement, maxAdvancementHDforSize, minAdvancementHDforSize)
         if matchObj.group(2) == '+':
           assert advancementSize == 'Colossal'
           maxAdvancementHDforSize = 127
@@ -2702,16 +2707,15 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id), UNIQUE(monster_id, max_HD_th
         prev_size_id = new_size_id
         if index == 0 and new_size_id != size_id:
           if new_size_id != size_id + 1:
-            raise Exception(source, name, size, advancement)
+            raise Exception(source, name, size_id, advancement)
           upperEndpoints.append(hit_dice)
         upperEndpoints.append(maxAdvancementHDforSize)
       monster_id = id_from_name(curs, 'dnd_monster', name, useEdition=True)
       if not monster_id:
-        continue
+        return
       try:
         curs.executemany('INSERT INTO monster_advancement (monster_id, max_HD_this_size) VALUES (?, ?)', ((monster_id, e) for e in upperEndpoints))
       except sqlite3.IntegrityError as ex:
-        pass
         curs.execute('SELECT max_HD_this_size FROM monster_advancement WHERE monster_id=?', (monster_id,))
         advancementAlreadyThere = curs.fetchall()
         if advancementAlreadyThere != [(e,) for e in upperEndpoints]:
