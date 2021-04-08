@@ -1361,7 +1361,7 @@ Alignment: Usually chaotic neutral or chaotic evil.
 If you can't rebuke dragons, you can cross-breed a puppeteer with a dragon (preferably one immune to fire or acid), then cross-breed the result with a troll, then mummify the grandchild, then rebuke and command the mummified half-troll quarter-dragon puppeteer.
 
 
-You know, Imcarnate Construct makes me wonder. What templates can convert a non-living creature into a living creature?
+You know, Incarnate Construct makes me wonder. What templates can convert a non-living creature into a living creature?
 
 .. code-block:: bash
 
@@ -1390,6 +1390,10 @@ Half-illithid is an inherited template that can be added to any corporeal creatu
 
 Corrupted by the Abyss is an inherited or acquired template that can be added to any corporeal creature. The creature's type changes to aberration.
 Creatures corrupted by the Abyss are sometimes native to the Infinite Layers of the Abyss. In most cases, however, they originate on other planes but become tainted by the Abyss through long-term residence there.
+
+Actually, there is another way that's not yet in the database.
+When a traveler passes through a mirror, the population of the Plane of Mirrors increases by two, not one. A mirror-self is created somewhere else on the Plane of Mirrors whenever someone mirrorwalks onto the Plane.
+The mirror-self is an outsider, even if the original was a construct or undead. And an outsider is a living creature.
 
 
 Half-dragon is an inherited template that can be added to any living, corporeal creature.

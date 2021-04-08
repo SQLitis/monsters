@@ -21,6 +21,7 @@ sys.path.append(os.path.join(os.getcwd(), 'xlrd-1.0.0') )
 #print(sys.path)
 import re
 import datetime
+import time
 import math
 import sqlite3
 import csv
@@ -46,6 +47,8 @@ except ImportError:
     import httplib as http_client
 http_client.HTTPConnection.debuglevel = 1
 import pycurl
+
+import pandas
 
 #import docx
 
@@ -2566,6 +2569,7 @@ def make_skill_table(conn, curs):
     curs.executescript(advancementFile.read())
   curs.execute('''CREATE TABLE monster_advancement (monster_id INTEGER NOT NULL, max_HD_this_size tinyint(2) NOT NULL,
 FOREIGN KEY(monster_id) REFERENCES dnd_monster(id), UNIQUE(monster_id, max_HD_this_size));''')
+  curs.execute('''CREATE TABLE monster_level_adjustment (monster_name TEXT, level_adjustment tinyint(1));''')
   curs.execute('''CREATE TABLE monster_has_skills (monster_name TEXT, skills TEXT, advancement TEXT);''')
   book = xlrd.open_workbook(os.path.join('..', 'Creature Catalog 3.5 noSLAsButLAandAdvancementAndSkills.xls'))
   #print(XLSfilepath, 'has', book.nsheets, 'sheets')
@@ -2637,8 +2641,25 @@ FOREIGN KEY(monster_id) REFERENCES dnd_monster(id), UNIQUE(monster_id, max_HD_th
       elif name == 'Archon, Warden':
         advancement = '9-18 HD (Large); 19-24 HD (Huge)'
       handle_one_monster_advancement_line(curs, name, source, hit_dice, size_id, advancement)
+      try:
+        LA = int(LA)
+      except ValueError:
+        continue
+      curs.execute('''INSERT INTO monster_level_adjustment (monster_name, level_adjustment) VALUES (?, ?)''', (name, LA))
   handle_one_monster_advancement_line(curs, 'Dinosaur, Cryptoclidus', None, 3, 6, '4-6 HD (Large); 7-9 HD (Huge)')
   handle_one_monster_advancement_line(curs, 'Bat, Guard', None, 4, 6, '5-12 HD (Huge)')
+  print('About to read Echohawk')
+  before = time.time()
+  echohawk = pandas.read_excel(os.path.join('..', "Echohawk's Complete D&D Monster Index (2008-12-29) LA and class levels.ods"), engine='odf')
+  print('read Echohawk in', int(time.time() - before))
+  for index, row in echohawk.iterrows():
+    LA = row['LA']
+    try:
+      LA = int(LA)
+    except ValueError:
+      continue
+    name = row['Monster']
+    curs.execute('''INSERT INTO monster_level_adjustment (monster_name, level_adjustment) VALUES (?, ?)''', (name, LA))
 
 def handle_one_monster_advancement_line(curs, name, source, hit_dice, size_id, advancement):
       advancementRanges = [r.strip() for r in advancement.split(';')] if advancement else []
@@ -3330,7 +3351,8 @@ UNIQUE(slug)
   curs.execute('''INSERT INTO dnd_monstertype (name, slug, hit_die, base_attack_per_4HD, CR_per_12HD, breathe, eat, sleep) SELECT types_backup.name, slug, hit_die, base_attack_per_4HD, CR_per_12HD, breathe, eat, sleep FROM types_backup INNER JOIN types_HD ON types_backup.name=types_HD.name;''')
   curs.execute('''DROP TABLE types_backup;''')
   curs.execute('''DROP TABLE types_HD;''')
-  curs.execute('''INSERT INTO dnd_monstertype (name,slug,hit_die,base_attack_per_4HD,CR_per_12HD,breathe,eat,sleep) VALUES (?,?,?,?,?,?,?,?);''', ('Animal','animal',8,3,3,1,1,1) )
+  # turns out original dnd_monstertype did not actually contain Animal at all
+  curs.execute('''INSERT INTO dnd_monstertype (name,slug,hit_die,base_attack_per_4HD,CR_per_12HD,breathe,eat,sleep) VALUES (?,?,?,?,?,?,?,?);''', ('Animal','animal',8,3,4,1,1,1) )
   curs.execute('''CREATE INDEX index_monstertype_name ON dnd_monstertype(name);''')
 
   curs.execute('''CREATE TABLE monstertype_save_bonus (
